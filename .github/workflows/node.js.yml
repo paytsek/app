@@ -37,5 +37,5 @@ jobs:
 
     - name: Test API
       run: npm run test:api
-    - name: Test Cliet
+    - name: Test Client
       run: npm run test:client
