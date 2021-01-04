@@ -1,5 +1,3 @@
-const App = () => {
-	return <div>PayTsek</div>;
-};
+const App = () => <div>PayTsek</div>;
 
 export default App;
