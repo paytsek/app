@@ -29,8 +29,10 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
-    - name: Install Dependencies
+    - name: Install Api Dependencies
       run: npm install
+    - name: Install Client Dependencies
+      run: yarn install --prefix client
 
     - name: Build
       run: npm build
