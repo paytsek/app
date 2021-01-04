@@ -35,5 +35,7 @@ jobs:
     - name: Build
       run: npm build
 
-    - name: Test
-      run: npm test
+    - name: Test API
+      run: npm run test:api
+    - name: Test Client
+      run: npm run test:client
