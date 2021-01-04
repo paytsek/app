@@ -21,6 +21,9 @@
       "./test/setup.js"
     ]
   },
+  "nodemonConfig": {
+    "ignore": ["client/src/*.*"]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/paytsek/app.git"
