@@ -5,9 +5,12 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "test": "jest",
+    "test:api": "jest",
+    "test:client": "npm test --prefix client",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "server": "nodemon index.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "jest": {
     "testEnvironment": "node",
