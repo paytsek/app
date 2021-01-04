@@ -1,0 +1,21 @@
+{
+  "name": "paytsek",
+  "version": "1.0.0",
+  "description": "Payroll system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paytsek/app.git"
+  },
+  "keywords": [
+    "Payroll"
+  ],
+  "author": "Fullsuite",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paytsek/app/issues"
+  }
+}
