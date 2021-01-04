@@ -17,5 +17,10 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/paytsek/app/issues"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.9"
   }
 }
