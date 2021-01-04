@@ -14,7 +14,9 @@
   },
   "jest": {
     "testEnvironment": "node",
-    "testPathIgnorePatterns": ["client"],
+    "testPathIgnorePatterns": [
+      "client"
+    ],
     "setupFilesAfterEnv": [
       "./test/setup.js"
     ]
