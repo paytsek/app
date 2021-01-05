@@ -3,6 +3,7 @@ class ErrorResponse extends Error {
 		super();
 
 		this.errors = errors;
+		this.success = false;
 	}
 }
 
