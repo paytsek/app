@@ -11,6 +11,9 @@ const cors = require('cors');
 const notFound = require('./middleware/notFound');
 const errorHandler = require('./middleware/errorHandler');
 
+// ROUTES
+const companyRoutes = require('./routes/company');
+
 dotenv.config({ path: './config/config.env' });
 
 const app = express();
@@ -44,6 +47,9 @@ app.use(cors());
 if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
 }
+
+// API ROUTES
+app.use('/api/v1/company', companyRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
