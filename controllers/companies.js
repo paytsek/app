@@ -57,7 +57,8 @@ const createCompanySettings = asyncHandler(async (req, res, next) => {
 	const companySettings = await CompanySetting.create({
 		company: req.params.id,
 		...req.body,
-	});
+  });
+
 	res.status(201).json({ success: true, companySettings });
 });
 

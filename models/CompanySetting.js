@@ -24,10 +24,8 @@ const CompanySettingSchema = new mongoose.Schema({
 				});
 				return !company;
 			},
-			message: (props) => {
-				console.log(props);
-				return `Company setting with an id of ${props.value} is already exist`;
-			},
+			message: (props) =>
+				`Company setting with an id of ${props.value} is already exist`,
 		},
 	},
 	tin: {
@@ -77,10 +75,48 @@ const CompanySettingSchema = new mongoose.Schema({
 		enum: ['payrollCutOffs', 'payoutDates'],
 		required: [true, 'Reporting base is required'],
 	},
-	firstCutOff: Number,
-	SecondCutOff: Number,
-	firstPayout: Number,
-	secondPayout: Number,
+	firstCutOff: {
+		type: Number,
+		required: [
+			function () {
+				return (
+					(!this.firstCutOff && this.frequency === 'semiMonthly') ||
+					this.frequency === 'monthly'
+				);
+			},
+			'First Cut Off is required',
+		],
+	},
+	secondCutOff: {
+		type: Number,
+		required: [
+			function () {
+				return !this.secondCutOff && this.frequency === 'semiMonthly';
+			},
+			'Second Cut Off is required',
+		],
+	},
+	firstPayout: {
+		type: Number,
+		required: [
+			function () {
+				return (
+					(!this.firstPayout && this.frequency === 'semiMonthly') ||
+					this.frequency === 'monthly'
+				);
+			},
+			'First Payout is required',
+		],
+	},
+	secondPayout: {
+		type: Number,
+		required: [
+			function () {
+				return !this.secondPayout && this.frequency === 'semiMonthly';
+			},
+			'Second Payout is required',
+		],
+	},
 	cutOffs: {
 		type: Object,
 		default: {},
