@@ -17,7 +17,18 @@ const CompanySettingSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Company',
 		required: [true, 'Must have a company'],
-		unique: true,
+		validate: {
+			validator: async function (id) {
+				const company = await this.model('CompanySetting').findOne({
+					company: id,
+				});
+				return !company;
+			},
+			message: (props) => {
+				console.log(props);
+				return `Company setting with an id of ${props.value} is already exist`;
+			},
+		},
 	},
 	tin: {
 		type: String,
@@ -240,6 +251,26 @@ const CompanySettingSchema = new mongoose.Schema({
 			enum: ACCOUNTING_JOURNAL,
 		},
 	},
+});
+
+CompanySettingSchema.pre('save', function (next) {
+	const street =
+		(this.registeredAddress.street && `${this.registeredAddress.street}, `) ||
+		'';
+	const city =
+		(this.registeredAddress.city && `${this.registeredAddress.city}, `) || '';
+	const country =
+		(this.registeredAddress.country && `${this.registeredAddress.country}`) ||
+		'';
+	const zipCode =
+		this.registeredAddress.zipCode && this.registeredAddress.zipCode;
+
+	const formattedAddress = `${street}${city}${country}`;
+
+	this.formattedAddress = formattedAddress;
+	this.zipCode = zipCode;
+
+	next();
 });
 
 module.exports = mongoose.model('CompanySetting', CompanySettingSchema);
