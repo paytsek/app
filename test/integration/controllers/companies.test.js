@@ -2,8 +2,8 @@ const request = require('supertest');
 const app = require('../../../app');
 const Company = require('../../../models/Company');
 
-describe('POST /api/v1/company/name - createCompany', () => {
-	const url = '/api/v1/company/name';
+describe('POST /api/v1/companies/name - createCompany', () => {
+	const url = '/api/v1/companies/name';
 
 	it('should return 201 status code and success response if name is invalid', async () => {
 		const { status, body } = await request(app)
