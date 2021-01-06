@@ -1,6 +1,23 @@
 const mongoose = require('mongoose');
 
+const ACCOUNTING_JOURNAL = [
+	'wagesAndSalaries',
+	'wagesPayable',
+	'sssPayable',
+	'hdmfPayable',
+	'phicPayable',
+	'thirteenthMonthPay',
+	'employeeBenefits',
+	'advancesToEmployees',
+	'withholdingTaxOnCompensationPayable',
+];
+
 const CompanySettingSchema = new mongoose.Schema({
+	company: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Company',
+		required: [true, 'Must have a company'],
+	},
 	tin: {
 		type: String,
 		trim: true,
@@ -34,10 +51,6 @@ const CompanySettingSchema = new mongoose.Schema({
 		type: String,
 		enum: ['private', 'government'],
 		required: [true, 'Category is Required'],
-	},
-	slug: {
-		type: String,
-		unique: true,
 	},
 	frequency: {
 		type: String,
@@ -76,6 +89,10 @@ const CompanySettingSchema = new mongoose.Schema({
 	},
 	regularHolidayPay: Number,
 	specialHolidayPay: Number,
+	taxReliefInternationTaxTreaty: {
+		type: Boolean,
+		default: false,
+	},
 	deminimis: {
 		type: Boolean,
 		default: false,
@@ -87,6 +104,132 @@ const CompanySettingSchema = new mongoose.Schema({
 	hideEmployeeList: {
 		type: Boolean,
 		default: false,
+	},
+	atcCodes: String,
+	sssRegistrationNumber: String,
+	phicNumber: String,
+	hdmfNumber: String,
+	payItemsWithCorrespondingAccountExpense: String,
+	companyTaxablePays: {
+		type: [String],
+		default: [],
+	},
+	companyNonTaxablePays: {
+		type: [String],
+		default: [],
+	},
+	sssCalculation: {
+		type: Object,
+		default: {
+			deminimis: {
+				type: Boolean,
+				default: false,
+			},
+			taxablePays: {
+				type: Object,
+				default: {},
+			},
+			nonTaxablePays: {
+				type: Object,
+				default: {},
+			},
+		},
+	},
+	phicCalculation: {
+		type: Object,
+		default: {
+			deminimis: {
+				type: Boolean,
+				default: false,
+			},
+			taxablePays: {
+				type: Object,
+				default: {},
+			},
+			nonTaxablePays: {
+				type: Object,
+				default: {},
+			},
+		},
+	},
+	thirtheenthMonthPayCalculation: {
+		type: Object,
+		default: {
+			deminimis: {
+				type: Boolean,
+				default: false,
+			},
+			absences: {
+				type: Boolean,
+				default: false,
+			},
+			taxablePays: {
+				type: Object,
+				default: {},
+			},
+			nonTaxablePays: {
+				type: Object,
+				default: {},
+			},
+		},
+	},
+	departments: {
+		type: [String],
+	},
+	accountingJournal: {
+		type: Object,
+		deminimisBenefits: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
+		employeeBenefits: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
+		hdmfPayable: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
+		netPay: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
+		nonTaxableCompensation: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
+		phicPayable: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
+		postTaxDeduction: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
+		preTaxDeduction: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
+		reimbursement: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
+		sssPayable: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
+		taxDue: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
+		taxableCompensation: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
+		thirtheenthMonthPay: {
+			type: String,
+			enum: ACCOUNTING_JOURNAL,
+		},
 	},
 });
 
