@@ -17,6 +17,7 @@ const CompanySettingSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Company',
 		required: [true, 'Must have a company'],
+		unique: true,
 	},
 	tin: {
 		type: String,
@@ -73,7 +74,10 @@ const CompanySettingSchema = new mongoose.Schema({
 		type: Object,
 		default: {},
 	},
-	workingDays: Number,
+	workingDays: {
+		type: Number,
+		default: 22,
+	},
 	nightDifferential: {
 		type: String,
 		enum: ['disabled', 'percentage', 'fixed'],
@@ -126,10 +130,7 @@ const CompanySettingSchema = new mongoose.Schema({
 	sssCalculation: {
 		type: Object,
 		default: {
-			deminimis: {
-				type: Boolean,
-				default: false,
-			},
+			deminimis: false,
 			taxablePays: {
 				type: Object,
 				default: {},
@@ -143,10 +144,7 @@ const CompanySettingSchema = new mongoose.Schema({
 	phicCalculation: {
 		type: Object,
 		default: {
-			deminimis: {
-				type: Boolean,
-				default: false,
-			},
+			deminimis: false,
 			taxablePays: {
 				type: Object,
 				default: {},
@@ -160,14 +158,8 @@ const CompanySettingSchema = new mongoose.Schema({
 	thirtheenthMonthPayCalculation: {
 		type: Object,
 		default: {
-			deminimis: {
-				type: Boolean,
-				default: false,
-			},
-			absences: {
-				type: Boolean,
-				default: false,
-			},
+			deminimis: false,
+			absences: false,
 			taxablePays: {
 				type: Object,
 				default: {},
@@ -182,7 +174,6 @@ const CompanySettingSchema = new mongoose.Schema({
 		type: [String],
 	},
 	accountingJournal: {
-		type: Object,
 		deminimisBenefits: {
 			type: String,
 			default: 'wagesAndSalaries',

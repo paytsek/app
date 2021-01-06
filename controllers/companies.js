@@ -1,4 +1,5 @@
 const Company = require('../models/Company');
+const CompanySetting = require('../models/CompanySetting');
 
 const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
@@ -40,8 +41,20 @@ const getCompany = asyncHandler(async (req, res, next) => {
 	res.status(200).json({ success: true, company });
 });
 
+// @ROUTE POST /api/v1/companies/:id/settings
+// @Desc Create a company settings
+// access PRIVATE - Admin Users
+const createCompanySettings = asyncHandler(async (req, res, next) => {
+	const companySettings = await CompanySetting.create({
+		company: req.params.id,
+		...req.body,
+	});
+	res.status(201).json({ success: true, companySettings });
+});
+
 module.exports = {
 	createCompany,
 	getCompanies,
 	getCompany,
+	createCompanySettings,
 };
