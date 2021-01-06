@@ -132,6 +132,7 @@ const CompanySettingSchema = new mongoose.Schema({
 			function () {
 				return this.nightDifferential === 'percentage';
 			},
+			'Night Differential Percentage is required',
 		],
 	},
 	overtime: {
@@ -139,14 +140,50 @@ const CompanySettingSchema = new mongoose.Schema({
 		default: 'disabled',
 		enum: ['disabled', 'hourly', 'fixed'],
 	},
-	overtimePay: Number,
-	overtimeRestDayPay: Number,
+	overtimePay: {
+		type: Number,
+		default: 1.25,
+		required: [
+			function () {
+				return this.overtime === 'hourly';
+			},
+			'Overtime Pay is required',
+		],
+	},
+	overtimeRestDayPay: {
+		type: Number,
+		default: 1.3,
+		required: [
+			function () {
+				return this.overtime === 'hourly';
+			},
+			'Overtime Rest Day Pay is required',
+		],
+	},
 	holiday: {
 		type: Boolean,
 		default: false,
 	},
-	regularHolidayPay: Number,
-	specialHolidayPay: Number,
+	regularHolidayPay: {
+		type: Number,
+		default: 1,
+		required: [
+			function () {
+				return this.holiday;
+			},
+			'Regular Holiday Pay is required',
+		],
+	},
+	specialHolidayPay: {
+		type: Number,
+		default: 0.3,
+		required: [
+			function () {
+				return this.holiday;
+			},
+			'Special Holiday Pay is required',
+		],
+	},
 	taxReliefInternationTaxTreaty: {
 		type: Boolean,
 		default: false,
