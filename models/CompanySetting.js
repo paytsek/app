@@ -50,15 +50,18 @@ const CompanySettingSchema = new mongoose.Schema({
 	category: {
 		type: String,
 		enum: ['private', 'government'],
+		default: 'private',
 		required: [true, 'Category is Required'],
 	},
 	frequency: {
 		type: String,
 		enum: ['semiMonthly', 'monthly'],
+		default: 'semiMonthly',
 		required: [true, 'Payroll frequency is required'],
 	},
 	reportingBase: {
 		type: String,
+		default: 'payrollCutOffs',
 		enum: ['payrollCutOffs', 'payoutDates'],
 		required: [true, 'Reporting base is required'],
 	},
@@ -74,11 +77,13 @@ const CompanySettingSchema = new mongoose.Schema({
 	nightDifferential: {
 		type: String,
 		enum: ['disabled', 'percentage', 'fixed'],
+		default: 'disabled',
 		required: [true, 'Nigth differential is required'],
 	},
 	nightDifferentialPercentage: Number,
 	overtime: {
 		type: String,
+		default: 'disabled',
 		enum: ['disabled', 'hourly', 'fixed'],
 	},
 	overtimePay: Number,
@@ -180,54 +185,67 @@ const CompanySettingSchema = new mongoose.Schema({
 		type: Object,
 		deminimisBenefits: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 		employeeBenefits: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 		hdmfPayable: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 		netPay: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 		nonTaxableCompensation: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 		phicPayable: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 		postTaxDeduction: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 		preTaxDeduction: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 		reimbursement: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 		sssPayable: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 		taxDue: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 		taxableCompensation: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 		thirtheenthMonthPay: {
 			type: String,
+			default: 'wagesAndSalaries',
 			enum: ACCOUNTING_JOURNAL,
 		},
 	},
