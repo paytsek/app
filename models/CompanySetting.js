@@ -79,10 +79,7 @@ const CompanySettingSchema = new mongoose.Schema({
 		type: Number,
 		required: [
 			function () {
-				return (
-					(!this.firstCutOff && this.frequency === 'semiMonthly') ||
-					this.frequency === 'monthly'
-				);
+				return this.frequency === 'semiMonthly' || this.frequency === 'monthly';
 			},
 			'First Cut Off is required',
 		],
@@ -91,7 +88,7 @@ const CompanySettingSchema = new mongoose.Schema({
 		type: Number,
 		required: [
 			function () {
-				return !this.secondCutOff && this.frequency === 'semiMonthly';
+				return this.frequency === 'semiMonthly';
 			},
 			'Second Cut Off is required',
 		],
@@ -100,10 +97,7 @@ const CompanySettingSchema = new mongoose.Schema({
 		type: Number,
 		required: [
 			function () {
-				return (
-					(!this.firstPayout && this.frequency === 'semiMonthly') ||
-					this.frequency === 'monthly'
-				);
+				return this.frequency === 'semiMonthly' || this.frequency === 'monthly';
 			},
 			'First Payout is required',
 		],
@@ -112,7 +106,7 @@ const CompanySettingSchema = new mongoose.Schema({
 		type: Number,
 		required: [
 			function () {
-				return !this.secondPayout && this.frequency === 'semiMonthly';
+				return this.frequency === 'semiMonthly';
 			},
 			'Second Payout is required',
 		],
@@ -131,7 +125,15 @@ const CompanySettingSchema = new mongoose.Schema({
 		default: 'disabled',
 		required: [true, 'Nigth differential is required'],
 	},
-	nightDifferentialPercentage: Number,
+	nightDifferentialPercentage: {
+		type: Number,
+		default: 0.1,
+		required: [
+			function () {
+				return this.nightDifferential === 'percentage';
+			},
+		],
+	},
 	overtime: {
 		type: String,
 		default: 'disabled',
