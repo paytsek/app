@@ -1,7 +1,15 @@
 const ErrorResponse = require('../utils/errorResponse.js');
 
 const errorHandler = (err, req, res, next) => {
-  const error = { ...err };
+	const error = { ...err };
+
+	if (err.name === 'CastError') {
+		return res
+			.status(404)
+			.json(
+				new ErrorResponse({ message: `Resource with an of ${error.value} not found` })
+			);
+	}
 
 	if (err.name === 'ValidationError') {
 		const errorFields = Object.keys(error.errors);

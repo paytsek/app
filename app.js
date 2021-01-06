@@ -12,7 +12,7 @@ const notFound = require('./middleware/notFound');
 const errorHandler = require('./middleware/errorHandler');
 
 // ROUTES
-const companyRoutes = require('./routes/company');
+const companyRoutes = require('./routes/companies');
 
 dotenv.config({ path: './config/config.env' });
 
@@ -49,7 +49,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // API ROUTES
-app.use('/api/v1/company', companyRoutes);
+app.use('/api/v1/companies', companyRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
