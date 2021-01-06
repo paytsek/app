@@ -31,7 +31,9 @@ const getCompanies = asyncHandler(async (req, res, next) => {
 const getCompany = asyncHandler(async (req, res, next) => {
 	const { id } = req.params;
 
-	const company = await Company.findById(id);
+	const company = await Company.findById(id).populate({
+		path: 'companySettings',
+	});
 
 	if (!company) {
 		res.status(404);
@@ -45,6 +47,13 @@ const getCompany = asyncHandler(async (req, res, next) => {
 // @Desc Create a company settings
 // access PRIVATE - Admin Users
 const createCompanySettings = asyncHandler(async (req, res, next) => {
+	const company = await Company.findById(req.params.id);
+
+	if (!company) {
+		res.status(404);
+		throw new ErrorResponse({ message: 'No company is selected' });
+	}
+
 	const companySettings = await CompanySetting.create({
 		company: req.params.id,
 		...req.body,
