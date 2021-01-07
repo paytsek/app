@@ -22,6 +22,7 @@ jobs:
         cache-name: cache-node-modules
       with:
         # npm cache files are stored in `~/.npm` on Linux/macOS
+        JWT_SECRET_KEY: 123
         path: ~/.npm
         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
