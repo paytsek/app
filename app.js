@@ -15,7 +15,10 @@ const errorHandler = require('./middleware/errorHandler');
 const companyRoutes = require('./routes/companies');
 const authRoutes = require('./routes/auth');
 
-dotenv.config({ path: './config/config.env' });
+const envPath =
+	process.env.NODE_ENV === 'test' ? './config/test.env' : './config/config.env';
+
+dotenv.config({ path: envPath });
 
 const app = express();
 
