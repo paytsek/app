@@ -123,3 +123,80 @@ describe('POST /api/v1/auth/register', () => {
 		});
 	});
 });
+
+describe('POST /api/v1/auth/login', () => {
+	const url = '/api/v1/auth/login';
+
+	describe('return error response', () => {
+		it('should have 400 status code if email and password is empty', async () => {
+			const res = await request(app)
+				.post(url)
+				.send({ email: '', password: '' });
+
+			expect(res.status).toBe(400);
+			expect(res.body.success).toBeFalsy();
+			expect(res.body.errors).toHaveProperty(
+				'message',
+				'Please provide an email and password'
+			);
+		});
+
+		it('should have 400 status code if email is not existing in database', async () => {
+			await User.create({
+				email: 'test@example.com',
+				password: '123456',
+				username: 'darryl mangibin',
+			});
+
+			const res = await request(app)
+				.post(url)
+				.send({ email: 'darryl@gmail.com', password: '123456' });
+
+			expect(res.status).toBe(401);
+			expect(res.body.success).toBeFalsy();
+			expect(res.body.errors).toHaveProperty('message', 'Invalid credentials');
+		});
+
+		it('should have 400 status code if password is incorrect', async () => {
+			await User.create({
+				username: 'darryl mangibin',
+				password: '123456',
+				email: 'test@example.com',
+			});
+
+			const res = await request(app)
+				.post(url)
+				.send({ email: 'test@example.com', password: '1234567' });
+
+			expect(res.status).toBe(401);
+			expect(res.body.success).toBeFalsy();
+			expect(res.body.errors).toHaveProperty('message', 'Invalid credentials');
+		});
+
+		it('should return a token if login is successful', async () => {
+			await User.create({
+				username: 'darryl mangibin',
+				email: 'test@example.com',
+				password: '123456',
+			});
+
+			const res = await request(app)
+				.post(url)
+				.send({ email: 'test@example.com', password: '123456' });
+
+			expect(res.status).toBe(200);
+			expect(res.body.success).toBeTruthy();
+			expect(Object.keys(res.body)).toEqual(expect.arrayContaining(['token']));
+
+			const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
+
+			expect(Object.keys(user)).toEqual(
+				expect.arrayContaining(['id', 'email', 'username', 'iat', 'exp'])
+			);
+			expect(user).toMatchObject({
+				username: 'darryl mangibin',
+				email: 'test@example.com',
+			});
+		});
+	});
+});
