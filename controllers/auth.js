@@ -5,7 +5,7 @@ const User = require('../models/User');
 
 // @ROUTE POST /api/v1/auth
 // @Desc Register a user
-// access PUBLIC -
+// access PUBLIC
 const registerUser = asyncHandler(async (req, res, next) => {
 	const { username, email, password } = req.body;
 
@@ -13,7 +13,12 @@ const registerUser = asyncHandler(async (req, res, next) => {
 
 	user = await user.save();
 
-	res.status(201).json({ success: true, user });
+	const token = user.generateJwtToken();
+
+	res.status(201).json({
+		success: true,
+		token,
+	});
 });
 
 module.exports = {
