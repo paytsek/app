@@ -16,8 +16,14 @@ const UserSchema = new mongoose.Schema({
 		unique: true,
 		validate: {
 			validator: async function (val) {
+				const user = await this.model('User').findOne({ email: val });
+
+				if (user) {
+					throw new Error('Email already exist');
+				}
+
 				if (!validator.isEmail(val)) {
-					throw Error('Email is invalid');
+					throw new Error('Email is invalid');
 				}
 			},
 		},
