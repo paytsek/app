@@ -75,7 +75,7 @@ describe('POST /api/v1/companies/name - createCompany', () => {
 	});
 });
 
-describe('GET api/v1/companies', () => {
+describe('GET api/v1/companies - getCompanies', () => {
 	const url = '/api/v1/companies';
 
 	it('should get all companies and 200 status code', async () => {
@@ -98,7 +98,7 @@ describe('GET api/v1/companies', () => {
 	});
 });
 
-describe('GET /api/v1/companies/:id - single company', () => {
+describe('GET /api/v1/companies/:id - getCompany', () => {
 	const url = '/api/v1/companies';
 
 	it('should return 200 status and get a company by id', async () => {
@@ -121,7 +121,7 @@ describe('GET /api/v1/companies/:id - single company', () => {
 	});
 });
 
-describe('POST /api/v1/companies/:id/settings', () => {
+describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 	const url = '/api/v1/companies';
 
 	it('should return 400 Not found and error response if company is invalid or not found', async () => {
