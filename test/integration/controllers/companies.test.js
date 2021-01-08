@@ -14,7 +14,7 @@ describe('POST /api/v1/companies/name - createCompany', () => {
 		expect(res.status).toBe(401);
 		expect(res.body.success).toBeFalsy();
 		expect(res.body.errors).toMatchObject({
-			message: 'Not authorize to access this route',
+			message: 'No token, access denied',
 		});
 	});
 
@@ -153,7 +153,7 @@ describe('POST /api/v1/companies/:id/settings', () => {
 		expect(res.status).toBe(401);
 		expect(res.body.success).toBeFalsy();
 		expect(res.body.errors).toMatchObject({
-			message: 'Not authorize to access this route',
+			message: 'No token, access denied',
 		});
 	});
 
