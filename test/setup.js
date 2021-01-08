@@ -38,7 +38,7 @@ global.signIn = async () => {
   })
 
 	const payload = {
-    id: user.id,
+    _id: user._id,
     email: user.email,
     username: user.username
 	};

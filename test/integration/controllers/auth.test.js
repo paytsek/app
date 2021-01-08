@@ -114,7 +114,7 @@ describe('POST /api/v1/auth/register', () => {
 			const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
 
 			expect(Object.keys(user)).toEqual(
-				expect.arrayContaining(['id', 'email', 'username', 'iat', 'exp'])
+				expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp'])
 			);
 			expect(user).toEqual(
 				expect.objectContaining({ username: 'darryl cute' }),
@@ -191,7 +191,7 @@ describe('POST /api/v1/auth/login', () => {
 			const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
 
 			expect(Object.keys(user)).toEqual(
-				expect.arrayContaining(['id', 'email', 'username', 'iat', 'exp'])
+				expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp'])
 			);
 			expect(user).toMatchObject({
 				username: 'darryl mangibin',

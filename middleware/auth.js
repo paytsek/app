@@ -22,7 +22,7 @@ const auth = asyncHandler(async (req, res, next) => {
 	try {
 		const decoded = await jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-		const user = await User.findById(decoded.id);
+		const user = await User.findById(decoded._id);
 
 		if (!user) {
 			res.status(401);

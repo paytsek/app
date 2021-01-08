@@ -52,7 +52,7 @@ UserSchema.pre('save', async function (next) {
 
 UserSchema.methods.generateJwtToken = function () {
 	const payload = {
-		id: this._id,
+		_id: this._id,
 		email: this.email,
 		username: this.username,
 	};
