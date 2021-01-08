@@ -125,3 +125,28 @@ describe('GET /api/v1/users/:id', () => {
 		);
 	});
 });
+
+describe('GET /api/v1/users/current-user', () => {
+	const url = '/api/v1/users/current-user';
+
+	it('should return 401 if not logged in', async () => {
+		const res = await request(app).get(url);
+
+		expect(res.status).toBe(401);
+		expect(res.body.success).toBeFalsy();
+		expect(res.body.errors).toMatchObject({
+			message: 'No token, access denied',
+		});
+	});
+
+	it('should get the current user if logged in', async () => {
+		const token = await global.signIn();
+
+		const res = await request(app).get(url).auth(token, { type: 'bearer' });
+    const currentUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+		expect(res.status).toBe(200);
+		expect(res.body.success).toBeTruthy();
+		expect(res.body.user._id).toEqual(currentUser._id);
+	});
+});
