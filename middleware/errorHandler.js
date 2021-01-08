@@ -13,7 +13,7 @@ const errorHandler = (err, req, res, next) => {
 			.status(404)
 			.json(
 				new ErrorResponse({
-					message: `Resource with an of ${error.value} not found`,
+					message: `Resource with an id of ${error.value} not found`,
 				})
 			);
 	}

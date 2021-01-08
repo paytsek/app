@@ -21,7 +21,7 @@ const getUser = asyncHandler(async (req, res, next) => {
 		res.status(404);
 		return next(
 			new ErrorResponse({
-				message: `Resource with an of ${req.params.id} not found`,
+				message: `Resource with an id of ${req.params.id} not found`,
 			})
 		);
 	}
