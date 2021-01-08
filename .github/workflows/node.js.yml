@@ -32,10 +32,10 @@ jobs:
     - name: Install Api Dependencies
       run: npm install
 
-    - name: Install react dependecies
-      run: npm install --prefix client
+#     - name: Install react dependecies
+#       run: npm install --prefix client
 
     - name: Test API
       run: npm run test:api
-    - name: Test Client
-      run: npm run test:client
+#     - name: Test Client
+#       run: npm run test:client
