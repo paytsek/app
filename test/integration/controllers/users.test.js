@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const app = require('../../../app');
 const User = require('../../../models/User');
 
-describe('GET /api/v1/users', () => {
+describe('GET /api/v1/users - getUsers', () => {
 	const url = '/api/v1/users';
 
 	it('should return 401 status code and error response if authorization is empty or invalid', async () => {
@@ -59,7 +59,7 @@ describe('GET /api/v1/users', () => {
 	});
 });
 
-describe('GET /api/v1/users/:id', () => {
+describe('GET /api/v1/users/:id - getUser', () => {
 	const url = '/api/v1/users';
 
 	it('should return 401 status code and error response if not logged in', async () => {
@@ -126,7 +126,7 @@ describe('GET /api/v1/users/:id', () => {
 	});
 });
 
-describe('GET /api/v1/users/current-user', () => {
+describe('GET /api/v1/users/current-user - getCurrentUser', () => {
 	const url = '/api/v1/users/current-user';
 
 	it('should return 401 if not logged in', async () => {
@@ -143,7 +143,7 @@ describe('GET /api/v1/users/current-user', () => {
 		const token = await global.signIn();
 
 		const res = await request(app).get(url).auth(token, { type: 'bearer' });
-    const currentUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
+		const currentUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
 		expect(res.status).toBe(200);
 		expect(res.body.success).toBeTruthy();

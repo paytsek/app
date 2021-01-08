@@ -3,7 +3,7 @@ const app = require('../../../app');
 const User = require('../../../models/User');
 const jwt = require('jsonwebtoken');
 
-describe('POST /api/v1/auth/register', () => {
+describe('POST /api/v1/auth/register - registerUser', () => {
 	const url = '/api/v1/auth/register';
 	describe('return 400 bad request and error response', () => {
 		it('should return error response if fields are empty', async () => {
@@ -124,7 +124,7 @@ describe('POST /api/v1/auth/register', () => {
 	});
 });
 
-describe('POST /api/v1/auth/login', () => {
+describe('POST /api/v1/auth/login - loginUser', () => {
 	const url = '/api/v1/auth/login';
 
 	describe('return error response', () => {
