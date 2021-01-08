@@ -3,6 +3,11 @@ const slugify = require('slugify');
 
 const CompanySchema = new mongoose.Schema(
 	{
+		user: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+			required: [true, 'User must exist'],
+		},
 		name: {
 			type: String,
 			unique: true,

@@ -10,9 +10,15 @@ const ErrorResponse = require('../utils/errorResponse');
 const createCompany = asyncHandler(async (req, res, next) => {
 	const { name } = req.body;
 
-	const newCompany = new Company({ name });
+	if (!req.user || !req.user._id) {
+		res.status(401);
+		return next(new ErrorResponse({ message: 'User must exist' }));
+	}
+
+	const newCompany = new Company({ name, user: req.user._id });
 
 	const company = await newCompany.save();
+
 	res.status(201).json({ success: true, company });
 });
 
@@ -47,17 +53,22 @@ const getCompany = asyncHandler(async (req, res, next) => {
 // @Desc Create a company settings
 // access PRIVATE - Admin Users
 const createCompanySettings = asyncHandler(async (req, res, next) => {
-	const company = await Company.findById(req.params.id);
+  const company = await Company.findById(req.params.id);
 
 	if (!company) {
 		res.status(404);
 		throw new ErrorResponse({ message: 'No company is selected' });
 	}
 
+	if (company.user.toString() !== req.user._id.toString()) {
+		res.status(401);
+		return next(new ErrorResponse({ message: 'User is not authorized' }));
+	}
+
 	const companySettings = await CompanySetting.create({
 		company: req.params.id,
 		...req.body,
-  });
+	});
 
 	res.status(201).json({ success: true, companySettings });
 });
