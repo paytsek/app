@@ -10,7 +10,9 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 			const { status, body } = await request(app).post(url).send({
 				username: '',
 				email: '',
-				password: '',
+        password: '',
+        firstName: '',
+        lastName: ''
 			});
 
 			expect(status).toBe(400);
@@ -19,6 +21,8 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 				username: 'Username is required',
 				email: 'Email is required',
 				password: 'Password is required',
+				firstName: 'First name is required',
+				lastName: 'Last name is required',
 			});
 		});
 
@@ -28,6 +32,8 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 				username: 'da',
 				email: 'darryl@gmail.com',
 				password: '123456',
+				firstName: 'Darryl',
+				lastName: 'Mangibin',
 			});
 
 			expect(res.status).toBe(400);
@@ -43,6 +49,8 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 				username: name,
 				email: 'darryl@gmail.com',
 				password: '123456',
+				firstName: 'darryl',
+				lastName: 'Mangibin',
 			});
 
 			expect(res.status).toBe(400);
@@ -58,6 +66,8 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 				username: 'darryl mangibin',
 				email: 'darryl@gmail.com',
 				password: '12345',
+				firstName: 'Darryl',
+				lastName: 'Mangibin',
 			});
 
 			expect(res.status).toBe(400);
@@ -75,6 +85,8 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 				username: 'darryl mangibin',
 				password: '123456',
 				email: 'darrylpogi',
+				firstName: 'darryl',
+				lastName: 'mangibin',
 			});
 
 			expect(res.status).toBe(400);
@@ -85,12 +97,16 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 				username: 'darryl pogi',
 				email: 'darrylpogi@gmail.com',
 				password: '123456',
+				firstName: 'Darryl',
+				lastName: 'Mangibin',
 			});
 
 			res = await request(app).post(url).send({
 				username: 'darryl cute',
 				password: '12345678',
 				email: 'darrylpogi@gmail.com',
+				firstName: 'darryl cute',
+				lastName: 'Mangibin',
 			});
 
 			expect(res.status).toBe(400);
@@ -105,6 +121,8 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 				username: 'darryl cute',
 				email: 'darrylcute@gmail.com',
 				password: '123456',
+				firstName: 'Darryl',
+				lastName: 'Mangibin',
 			});
 
 			expect(res.status).toBe(201);
@@ -146,6 +164,8 @@ describe('POST /api/v1/auth/login - loginUser', () => {
 				email: 'test@example.com',
 				password: '123456',
 				username: 'darryl mangibin',
+				firstName: 'Darryl',
+				lastName: 'Mangibin',
 			});
 
 			const res = await request(app)
@@ -162,6 +182,8 @@ describe('POST /api/v1/auth/login - loginUser', () => {
 				username: 'darryl mangibin',
 				password: '123456',
 				email: 'test@example.com',
+				firstName: 'Darryl',
+				lastName: 'Mangibin',
 			});
 
 			const res = await request(app)
@@ -172,31 +194,33 @@ describe('POST /api/v1/auth/login - loginUser', () => {
 			expect(res.body.success).toBeFalsy();
 			expect(res.body.errors).toHaveProperty('message', 'Invalid credentials');
 		});
+  });
 
-		it('should return a token if login is successful', async () => {
-			await User.create({
-				username: 'darryl mangibin',
-				email: 'test@example.com',
-				password: '123456',
-			});
+	it('should return a token if login is successful', async () => {
+		await User.create({
+			username: 'darryl mangibin',
+			email: 'test@example.com',
+      password: '123456',
+      firstName: "Darryl",
+      lastName: "Mangibin"
+		});
 
-			const res = await request(app)
-				.post(url)
-				.send({ email: 'test@example.com', password: '123456' });
+		const res = await request(app)
+			.post(url)
+			.send({ email: 'test@example.com', password: '123456' });
 
-			expect(res.status).toBe(200);
-			expect(res.body.success).toBeTruthy();
-			expect(Object.keys(res.body)).toEqual(expect.arrayContaining(['token']));
+		expect(res.status).toBe(200);
+		expect(res.body.success).toBeTruthy();
+		expect(Object.keys(res.body)).toEqual(expect.arrayContaining(['token']));
 
-			const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
+		const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
 
-			expect(Object.keys(user)).toEqual(
-				expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp'])
-			);
-			expect(user).toMatchObject({
-				username: 'darryl mangibin',
-				email: 'test@example.com',
-			});
+		expect(Object.keys(user)).toEqual(
+			expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp'])
+		);
+		expect(user).toMatchObject({
+			username: 'darryl mangibin',
+			email: 'test@example.com',
 		});
 	});
 });

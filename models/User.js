@@ -10,7 +10,25 @@ const UserSchema = new mongoose.Schema({
 		required: [true, 'Username is required'],
 		minlength: [3, 'Username must atleast 3 characters'],
 		maxlength: [120, 'Username must not exceed to 120 characters'],
+		validate: {
+			validator: async function (val) {
+				const username = await this.model('User').findOne({ username: val });
+				return !username;
+			},
+			message: (props) => `${props.value} is already exist`,
+		},
 	},
+	firstName: {
+		type: String,
+		required: [true, 'First name is required'],
+		trim: true,
+	},
+	lastName: {
+		type: String,
+		required: [true, 'Last name is required'],
+		trim: true,
+	},
+	fullName: String,
 	email: {
 		type: String,
 		trim: true,
@@ -48,6 +66,7 @@ UserSchema.pre('save', async function (next) {
 	const hash = await bcrypt.hash(this.password, salt);
 
 	this.password = hash;
+	this.fullName = `${this.firstname} ${this.lastName}`;
 });
 
 UserSchema.methods.generateJwtToken = function () {

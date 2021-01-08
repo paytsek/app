@@ -31,21 +31,25 @@ afterAll(async () => {
 });
 
 global.signIn = async () => {
-  const user = await User.create({
-    username: 'John Doe',
-    email: 'john@example.com',
-    password: '123456'
-  })
+	const user = await User.create({
+		username: 'John Doe',
+		email: 'john@example.com',
+		password: '123456',
+		firstName: 'John',
+		lastName: 'Doe',
+	});
 
 	const payload = {
-    _id: user._id,
-    email: user.email,
-    username: user.username
+		_id: user._id,
+		email: user.email,
+		username: user.username,
+		firstName: user.firstName,
+		lastName: user.lastName,
 	};
 
 	const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
 		expiresIn: 3600,
-  });
-  
+	});
+
 	return token;
 };
