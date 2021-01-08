@@ -29,7 +29,22 @@ const getUser = asyncHandler(async (req, res, next) => {
 	res.status(200).json({ success: true, user });
 });
 
+// @ROUTE GET /api/v1/users/current-user
+// @DESC Get current user information
+// @access PRIVATE
+const getCurrentUser = asyncHandler(async (req, res, next) => {
+	const user = req.user;
+
+	if (!user) {
+		res.status(404);
+		return next(new ErrorResponse({ messge: 'User not found' }));
+	}
+
+	res.status(200).json({ success: true, user });
+});
+
 module.exports = {
 	getUsers,
 	getUser,
+	getCurrentUser,
 };
