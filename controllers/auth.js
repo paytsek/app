@@ -7,9 +7,9 @@ const User = require('../models/User');
 // @Desc Register a user
 // access PUBLIC
 const registerUser = asyncHandler(async (req, res, next) => {
-	const { username, email, password } = req.body;
+	const { username, email, password, firstName, lastName } = req.body;
 
-	let user = new User({ username, email, password });
+	let user = new User({ username, email, password, firstName, lastName });
 
 	user = await user.save();
 

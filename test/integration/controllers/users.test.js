@@ -40,7 +40,9 @@ describe('GET /api/v1/users - getUsers', () => {
 		await User.create({
 			username: 'Carlos Rodrigo',
 			email: 'rodrigo@gmail.com',
-			password: '123456',
+      password: '123456',
+      firstName: "Carlos",
+      lastName: "Rodrigo"
 		});
 
 		const res = await request(app).get(url).auth(token, { type: 'bearer' });
@@ -106,7 +108,9 @@ describe('GET /api/v1/users/:id - getUser', () => {
 		const user = await User.create({
 			username: 'Rodrigo Carlos',
 			email: 'rodrigo@gmail.com',
-			password: '123456',
+      password: '123456',
+      firstName: "Carlos",
+      lastName: "Rodrigo",
 		});
 
 		const res = await request(app)

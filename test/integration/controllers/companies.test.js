@@ -161,9 +161,11 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 		const token = await global.signIn();
 
 		const user = await User.create({
-			username: 'john doe',
-			email: 'johndoe@gmail.com',
-			password: '123456',
+			username: 'jane doe',
+			email: 'janedoe@gmail.com',
+      password: '123456',
+      firstName: "Jane",
+      lastName: "Doe"
 		});
 
 		const company = await Company.create({
