@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -10,13 +11,7 @@ const UserSchema = new mongoose.Schema({
 		required: [true, 'Username is required'],
 		minlength: [3, 'Username must atleast 3 characters'],
 		maxlength: [120, 'Username must not exceed to 120 characters'],
-		validate: {
-			validator: async function (val) {
-				const username = await this.model('User').findOne({ username: val });
-				return !username;
-			},
-			message: (props) => `${props.value} is already exist`,
-		},
+		unique: true,
 	},
 	firstName: {
 		type: String,
@@ -36,12 +31,6 @@ const UserSchema = new mongoose.Schema({
 		unique: true,
 		validate: {
 			validator: async function (val) {
-				const user = await this.model('User').findOne({ email: val });
-
-				if (user) {
-					throw new Error('Email already exist');
-				}
-
 				if (!validator.isEmail(val)) {
 					throw new Error('Email is invalid');
 				}
@@ -57,7 +46,7 @@ const UserSchema = new mongoose.Schema({
 	},
 });
 
-UserSchema.pre('save', async function (next) {
+UserSchema.pre('save', async function (next, doc) {
 	if (!this.isModified('password')) {
 		next();
 	}
@@ -66,7 +55,7 @@ UserSchema.pre('save', async function (next) {
 	const hash = await bcrypt.hash(this.password, salt);
 
 	this.password = hash;
-	this.fullName = `${this.firstname} ${this.lastName}`;
+	this.fullName = `${this.firstName} ${this.lastName}`;
 });
 
 UserSchema.methods.generateJwtToken = function () {
@@ -84,5 +73,13 @@ UserSchema.methods.generateJwtToken = function () {
 UserSchema.methods.isMatch = async function (enteredPassword) {
 	return await bcrypt.compare(enteredPassword, this.password);
 };
+
+UserSchema.plugin(uniqueValidator, {
+	message: (val) => {
+		const field = val.path;
+		const fieldCapitalized = field.charAt(0).toUpperCase() + field.slice(1);
+		return `${fieldCapitalized} already exist`;
+	},
+});
 
 module.exports = mongoose.model('User', UserSchema);

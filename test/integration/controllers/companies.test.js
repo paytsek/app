@@ -67,11 +67,14 @@ describe('POST /api/v1/companies/name - createCompany', () => {
 		const { status, body } = await request(app)
 			.post(url)
 			.auth(token, { type: 'bearer' })
-			.send({ name: 'PayTsek' });
-
+      .send({ name: 'PayTsek' });
+      
 		expect(status).toBe(400);
 		expect(body.success).toBeFalsy();
-		expect(body.errors).toHaveProperty('name', 'PayTsek is already exist');
+		expect(body.errors).toHaveProperty(
+			'message',
+			'Duplicate field value entered'
+		);
 	});
 });
 

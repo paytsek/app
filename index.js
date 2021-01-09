@@ -16,6 +16,7 @@ const start = async () => {
 			useNewUrlParser: true,
 			useCreateIndex: true,
 			useUnifiedTopology: true,
+			useFindAndModify: false,
 		});
 		console.log('MongoDB connected'.white.inverse.bold);
 	} catch (error) {

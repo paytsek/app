@@ -10,9 +10,9 @@ beforeAll(async () => {
 	const mongoUri = await mongo.getUri();
 
 	await mongoose.connect(mongoUri, {
-		useUnifiedTopology: true,
 		useNewUrlParser: true,
 		useCreateIndex: true,
+		useUnifiedTopology: true,
 		useFindAndModify: false,
 	});
 });

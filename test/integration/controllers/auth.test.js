@@ -10,9 +10,9 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 			const { status, body } = await request(app).post(url).send({
 				username: '',
 				email: '',
-        password: '',
-        firstName: '',
-        lastName: ''
+				password: '',
+				firstName: '',
+				lastName: '',
 			});
 
 			expect(status).toBe(400);
@@ -194,15 +194,15 @@ describe('POST /api/v1/auth/login - loginUser', () => {
 			expect(res.body.success).toBeFalsy();
 			expect(res.body.errors).toHaveProperty('message', 'Invalid credentials');
 		});
-  });
+	});
 
 	it('should return a token if login is successful', async () => {
 		await User.create({
 			username: 'darryl mangibin',
 			email: 'test@example.com',
-      password: '123456',
-      firstName: "Darryl",
-      lastName: "Mangibin"
+			password: '123456',
+			firstName: 'Darryl',
+			lastName: 'Mangibin',
 		});
 
 		const res = await request(app)
