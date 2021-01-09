@@ -43,8 +43,33 @@ const getCurrentUser = asyncHandler(async (req, res, next) => {
 	res.status(200).json({ success: true, user });
 });
 
+// @ROUTE PUT /api/v1/users/current-user
+// @DESC Get current user information
+// @access PRIVATE
+const updateCurrentUser = asyncHandler(async (req, res, next) => {
+	const { firstName, lastName, email, username } = req.body;
+
+	const user = await User.findByIdAndUpdate(
+		req.user._id,
+		{
+			firstName,
+			lastName,
+			email,
+			username,
+		},
+		{
+			new: true,
+			runValidators: true,
+			context: 'query',
+		}
+	);
+
+	res.status(200).json({ success: true, user });
+});
+
 module.exports = {
 	getUsers,
 	getUser,
 	getCurrentUser,
+	updateCurrentUser,
 };

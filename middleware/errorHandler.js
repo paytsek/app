@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
 
 	if (process.env.NODE_ENV === 'development') {
 		console.log(err.stack.red);
-	}
+  }
 
 	if (err.name === 'CastError') {
 		return res
@@ -16,14 +16,15 @@ const errorHandler = (err, req, res, next) => {
 					message: `Resource with an id of ${error.value} not found`,
 				})
 			);
-	}
+  }
+  
 
 	if (err.name === 'ValidationError') {
-		const errorFields = Object.keys(error.errors);
-
+    const errorFields = Object.keys(error.errors);
+  
 		errorFields.forEach((field) => {
-			error.errors[field] = error.errors[field].message;
-		});
+      error.errors[field] = error.errors[field].message;
+    });
 
 		return res.status(400).json({ success: false, ...error });
 	}
