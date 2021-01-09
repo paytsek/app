@@ -2,31 +2,34 @@ const ErrorResponse = require('../utils/errorResponse.js');
 require('colors');
 
 const errorHandler = (err, req, res, next) => {
-	const error = { ...err };
+	let error = { ...err };
 
 	if (process.env.NODE_ENV === 'development') {
 		console.log(err.stack.red);
-  }
+	}
+
+	if (err.code === 11000) {
+		res.status(400);
+		error = new ErrorResponse({ message: 'Duplicate field value entered' });
+	}
 
 	if (err.name === 'CastError') {
-		return res
-			.status(404)
-			.json(
-				new ErrorResponse({
-					message: `Resource with an id of ${error.value} not found`,
-				})
-			);
-  }
-  
+		res.status(404);
+		error = new ErrorResponse({
+			message: `Resource with an id of ${error.value} not found`,
+		});
+	}
 
 	if (err.name === 'ValidationError') {
-    const errorFields = Object.keys(error.errors);
-  
-		errorFields.forEach((field) => {
-      error.errors[field] = error.errors[field].message;
-    });
+		const validationError = { ...err };
+		const errorFields = Object.keys(error.errors);
 
-		return res.status(400).json({ success: false, ...error });
+		errorFields.forEach((field) => {
+			validationError.errors[field] = validationError.errors[field].message;
+		});
+
+		res.status(400);
+		error = new ErrorResponse({ ...validationError.errors });
 	}
 
 	res.status(res.statusCode === 200 ? 500 : res.statusCode);
