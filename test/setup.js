@@ -30,7 +30,7 @@ afterAll(async () => {
 	await mongoose.connection.close();
 });
 
-global.signIn = async () => {
+global.signIn = async (loggedInUser) => {
 	const user = await User.create({
 		username: 'John Doe',
 		email: 'john@example.com',
@@ -47,7 +47,7 @@ global.signIn = async () => {
 		lastName: user.lastName,
 	};
 
-	const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+	const token = jwt.sign(loggedInUser || payload, process.env.JWT_SECRET_KEY, {
 		expiresIn: 3600,
 	});
 

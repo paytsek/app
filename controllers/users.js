@@ -73,7 +73,12 @@ const updateCurrentUser = asyncHandler(async (req, res, next) => {
 const updateCurrentUserPassword = asyncHandler(async (req, res, next) => {
 	const { currentPassword, confirmPassword, newPassword } = req.body;
 
-	const currentUser = await User.findById(req.user._id).select('+password');
+  const currentUser = await User.findById(req.user._id).select('+password');
+  
+  if (!currentPassword || !confirmPassword, !newPassword) {
+    res.status(400);
+    return next(new ErrorResponse({ message: 'Please fill all fields' }))
+  }
 
 	if (newPassword !== confirmPassword) {
 		res.status(400);
