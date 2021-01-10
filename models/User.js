@@ -46,6 +46,13 @@ const UserSchema = new mongoose.Schema({
 	},
 });
 
+UserSchema.set('toJSON', {
+	transform: (doc, user) => {
+		delete user['password'];
+		return user;
+	},
+});
+
 UserSchema.pre('save', async function (next, doc) {
 	if (!this.isModified('password')) {
 		next();

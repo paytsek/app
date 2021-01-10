@@ -71,8 +71,30 @@ const updateCurrentUser = asyncHandler(async (req, res, next) => {
 // @DESC Change Password of current user information
 // @access PRIVATE
 const updateCurrentUserPassword = asyncHandler(async (req, res, next) => {
-  res.send('Change Password')
-})
+	const { currentPassword, confirmPassword, newPassword } = req.body;
+
+	const currentUser = await User.findById(req.user._id).select('+password');
+
+	if (newPassword !== confirmPassword) {
+		res.status(400);
+		return next(
+			new ErrorResponse({ message: 'New password and confirmation password mismatch' })
+		);
+	}
+
+	const isMatch = await currentUser.isMatch(currentPassword);
+
+	if (!isMatch) {
+		res.status(400);
+		return next(new ErrorResponse({ password: 'Invalid password' }));
+	}
+
+	currentUser.password = newPassword;
+
+  const user = await currentUser.save();
+
+	res.status(200).json({ success: true, user });
+});
 
 module.exports = {
 	getUsers,
