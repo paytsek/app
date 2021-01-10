@@ -67,9 +67,17 @@ const updateCurrentUser = asyncHandler(async (req, res, next) => {
 	res.status(200).json({ success: true, user });
 });
 
+// @ROUTE PUT /api/v1/users/current-user/password
+// @DESC Change Password of current user information
+// @access PRIVATE
+const updateCurrentUserPassword = asyncHandler(async (req, res, next) => {
+  res.send('Change Password')
+})
+
 module.exports = {
 	getUsers,
 	getUser,
 	getCurrentUser,
 	updateCurrentUser,
+	updateCurrentUserPassword,
 };
