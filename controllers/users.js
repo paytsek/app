@@ -139,7 +139,7 @@ const deleteCurrentUser = asyncHandler(async (req, res, next) => {
 
 	if (!isMatch) {
 		res.status(401);
-		return next(new ErrorResponse({ message: 'Invalid Password' }));
+		return next(new ErrorResponse({ message: 'Invalid password' }));
 	}
 
 	const companySettings = user.companies.map(
