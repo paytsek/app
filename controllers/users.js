@@ -6,7 +6,7 @@ const CompanySetting = require('../models/CompanySetting');
 
 // @ROUTE GET /api/v1/users/
 // @Desc GEt all users
-// @access PRIVATE
+// @access PRIVATE - Logged in user
 const getUsers = asyncHandler(async (req, res, next) => {
 	const users = await User.find({}).populate('company');
 
@@ -15,7 +15,7 @@ const getUsers = asyncHandler(async (req, res, next) => {
 
 // @ROUTE GET /api/v1/users/:id
 // @DESC Get a user by id
-// @access PRIVATE
+// @access PRIVATE - Logged in user
 const getUser = asyncHandler(async (req, res, next) => {
 	const user = await User.findById(req.params.id);
 
@@ -33,7 +33,7 @@ const getUser = asyncHandler(async (req, res, next) => {
 
 // @ROUTE GET /api/v1/users/current-user
 // @DESC Get current user information
-// @access PRIVATE
+// @access PRIVATE - Logged in user
 const getCurrentUser = asyncHandler(async (req, res, next) => {
 	const user = req.user;
 
@@ -47,7 +47,7 @@ const getCurrentUser = asyncHandler(async (req, res, next) => {
 
 // @ROUTE PUT /api/v1/users/current-user
 // @DESC Get current user information
-// @access PRIVATE
+// @access PRIVATE - Logged in user
 const updateCurrentUser = asyncHandler(async (req, res, next) => {
 	const { firstName, lastName, email, username } = req.body;
 
@@ -71,7 +71,7 @@ const updateCurrentUser = asyncHandler(async (req, res, next) => {
 
 // @ROUTE PUT /api/v1/users/current-user/password
 // @DESC Change Password of current user information
-// @access PRIVATE
+// @access PRIVATE - Logged in user
 const updateCurrentUserPassword = asyncHandler(async (req, res, next) => {
 	const { currentPassword, confirmPassword, newPassword } = req.body;
 
@@ -107,7 +107,7 @@ const updateCurrentUserPassword = asyncHandler(async (req, res, next) => {
 
 // @ROUTE DELETE /api/v1/users/current-user/
 // @DESC Delete current user
-// @access PRIVATE
+// @access PRIVATE - Logged in user
 const deleteCurrentUser = asyncHandler(async (req, res, next) => {
 	const { password, confirmPassword } = req.body;
 

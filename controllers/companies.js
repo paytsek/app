@@ -6,7 +6,7 @@ const ErrorResponse = require('../utils/errorResponse');
 
 // @ROUTE POST /api/v1/companies/name
 // @Desc Create a company name
-// access PRIVATE - Admin Users
+// access PRIVATE - Logged in user
 const createCompany = asyncHandler(async (req, res, next) => {
 	const { name } = req.body;
 
@@ -22,7 +22,7 @@ const createCompany = asyncHandler(async (req, res, next) => {
 
 // @ROUTE GET /api/v1/companies/
 // @Desc Get all companies
-// access PRIVATE - Admin Users
+// access PRIVATE - Logged in user
 const getCompanies = asyncHandler(async (req, res, next) => {
 	const companies = await Company.find({});
 
@@ -31,7 +31,7 @@ const getCompanies = asyncHandler(async (req, res, next) => {
 
 // @ROUTE GET /api/v1/companies/:id
 // @Desc Get all companies
-// access PRIVATE - Admin Users
+// access PRIVATE - Logged in user
 const getCompany = asyncHandler(async (req, res, next) => {
 	const { id } = req.params;
 
@@ -49,7 +49,7 @@ const getCompany = asyncHandler(async (req, res, next) => {
 
 // @ROUTE POST /api/v1/companies/:id/settings
 // @Desc Create a company settings
-// access PRIVATE - Admin Users
+// access PRIVATE - Logged in user
 const createCompanySettings = asyncHandler(async (req, res, next) => {
   const company = await Company.findById(req.params.id);
 
@@ -70,6 +70,10 @@ const createCompanySettings = asyncHandler(async (req, res, next) => {
 
 	res.status(201).json({ success: true, companySettings });
 });
+
+// @ROUTE PUT /api/v1/companies/name/:id
+// @DESC Update company name
+// @ACCESS PRIVATE - Logged in user
 
 module.exports = {
 	createCompany,
