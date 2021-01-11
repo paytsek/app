@@ -9,10 +9,14 @@ const {
 	getCompany,
 	createCompanySettings,
 	updateCompanyName,
+	deleteCompany,
 } = require('../controllers/companies');
 
 router.route('/name').post(auth, createCompany);
-router.route('/name/:id').put(auth, updateCompanyName);
+router
+	.route('/name/:id')
+	.put(auth, updateCompanyName)
+	.delete(auth, deleteCompany);
 router.route('/').get(getCompanies);
 router.route('/:id').get(getCompany);
 router.route('/:id/settings').post(auth, createCompanySettings);
