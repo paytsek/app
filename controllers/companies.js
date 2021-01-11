@@ -51,7 +51,7 @@ const getCompany = asyncHandler(async (req, res, next) => {
 // @Desc Create a company settings
 // access PRIVATE - Logged in user
 const createCompanySettings = asyncHandler(async (req, res, next) => {
-  const company = await Company.findById(req.params.id);
+	const company = await Company.findById(req.params.id);
 
 	if (!company) {
 		res.status(404);
@@ -74,10 +74,39 @@ const createCompanySettings = asyncHandler(async (req, res, next) => {
 // @ROUTE PUT /api/v1/companies/name/:id
 // @DESC Update company name
 // @ACCESS PRIVATE - Logged in user
+const updateCompanyName = asyncHandler(async (req, res, next) => {
+	const { id } = req.params;
+	const { name } = req.body;
+
+	let company = await Company.findOne({ _id: id });
+
+	if (!company) {
+		res.status(404);
+		return next(
+			new ErrorResponse({
+				message: `Resource with an id of ${id} not found`,
+			})
+		);
+	}
+
+	if (req.user._id.toString() !== company.user.toString()) {
+		res.status(401);
+		return next(
+			new ErrorResponse({ message: 'Not authorize to access this route' })
+		);
+	}
+
+	company.name = name;
+
+	await company.save();
+
+	res.status(200).json({ success: true, company });
+});
 
 module.exports = {
 	createCompany,
 	getCompanies,
 	getCompany,
 	createCompanySettings,
+	updateCompanyName,
 };
