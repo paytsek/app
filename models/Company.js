@@ -34,6 +34,12 @@ CompanySchema.pre('save', async function (next) {
 	next();
 });
 
+CompanySchema.pre('remove', async function (next) {
+	await this.model('CompanySetting').deleteOne({ company: this._id });
+
+	next();
+});
+
 // Reverse populate to company settings
 CompanySchema.virtual('companySettings', {
 	ref: 'CompanySetting',

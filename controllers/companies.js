@@ -103,10 +103,42 @@ const updateCompanyName = asyncHandler(async (req, res, next) => {
 	res.status(200).json({ success: true, company });
 });
 
+// @ROUTE DELETE /api/v1/companies/name/:id
+// @DESC Delete Company
+// @ACCESS PRIVATE - Logged in user
+const deleteCompany = asyncHandler(async (req, res, next) => {
+	const { id } = req.params;
+
+	const company = await Company.findById(id);
+
+	if (!company) {
+		res.status(404);
+		return next(
+			new ErrorResponse({ message: `Resource with an id of ${id} not found` })
+		);
+	}
+
+	if (company.user.toString() !== req.user._id.toString()) {
+		res.status(401);
+		return next(
+			new ErrorResponse({ message: 'Not authorized to access this route' })
+		);
+	}
+
+	await company.remove();
+
+	res.status(200).json({
+		success: true,
+		company: {},
+		message: `${company.name} - ID:${company._id} successfully deleted`,
+	});
+});
+
 module.exports = {
 	createCompany,
 	getCompanies,
 	getCompany,
 	createCompanySettings,
 	updateCompanyName,
+	deleteCompany,
 };
