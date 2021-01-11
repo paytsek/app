@@ -10,6 +10,7 @@ const {
 	createCompanySettings,
 	updateCompanyName,
 	deleteCompany,
+	updateCompanySettings,
 } = require('../controllers/companies');
 
 router.route('/name').post(auth, createCompany);
@@ -20,5 +21,8 @@ router
 router.route('/').get(getCompanies);
 router.route('/:id').get(getCompany);
 router.route('/:id/settings').post(auth, createCompanySettings);
+router
+	.route('/:id/settings/:companySettingsId')
+	.put(auth, updateCompanySettings);
 
 module.exports = router;

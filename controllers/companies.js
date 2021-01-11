@@ -71,6 +71,58 @@ const createCompanySettings = asyncHandler(async (req, res, next) => {
 	res.status(201).json({ success: true, companySettings });
 });
 
+// @ROUTE PUT /api/v1/companies/:id/settings/:companySettingsId
+// @DESC Update a company settings
+// @ACCESS PRIVATE - Logged in user
+const updateCompanySettings = asyncHandler(async (req, res, next) => {
+	const { companySettingsId, id } = req.params;
+
+	const company = await Company.findById(id).populate({
+		path: 'companySettings',
+	});
+
+	if (!company) {
+		res.status(401);
+		return next(new ErrorResponse({ message: 'Invalid Company id' }));
+	}
+
+	let { companySettings } = company;
+
+	if (req.user._id.toString() !== company.user.toString()) {
+		res.status(401);
+		return next(
+			new ErrorResponse({ message: 'Not authorized to access this route' })
+		);
+	}
+
+	if (!companySettings) {
+		res.status(404);
+		return next(
+			new ErrorResponse({
+				message: `Resource with and id of ${companySettingsId} not found`,
+			})
+		);
+	}
+
+	if (id.toString() !== companySettings.company.toString()) {
+		res.status(401);
+		return next(
+			new ErrorResponse({ message: 'Not authorized to access this route' })
+		);
+	}
+
+	companySettings = await CompanySetting.findById(companySettingsId);
+
+	const fields = Object.keys(req.body);
+	fields.forEach((field) => (companySettings[field] = req.body[field]));
+
+	const updatedCompanySettings = await companySettings.save();
+
+	res
+		.status(200)
+		.json({ success: true, companySettings: updatedCompanySettings });
+});
+
 // @ROUTE PUT /api/v1/companies/name/:id
 // @DESC Update company name
 // @ACCESS PRIVATE - Logged in user
@@ -141,4 +193,5 @@ module.exports = {
 	createCompanySettings,
 	updateCompanyName,
 	deleteCompany,
+	updateCompanySettings,
 };
