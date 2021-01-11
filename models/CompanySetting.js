@@ -131,7 +131,8 @@ const CompanySettingSchema = new mongoose.Schema(
 		overtime: {
 			type: String,
 			default: 'disabled',
-			enum: ['disabled', 'hourly', 'fixed'],
+      enum: ['disabled', 'hourly', 'fixed'],
+      required: [true, 'Overtime is required']
 		},
 		overtimePay: {
 			type: Number,

@@ -99,7 +99,7 @@ const updateCompanySettings = asyncHandler(async (req, res, next) => {
 		res.status(404);
 		return next(
 			new ErrorResponse({
-				message: `Resource with and id of ${companySettingsId} not found`,
+				message: `Resource with an id of ${companySettingsId} not found`,
 			})
 		);
 	}
