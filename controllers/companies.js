@@ -123,6 +123,13 @@ const updateCompanySettings = asyncHandler(async (req, res, next) => {
 		.json({ success: true, companySettings: updatedCompanySettings });
 });
 
+// @ROUTE DELETE /api/v1/companies/:id/settings/:companySettingsId
+// @DESC Delete a company settings
+// @ACCESS PRIVATE - Logged in user
+const deleteCompanySettings = asyncHandler(async (req, res, next) => {
+	res.send('delete company settings');
+});
+
 // @ROUTE PUT /api/v1/companies/name/:id
 // @DESC Update company name
 // @ACCESS PRIVATE - Logged in user
@@ -194,4 +201,5 @@ module.exports = {
 	updateCompanyName,
 	deleteCompany,
 	updateCompanySettings,
+	deleteCompanySettings,
 };
