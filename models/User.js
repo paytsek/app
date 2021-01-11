@@ -4,46 +4,59 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const UserSchema = new mongoose.Schema({
-	username: {
-		type: String,
-		trim: true,
-		required: [true, 'Username is required'],
-		minlength: [3, 'Username must atleast 3 characters'],
-		maxlength: [120, 'Username must not exceed to 120 characters'],
-		unique: true,
-	},
-	firstName: {
-		type: String,
-		required: [true, 'First name is required'],
-		trim: true,
-	},
-	lastName: {
-		type: String,
-		required: [true, 'Last name is required'],
-		trim: true,
-	},
-	fullName: String,
-	email: {
-		type: String,
-		trim: true,
-		required: [true, 'Email is required'],
-		unique: true,
-		validate: {
-			validator: async function (val) {
-				if (!validator.isEmail(val)) {
-					throw new Error('Email is invalid');
-				}
+const UserSchema = new mongoose.Schema(
+	{
+		username: {
+			type: String,
+			trim: true,
+			required: [true, 'Username is required'],
+			minlength: [3, 'Username must atleast 3 characters'],
+			maxlength: [120, 'Username must not exceed to 120 characters'],
+			unique: true,
+		},
+		firstName: {
+			type: String,
+			required: [true, 'First name is required'],
+			trim: true,
+		},
+		lastName: {
+			type: String,
+			required: [true, 'Last name is required'],
+			trim: true,
+		},
+		fullName: String,
+		email: {
+			type: String,
+			trim: true,
+			required: [true, 'Email is required'],
+			unique: true,
+			validate: {
+				validator: async function (val) {
+					if (!validator.isEmail(val)) {
+						throw new Error('Email is invalid');
+					}
+				},
 			},
 		},
+		password: {
+			type: String,
+			trim: true,
+			required: [true, 'Password is required'],
+			minlength: [6, 'Password must atleast 6 characters'],
+			select: false,
+		},
 	},
-	password: {
-		type: String,
-		trim: true,
-		required: [true, 'Password is required'],
-		minlength: [6, 'Password must atleast 6 characters'],
-		select: false,
-	},
+	{
+		timestamps: true,
+		toJSON: { virtuals: true },
+		toObject: { virtuals: true },
+	}
+);
+
+UserSchema.virtual('companies', {
+	ref: 'Company',
+	localField: '_id',
+	foreignField: 'user',
 });
 
 UserSchema.set('toJSON', {
@@ -63,6 +76,11 @@ UserSchema.pre('save', async function (next, doc) {
 
 	this.password = hash;
 	this.fullName = `${this.firstName} ${this.lastName}`;
+});
+
+UserSchema.pre('remove', async function (next) {
+	await this.model('Company').deleteMany({ user: this._id }).exec();
+	next();
 });
 
 UserSchema.methods.generateJwtToken = function () {

@@ -12,11 +12,11 @@ const CompanySchema = new mongoose.Schema(
 		name: {
 			type: String,
 			trim: true,
-      required: [true, 'Company name is required'],
+			required: [true, 'Company name is required'],
 		},
 		slug: {
 			type: String,
-			unique: true
+			unique: true,
 		},
 	},
 	{
