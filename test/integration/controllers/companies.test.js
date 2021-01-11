@@ -20,7 +20,7 @@ describe('POST /api/v1/companies/name - createCompany', () => {
 		});
 	});
 
-	it('should return 201 status code and success response if name is invalid', async () => {
+	it('should return 201 status code and success response if name is valid', async () => {
 		const token = await global.signIn();
 
 		const res = await request(app)
@@ -380,6 +380,130 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 		});
 	});
 
+	it('should return error response if enum fields is invalid', async () => {
+		const token = await global.signIn();
+
+		let res = await request(app)
+			.post('/api/v1/companies/name')
+			.auth(token, { type: 'bearer' })
+			.send({ name: 'PayTsek' });
+
+		const { company } = res.body;
+
+		res = await request(app)
+			.post(`${url}/${company._id}/settings`)
+			.auth(token, { type: 'bearer' })
+			.send({
+				secondPayout: 30,
+				firstPayout: 1,
+				secondCutOff: 20,
+				firstCutOff: 5,
+				category: 'sample',
+				frequency: 'sample',
+				reportingBase: 'sample',
+				nightDifferential: 'sample',
+				overtime: 'sample',
+				accountingJournal: {
+					deminimisBenefits: 'sample',
+					employeeBenefits: 'sample',
+					hdmfPayable: 'sample',
+					netPay: 'sample',
+					nonTaxableCompensation: 'sample',
+					phicPayable: 'sample',
+					postTaxDeduction: 'sample',
+					preTaxDeduction: 'sample',
+					reimbursement: 'sample',
+					sssPayable: 'sample',
+					taxDue: 'sample',
+					taxableCompensation: 'sample',
+					thirtheenthMonthPay: 'sample',
+				},
+			});
+
+		expect(res.status).toBe(400);
+		expect(res.body.success).toBeFalsy();
+		expect(res.body.errors).toEqual(
+			expect.objectContaining({
+				category: '`sample` is not a valid enum value for path `category`.',
+				frequency: '`sample` is not a valid enum value for path `frequency`.',
+				reportingBase:
+					'`sample` is not a valid enum value for path `reportingBase`.',
+				nightDifferential:
+					'`sample` is not a valid enum value for path `nightDifferential`.',
+				overtime: '`sample` is not a valid enum value for path `overtime`.',
+				'accountingJournal.deminimisBenefits':
+					'`sample` is not a valid enum value for path `accountingJournal.deminimisBenefits`.',
+				'accountingJournal.employeeBenefits':
+					'`sample` is not a valid enum value for path `accountingJournal.employeeBenefits`.',
+				'accountingJournal.hdmfPayable':
+					'`sample` is not a valid enum value for path `accountingJournal.hdmfPayable`.',
+				'accountingJournal.netPay':
+					'`sample` is not a valid enum value for path `accountingJournal.netPay`.',
+				'accountingJournal.nonTaxableCompensation':
+					'`sample` is not a valid enum value for path `accountingJournal.nonTaxableCompensation`.',
+				'accountingJournal.phicPayable':
+					'`sample` is not a valid enum value for path `accountingJournal.phicPayable`.',
+				'accountingJournal.postTaxDeduction':
+					'`sample` is not a valid enum value for path `accountingJournal.postTaxDeduction`.',
+				'accountingJournal.preTaxDeduction':
+					'`sample` is not a valid enum value for path `accountingJournal.preTaxDeduction`.',
+				'accountingJournal.reimbursement':
+					'`sample` is not a valid enum value for path `accountingJournal.reimbursement`.',
+				'accountingJournal.sssPayable':
+					'`sample` is not a valid enum value for path `accountingJournal.sssPayable`.',
+				'accountingJournal.taxDue':
+					'`sample` is not a valid enum value for path `accountingJournal.taxDue`.',
+				'accountingJournal.taxableCompensation':
+					'`sample` is not a valid enum value for path `accountingJournal.taxableCompensation`.',
+				'accountingJournal.thirtheenthMonthPay':
+					'`sample` is not a valid enum value for path `accountingJournal.thirtheenthMonthPay`.',
+			})
+		);
+	});
+
+	it('should return error response if condition field is invalid', async () => {
+		const token = await global.signIn();
+
+		let res = await request(app)
+			.post('/api/v1/companies/name')
+			.auth(token, { type: 'bearer' })
+			.send({ name: 'PayTsek' });
+
+		const { company } = res.body;
+
+		res = await request(app)
+			.post(`${url}/${company._id}/settings`)
+			.auth(token, { type: 'bearer' })
+			.send({
+				frequency: 'semiMonthly',
+				nightDifferential: 'percentage',
+				nightDifferentialPercentage: '',
+				overtime: 'hourly',
+				overtimePay: '',
+				overtimeRestDayPay: '',
+				holiday: true,
+				regularHolidayPay: '',
+				specialHolidayPay: '',
+			});
+
+		expect(res.status).toBe(400);
+		expect(res.body.success).toBeFalsy();
+		expect(res.body.errors).toEqual(
+			expect.objectContaining({
+				secondPayout: 'Second Payout is required',
+				firstPayout: 'First Payout is required',
+				secondCutOff: 'Second Cut Off is required',
+				firstCutOff: 'First Cut Off is required',
+				nightDifferentialPercentage:
+					'Night Differential Percentage is required',
+				overtimePay: 'Overtime Pay is required',
+				overtimeRestDayPay: 'Overtime Rest Day Pay is required',
+				regularHolidayPay: 'Regular Holiday Pay is required',
+				specialHolidayPay: 'Special Holiday Pay is required',
+			})
+		);
+	});
+
 	it('should return 201 status code and success response if fields are valid', async () => {
 		const token = await global.signIn();
 
@@ -405,5 +529,291 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 		expect(Object.keys(res.body.companySettings)).toEqual(
 			expect.arrayContaining(['_id'])
 		);
+	});
+});
+
+describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanySettings', () => {
+	const url = '/api/v1/companies';
+
+	describe('Error Response', () => {
+		it('should return error response if not logged in', async () => {
+			const res = await request(app).put(
+				`${url}/${mongoose.Types.ObjectId()}/settings/${mongoose.Types.ObjectId()}`
+			);
+
+			expect(res.status).toBe(401);
+			expect(res.body.success).toBeFalsy();
+			expect(res.body.errors).toMatchObject({
+				message: 'No token, access denied',
+			});
+		});
+
+		it('should return error if company not own by the logged in user', async () => {
+			const user = await User.create({
+				username: 'rodrigocarlos',
+				email: 'rodrigo@gmail.com',
+				password: '123456',
+				firstName: 'Rodrigo',
+				lastName: 'Carlos',
+			});
+			const company = await Company.create({ name: 'PayTsek', user: user._id });
+			const token = await global.signIn();
+
+			const res = await request(app)
+				.put(`${url}/${company._id}/settings/${mongoose.Types.ObjectId()}`)
+				.auth(token, { type: 'bearer' });
+
+			expect(res.status).toBe(401);
+			expect(res.body.success).toBeFalsy();
+			expect(res.body.errors).toMatchObject({
+				message: 'Not authorized to access this route',
+			});
+		});
+
+		it('should return error if company id params is invalid', async () => {
+			const token = await global.signIn();
+			const id = mongoose.Types.ObjectId();
+
+			const res = await request(app)
+				.put(`${url}/${id}/settings/${mongoose.Types.ObjectId()}`)
+				.auth(token, { type: 'bearer' });
+
+			expect(res.status).toBe(401);
+			expect(res.body.success).toBeFalsy();
+			expect(res.body.errors).toMatchObject({
+				message: 'Invalid Company id',
+			});
+		});
+
+		it('should return error if company does not have settings created', async () => {
+			const token = await global.signIn();
+			const loggedInUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
+			const companySettingsId = mongoose.Types.ObjectId();
+			const company = await Company.create({
+				name: 'PayTsek',
+				user: loggedInUser._id,
+			});
+
+			const res = await request(app)
+				.put(`${url}/${company._id}/settings/${companySettingsId}`)
+				.auth(token, { type: 'bearer' });
+
+			expect(res.status).toBe(404);
+			expect(res.body.success).toBeFalsy();
+			expect(res.body.errors).toMatchObject({
+				message: `Resource with an id of ${companySettingsId} not found`,
+			});
+		});
+
+		it('should return error response when invalid values are entered', async () => {
+			const token = await global.signIn();
+			const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+			const company = await Company.create({ name: 'PayTsek', user: user._id });
+			const companySettings = await CompanySetting.create({
+				company: company._id,
+				firstCutOff: 1,
+				firstPayout: 5,
+				secondCutOff: 15,
+				secondPayout: 20,
+			});
+
+			let res = await request(app)
+				.put(`${url}/${company._id}/settings/${companySettings._id}`)
+				.auth(token, { type: 'bearer' })
+				.send({
+					category: '',
+					frequency: '',
+					reportingBase: '',
+					nightDifferential: '',
+					overtime: '',
+				});
+
+			expect(res.status).toBe(400);
+			expect(res.body.success).toBeFalsy();
+			expect(res.body.errors).toEqual(
+				expect.objectContaining({
+					category: 'Category is Required',
+					frequency: 'Payroll frequency is required',
+					reportingBase: 'Reporting base is required',
+					nightDifferential: 'Nigth differential is required',
+					overtime: 'Overtime is required',
+				})
+			);
+		});
+
+		it('should return error response when condition fields is invalid', async () => {
+			const token = await global.signIn();
+			const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+			const company = await Company.create({ name: 'PayTsek', user: user._id });
+			const companySettings = await CompanySetting.create({
+				company: company._id,
+				firstCutOff: 1,
+				firstPayout: 5,
+				secondCutOff: 15,
+				secondPayout: 20,
+			});
+
+			const res = await request(app)
+				.put(`${url}/${company._id}/settings/${companySettings._id}`)
+				.auth(token, { type: 'bearer' })
+				.send({
+					frequency: 'semiMonthly',
+					nightDifferential: 'percentage',
+					nightDifferentialPercentage: '',
+					overtime: 'hourly',
+					overtimePay: '',
+					overtimeRestDayPay: '',
+					holiday: true,
+					regularHolidayPay: '',
+					specialHolidayPay: '',
+					secondPayout: '',
+					firstPayout: '',
+					secondCutOff: '',
+					firstCutOff: '',
+				});
+
+			expect(res.status).toBe(400);
+			expect(res.body.success).toBeFalsy();
+			expect(res.body.errors).toEqual(
+				expect.objectContaining({
+					nightDifferentialPercentage:
+						'Night Differential Percentage is required',
+					overtimePay: 'Overtime Pay is required',
+					overtimeRestDayPay: 'Overtime Rest Day Pay is required',
+					regularHolidayPay: 'Regular Holiday Pay is required',
+					specialHolidayPay: 'Special Holiday Pay is required',
+					secondPayout: 'Second Payout is required',
+					firstPayout: 'First Payout is required',
+					secondCutOff: 'Second Cut Off is required',
+					firstCutOff: 'First Cut Off is required',
+				})
+			);
+		});
+	});
+
+	describe('Success Response', () => {
+		it('should return success reponse if entered values are valid', async () => {
+			const token = await global.signIn();
+			const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+			const company = await Company.create({ name: 'PayTsek', user: user._id });
+			const companySettings = await CompanySetting.create({
+				company: company._id,
+				firstCutOff: 1,
+				firstPayout: 5,
+				secondCutOff: 15,
+				secondPayout: 20,
+			});
+
+			const res = await request(app)
+				.put(`${url}/${company._id}/settings/${companySettings._id}`)
+				.auth(token, { type: 'bearer' })
+				.send({
+					accountingJournal: {
+						deminimisBenefits: 'wagesPayable',
+						employeeBenefits: 'wagesPayable',
+						hdmfPayable: 'wagesPayable',
+						netPay: 'wagesPayable',
+						nonTaxableCompensation: 'wagesPayable',
+						phicPayable: 'wagesPayable',
+						postTaxDeduction: 'wagesPayable',
+						preTaxDeduction: 'wagesPayable',
+						reimbursement: 'wagesPayable',
+						sssPayable: 'wagesPayable',
+						taxDue: 'wagesPayable',
+						taxableCompensation: 'wagesPayable',
+						thirtheenthMonthPay: 'wagesPayable',
+					},
+					category: 'private',
+					frequency: 'semiMonthly',
+					reportingBase: 'payrollCutOffs',
+					workingDays: 22,
+					nightDifferential: 'disabled',
+					nightDifferentialPercentage: 0.1,
+					overtime: 'disabled',
+					overtimePay: 1.25,
+					overtimeRestDayPay: 1.3,
+					holiday: false,
+					regularHolidayPay: 1,
+					specialHolidayPay: 0.3,
+					taxReliefInternationTaxTreaty: false,
+					deminimis: false,
+					emailNotification: false,
+					hideEmployeeList: false,
+					companyTaxablePays: ['Allowance'],
+					companyNonTaxablePays: ['Food'],
+					sssCalculation: { deminimis: false },
+					phicCalculation: { deminimis: false },
+					thirtheenthMonthPayCalculation: { deminimis: false, absences: false },
+					departments: [],
+					firstCutOff: 1,
+					firstPayout: 5,
+					secondCutOff: 15,
+					secondPayout: 20,
+					registeredAddress: {
+						street: ' 24f Marcoville',
+						city: 'Baguio city',
+						country: 'Philippines',
+						zipCode: '2600',
+					},
+					formattedAddress: '24f Marcoville, Baguio city, Philippines',
+					zipCode: '2600',
+				});
+
+			expect(res.status).toBe(200);
+			expect(res.body.success).toBeTruthy();
+			expect(res.body.companySettings).toEqual(
+				expect.objectContaining({
+					registeredAddress: {
+						street: '24f Marcoville',
+						city: 'Baguio city',
+						country: 'Philippines',
+						zipCode: '2600',
+					},
+					accountingJournal: {
+						deminimisBenefits: 'wagesPayable',
+						employeeBenefits: 'wagesPayable',
+						hdmfPayable: 'wagesPayable',
+						netPay: 'wagesPayable',
+						nonTaxableCompensation: 'wagesPayable',
+						phicPayable: 'wagesPayable',
+						postTaxDeduction: 'wagesPayable',
+						preTaxDeduction: 'wagesPayable',
+						reimbursement: 'wagesPayable',
+						sssPayable: 'wagesPayable',
+						taxDue: 'wagesPayable',
+						taxableCompensation: 'wagesPayable',
+						thirtheenthMonthPay: 'wagesPayable',
+					},
+					category: 'private',
+					frequency: 'semiMonthly',
+					reportingBase: 'payrollCutOffs',
+					workingDays: 22,
+					nightDifferential: 'disabled',
+					nightDifferentialPercentage: 0.1,
+					overtime: 'disabled',
+					overtimePay: 1.25,
+					overtimeRestDayPay: 1.3,
+					holiday: false,
+					regularHolidayPay: 1,
+					specialHolidayPay: 0.3,
+					taxReliefInternationTaxTreaty: false,
+					deminimis: false,
+					emailNotification: false,
+					hideEmployeeList: false,
+					companyTaxablePays: ['Allowance'],
+					companyNonTaxablePays: ['Food'],
+					sssCalculation: { deminimis: false },
+					phicCalculation: { deminimis: false },
+					thirtheenthMonthPayCalculation: { deminimis: false, absences: false },
+					departments: [],
+					firstCutOff: 1,
+					firstPayout: 5,
+					secondCutOff: 15,
+					secondPayout: 20,
+					formattedAddress: '24f Marcoville, Baguio city, Philippines',
+					zipCode: '2600',
+				})
+			);
+		});
 	});
 });

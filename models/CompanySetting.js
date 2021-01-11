@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const ACCOUNTING_JOURNAL = [
 	'wagesAndSalaries',
@@ -18,16 +19,7 @@ const CompanySettingSchema = new mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Company',
 			required: [true, 'Must have a company'],
-			validate: {
-				validator: async function (id) {
-					const company = await this.model('CompanySetting').findOne({
-						company: id,
-					});
-					return !company;
-				},
-				message: (props) =>
-					`Company setting with an id of ${props.value} is already exist`,
-			},
+			unique: true,
 		},
 		tin: {
 			type: String,
@@ -40,7 +32,7 @@ const CompanySettingSchema = new mongoose.Schema(
 		registeredAddress: {
 			street: {
 				type: String,
-				trim: true,
+        trim: true,
 			},
 			city: {
 				type: String,
@@ -116,10 +108,6 @@ const CompanySettingSchema = new mongoose.Schema(
 				'Second Payout is required',
 			],
 		},
-		cutOffs: {
-			type: Object,
-			default: {},
-		},
 		workingDays: {
 			type: Number,
 			default: 22,
@@ -143,7 +131,8 @@ const CompanySettingSchema = new mongoose.Schema(
 		overtime: {
 			type: String,
 			default: 'disabled',
-			enum: ['disabled', 'hourly', 'fixed'],
+      enum: ['disabled', 'hourly', 'fixed'],
+      required: [true, 'Overtime is required']
 		},
 		overtimePay: {
 			type: Number,
@@ -336,6 +325,14 @@ const CompanySettingSchema = new mongoose.Schema(
 		timestamps: true,
 	}
 );
+
+CompanySettingSchema.plugin(uniqueValidator, {
+	message: (val) => {
+		const field = val.path;
+		const fieldCapitalized = field.charAt(0).toUpperCase() + field.slice(1);
+		return `${fieldCapitalized} already exist`;
+	},
+});
 
 CompanySettingSchema.pre('save', function (next) {
 	const street =
