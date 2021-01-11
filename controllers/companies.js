@@ -127,7 +127,49 @@ const updateCompanySettings = asyncHandler(async (req, res, next) => {
 // @DESC Delete a company settings
 // @ACCESS PRIVATE - Logged in user
 const deleteCompanySettings = asyncHandler(async (req, res, next) => {
-	res.send('delete company settings');
+	const { companySettingsId, id } = req.params;
+
+	const company = await Company.findById(id).populate({
+		path: 'companySettings',
+	});
+
+	if (!company) {
+		res.status(401);
+		return next(new ErrorResponse({ message: 'Invalid Company id' }));
+	}
+
+	let { companySettings } = company;
+
+	if (req.user._id.toString() !== company.user.toString()) {
+		res.status(401);
+		return next(
+			new ErrorResponse({ message: 'Not authorized to access this route' })
+		);
+	}
+
+	if (!companySettings) {
+		res.status(404);
+		return next(
+			new ErrorResponse({
+				message: `Resource with an id of ${companySettingsId} not found`,
+			})
+		);
+	}
+
+	if (id.toString() !== companySettings.company.toString()) {
+		res.status(401);
+		return next(
+			new ErrorResponse({ message: 'Not authorized to access this route' })
+		);
+	}
+
+	await CompanySetting.findByIdAndDelete(companySettings._id);
+
+	res.status(200).json({
+		success: true,
+		companySettings: {},
+		message: `Company Settings - ID:${companySettings._id} successfully deleted`,
+	});
 });
 
 // @ROUTE PUT /api/v1/companies/name/:id
