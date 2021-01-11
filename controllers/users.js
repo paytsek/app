@@ -1,6 +1,8 @@
 const asyncHandler = require('../middleware/asyncHandler');
 const User = require('../models/User');
+const Company = require('../models/Company');
 const ErrorResponse = require('../utils/errorResponse');
+const CompanySetting = require('../models/CompanySetting');
 
 // @ROUTE GET /api/v1/users/
 // @Desc GEt all users
@@ -73,17 +75,19 @@ const updateCurrentUser = asyncHandler(async (req, res, next) => {
 const updateCurrentUserPassword = asyncHandler(async (req, res, next) => {
 	const { currentPassword, confirmPassword, newPassword } = req.body;
 
-  const currentUser = await User.findById(req.user._id).select('+password');
-  
-  if (!currentPassword || !confirmPassword, !newPassword) {
-    res.status(400);
-    return next(new ErrorResponse({ message: 'Please fill all fields' }))
-  }
+	const currentUser = await User.findById(req.user._id).select('+password');
+
+	if ((!currentPassword || !confirmPassword, !newPassword)) {
+		res.status(400);
+		return next(new ErrorResponse({ message: 'Please fill all fields' }));
+	}
 
 	if (newPassword !== confirmPassword) {
 		res.status(400);
 		return next(
-			new ErrorResponse({ message: 'New password and confirmation password mismatch' })
+			new ErrorResponse({
+				message: 'New password and confirmation password mismatch',
+			})
 		);
 	}
 
@@ -96,9 +100,59 @@ const updateCurrentUserPassword = asyncHandler(async (req, res, next) => {
 
 	currentUser.password = newPassword;
 
-  const user = await currentUser.save();
+	const user = await currentUser.save();
 
 	res.status(200).json({ success: true, user });
+});
+
+// @ROUTE DELETE /api/v1/users/current-user/
+// @DESC Delete current user
+// @access PRIVATE
+const deleteCurrentUser = asyncHandler(async (req, res, next) => {
+	const { password, confirmPassword } = req.body;
+
+	const user = await User.findOne({ _id: req.user._id })
+		.populate({
+			path: 'companies',
+			populate: {
+				path: 'companySettings',
+				model: 'CompanySetting',
+			},
+		})
+		.select('+password');
+
+	if (!password) {
+		res.status(400);
+		return next(new ErrorResponse({ message: 'Please enter your password' }));
+	}
+
+	if (password !== confirmPassword) {
+		res.status(400);
+		return next(
+			new ErrorResponse({
+				message: 'Entered Password and password confirmation mismatch',
+			})
+		);
+	}
+
+	const isMatch = await user.isMatch(password);
+
+	if (!isMatch) {
+		res.status(401);
+		return next(new ErrorResponse({ message: 'Invalid Password' }));
+	}
+
+	const companySettings = user.companies.map(
+		(company) => company.companySettings._id
+	);
+
+	await CompanySetting.deleteMany({ _id: { $in: companySettings } });
+
+	await user.remove();
+
+	res
+		.status(200)
+		.json({ success: true, user: {}, message: 'User successfully deleted' });
 });
 
 module.exports = {
@@ -107,4 +161,5 @@ module.exports = {
 	getCurrentUser,
 	updateCurrentUser,
 	updateCurrentUserPassword,
+	deleteCurrentUser,
 };
