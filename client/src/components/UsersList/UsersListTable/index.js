@@ -6,23 +6,23 @@ import { Search, Edit, Delete } from '@material-ui/icons';
 import useStyles from './styles';
 
 const columns = [
-	{ field: 'email', headerName: 'Email', width: 160 },
-	{ field: 'username', headerName: 'User name', width: 160 },
+	{ field: 'email', headerName: 'Email', width: 200 },
+	{ field: 'username', headerName: 'User name', width: 200 },
 	{
 		field: 'fullName',
 		headerName: 'Full name',
-		sortable: false,
-		width: 160,
+		width: 200,
 	},
 	{
 		field: 'role',
 		headerName: 'Role',
-		with: 160,
+		width: 200,
 	},
 	{
 		field: '',
 		headerName: '',
-		width: 190,
+		sortable: false,
+		width: 200,
 		renderCell: () => (
 			<Fragment>
 				<Button color="primary" startIcon={<Search />} />
