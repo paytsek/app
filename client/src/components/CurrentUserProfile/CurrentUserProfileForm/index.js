@@ -4,7 +4,7 @@ import { Save, Undo, Clear, Delete } from '@material-ui/icons';
 
 import useStyles from './styles';
 
-const UserEditForm = ({ history }) => {
+const CurrentUserProfileForm = ({ history }) => {
 	const { formButton } = useStyles();
 
 	return (
@@ -14,6 +14,22 @@ const UserEditForm = ({ history }) => {
 					<TextField
 						placeholder="Email"
 						label="Email"
+						fullWidth
+						margin="normal"
+					/>
+				</Grid>
+				<Grid item xs={12} md={7} lg={8}>
+					<TextField
+						placeholder="First Name"
+						label="First Name"
+						fullWidth
+						margin="normal"
+					/>
+				</Grid>
+				<Grid item xs={12} md={7} lg={8}>
+					<TextField
+						placeholder="Last Name"
+						label="Last Name"
 						fullWidth
 						margin="normal"
 					/>
@@ -51,4 +67,4 @@ const UserEditForm = ({ history }) => {
 	);
 };
 
-export default withRouter(UserEditForm);
+export default withRouter(CurrentUserProfileForm);
