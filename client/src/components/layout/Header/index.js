@@ -19,6 +19,7 @@ import {
 	Menu as MenuIcon,
 	People as PeopleIcon,
 	PersonOutline,
+	Https,
 } from '@material-ui/icons';
 
 import useStyles from './style';
@@ -81,6 +82,10 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 								<PersonOutline />
 								Profile
 							</MenuItem>
+							<MenuItem onClick={() => handleClose('/change-password')}>
+								<Https />
+								Change Password
+							</MenuItem>
 							<MenuItem onClick={handleClose}>My account</MenuItem>
 						</Menu>
 					</div>
@@ -102,6 +107,14 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 								<PeopleIcon />
 							</ListItemIcon>
 							<ListItemText primary="Users" />
+						</ListItem>
+					</Link>
+					<Link to="/change-password">
+						<ListItem button>
+							<ListItemIcon>
+								<Https />
+							</ListItemIcon>
+							<ListItemText primary="Change Password" />
 						</ListItem>
 					</Link>
 				</List>
