@@ -80,7 +80,7 @@ const UsersListTable = ({ history }) => {
 							<Search onClick={() => history.push(`users/${props.row.id}`)} />
 						}
 					/>
-					<Button color="primary" startIcon={<Edit />} />
+					<Button color="primary" startIcon={<Edit />} onClick={() => history.push('users/1/edit')} />
 					<Button color="primary" startIcon={<Delete />} />
 				</Fragment>
 			),

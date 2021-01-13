@@ -38,10 +38,10 @@ const UsersFilter = () => {
 						/>
 					</Container>
 					<div className={formButton}>
-						<Button variant="contained" color="primary" startIcon={<Search />}>
+						<Button variant="contained" color="primary" size="small" startIcon={<Search />}>
 							Search
 						</Button>
-						<Button startIcon={<Undo />}>Reset</Button>
+						<Button size="small" startIcon={<Undo />}>Reset</Button>
 					</div>
 				</form>
 			</AccordionDetails>

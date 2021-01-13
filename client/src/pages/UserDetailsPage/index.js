@@ -10,7 +10,7 @@ import { Edit } from '@material-ui/icons';
 
 import useStyles from './styles';
 
-const UserDetailsPage = () => {
+const UserDetailsPage = ({ history }) => {
 	const { active, paper, title, actions, details } = useStyles();
 
 	return (
@@ -29,7 +29,13 @@ const UserDetailsPage = () => {
 					View User
 				</Typography>
 				<div className={actions}>
-					<Button variant="contained" color="primary" startIcon={<Edit />}>
+					<Button
+						variant="contained"
+						color="primary"
+						startIcon={<Edit />}
+            size="small"
+						onClick={() => history.push('1/edit')}
+					>
 						Edit
 					</Button>
 				</div>

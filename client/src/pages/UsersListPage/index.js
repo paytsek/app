@@ -32,6 +32,7 @@ const UsersListPage = () => {
 						variant="contained"
 						color="secondary"
 						disabled
+            size="small"
 						startIcon={<Delete />}
 					>
 						Delete
