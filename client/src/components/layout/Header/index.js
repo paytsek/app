@@ -1,5 +1,5 @@
 import { useState, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import {
 	AppBar,
@@ -18,11 +18,12 @@ import {
 	AccountCircle,
 	Menu as MenuIcon,
 	People as PeopleIcon,
+	PersonOutline,
 } from '@material-ui/icons';
 
 import useStyles from './style';
 
-const Header = ({ openDrawer, setOpenDrawer }) => {
+const Header = ({ openDrawer, setOpenDrawer, history }) => {
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
@@ -31,8 +32,9 @@ const Header = ({ openDrawer, setOpenDrawer }) => {
 		setAnchorEl(event.currentTarget);
 	};
 
-	const handleClose = () => {
+	const handleClose = (url = '') => {
 		setAnchorEl(null);
+		url && history.push(url);
 	};
 
 	return (
@@ -75,7 +77,10 @@ const Header = ({ openDrawer, setOpenDrawer }) => {
 							open={open}
 							onClose={handleClose}
 						>
-							<MenuItem onClick={handleClose}>Profile</MenuItem>
+							<MenuItem onClick={() => handleClose('/profile')}>
+								<PersonOutline />
+								Profile
+							</MenuItem>
 							<MenuItem onClick={handleClose}>My account</MenuItem>
 						</Menu>
 					</div>
@@ -105,4 +110,4 @@ const Header = ({ openDrawer, setOpenDrawer }) => {
 	);
 };
 
-export default Header;
+export default withRouter(Header);

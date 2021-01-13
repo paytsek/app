@@ -8,6 +8,7 @@ import RegisterPage from './pages/RegisterPage';
 import UsersListPage from './pages/UsersListPage';
 import UserDetailsPage from './pages/UserDetailsPage';
 import UserEditPage from './pages/UserEditPage';
+import CurrentUserProfilePage from './pages/CurrentUserProfilePage';
 
 import './stylesheets/main.scss';
 import useStyles from './styles';
@@ -31,6 +32,7 @@ const App = () => {
 						<Route path="/users" component={UsersListPage} exact />
 						<Route path="/users/:id/edit" component={UserEditPage} exact />
 						<Route path="/users/:id" component={UserDetailsPage} exact />
+						<Route path="/profile" component={CurrentUserProfilePage} exact />
 					</main>
 				</Layout>
 			</Switch>
