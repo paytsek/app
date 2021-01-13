@@ -10,6 +10,7 @@ import UserDetailsPage from './pages/UserDetailsPage';
 import UserEditPage from './pages/UserEditPage';
 import CurrentUserProfilePage from './pages/CurrentUserProfilePage';
 import ChangePasswordPage from './pages/ChangePasswordPage';
+import CompanyListPage from './pages/CompanyListPage';
 
 import './stylesheets/main.scss';
 import useStyles from './styles';
@@ -39,6 +40,7 @@ const App = () => {
 							component={ChangePasswordPage}
 							exact
 						/>
+						<Route path="/companies" component={CompanyListPage} exact />
 					</main>
 				</Layout>
 			</Switch>

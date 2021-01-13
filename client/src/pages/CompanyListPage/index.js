@@ -9,11 +9,11 @@ import {
 } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 
-import UsersFilter from '../../components/UsersList/UsersFilter';
-import UsersListTable from '../../components/UsersList/UsersListTable';
+import CompaniesListFilter from '../../components/CompaniesList/CompanyiesFilter';
+import CompaniesListTable from '../../components/CompaniesList/CompaniesListTable';
 import useStyles from './styles';
 
-const UsersListPage = () => {
+const CompanyListPage = () => {
 	const { active, title, paper, actions } = useStyles();
 
 	return (
@@ -22,12 +22,12 @@ const UsersListPage = () => {
 				<Breadcrumbs>
 					<Link to="/">Dashboard</Link>
 					<Link className={active} to="/users" aria-current="page">
-						Users
+						Company
 					</Link>
 				</Breadcrumbs>
 				<Paper className={paper}>
 					<Typography variant="h5" className={title} gutterBottom>
-						Users
+						Current Companies
 					</Typography>
 					<div className={actions}>
 						<Button
@@ -40,14 +40,14 @@ const UsersListPage = () => {
 							Delete
 						</Button>
 					</div>
-					<UsersFilter />
+					<CompaniesListFilter />
 				</Paper>
 			</Container>
 			<Container>
-				<UsersListTable />
+				<CompaniesListTable />
 			</Container>
 		</Fragment>
 	);
 };
 
-export default UsersListPage;
+export default CompanyListPage;
