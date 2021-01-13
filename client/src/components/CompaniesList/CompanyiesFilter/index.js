@@ -12,7 +12,7 @@ import { ExpandMore, Search, Undo } from '@material-ui/icons';
 
 import useStyles from './styles';
 
-const UsersFilter = () => {
+const CompaniesListFilter = () => {
 	const { form, formButton, accordion } = useStyles();
 
 	return (
@@ -24,15 +24,7 @@ const UsersFilter = () => {
 				<form autoComplete="off" noValidate className={form}>
 					<Container>
 						<Grid container spacing={3}>
-							<Grid item xs={12} md={6}>
-								<TextField
-									variant="outlined"
-									label="Email"
-									fullWidth
-									size="small"
-								/>
-							</Grid>
-							<Grid item xs={12} md={6}>
+							<Grid item xs={12} md={12}>
 								<TextField
 									variant="outlined"
 									label="Name"
@@ -61,4 +53,4 @@ const UsersFilter = () => {
 	);
 };
 
-export default UsersFilter;
+export default CompaniesListFilter;

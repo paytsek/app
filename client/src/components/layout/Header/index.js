@@ -20,6 +20,7 @@ import {
 	People as PeopleIcon,
 	PersonOutline,
 	Https,
+	Business as BusinessIcon,
 } from '@material-ui/icons';
 
 import useStyles from './style';
@@ -115,6 +116,14 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 								<Https />
 							</ListItemIcon>
 							<ListItemText primary="Change Password" />
+						</ListItem>
+					</Link>
+					<Link to="/companies">
+						<ListItem button>
+							<ListItemIcon>
+								<BusinessIcon />
+							</ListItemIcon>
+							<ListItemText primary="Companies" />
 						</ListItem>
 					</Link>
 				</List>
