@@ -7,6 +7,7 @@ import Layout from './components/layout';
 import RegisterPage from './pages/RegisterPage';
 import UsersListPage from './pages/UsersListPage';
 import UserDetailsPage from './pages/UserDetailsPage';
+import UserEditPage from './pages/UserEditPage';
 
 import './stylesheets/main.scss';
 import useStyles from './styles';
@@ -28,6 +29,7 @@ const App = () => {
 					>
 						<div style={{ minHeight: 64 }} />
 						<Route path="/users" component={UsersListPage} exact />
+						<Route path="/users/:id/edit" component={UserEditPage} exact />
 						<Route path="/users/:id" component={UserDetailsPage} exact />
 					</main>
 				</Layout>
