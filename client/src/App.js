@@ -25,6 +25,7 @@ const App = () => {
 							[classes.contentShift]: openDrawer,
 						})}
 					>
+						<div style={{ minHeight: 64 }} />
 						<Route path="/users" component={UsersListPage} />
 					</main>
 				</Layout>
