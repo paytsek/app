@@ -4,7 +4,7 @@ import { Paper, Container, Breadcrumbs, Typography } from '@material-ui/core';
 import CurrentUserProfileForm from '../../components/CurrentUserProfile/CurrentUserProfileForm';
 import useStyles from './styles';
 
-const CurrentUserProfile = ({ history }) => {
+const CUrrentUserProfile = ({ history }) => {
 	const { paper, active, title } = useStyles();
 
 	return (
@@ -25,4 +25,4 @@ const CurrentUserProfile = ({ history }) => {
 	);
 };
 
-export default CurrentUserProfile;
+export default CUrrentUserProfile;

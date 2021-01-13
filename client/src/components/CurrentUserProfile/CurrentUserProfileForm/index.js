@@ -50,7 +50,7 @@ const CurrentUserProfileForm = ({ history }) => {
 				<Button
 					size="small"
 					startIcon={<Clear />}
-					onClick={() => history.push('/')}
+					onClick={() => history.push('/users')}
 				>
 					Cancel
 				</Button>
