@@ -18,7 +18,8 @@ import {
 	AccountCircle,
 	Menu as MenuIcon,
 	People as PeopleIcon,
-	PersonOutline,
+  PersonOutline,
+  Https
 } from '@material-ui/icons';
 
 import useStyles from './style';
@@ -80,6 +81,10 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 							<MenuItem onClick={() => handleClose('/profile')}>
 								<PersonOutline />
 								Profile
+							</MenuItem>
+							<MenuItem onClick={() => handleClose('/change-password')}>
+								<Https />
+								Change Password
 							</MenuItem>
 							<MenuItem onClick={handleClose}>My account</MenuItem>
 						</Menu>

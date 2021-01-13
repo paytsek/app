@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Paper, Container, Breadcrumbs, Typography } from '@material-ui/core';
 
-import CurrentUserProfileForm from '../../components/CurrentUserProfile/CurrentUserProfileForm';
+import ChangePasswordForm from '../../components/ChangePassword/ChangePasswordForm';
 import useStyles from './styles';
 
-const CurrentUserProfile = ({ history }) => {
+const ChangePasswordPage = ({ history }) => {
 	const { paper, active, title } = useStyles();
 
 	return (
@@ -12,17 +12,17 @@ const CurrentUserProfile = ({ history }) => {
 			<Breadcrumbs>
 				<Link to="/">Dashboard</Link>
 				<Link className={active} to="/users" aria-current="page">
-					Profile
+					Change Passowrd
 				</Link>
 			</Breadcrumbs>
 			<Paper className={paper}>
 				<Typography variant="h5" className={title} gutterBottom>
-					Profile
+					Change Password
 				</Typography>
-				<CurrentUserProfileForm />
+				<ChangePasswordForm />
 			</Paper>
 		</Container>
 	);
 };
 
-export default CurrentUserProfile;
+export default ChangePasswordPage;

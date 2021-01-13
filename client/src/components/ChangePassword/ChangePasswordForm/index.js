@@ -1,10 +1,10 @@
 import { withRouter } from 'react-router-dom';
 import { Grid, TextField, Button } from '@material-ui/core';
-import { Save, Undo, Clear, Delete } from '@material-ui/icons';
+import { Save, Undo, Clear } from '@material-ui/icons';
 
 import useStyles from './styles';
 
-const CurrentUserProfileForm = ({ history }) => {
+const ChangePasswordForm = ({ history }) => {
 	const { formButton } = useStyles();
 
 	return (
@@ -12,24 +12,24 @@ const CurrentUserProfileForm = ({ history }) => {
 			<Grid container>
 				<Grid item xs={12} md={7} lg={8}>
 					<TextField
-						placeholder="Email"
-						label="Email"
+						placeholder="Current Password"
+						label="Current Password"
 						fullWidth
 						margin="normal"
 					/>
 				</Grid>
 				<Grid item xs={12} md={7} lg={8}>
 					<TextField
-						placeholder="First Name"
-						label="First Name"
+						placeholder="New Password"
+						label="New Password"
 						fullWidth
 						margin="normal"
 					/>
 				</Grid>
 				<Grid item xs={12} md={7} lg={8}>
 					<TextField
-						placeholder="Last Name"
-						label="Last Name"
+						placeholder="New Password Confirmation"
+						label="New Password Confirmation"
 						fullWidth
 						margin="normal"
 					/>
@@ -54,17 +54,9 @@ const CurrentUserProfileForm = ({ history }) => {
 				>
 					Cancel
 				</Button>
-				<Button
-					size="small"
-					variant="contained"
-					color="secondary"
-					startIcon={<Delete />}
-				>
-					Delete
-				</Button>
 			</div>
 		</form>
 	);
 };
 
-export default withRouter(CurrentUserProfileForm);
+export default withRouter(ChangePasswordForm);
