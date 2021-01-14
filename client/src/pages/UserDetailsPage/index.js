@@ -20,7 +20,7 @@ const UserDetailsPage = ({ history }) => {
 				<Link to="/users" aria-current="page">
 					Users
 				</Link>
-				<Link className={active} to="/users" aria-current="page">
+				<Link className={active} to="/users/1" aria-current="page">
 					View User
 				</Link>
 			</Breadcrumbs>
