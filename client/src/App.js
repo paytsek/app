@@ -11,6 +11,7 @@ import UserEditPage from './pages/UserEditPage';
 import CurrentUserProfilePage from './pages/CurrentUserProfilePage';
 import ChangePasswordPage from './pages/ChangePasswordPage';
 import CompanyListPage from './pages/CompanyListPage';
+import CompanyDetailsPage from './pages/CompanyDetailsPage';
 
 import './stylesheets/main.scss';
 import useStyles from './styles';
@@ -41,6 +42,7 @@ const App = () => {
 							exact
 						/>
 						<Route path="/companies" component={CompanyListPage} exact />
+						<Route path="/companies/:id" component={CompanyDetailsPage} />
 					</main>
 				</Layout>
 			</Switch>

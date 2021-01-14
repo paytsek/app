@@ -42,7 +42,7 @@ const CompaniesListTable = ({ history }) => {
 					<Button
 						color="primary"
 						startIcon={
-							<Search onClick={() => history.push(`users/${props.row.id}`)} />
+							<Search onClick={() => history.push(`companies/${props.row.id}`)} />
 						}
 					/>
 					<Button

@@ -21,8 +21,8 @@ const CompanyListPage = () => {
 			<Container>
 				<Breadcrumbs>
 					<Link to="/">Dashboard</Link>
-					<Link className={active} to="/users" aria-current="page">
-						Company
+					<Link className={active} to="/companies" aria-current="page">
+						Companies
 					</Link>
 				</Breadcrumbs>
 				<Paper className={paper}>
