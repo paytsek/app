@@ -12,7 +12,7 @@ import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons/';
 
 import useStyles from './styles';
 
-const RegisterPage = () => {
+const LoginPage = () => {
 	const classes = useStyles();
 
 	return (
@@ -25,7 +25,7 @@ const RegisterPage = () => {
 						<LockOutlinedIcon />
 					</Avatar>
 					<Typography component="h1" variant="h5">
-						Sign Up
+						Sign In
 					</Typography>
 					<form className={classes.form} noValidate>
 						<TextField
@@ -36,36 +36,6 @@ const RegisterPage = () => {
 							id="email"
 							label="Email Address"
 							name="email"
-							autoComplete="off"
-						/>
-						<TextField
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							id="username"
-							label="User Name"
-							name="username"
-							autoComplete="off"
-						/>
-						<TextField
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							id="firstname"
-							label="First Name"
-							name="firstName"
-							autoComplete="off"
-						/>
-						<TextField
-							variant="outlined"
-							margin="normal"
-							required
-							fullWidth
-							id="lastname"
-							label="Last Name"
-							name="lastName"
 							autoComplete="off"
 						/>
 						<TextField
@@ -85,13 +55,13 @@ const RegisterPage = () => {
 							color="primary"
 							className={classes.submit}
 						>
-							Sign Up
+							Sign In
 						</Button>
 						<Grid container>
 							<Grid item>
-								<Link to="/login">
+								<Link to="/register">
 									<Typography paragraph color="primary">
-										Already have an account? Sign In
+										Don't have an account? Sign Up
 									</Typography>
 								</Link>
 							</Grid>
@@ -103,4 +73,4 @@ const RegisterPage = () => {
 	);
 };
 
-export default RegisterPage;
+export default LoginPage;

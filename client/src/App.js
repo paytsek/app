@@ -5,6 +5,7 @@ import cx from 'classnames';
 
 import Layout from './components/layout';
 import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
 import UsersListPage from './pages/UsersListPage';
 import UserDetailsPage from './pages/UserDetailsPage';
 import UserEditPage from './pages/UserEditPage';
@@ -25,35 +26,46 @@ const App = () => {
 	return (
 		<Router>
 			<CssBaseline />
-			<Route path="/register" component={RegisterPage} exact />
-			<Layout openDrawer={openDrawer} setOpenDrawer={setOpenDrawer}>
-				<main
-					className={cx(classes.content, {
-						[classes.contentShift]: openDrawer,
-					})}
-				>
-					<div style={{ minHeight: 64 }} />
-					<Switch>
-						<Route path="/users" component={UsersListPage} exact />
-						<Route path="/users/:id/edit" component={UserEditPage} exact />
-						<Route path="/users/:id" component={UserDetailsPage} exact />
-						<Route path="/profile" component={CurrentUserProfilePage} exact />
-						<Route
-							path="/change-password"
-							component={ChangePasswordPage}
-							exact
-						/>
-						<Route path="/companies" component={CompanyListPage} exact />
-						<Route
-							path="/companies/create"
-							component={CompanyCreatePage}
-							exact
-						/>
-						<Route path="/companies/:id" component={CompanyDetailsPage} exact />
-            <Route path="/companies/:id/edit" component={CompanyUpdatePage} exact />
-					</Switch>
-				</main>
-			</Layout>
+			<Switch>
+				<Route path="/register" component={RegisterPage} exact />
+				<Route path="/login" component={LoginPage} exact />
+				<Layout openDrawer={openDrawer} setOpenDrawer={setOpenDrawer}>
+					<main
+						className={cx(classes.content, {
+							[classes.contentShift]: openDrawer,
+						})}
+					>
+						<div style={{ minHeight: 64 }} />
+						<Switch>
+							<Route path="/users" component={UsersListPage} exact />
+							<Route path="/users/:id/edit" component={UserEditPage} exact />
+							<Route path="/users/:id" component={UserDetailsPage} exact />
+							<Route path="/profile" component={CurrentUserProfilePage} exact />
+							<Route
+								path="/change-password"
+								component={ChangePasswordPage}
+								exact
+							/>
+							<Route path="/companies" component={CompanyListPage} exact />
+							<Route
+								path="/companies/create"
+								component={CompanyCreatePage}
+								exact
+							/>
+							<Route
+								path="/companies/:id"
+								component={CompanyDetailsPage}
+								exact
+							/>
+							<Route
+								path="/companies/:id/edit"
+								component={CompanyUpdatePage}
+								exact
+							/>
+						</Switch>
+					</main>
+				</Layout>
+			</Switch>
 		</Router>
 	);
 };
