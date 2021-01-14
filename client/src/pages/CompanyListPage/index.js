@@ -7,13 +7,13 @@ import {
 	Typography,
 	Button,
 } from '@material-ui/core';
-import { Delete } from '@material-ui/icons';
+import { Delete, Add } from '@material-ui/icons';
 
 import CompaniesListFilter from '../../components/CompaniesList/CompanyiesFilter';
 import CompaniesListTable from '../../components/CompaniesList/CompaniesListTable';
 import useStyles from './styles';
 
-const CompanyListPage = () => {
+const CompanyListPage = ({ history }) => {
 	const { active, title, paper, actions } = useStyles();
 
 	return (
@@ -38,6 +38,15 @@ const CompanyListPage = () => {
 							startIcon={<Delete />}
 						>
 							Delete
+						</Button>
+						<Button
+							variant="contained"
+							color="primary"
+							size="small"
+							startIcon={<Add />}
+							onClick={() => history.push('companies/create')}
+						>
+							Create
 						</Button>
 					</div>
 					<CompaniesListFilter />
