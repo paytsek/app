@@ -1,28 +1,28 @@
 import { Link } from 'react-router-dom';
 import { Paper, Container, Breadcrumbs, Typography } from '@material-ui/core';
 
-import CurrentUserProfileForm from '../../components/CurrentUserProfile/CurrentUserProfileForm';
+import CurrentCompaniesContainer from '../../components/CurrentCompanies/CurrentCompaniesContainer';
 import useStyles from './styles';
 
-const CurrentUserProfile = ({ history }) => {
+const CompanySettings = ({ history }) => {
 	const { paper, active, title } = useStyles();
 
 	return (
 		<Container>
 			<Breadcrumbs>
 				<Link to="/">Dashboard</Link>
-				<Link className={active} to="/users" aria-current="page">
-					Profile
+				<Link className={active} to="/company-settings" aria-current="page">
+					Company Settings
 				</Link>
 			</Breadcrumbs>
 			<Paper className={paper}>
 				<Typography variant="h5" className={title} gutterBottom>
-					Profile
+					Company Settings
 				</Typography>
-				<CurrentUserProfileForm />
+				<CurrentCompaniesContainer />
 			</Paper>
 		</Container>
 	);
 };
 
-export default CurrentUserProfile;
+export default CompanySettings;

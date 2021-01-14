@@ -15,6 +15,7 @@ import CompanyListPage from './pages/CompanyListPage';
 import CompanyDetailsPage from './pages/CompanyDetailsPage';
 import CompanyCreatePage from './pages/CompanyCreatePage';
 import CompanyUpdatePage from './pages/CompanyUpdatePage';
+import CompanySettingsPage from './pages/CompanySettingsPage';
 
 import './stylesheets/main.scss';
 import useStyles from './styles';
@@ -47,6 +48,11 @@ const App = () => {
 								exact
 							/>
 							<Route path="/companies" component={CompanyListPage} exact />
+							<Route
+								path="/company-settings"
+								component={CompanySettingsPage}
+								exact
+							/>
 							<Route
 								path="/companies/create"
 								component={CompanyCreatePage}
