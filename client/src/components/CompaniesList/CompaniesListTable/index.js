@@ -48,7 +48,7 @@ const CompaniesListTable = ({ history }) => {
 					<Button
 						color="primary"
 						startIcon={<Edit />}
-						onClick={() => history.push('users/1/edit')}
+						onClick={() => history.push('companies/1/edit')}
 					/>
 					<Button color="primary" startIcon={<Delete />} />
 				</Fragment>

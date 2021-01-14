@@ -13,6 +13,7 @@ import ChangePasswordPage from './pages/ChangePasswordPage';
 import CompanyListPage from './pages/CompanyListPage';
 import CompanyDetailsPage from './pages/CompanyDetailsPage';
 import CompanyCreatePage from './pages/CompanyCreatePage';
+import CompanyUpdatePage from './pages/CompanyUpdatePage';
 
 import './stylesheets/main.scss';
 import useStyles from './styles';
@@ -49,6 +50,7 @@ const App = () => {
 							exact
 						/>
 						<Route path="/companies/:id" component={CompanyDetailsPage} exact />
+            <Route path="/companies/:id/edit" component={CompanyUpdatePage} exact />
 					</Switch>
 				</main>
 			</Layout>
