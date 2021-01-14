@@ -15,15 +15,6 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		fontWeight: 'bold',
 	},
-	actions: {
-		display: 'flex',
-		flexWrap: 'wrap',
-		alignItems: 'center',
-		marginBottom: 16,
-		'& :not(:first-child)': {
-			marginLeft: theme.spacing(2),
-		},
-	},
 }));
 
 export default useStyles;

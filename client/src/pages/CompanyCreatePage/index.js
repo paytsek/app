@@ -1,31 +1,31 @@
 import { Link } from 'react-router-dom';
 import { Paper, Container, Breadcrumbs, Typography } from '@material-ui/core';
 
-import UserEditForm from '../../components/UserEdit/UserEditForm';
+import CompanyCreateForm from '../../components/CompanyCreate/CompanyCreateForm';
 import useStyles from './styles';
 
-const UserEditPage = ({ history }) => {
+const CompanyCreatePage = ({ history }) => {
 	const { paper, active, title } = useStyles();
 
 	return (
 		<Container>
 			<Breadcrumbs>
 				<Link to="/">Dashboard</Link>
-				<Link to="/users" aria-current="page">
-					Users
+				<Link to="/companies" aria-current="page">
+					Companies
 				</Link>
-				<Link className={active} to="/users/1/edit" aria-current="page">
-					Edit User
+				<Link className={active} to="create" aria-current="page">
+					Create Company
 				</Link>
 			</Breadcrumbs>
 			<Paper className={paper}>
 				<Typography variant="h5" className={title} gutterBottom>
-					Edit User
+					Create Company
 				</Typography>
-				<UserEditForm />
+				<CompanyCreateForm />
 			</Paper>
 		</Container>
 	);
 };
 
-export default UserEditPage;
+export default CompanyCreatePage;

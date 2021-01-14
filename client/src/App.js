@@ -12,6 +12,7 @@ import CurrentUserProfilePage from './pages/CurrentUserProfilePage';
 import ChangePasswordPage from './pages/ChangePasswordPage';
 import CompanyListPage from './pages/CompanyListPage';
 import CompanyDetailsPage from './pages/CompanyDetailsPage';
+import CompanyCreatePage from './pages/CompanyCreatePage';
 
 import './stylesheets/main.scss';
 import useStyles from './styles';
@@ -24,14 +25,14 @@ const App = () => {
 		<Router>
 			<CssBaseline />
 			<Route path="/register" component={RegisterPage} exact />
-			<Switch>
-				<Layout openDrawer={openDrawer} setOpenDrawer={setOpenDrawer}>
-					<main
-						className={cx(classes.content, {
-							[classes.contentShift]: openDrawer,
-						})}
-					>
-						<div style={{ minHeight: 64 }} />
+			<Layout openDrawer={openDrawer} setOpenDrawer={setOpenDrawer}>
+				<main
+					className={cx(classes.content, {
+						[classes.contentShift]: openDrawer,
+					})}
+				>
+					<div style={{ minHeight: 64 }} />
+					<Switch>
 						<Route path="/users" component={UsersListPage} exact />
 						<Route path="/users/:id/edit" component={UserEditPage} exact />
 						<Route path="/users/:id" component={UserDetailsPage} exact />
@@ -42,10 +43,15 @@ const App = () => {
 							exact
 						/>
 						<Route path="/companies" component={CompanyListPage} exact />
-						<Route path="/companies/:id" component={CompanyDetailsPage} />
-					</main>
-				</Layout>
-			</Switch>
+						<Route
+							path="/companies/create"
+							component={CompanyCreatePage}
+							exact
+						/>
+						<Route path="/companies/:id" component={CompanyDetailsPage} exact />
+					</Switch>
+				</main>
+			</Layout>
 		</Router>
 	);
 };
