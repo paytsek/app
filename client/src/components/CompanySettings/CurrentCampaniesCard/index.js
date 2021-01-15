@@ -37,6 +37,15 @@ const CurrentCompaniesCard = ({ history }) => {
 				>
 					Add Settings
 				</Button>
+				<Button
+					size="small"
+					color="primary"
+					startIcon={<SettingsIcon />}
+					className={buttonText}
+					onClick={() => history.push('company-settings/1/edit')}
+				>
+					Edit Settings
+				</Button>
 			</CardActions>
 		</Card>
 	);

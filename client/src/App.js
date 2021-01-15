@@ -17,6 +17,7 @@ import CompanyCreatePage from './pages/CompanyCreatePage';
 import CompanyUpdatePage from './pages/CompanyUpdatePage';
 import CompanySettingsPage from './pages/CompanySettingsPage';
 import CompanySettingsCreatePage from './pages/CompanySettingsCreatePage';
+import CompanySettingsEditPage from './pages/CompanySettingsEditPage';
 
 import './stylesheets/main.scss';
 import useStyles from './styles';
@@ -57,6 +58,11 @@ const App = () => {
 							<Route
 								path="/company-settings/:companyId"
 								component={CompanySettingsCreatePage}
+								exact
+							/>
+							<Route
+								path="/company-settings/:companyId/edit"
+								component={CompanySettingsEditPage}
 								exact
 							/>
 							<Route
