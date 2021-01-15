@@ -42,7 +42,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 
 	return (
 		<Fragment>
-			<AppBar position="static" className={classes.appBar}>
+			<AppBar position="fixed" className={classes.appBar}>
 				<Toolbar>
 					<IconButton
 						edge="start"
