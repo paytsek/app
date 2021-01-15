@@ -38,7 +38,7 @@ const App = () => {
 							[classes.contentShift]: openDrawer,
 						})}
 					>
-						<div style={{ minHeight: 64 }} />
+						<div style={{ minHeight: 80 }} />
 						<Switch>
 							<Route path="/users" component={UsersListPage} exact />
 							<Route path="/users/:id/edit" component={UserEditPage} exact />
