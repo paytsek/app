@@ -18,9 +18,10 @@ import {
 	AccountCircle,
 	Menu as MenuIcon,
 	People as PeopleIcon,
-	PersonOutline,
-	Https,
-	Business as BusinessIcon,
+	PersonOutline as PersonOulineIcon,
+	Https as HttpsIcon,
+  Business as BusinessIcon,
+  BusinessCenter as BusinessCenterIcon
 } from '@material-ui/icons';
 
 import useStyles from './style';
@@ -41,7 +42,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 
 	return (
 		<Fragment>
-			<AppBar position="static" className={classes.appBar}>
+			<AppBar position="fixed" className={classes.appBar}>
 				<Toolbar>
 					<IconButton
 						edge="start"
@@ -80,14 +81,14 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 							onClose={handleClose}
 						>
 							<MenuItem onClick={() => handleClose('/profile')}>
-								<PersonOutline />
+								<PersonOulineIcon />
 								Profile
 							</MenuItem>
 							<MenuItem onClick={() => handleClose('/change-password')}>
-								<Https />
+								<HttpsIcon />
 								Change Password
 							</MenuItem>
-							<MenuItem onClick={handleClose}>My account</MenuItem>
+							<MenuItem onClick={handleClose}>Log out</MenuItem>
 						</Menu>
 					</div>
 				</Toolbar>
@@ -113,7 +114,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 					<Link to="/change-password">
 						<ListItem button>
 							<ListItemIcon>
-								<Https />
+								<HttpsIcon />
 							</ListItemIcon>
 							<ListItemText primary="Change Password" />
 						</ListItem>
@@ -124,6 +125,14 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 								<BusinessIcon />
 							</ListItemIcon>
 							<ListItemText primary="Companies" />
+						</ListItem>
+					</Link>
+					<Link to="/company-settings">
+						<ListItem button>
+							<ListItemIcon>
+								<BusinessCenterIcon />
+							</ListItemIcon>
+							<ListItemText primary="Company Settings" />
 						</ListItem>
 					</Link>
 				</List>
