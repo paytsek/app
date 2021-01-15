@@ -1,28 +1,35 @@
 import { Link } from 'react-router-dom';
 import { Paper, Container, Breadcrumbs, Typography } from '@material-ui/core';
+import CompanySettingsForm from '../../components/CompanySettings/CompanySettingsForm';
 
-import CurrentCompaniesContainer from '../../components/CompanySettings/CurrentCompaniesContainer';
 import useStyles from './styles';
 
-const CompanySettings = ({ history }) => {
+const CompanySettingsCreatePage = ({ history }) => {
 	const { paper, active, title } = useStyles();
 
 	return (
 		<Container>
 			<Breadcrumbs>
 				<Link to="/">Dashboard</Link>
-				<Link className={active} to="/company-settings" aria-current="page">
+				<Link to="/company-settings" aria-current="page">
 					Company Settings
+				</Link>
+				<Link
+					className={active}
+					to="/company-settings/1"
+					aria-current="page"
+				>
+					Create Company Settings
 				</Link>
 			</Breadcrumbs>
 			<Paper className={paper}>
 				<Typography variant="h5" className={title} gutterBottom>
-					Company Settings
+					Create Company Settings
 				</Typography>
-				<CurrentCompaniesContainer />
 			</Paper>
+			<CompanySettingsForm />
 		</Container>
 	);
 };
 
-export default CompanySettings;
+export default CompanySettingsCreatePage;

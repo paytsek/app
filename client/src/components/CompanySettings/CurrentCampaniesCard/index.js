@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import {
 	Card,
 	CardActionArea,
@@ -11,7 +12,7 @@ import { Settings as SettingsIcon } from '@material-ui/icons';
 
 import useStyles from './styles';
 
-const CurrentCompaniesCard = () => {
+const CurrentCompaniesCard = ({ history }) => {
 	const { root, buttonText } = useStyles();
 
 	return (
@@ -32,6 +33,7 @@ const CurrentCompaniesCard = () => {
 					color="primary"
 					startIcon={<SettingsIcon />}
 					className={buttonText}
+					onClick={() => history.push('company-settings/1')}
 				>
 					Add Settings
 				</Button>
@@ -40,4 +42,4 @@ const CurrentCompaniesCard = () => {
 	);
 };
 
-export default CurrentCompaniesCard;
+export default withRouter(CurrentCompaniesCard);
