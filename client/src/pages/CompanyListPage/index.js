@@ -14,7 +14,7 @@ import CompaniesListTable from '../../components/CompaniesList/CompaniesListTabl
 import useStyles from './styles';
 
 const CompanyListPage = ({ history }) => {
-	const { active, title, paper, actions } = useStyles();
+	const { active, title, paper, actions, tableContainer } = useStyles();
 
 	return (
 		<Fragment>
@@ -52,7 +52,7 @@ const CompanyListPage = ({ history }) => {
 					<CompaniesListFilter />
 				</Paper>
 			</Container>
-			<Container>
+			<Container className={tableContainer}>
 				<CompaniesListTable />
 			</Container>
 		</Fragment>

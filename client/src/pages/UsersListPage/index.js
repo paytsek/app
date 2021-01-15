@@ -14,7 +14,7 @@ import UsersListTable from '../../components/UsersList/UsersListTable';
 import useStyles from './styles';
 
 const UsersListPage = () => {
-	const { active, title, paper, actions } = useStyles();
+	const { active, title, paper, actions, tableContainer } = useStyles();
 
 	return (
 		<Fragment>
@@ -43,7 +43,7 @@ const UsersListPage = () => {
 					<UsersFilter />
 				</Paper>
 			</Container>
-			<Container>
+			<Container className={tableContainer}>
 				<UsersListTable />
 			</Container>
 		</Fragment>

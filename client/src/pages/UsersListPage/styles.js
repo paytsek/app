@@ -21,6 +21,15 @@ const useStyles = makeStyles((theme) => ({
 		alignItems: 'center',
 		marginBottom: 16,
 	},
+	tableContainer: {
+    minHeight: 400,
+		'& > div': {
+			width: '100% !important',
+		},
+		'& .MuiDataGrid-root': {
+			width: '100% !important',
+		},
+	},
 }));
 
 export default useStyles;
