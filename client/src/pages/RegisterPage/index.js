@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
 	Avatar,
@@ -11,20 +12,45 @@ import {
 } from '@material-ui/core';
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons/';
 
-import useStyles from './styles';
+import PageLoader from '../../components/PageLoader';
 
-const RegisterPage = () => {
+import useStyles from './styles';
+import { registerUser } from '../../redux/actions/userActions';
+
+const RegisterPage = ({ history }) => {
+	const dispatch = useDispatch();
+
 	const [email, setEmail] = useState('');
-	const [userName, setUserName] = useState('');
+	const [username, setUsername] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [password, setPassword] = useState('');
 
+	const {
+		errors: registerUserErrors,
+		loading: registerUsersLoading,
+		userInfo,
+	} = useSelector((state) => state.registerUser);
+	const { loading: authUserLoading, auth } = useSelector(
+		(state) => state.authUser
+  );
+  
 	const onSubmit = (e) => {
 		e.preventDefault();
+		dispatch(registerUser({ email, username, firstName, lastName, password }));
 	};
 
 	const classes = useStyles();
+
+	useEffect(() => {
+		if (userInfo || auth) {
+			history.push('/dashboard');
+		}
+	}, [userInfo, history, auth]);
+
+	if (authUserLoading) {
+		return <PageLoader />;
+	}
 
 	return (
 		<Grid container component="main" className={classes.root}>
@@ -50,6 +76,8 @@ const RegisterPage = () => {
 							autoComplete="off"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
+							error={!!registerUserErrors.email}
+							helperText={registerUserErrors.email}
 						/>
 						<TextField
 							variant="outlined"
@@ -60,8 +88,10 @@ const RegisterPage = () => {
 							label="User Name"
 							name="username"
 							autoComplete="off"
-							value={userName}
-							onChange={(e) => setUserName(e.target.value)}
+							value={username}
+							onChange={(e) => setUsername(e.target.value)}
+							error={!!registerUserErrors.username}
+							helperText={registerUserErrors.username}
 						/>
 						<TextField
 							variant="outlined"
@@ -74,6 +104,8 @@ const RegisterPage = () => {
 							autoComplete="off"
 							value={firstName}
 							onChange={(e) => setFirstName(e.target.value)}
+							error={!!registerUserErrors.firstName}
+							helperText={registerUserErrors.firstName}
 						/>
 						<TextField
 							variant="outlined"
@@ -86,6 +118,8 @@ const RegisterPage = () => {
 							autoComplete="off"
 							value={lastName}
 							onChange={(e) => setLastName(e.target.value)}
+							error={!!registerUserErrors.lastName}
+							helperText={registerUserErrors.lastName}
 						/>
 						<TextField
 							variant="outlined"
@@ -98,6 +132,8 @@ const RegisterPage = () => {
 							id="password"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
+							error={!!registerUserErrors.password}
+							helperText={registerUserErrors.password}
 						/>
 						<Button
 							type="submit"
@@ -105,6 +141,7 @@ const RegisterPage = () => {
 							variant="contained"
 							color="primary"
 							className={classes.submit}
+							disabled={registerUsersLoading}
 						>
 							Sign Up
 						</Button>
