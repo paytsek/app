@@ -18,6 +18,14 @@ const registerUser = asyncHandler(async (req, res, next) => {
 	res.status(201).json({
 		success: true,
 		token,
+		user: {
+			id: user._id,
+			email: user.email,
+			role: user.role,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			fullName: user.fullName,
+		},
 	});
 });
 
@@ -53,10 +61,43 @@ const loginUser = asyncHandler(async (req, res, next) => {
 	res.status(200).json({
 		success: true,
 		token,
+		user: {
+			id: user._id,
+			email: user.email,
+			role: user.role,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			fullName: user.fullName,
+		},
+	});
+});
+
+// @ROUTE GET /api/v1/auth/
+// @Desc Get auth user
+// access PRIVATE
+const getAuthUser = asyncHandler(async (req, res, next) => {
+	const user = await User.findById(req.user.id);
+
+	if (!user) {
+		res.status(401);
+		return next(new ErrorResponse({ message: 'No user, access denied' }));
+	}
+
+	res.json({
+		success: true,
+		user: {
+			id: user._id,
+			email: user.email,
+			role: user.role,
+			firstName: user.firstName,
+			lastName: user.lastName,  
+			fullName: user.fullName,
+		},
 	});
 });
 
 module.exports = {
 	registerUser,
 	loginUser,
+	getAuthUser,
 };

@@ -128,6 +128,9 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 			expect(res.status).toBe(201);
 			expect(res.body.success).toBeTruthy();
 			expect(res.body).toHaveProperty('token', res.body.token);
+			expect(Object.keys(res.body.user)).toEqual(
+				expect.arrayContaining(['id'])
+			);
 
 			const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
 
@@ -211,6 +214,7 @@ describe('POST /api/v1/auth/login - loginUser', () => {
 
 		expect(res.status).toBe(200);
 		expect(res.body.success).toBeTruthy();
+		expect(Object.keys(res.body.user)).toEqual(expect.arrayContaining(['id']));
 		expect(Object.keys(res.body)).toEqual(expect.arrayContaining(['token']));
 
 		const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
@@ -221,6 +225,48 @@ describe('POST /api/v1/auth/login - loginUser', () => {
 		expect(user).toMatchObject({
 			username: 'darryl mangibin',
 			email: 'test@example.com',
+		});
+	});
+});
+
+describe('GET /api/v1/auth - authUser', () => {
+	const url = '/api/v1/auth';
+	describe('Error Response', () => {
+		it('should return an error response if token is invalid', async () => {
+			let res = await request(app).get(url);
+
+			expect(res.status).toBe(401);
+			expect(res.body.success).toBeFalsy();
+			expect(res.body.errors).toMatchObject({
+				message: 'No token, access denied',
+			});
+
+			res = await request(app).get(url).auth('token123', { type: 'bearer' });
+
+			expect(res.status).toBe(401);
+			expect(res.body.success).toBeFalsy();
+			expect(res.body.errors).toMatchObject({
+				message: 'Not authorize to access this route',
+			});
+		});
+
+		it('should return a success response if token is valid', async () => {
+			const token = await global.signIn();
+
+			const res = await request(app).get(url).auth(token, { type: 'bearer' });
+
+			expect(res.status).toBe(200);
+			expect(res.body.success).toBeTruthy();
+			expect(Object.keys(res.body.user)).toEqual(
+				expect.arrayContaining([
+					'id',
+					'email',
+					'role',
+					'firstName',
+					'lastName',
+					'fullName',
+				])
+			);
 		});
 	});
 });
