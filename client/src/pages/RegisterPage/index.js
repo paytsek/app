@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
 	Avatar,
@@ -13,6 +14,16 @@ import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons/';
 import useStyles from './styles';
 
 const RegisterPage = () => {
+	const [email, setEmail] = useState('');
+	const [userName, setUserName] = useState('');
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [password, setPassword] = useState('');
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+	};
+
 	const classes = useStyles();
 
 	return (
@@ -27,7 +38,7 @@ const RegisterPage = () => {
 					<Typography component="h1" variant="h5">
 						Sign Up
 					</Typography>
-					<form className={classes.form} noValidate>
+					<form className={classes.form} noValidate onSubmit={onSubmit}>
 						<TextField
 							variant="outlined"
 							margin="normal"
@@ -37,6 +48,8 @@ const RegisterPage = () => {
 							label="Email Address"
 							name="email"
 							autoComplete="off"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
 						/>
 						<TextField
 							variant="outlined"
@@ -47,6 +60,8 @@ const RegisterPage = () => {
 							label="User Name"
 							name="username"
 							autoComplete="off"
+							value={userName}
+							onChange={(e) => setUserName(e.target.value)}
 						/>
 						<TextField
 							variant="outlined"
@@ -57,6 +72,8 @@ const RegisterPage = () => {
 							label="First Name"
 							name="firstName"
 							autoComplete="off"
+							value={firstName}
+							onChange={(e) => setFirstName(e.target.value)}
 						/>
 						<TextField
 							variant="outlined"
@@ -67,6 +84,8 @@ const RegisterPage = () => {
 							label="Last Name"
 							name="lastName"
 							autoComplete="off"
+							value={lastName}
+							onChange={(e) => setLastName(e.target.value)}
 						/>
 						<TextField
 							variant="outlined"
@@ -77,6 +96,8 @@ const RegisterPage = () => {
 							label="Password"
 							type="password"
 							id="password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
 						/>
 						<Button
 							type="submit"
