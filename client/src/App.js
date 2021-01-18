@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import cx from 'classnames';
@@ -19,12 +20,21 @@ import CompanySettingsPage from './pages/CompanySettingsPage';
 import CompanySettingsCreatePage from './pages/CompanySettingsCreatePage';
 import CompanySettingsEditPage from './pages/CompanySettingsEditPage';
 
+import { authUser } from './redux/actions/userActions';
 import './stylesheets/main.scss';
 import useStyles from './styles';
 
+const token = localStorage.getItem('token');
+
 const App = () => {
+	const dispatch = useDispatch();
+
 	const classes = useStyles();
 	const [openDrawer, setOpenDrawer] = useState(false);
+
+	useEffect(() => {
+		dispatch(authUser(token));
+	}, [dispatch]);
 
 	return (
 		<Router>
