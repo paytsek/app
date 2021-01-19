@@ -1,5 +1,6 @@
 import { useState, Fragment } from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import {
 	AppBar,
@@ -20,13 +21,15 @@ import {
 	People as PeopleIcon,
 	PersonOutline as PersonOulineIcon,
 	Https as HttpsIcon,
-  Business as BusinessIcon,
-  BusinessCenter as BusinessCenterIcon
+	Business as BusinessIcon,
+	BusinessCenter as BusinessCenterIcon,
 } from '@material-ui/icons';
 
+import { LOGOUT } from '../../../redux/actions/types';
 import useStyles from './style';
 
 const Header = ({ openDrawer, setOpenDrawer, history }) => {
+	const dispatch = useDispatch();
 	const classes = useStyles();
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
@@ -38,6 +41,11 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 	const handleClose = (url = '') => {
 		setAnchorEl(null);
 		url && history.push(url);
+	};
+
+	const handleLogout = () => {
+		dispatch({ type: LOGOUT });
+		history.push('/login');
 	};
 
 	return (
@@ -88,7 +96,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 								<HttpsIcon />
 								Change Password
 							</MenuItem>
-							<MenuItem onClick={handleClose}>Log out</MenuItem>
+							<MenuItem onClick={handleLogout}>Log out</MenuItem>
 						</Menu>
 					</div>
 				</Toolbar>
