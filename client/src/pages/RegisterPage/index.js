@@ -44,7 +44,7 @@ const RegisterPage = ({ history }) => {
 
 	useEffect(() => {
 		if (auth) {
-			history.push('/dashboard');
+			history.push('/');
 		}
 
 		return () => {

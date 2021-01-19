@@ -7,6 +7,8 @@ import cx from 'classnames';
 import Notifier from './components/Notifier';
 import Layout from './components/layout';
 import PrivateRoute from './components/routes/PrivateRoute';
+import AdminRoute from './components/routes/AdminRoute';
+import Dashboard from './pages/Dashboard';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import UsersListPage from './pages/UsersListPage';
@@ -59,7 +61,11 @@ const App = () => {
 						<div style={{ minHeight: 80 }} />
 						<Switch>
 							<PrivateRoute path="/users" component={UsersListPage} exact />
-							<Route path="/users/:id/edit" component={UserEditPage} exact />
+							<AdminRoute
+								path="/users/:id/edit"
+								component={UserEditPage}
+								exact
+							/>
 							<PrivateRoute
 								path="/users/:id"
 								component={UserDetailsPage}
@@ -102,6 +108,7 @@ const App = () => {
 								component={CompanyUpdatePage}
 								exact
 							/>
+							<PrivateRoute path="/" component={Dashboard} exact />
 						</Switch>
 					</main>
 				</Layout>

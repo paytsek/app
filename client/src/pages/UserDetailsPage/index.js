@@ -20,6 +20,7 @@ const UserDetailsPage = ({ history, match }) => {
 	const dispatch = useDispatch();
 
 	const { user, loading } = useSelector((state) => state.userDetails);
+	const { user: loggedInUser } = useSelector((state) => state.authUser);
 
 	const { active, paper, title, actions, details } = useStyles();
 
@@ -46,17 +47,19 @@ const UserDetailsPage = ({ history, match }) => {
 					<MuiSkeleton />
 				) : (
 					<Fragment>
-						<div className={actions}>
-							<Button
-								variant="contained"
-								color="primary"
-								startIcon={<Edit />}
-								size="small"
-								onClick={() => history.push(`${user._id}/edit`)}
-							>
-								Edit
-							</Button>
-						</div>
+						{loggedInUser.role === 'admin' && (
+							<div className={actions}>
+								<Button
+									variant="contained"
+									color="primary"
+									startIcon={<Edit />}
+									size="small"
+									onClick={() => history.push(`${user._id}/edit`)}
+								>
+									Edit
+								</Button>
+							</div>
+						)}
 						<div className={details}>
 							<Typography variant="subtitle2">Email</Typography>
 							<Typography variant="subtitle1">{user.email}</Typography>
