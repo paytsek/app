@@ -6,6 +6,7 @@ import cx from 'classnames';
 
 import Notifier from './components/Notifier';
 import Layout from './components/layout';
+import PrivateRoute from './components/routes/PrivateRoute';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import UsersListPage from './pages/UsersListPage';
@@ -52,7 +53,7 @@ const App = () => {
 					>
 						<div style={{ minHeight: 80 }} />
 						<Switch>
-							<Route path="/users" component={UsersListPage} exact />
+							<PrivateRoute path="/users" component={UsersListPage} exact />
 							<Route path="/users/:id/edit" component={UserEditPage} exact />
 							<Route path="/users/:id" component={UserDetailsPage} exact />
 							<Route path="/profile" component={CurrentUserProfilePage} exact />
