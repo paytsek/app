@@ -14,6 +14,9 @@ import {
 	USERS_LIST_SUCCESS,
 	USERS_LIST_REQUEST,
 	USERS_LIST_FAIL,
+	USER_DETAILS_FAIL,
+	USER_DETAILS_SUCCESS,
+	USER_DETAILS_REQUEST,
 } from './types';
 import notification from '../../utils/notification';
 
@@ -67,7 +70,9 @@ export const loginUser = (userData) => async (dispatch) => {
 		dispatch({ type: LOGIN_SUCCESS, payload: data });
 		dispatch(authUser(data.token));
 	} catch (error) {
-		const { message } = error.response.data.errors;
+		const { message } =
+			(error.response.data.errors && error.response.data.errors) ||
+			'Server Error';
 
 		dispatch({ type: LOGIN_FAIL });
 		dispatch(notification('error', message, dispatch));
@@ -81,8 +86,26 @@ export const getUsersList = () => async (dispatch) => {
 		const { data } = await axios.get('/users');
 		dispatch({ type: USERS_LIST_SUCCESS, payload: data });
 	} catch (error) {
-		const { message } = error.response.data.errors;
+		const { message } =
+			(error.response.data.errors && error.response.data.errors) ||
+			'Server Error';
 		dispatch({ type: USERS_LIST_FAIL });
+		dispatch(notification('error', message, dispatch));
+	}
+};
+
+export const getUserDetails = (id) => async (dispatch) => {
+	dispatch({ type: USER_DETAILS_REQUEST });
+
+	try {
+		const { data } = await axios.get(`/users/${id}`);
+
+		dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
+	} catch (error) {
+		const { message } =
+			(error.response.data.errors && error.response.data.errors) ||
+			'Server Error';
+		dispatch({ type: USER_DETAILS_FAIL });
 		dispatch(notification('error', message, dispatch));
 	}
 };

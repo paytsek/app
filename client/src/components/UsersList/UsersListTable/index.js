@@ -11,7 +11,7 @@ import useStyles from './styles';
 const UsersListTable = ({ history }) => {
 	const dispatch = useDispatch();
 
-	const { users } = useSelector((state) => state.usersList);
+	const { users, loading } = useSelector((state) => state.usersList);
 
 	const { dataGrid } = useStyles();
 
@@ -65,6 +65,7 @@ const UsersListTable = ({ history }) => {
 			checkboxSelection
 			disableSelectionOnClick
 			autoHeight
+			loading={loading}
 		/>
 	);
 };
