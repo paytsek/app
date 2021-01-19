@@ -23,10 +23,15 @@ import CompanySettingsCreatePage from './pages/CompanySettingsCreatePage';
 import CompanySettingsEditPage from './pages/CompanySettingsEditPage';
 
 import { authUser } from './redux/actions/userActions';
+import setAuthToken from './utils/setAuthToken';
 import './stylesheets/main.scss';
 import useStyles from './styles';
 
 const token = localStorage.getItem('token');
+
+if (token) {
+	setAuthToken(token);
+}
 
 const App = () => {
 	const dispatch = useDispatch();
@@ -35,13 +40,13 @@ const App = () => {
 	const [openDrawer, setOpenDrawer] = useState(false);
 
 	useEffect(() => {
-		dispatch(authUser(token));
+		dispatch(authUser());
 	}, [dispatch]);
 
 	return (
 		<Router>
 			<CssBaseline />
-      <Notifier />
+			<Notifier />
 			<Switch>
 				<Route path="/register" component={RegisterPage} exact />
 				<Route path="/login" component={LoginPage} exact />
