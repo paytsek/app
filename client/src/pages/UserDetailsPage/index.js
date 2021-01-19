@@ -1,3 +1,5 @@
+import { Fragment, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
 	Paper,
@@ -8,10 +10,22 @@ import {
 } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 
+import MuiSkeleton from '../../components/MuiSkeleton';
+
+import { getUserDetails } from '../../redux/actions/usersActions';
 import useStyles from './styles';
 
-const UserDetailsPage = ({ history }) => {
+const UserDetailsPage = ({ history, match }) => {
+	const dispatch = useDispatch();
+
+	const { user, loading } = useSelector((state) => state.userDetails);
+
 	const { active, paper, title, actions, details } = useStyles();
+
+	useEffect(() => {
+		const id = match.params.id;
+		dispatch(getUserDetails(id));
+	}, [dispatch, match]);
 
 	return (
 		<Container>
@@ -28,37 +42,43 @@ const UserDetailsPage = ({ history }) => {
 				<Typography variant="h5" className={title} gutterBottom>
 					View User
 				</Typography>
-				<div className={actions}>
-					<Button
-						variant="contained"
-						color="primary"
-						startIcon={<Edit />}
-            size="small"
-						onClick={() => history.push('1/edit')}
-					>
-						Edit
-					</Button>
-				</div>
-				<div className={details}>
-					<Typography variant="subtitle2">Email</Typography>
-					<Typography variant="subtitle1">admin@example.com</Typography>
-				</div>
-				<div className={details}>
-					<Typography variant="subtitle2">Username</Typography>
-					<Typography variant="subtitle1">adminuser</Typography>
-				</div>
-				<div className={details}>
-					<Typography variant="subtitle2">Role</Typography>
-					<Typography variant="subtitle1">Admin</Typography>
-				</div>
-				<div className={details}>
-					<Typography variant="subtitle2">First Name</Typography>
-					<Typography variant="subtitle1">Rodrigo</Typography>
-				</div>
-				<div className={details}>
-					<Typography variant="subtitle2">Last Name</Typography>
-					<Typography variant="subtitle1">Carlos</Typography>
-				</div>
+				{loading ? (
+					<MuiSkeleton />
+				) : (
+					<Fragment>
+						<div className={actions}>
+							<Button
+								variant="contained"
+								color="primary"
+								startIcon={<Edit />}
+								size="small"
+								onClick={() => history.push('1/edit')}
+							>
+								Edit
+							</Button>
+						</div>
+						<div className={details}>
+							<Typography variant="subtitle2">Email</Typography>
+							<Typography variant="subtitle1">{user.email}</Typography>
+						</div>
+						<div className={details}>
+							<Typography variant="subtitle2">Username</Typography>
+							<Typography variant="subtitle1">{user.username}</Typography>
+						</div>
+						<div className={details}>
+							<Typography variant="subtitle2">Role</Typography>
+							<Typography variant="subtitle1">{user.role}</Typography>
+						</div>
+						<div className={details}>
+							<Typography variant="subtitle2">First Name</Typography>
+							<Typography variant="subtitle1">{user.firstName}</Typography>
+						</div>
+						<div className={details}>
+							<Typography variant="subtitle2">Last Name</Typography>
+							<Typography variant="subtitle1">{user.lastName}</Typography>
+						</div>
+					</Fragment>
+				)}
 			</Paper>
 		</Container>
 	);

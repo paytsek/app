@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons/';
 
-import { loginUser } from '../../redux/actions/userActions';
+import { loginUser } from '../../redux/actions/usersActions';
 import useStyles from './styles';
 
 const LoginPage = ({ history }) => {

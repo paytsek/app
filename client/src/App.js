@@ -22,7 +22,7 @@ import CompanySettingsPage from './pages/CompanySettingsPage';
 import CompanySettingsCreatePage from './pages/CompanySettingsCreatePage';
 import CompanySettingsEditPage from './pages/CompanySettingsEditPage';
 
-import { authUser } from './redux/actions/userActions';
+import { authUser } from './redux/actions/usersActions';
 import setAuthToken from './utils/setAuthToken';
 import './stylesheets/main.scss';
 import useStyles from './styles';
@@ -60,7 +60,11 @@ const App = () => {
 						<Switch>
 							<PrivateRoute path="/users" component={UsersListPage} exact />
 							<Route path="/users/:id/edit" component={UserEditPage} exact />
-							<Route path="/users/:id" component={UserDetailsPage} exact />
+							<PrivateRoute
+								path="/users/:id"
+								component={UserDetailsPage}
+								exact
+							/>
 							<Route path="/profile" component={CurrentUserProfilePage} exact />
 							<Route
 								path="/change-password"
