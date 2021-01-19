@@ -5,13 +5,15 @@ const admin = asyncHandler(async (req, res, next) => {
 	const { role } = req.user && req.user;
 
 	if (role !== 'admin') {
-    res.status(403)
+		res.status(403);
 		return next(
-			new ErrorResponse({ message: 'Not authorize to access this route' })
+			new ErrorResponse({
+				message: "You don't have permission to access on this route",
+			})
 		);
-  }
-  
-  next()
+	}
+
+	next();
 });
 
 module.exports = admin;
