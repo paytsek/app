@@ -155,6 +155,27 @@ const deleteCurrentUser = asyncHandler(async (req, res, next) => {
 		.json({ success: true, user: {}, message: 'User successfully deleted' });
 });
 
+// @ROUTE PUT /api/v1/users/:id
+// @DESC Update user by its Id
+// @access PRIVATE - Logged in user and Admin
+const updateUser = asyncHandler(async (req, res, next) => {
+	const { email } = req.body;
+
+	const user = await User.findById(req.params.id);
+
+	user.email = email;
+
+	const updateduser = await user.save();
+
+	res
+		.status(200)
+		.json({
+			success: true,
+			user: updateduser,
+			message: 'Successfully updated',
+		});
+});
+
 module.exports = {
 	getUsers,
 	getUser,
@@ -162,4 +183,5 @@ module.exports = {
 	updateCurrentUser,
 	updateCurrentUserPassword,
 	deleteCurrentUser,
+	updateUser,
 };

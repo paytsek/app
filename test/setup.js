@@ -53,3 +53,28 @@ global.signIn = async (loggedInUser) => {
 
 	return token;
 };
+
+global.signInAdmin = async (loggedInUser) => {
+	const user = await User.create({
+		username: 'Jane Doe',
+		email: 'jane@example.com',
+		password: '123456',
+		firstName: 'Jane',
+    lastName: 'Doe',
+    role: 'admin'
+	});
+
+	const payload = {
+		_id: user._id,
+		email: user.email,
+		username: user.username,
+		firstName: user.firstName,
+		lastName: user.lastName,
+	};
+
+	const token = jwt.sign(loggedInUser || payload, process.env.JWT_SECRET_KEY, {
+		expiresIn: 3600,
+	});
+
+	return token;
+};

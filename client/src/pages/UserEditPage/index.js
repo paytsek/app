@@ -2,9 +2,10 @@ import { Link } from 'react-router-dom';
 import { Paper, Container, Breadcrumbs, Typography } from '@material-ui/core';
 
 import UserEditForm from '../../components/UserEdit/UserEditForm';
+
 import useStyles from './styles';
 
-const UserEditPage = ({ history }) => {
+const UserEditPage = ({ match }) => {
 	const { paper, active, title } = useStyles();
 
 	return (
@@ -14,7 +15,11 @@ const UserEditPage = ({ history }) => {
 				<Link to="/users" aria-current="page">
 					Users
 				</Link>
-				<Link className={active} to="/users/1/edit" aria-current="page">
+				<Link
+					className={active}
+					to={`/users/${match.params.id}/edit`}
+					aria-current="page"
+				>
 					Edit User
 				</Link>
 			</Breadcrumbs>

@@ -17,6 +17,9 @@ import {
 	USER_DETAILS_FAIL,
 	USER_DETAILS_SUCCESS,
 	USER_DETAILS_REQUEST,
+	USER_UPDATE_DETAILS_REQUEST,
+	USER_UPDATE_DETAILS_FAIL,
+	USER_UPDATE_DETAILS_SUCCESS,
 } from './types';
 import notification from '../../utils/notification';
 
@@ -70,8 +73,8 @@ export const loginUser = (userData) => async (dispatch) => {
 		dispatch({ type: LOGIN_SUCCESS, payload: data });
 		dispatch(authUser(data.token));
 	} catch (error) {
-		const { message } =
-			(error.response.data.errors && error.response.data.errors) ||
+		const message =
+			(error.response.data.errors && error.response.data.errors.message) ||
 			'Server Error';
 
 		dispatch({ type: LOGIN_FAIL });
@@ -86,8 +89,8 @@ export const getUsersList = () => async (dispatch) => {
 		const { data } = await axios.get('/users');
 		dispatch({ type: USERS_LIST_SUCCESS, payload: data });
 	} catch (error) {
-		const { message } =
-			(error.response.data.errors && error.response.data.errors) ||
+		const message =
+			(error.response.data.errors && error.response.data.errors.message) ||
 			'Server Error';
 		dispatch({ type: USERS_LIST_FAIL });
 		dispatch(notification('error', message, dispatch));
@@ -102,10 +105,44 @@ export const getUserDetails = (id) => async (dispatch) => {
 
 		dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
 	} catch (error) {
-		const { message } =
-			(error.response.data.errors && error.response.data.errors) ||
+		const message =
+			(error.response.data.errors && error.response.data.errors.message) ||
 			'Server Error';
 		dispatch({ type: USER_DETAILS_FAIL });
+		dispatch(notification('error', message, dispatch));
+	}
+};
+
+export const updateUserDetails = (id, userData) => async (dispatch) => {
+	dispatch({ type: USER_UPDATE_DETAILS_REQUEST });
+
+	const config = {
+		headers: {
+			'Content-Type': 'application/json',
+		},
+	};
+
+	try {
+		const { data } = await axios.put(`/users/${id}`, userData, config);
+		dispatch({ type: USER_UPDATE_DETAILS_SUCCESS, payload: data });
+
+		dispatch(notification('success', data.message, dispatch));
+	} catch (error) {
+		const message =
+			(error.response.data.errors && error.response.data.errors.message) ||
+			'Server Error';
+
+		if (error.response.data.errors.email) {
+			dispatch({
+				type: USER_UPDATE_DETAILS_FAIL,
+				payload: error.response.data.errors,
+      });
+      return
+    }
+    dispatch({
+			type: USER_UPDATE_DETAILS_FAIL,
+			payload: error.response.data.errors,
+		});
 		dispatch(notification('error', message, dispatch));
 	}
 };
