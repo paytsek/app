@@ -32,7 +32,7 @@ const LoginPage = ({ history }) => {
 
 	useEffect(() => {
 		if (auth) {
-			history.push('/dashboard');
+			history.push('/');
 		}
 	}, [auth, history]);
 
