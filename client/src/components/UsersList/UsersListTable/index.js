@@ -12,6 +12,7 @@ const UsersListTable = ({ history }) => {
 	const dispatch = useDispatch();
 
 	const { users, loading } = useSelector((state) => state.usersList);
+	const { user } = useSelector((state) => state.authUser);
 
 	const { dataGrid } = useStyles();
 
@@ -30,9 +31,9 @@ const UsersListTable = ({ history }) => {
 		},
 		{
 			field: '',
-			headerName: '',
+			headerName: 'Action',
 			sortable: false,
-			width: 200,
+			width: user.role === 'admin' ? 190 : 100,
 			renderCell: (props) => (
 				<Fragment>
 					<Button
@@ -41,12 +42,16 @@ const UsersListTable = ({ history }) => {
 							<Search onClick={() => history.push(`users/${props.row.id}`)} />
 						}
 					/>
-					<Button
-						color="primary"
-						startIcon={<Edit />}
-						onClick={() => history.push('users/1/edit')}
-					/>
-					<Button color="primary" startIcon={<Delete />} />
+					{user.role === 'admin' && (
+						<Button
+							color="primary"
+							startIcon={<Edit />}
+							onClick={() => history.push(`users/${props.row.id}/edit`)}
+						/>
+					)}
+					{user.role === 'admin' && (
+						<Button color="primary" startIcon={<Delete />} />
+					)}
 				</Fragment>
 			),
 		},

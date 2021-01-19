@@ -165,9 +165,15 @@ const updateUser = asyncHandler(async (req, res, next) => {
 
 	user.email = email;
 
-	await user.save();
+	const updateduser = await user.save();
 
-	res.status(200).json({ success: true, message: 'Successfully updated' });
+	res
+		.status(200)
+		.json({
+			success: true,
+			user: updateduser,
+			message: 'Successfully updated',
+		});
 });
 
 module.exports = {

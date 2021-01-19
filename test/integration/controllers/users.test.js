@@ -182,6 +182,9 @@ describe('PUT /api/v1/users/:id - updateUser', () => {
 			expect(res.body.success).toBeTruthy();
 			expect(res.body).toEqual(
 				expect.objectContaining({ message: 'Successfully updated' })
+      );
+      expect(res.body.user).toEqual(
+				expect.objectContaining({ email: 'rodrigo@example.com' })
 			);
 		});
 	});

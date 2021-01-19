@@ -16,6 +16,10 @@ import {
 	USER_DETAILS_FAIL,
 	USER_DETAILS_REQUEST,
 	USER_DETAILS_SUCCESS,
+	USER_UPDATE_DETAILS_FAIL,
+	USER_UPDATE_DETAILS_REQUEST,
+	USER_UPDATE_DETAILS_SUCCESS,
+	USER_UPDATE_DETAILS_RESET,
 } from '../actions/types';
 
 export const authUserReducers = (
@@ -95,6 +99,30 @@ export const userDetailsReducers = (state = { user: {} }, action) => {
 			return { ...state, loading: false, user: payload.user };
 		case USER_DETAILS_FAIL:
 			return { ...state, loading: false, user: {} };
+		default:
+			return state;
+	}
+};
+
+export const updateUserDetailsReducers = (
+	state = { errors: {}, loading: false },
+	action
+) => {
+	const { type, payload } = action;
+	switch (type) {
+		case USER_UPDATE_DETAILS_REQUEST:
+			return { ...state, loading: true };
+		case USER_UPDATE_DETAILS_SUCCESS:
+			return {
+				...state,
+				loading: false,
+				updatedUser: payload.user,
+				errors: {},
+			};
+		case USER_UPDATE_DETAILS_FAIL:
+			return { ...state, loading: false, updatedUser: {}, errors: payload };
+		case USER_UPDATE_DETAILS_RESET:
+			return { ...state, errors: {}, loading: false, updatedUser: {} };
 		default:
 			return state;
 	}

@@ -16,6 +16,7 @@ import { getUserDetails } from '../../redux/actions/usersActions';
 import useStyles from './styles';
 
 const UserDetailsPage = ({ history, match }) => {
+	const id = match.params.id;
 	const dispatch = useDispatch();
 
 	const { user, loading } = useSelector((state) => state.userDetails);
@@ -23,9 +24,8 @@ const UserDetailsPage = ({ history, match }) => {
 	const { active, paper, title, actions, details } = useStyles();
 
 	useEffect(() => {
-		const id = match.params.id;
 		dispatch(getUserDetails(id));
-	}, [dispatch, match]);
+	}, [dispatch, id]);
 
 	return (
 		<Container>
@@ -52,7 +52,7 @@ const UserDetailsPage = ({ history, match }) => {
 								color="primary"
 								startIcon={<Edit />}
 								size="small"
-								onClick={() => history.push('1/edit')}
+								onClick={() => history.push(`${user._id}/edit`)}
 							>
 								Edit
 							</Button>
