@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios from '../../axios';
+import setAuthToken from '../../utils/setAuthToken';
 
 import {
 	REGISTER_FAIL,
@@ -13,19 +14,15 @@ import {
 } from './types';
 import notification from '../../utils/notification';
 
-export const authUser = (token) => async (dispatch) => {
-	dispatch({ type: AUTH_REQUEST });
+export const authUser = () => async (dispatch) => {
+	const token = localStorage.getItem('token');
 
-	const config = {
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-	};
+	setAuthToken(token);
 
 	dispatch({ type: AUTH_REQUEST });
 
 	try {
-		const { data } = await axios.get('/api/v1/auth', config);
+		const { data } = await axios.get('/auth');
 
 		dispatch({ type: AUTH_SUCCESS, payload: data });
 	} catch (error) {
@@ -43,11 +40,7 @@ export const registerUser = (userData) => async (dispatch) => {
 	};
 
 	try {
-		const { data } = await axios.post(
-			'/api/v1/auth/register',
-			userData,
-			config
-		);
+		const { data } = await axios.post('/auth/register', userData, config);
 		dispatch({ type: REGISTER_SUCCESS, payload: data });
 		dispatch(authUser(data.token));
 	} catch (error) {
@@ -66,7 +59,7 @@ export const loginUser = (userData) => async (dispatch) => {
 	};
 
 	try {
-		const { data } = await axios.post('/api/v1/auth/login', userData, config);
+		const { data } = await axios.post('/auth/login', userData, config);
 
 		dispatch({ type: LOGIN_SUCCESS, payload: data });
 		dispatch(authUser(data.token));
