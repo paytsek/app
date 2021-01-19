@@ -18,14 +18,6 @@ const registerUser = asyncHandler(async (req, res, next) => {
 	res.status(201).json({
 		success: true,
 		token,
-		user: {
-			id: user._id,
-			email: user.email,
-			role: user.role,
-			firstName: user.firstName,
-			lastName: user.lastName,
-			fullName: user.fullName,
-		},
 	});
 });
 
@@ -61,14 +53,6 @@ const loginUser = asyncHandler(async (req, res, next) => {
 	res.status(200).json({
 		success: true,
 		token,
-		user: {
-			id: user._id,
-			email: user.email,
-			role: user.role,
-			firstName: user.firstName,
-			lastName: user.lastName,
-			fullName: user.fullName,
-		},
 	});
 });
 
@@ -90,7 +74,7 @@ const getAuthUser = asyncHandler(async (req, res, next) => {
 			email: user.email,
 			role: user.role,
 			firstName: user.firstName,
-			lastName: user.lastName,  
+			lastName: user.lastName,
 			fullName: user.fullName,
 		},
 	});
