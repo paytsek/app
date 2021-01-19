@@ -128,9 +128,6 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 			expect(res.status).toBe(201);
 			expect(res.body.success).toBeTruthy();
 			expect(res.body).toHaveProperty('token', res.body.token);
-			expect(Object.keys(res.body.user)).toEqual(
-				expect.arrayContaining(['id'])
-			);
 
 			const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
 
@@ -214,7 +211,6 @@ describe('POST /api/v1/auth/login - loginUser', () => {
 
 		expect(res.status).toBe(200);
 		expect(res.body.success).toBeTruthy();
-		expect(Object.keys(res.body.user)).toEqual(expect.arrayContaining(['id']));
 		expect(Object.keys(res.body)).toEqual(expect.arrayContaining(['token']));
 
 		const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);

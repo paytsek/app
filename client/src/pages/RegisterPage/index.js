@@ -16,6 +16,7 @@ import PageLoader from '../../components/PageLoader';
 
 import useStyles from './styles';
 import { registerUser } from '../../redux/actions/userActions';
+import { REGISTER_RESET } from '../../redux/actions/types';
 
 const RegisterPage = ({ history }) => {
 	const dispatch = useDispatch();
@@ -29,12 +30,11 @@ const RegisterPage = ({ history }) => {
 	const {
 		errors: registerUserErrors,
 		loading: registerUsersLoading,
-		userInfo,
 	} = useSelector((state) => state.registerUser);
 	const { loading: authUserLoading, auth } = useSelector(
 		(state) => state.authUser
-  );
-  
+	);
+
 	const onSubmit = (e) => {
 		e.preventDefault();
 		dispatch(registerUser({ email, username, firstName, lastName, password }));
@@ -43,10 +43,14 @@ const RegisterPage = ({ history }) => {
 	const classes = useStyles();
 
 	useEffect(() => {
-		if (userInfo || auth) {
+		if (auth) {
 			history.push('/dashboard');
 		}
-	}, [userInfo, history, auth]);
+
+		return () => {
+			dispatch({ type: REGISTER_RESET });
+		};
+	}, [history, auth, dispatch]);
 
 	if (authUserLoading) {
 		return <PageLoader />;

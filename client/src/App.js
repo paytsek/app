@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import cx from 'classnames';
 
+import Notifier from './components/Notifier';
 import Layout from './components/layout';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
@@ -39,6 +40,7 @@ const App = () => {
 	return (
 		<Router>
 			<CssBaseline />
+      <Notifier />
 			<Switch>
 				<Route path="/register" component={RegisterPage} exact />
 				<Route path="/login" component={LoginPage} exact />

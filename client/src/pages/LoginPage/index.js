@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
 	Avatar,
@@ -10,10 +12,29 @@ import {
 } from '@material-ui/core';
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons/';
 
+import { loginUser } from '../../redux/actions/userActions';
 import useStyles from './styles';
 
-const LoginPage = () => {
+const LoginPage = ({ history }) => {
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+
+	const dispatch = useDispatch();
+
+	const { auth } = useSelector((state) => state.authUser);
+
 	const classes = useStyles();
+
+	const onSubmit = (e) => {
+		e.preventDefault();
+		dispatch(loginUser({ email, password }));
+	};
+
+	useEffect(() => {
+		if (auth) {
+			history.push('/dashboard');
+		}
+	}, [auth, history]);
 
 	return (
 		<Grid container component="main" className={classes.root}>
@@ -27,7 +48,7 @@ const LoginPage = () => {
 					<Typography component="h1" variant="h5">
 						Sign In
 					</Typography>
-					<form className={classes.form} noValidate>
+					<form className={classes.form} noValidate onSubmit={onSubmit}>
 						<TextField
 							variant="outlined"
 							margin="normal"
@@ -37,6 +58,8 @@ const LoginPage = () => {
 							label="Email Address"
 							name="email"
 							autoComplete="off"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
 						/>
 						<TextField
 							variant="outlined"
@@ -47,6 +70,8 @@ const LoginPage = () => {
 							label="Password"
 							type="password"
 							id="password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
 						/>
 						<Button
 							type="submit"
