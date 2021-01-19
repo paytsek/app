@@ -9,6 +9,7 @@ import {
 	LOGIN_FAIL,
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
+	LOGOUT,
 } from '../actions/types';
 
 export const authUserReducers = (
@@ -23,6 +24,9 @@ export const authUserReducers = (
 			return { ...state, loading: false, auth: true, user: payload.user };
 		case AUTH_FAIL:
 			return { ...state, loading: false, auth: false, user: {} };
+		case LOGOUT:
+			localStorage.removeItem('token');
+			return { ...state, auth: false, user: {} };
 		default:
 			return state;
 	}

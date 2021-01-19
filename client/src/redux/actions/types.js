@@ -5,6 +5,7 @@ export const REMOVE_SNACKBAR = 'REMOVE_SNACKBAR';
 export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
+export const LOGOUT = 'LOGOUT';
 
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
