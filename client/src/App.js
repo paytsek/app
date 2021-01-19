@@ -22,7 +22,7 @@ import CompanySettingsPage from './pages/CompanySettingsPage';
 import CompanySettingsCreatePage from './pages/CompanySettingsCreatePage';
 import CompanySettingsEditPage from './pages/CompanySettingsEditPage';
 
-import { authUser } from './redux/actions/userActions';
+import { authUser } from './redux/actions/usersActions';
 import setAuthToken from './utils/setAuthToken';
 import './stylesheets/main.scss';
 import useStyles from './styles';

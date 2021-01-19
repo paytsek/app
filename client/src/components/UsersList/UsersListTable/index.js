@@ -5,7 +5,7 @@ import { DataGrid } from '@material-ui/data-grid';
 import { Button } from '@material-ui/core';
 import { Search, Edit, Delete } from '@material-ui/icons';
 
-import { getUsersList } from '../../../redux/actions/usersListActions';
+import { getUsersList } from '../../../redux/actions/usersActions';
 import useStyles from './styles';
 
 const UsersListTable = ({ history }) => {

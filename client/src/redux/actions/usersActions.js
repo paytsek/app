@@ -11,6 +11,9 @@ import {
 	LOGIN_FAIL,
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
+	USERS_LIST_SUCCESS,
+	USERS_LIST_REQUEST,
+	USERS_LIST_FAIL,
 } from './types';
 import notification from '../../utils/notification';
 
@@ -67,6 +70,19 @@ export const loginUser = (userData) => async (dispatch) => {
 		const { message } = error.response.data.errors;
 
 		dispatch({ type: LOGIN_FAIL });
+		dispatch(notification('error', message, dispatch));
+	}
+};
+
+export const getUsersList = () => async (dispatch) => {
+	dispatch({ type: USERS_LIST_REQUEST });
+
+	try {
+		const { data } = await axios.get('/users');
+		dispatch({ type: USERS_LIST_SUCCESS, payload: data });
+	} catch (error) {
+		const { message } = error.response.data.errors;
+		dispatch({ type: USERS_LIST_FAIL });
 		dispatch(notification('error', message, dispatch));
 	}
 };

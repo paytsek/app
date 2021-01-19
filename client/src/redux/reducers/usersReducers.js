@@ -10,6 +10,12 @@ import {
 	LOGIN_REQUEST,
 	LOGIN_SUCCESS,
 	LOGOUT,
+	USERS_LIST_FAIL,
+	USERS_LIST_SUCCESS,
+	USERS_LIST_REQUEST,
+	USER_DETAILS_FAIL,
+	USER_DETAILS_REQUEST,
+	USER_DETAILS_SUCCESS,
 } from '../actions/types';
 
 export const authUserReducers = (
@@ -59,6 +65,36 @@ export const loginUserReducer = (state = {}, action) => {
 			return { ...state, loading: false };
 		case LOGIN_FAIL:
 			return { ...state, loading: false };
+		default:
+			return state;
+	}
+};
+
+export const usersListReducers = (state = { users: [] }, action) => {
+	const { type, payload } = action;
+
+	switch (type) {
+		case USERS_LIST_REQUEST:
+			return { ...state, loading: true };
+		case USERS_LIST_SUCCESS:
+			return { ...state, loading: false, users: payload.users };
+		case USERS_LIST_FAIL:
+			return { ...state, loading: false, users: [] };
+		default:
+			return state;
+	}
+};
+
+export const userDetailsReducers = (state = { user: {} }, action) => {
+	const { type, payload } = action;
+
+	switch (type) {
+		case USER_DETAILS_REQUEST:
+			return { ...state, loading: true };
+		case USER_DETAILS_SUCCESS:
+			return { ...state, loading: false, user: payload.user };
+		case USER_DETAILS_FAIL:
+			return { ...state, loading: false, user: {} };
 		default:
 			return state;
 	}

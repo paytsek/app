@@ -15,7 +15,7 @@ import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons/';
 import PageLoader from '../../components/PageLoader';
 
 import useStyles from './styles';
-import { registerUser } from '../../redux/actions/userActions';
+import { registerUser } from '../../redux/actions/usersActions';
 import { REGISTER_RESET } from '../../redux/actions/types';
 
 const RegisterPage = ({ history }) => {

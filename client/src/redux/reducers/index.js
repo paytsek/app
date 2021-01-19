@@ -4,8 +4,8 @@ import {
 	registerUserReducer,
 	authUserReducers,
 	loginUserReducer,
-} from '../reducers/userReducers';
-import { usersListReducers } from './usersListReducers';
+	usersListReducers,
+} from '../reducers/usersReducers';
 
 import snackbarReducer from '../reducers/snackbarReducers';
 
