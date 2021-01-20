@@ -2,27 +2,25 @@ import { v4 as uuidV4 } from 'uuid';
 
 import { ENQUEUE_SNACKBAR, CLOSE_SNACKBAR, REMOVE_SNACKBAR } from './types';
 
-export const enqueueSnackbar = (notification) => {
-	const key = notification.options && notification.options.key;
+export const enqueueSnackbar = notification => {
+  const key = notification.options && notification.options.key;
 
-	return {
-		type: ENQUEUE_SNACKBAR,
-		notification: {
-			...notification,
-			key: key || uuidV4(),
-		},
-	};
+  return {
+    type: ENQUEUE_SNACKBAR,
+    notification: {
+      ...notification,
+      key: key || uuidV4(),
+    },
+  };
 };
 
-export const closeSnackbar = (key) => {
-	return {
-		type: CLOSE_SNACKBAR,
-		dismissAll: !key, // dismiss all if no key has been defined
-		key,
-	};
-};
+export const closeSnackbar = key => ({
+  type: CLOSE_SNACKBAR,
+  dismissAll: !key, // dismiss all if no key has been defined
+  key,
+});
 
-export const removeSnackbar = (key) => ({
-	type: REMOVE_SNACKBAR,
-	key,
+export const removeSnackbar = key => ({
+  type: REMOVE_SNACKBAR,
+  key,
 });
