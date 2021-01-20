@@ -41,5 +41,3 @@ jobs:
 #       run: npm run test:client
     - name: Eslint Front-end
       run: npm run lint:client
-    - name: Eslint Backend
-      run: npm run lint:server
