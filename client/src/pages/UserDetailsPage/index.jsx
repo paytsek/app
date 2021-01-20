@@ -10,7 +10,7 @@ import { getUserDetails } from '../../redux/actions/usersActions';
 import useStyles from './styles';
 
 const UserDetailsPage = ({ history, match }) => {
-  const id = match.params.id;
+  const { id } = match.params;
   const dispatch = useDispatch();
 
   const { user, loading } = useSelector(state => state.userDetails);
