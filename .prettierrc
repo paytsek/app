@@ -1,0 +1,27 @@
+{
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "printWidth": 80,
+  "overrides": [
+    {
+      "files": ["babel.config.js"],
+      "options": {
+        "trailingComma": "es5"
+      }
+    },
+    {
+      "files": [],
+      "options": {
+        "singleQuote": false
+      }
+    },
+    {
+      "files": []
+    }
+  ]
+}

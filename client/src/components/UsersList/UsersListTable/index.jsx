@@ -53,7 +53,7 @@ const UsersListTable = ({ history }) => {
   return (
     <DataGrid
       className={dataGrid}
-      rows={users.map(user => ({ ...user, id: user._id }))}
+      rows={users.map(userList => ({ ...userList, id: userList._id }))}
       columns={columns}
       pageSize={5}
       checkboxSelection

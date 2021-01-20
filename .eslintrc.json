@@ -1,0 +1,30 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": [
+        "google"
+    ],
+    "plugins": [],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018
+    },
+    "rules": {
+        "object-curly-spacing": 0,
+        "max-len": ["error", { "code": 120 }],
+        "require-jsdoc": 0,
+        "arrow-parens": 0,
+        "indent": 0,
+        "quote-props": 0,
+        "space-before-function-paren": 0,
+        "new-cap": 0
+    },
+    "ignorePatterns": ["node_modlues"]
+}

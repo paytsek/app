@@ -10,6 +10,8 @@
     "start": "node index.js",
     "server": "nodemon index.js",
     "client": "npm start --prefix client",
+    "lint:server": "eslint .",
+    "lint:client": "npm run lint --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "jest": {

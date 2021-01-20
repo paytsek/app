@@ -1,10 +1,10 @@
 class ErrorResponse extends Error {
-	constructor(errors) {
-		super();
+  constructor(errors) {
+    super();
 
-		this.success = false;
-		this.errors = errors;
-	}
+    this.success = false;
+    this.errors = errors;
+  }
 }
 
 module.exports = ErrorResponse;

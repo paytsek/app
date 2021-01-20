@@ -7,81 +7,81 @@ const User = require('../models/User');
 // @Desc Register a user
 // access PUBLIC
 const registerUser = asyncHandler(async (req, res, next) => {
-	const { username, email, password, firstName, lastName } = req.body;
+  const { username, email, password, firstName, lastName } = req.body;
 
-	let user = new User({ username, email, password, firstName, lastName });
+  let user = new User({ username, email, password, firstName, lastName });
 
-	user = await user.save();
+  user = await user.save();
 
-	const token = user.generateJwtToken();
+  const token = user.generateJwtToken();
 
-	res.status(201).json({
-		success: true,
-		token,
-	});
+  res.status(201).json({
+    success: true,
+    token,
+  });
 });
 
 // @ROUTE POST /api/v1/auth/login
 // @Desc Login a user
 // access PUBLIC
 const loginUser = asyncHandler(async (req, res, next) => {
-	const { email, password } = req.body;
+  const { email, password } = req.body;
 
-	if (!email || !password) {
-		res.status(400);
-		return next(
-			new ErrorResponse({ message: 'Please provide an email and password' })
-		);
-	}
+  if (!email || !password) {
+    res.status(400);
+    return next(
+      new ErrorResponse({ message: 'Please provide an email and password' }),
+    );
+  }
 
-	let user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email }).select('+password');
 
-	if (!user) {
-		res.status(401);
-		return next(new ErrorResponse({ message: 'Invalid credentials' }));
-	}
+  if (!user) {
+    res.status(401);
+    return next(new ErrorResponse({ message: 'Invalid credentials' }));
+  }
 
-	const isMatch = await user.isMatch(password);
+  const isMatch = await user.isMatch(password);
 
-	if (!isMatch) {
-		res.status(401);
-		return next(new ErrorResponse({ message: 'Invalid credentials' }));
-	}
+  if (!isMatch) {
+    res.status(401);
+    return next(new ErrorResponse({ message: 'Invalid credentials' }));
+  }
 
-	const token = user.generateJwtToken();
+  const token = user.generateJwtToken();
 
-	res.status(200).json({
-		success: true,
-		token,
-	});
+  res.status(200).json({
+    success: true,
+    token,
+  });
 });
 
 // @ROUTE GET /api/v1/auth/
 // @Desc Get auth user
 // access PRIVATE
 const getAuthUser = asyncHandler(async (req, res, next) => {
-	const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id);
 
-	if (!user) {
-		res.status(401);
-		return next(new ErrorResponse({ message: 'No user, access denied' }));
-	}
+  if (!user) {
+    res.status(401);
+    return next(new ErrorResponse({ message: 'No user, access denied' }));
+  }
 
-	res.json({
-		success: true,
-		user: {
-			id: user._id,
-			email: user.email,
-			role: user.role,
-			firstName: user.firstName,
-			lastName: user.lastName,
-			fullName: user.fullName,
-		},
-	});
+  res.json({
+    success: true,
+    user: {
+      id: user._id,
+      email: user.email,
+      role: user.role,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      fullName: user.fullName,
+    },
+  });
 });
 
 module.exports = {
-	registerUser,
-	loginUser,
-	getAuthUser,
+  registerUser,
+  loginUser,
+  getAuthUser,
 };

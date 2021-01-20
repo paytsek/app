@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Grid, TextField, Button } from '@material-ui/core';
@@ -13,7 +13,7 @@ import useStyles from './styles';
 const UserEditForm = ({ history, match }) => {
   const [email, setEmail] = useState('');
 
-  const id = match.params.id;
+  const { id } = match.params;
 
   const dispatch = useDispatch();
 
