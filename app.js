@@ -16,8 +16,7 @@ const companyRoutes = require('./routes/companies');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 
-const envPath =
-	process.env.NODE_ENV === 'test' ? './config/test.env' : './config/config.env';
+const envPath = process.env.NODE_ENV === 'test' ? './config/test.env' : './config/config.env';
 
 dotenv.config({ path: envPath });
 
@@ -36,8 +35,8 @@ app.use(xss());
 
 // Rate limiting
 const limiter = rateLimit({
-	windowMs: 10 * 60 * 1000, // 10 mins
-	max: 100,
+  windowMs: 10 * 60 * 1000, // 10 mins
+  max: 100,
 });
 
 app.use(limiter);
@@ -50,7 +49,7 @@ app.use(cors());
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
-	app.use(morgan('dev'));
+  app.use(morgan('dev'));
 }
 
 // API ROUTES

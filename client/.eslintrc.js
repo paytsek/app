@@ -5,6 +5,7 @@ module.exports = {
     node: true,
     jest: true,
   },
+  root: true,
   extends: ['plugin:react/recommended', 'airbnb', 'prettier', 'prettier/standard', 'prettier/babel', 'prettier/react'],
   plugins: ['prettier', 'react'],
   globals: {
