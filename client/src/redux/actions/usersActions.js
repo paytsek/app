@@ -20,6 +20,12 @@ import {
   USER_UPDATE_DETAILS_REQUEST,
   USER_UPDATE_DETAILS_FAIL,
   USER_UPDATE_DETAILS_SUCCESS,
+  CURRENT_USER_SUCCESS,
+  CURRENT_USER_REQUEST,
+  CURRENT_USER_FAIL,
+  CURRENT_USER_UPDATE_REQUEST,
+  CURRENT_USER_UPDATE_SUCCESS,
+  CURRENT_USER_UPDATE_FAIL,
 } from './types';
 import notification from '../../utils/notification';
 
@@ -136,5 +142,43 @@ export const updateUserDetails = (id, userData) => async dispatch => {
       payload: error.response.data.errors,
     });
     dispatch(notification('error', message, dispatch));
+  }
+};
+
+export const getCurrentUser = () => async dispatch => {
+  dispatch({ type: CURRENT_USER_REQUEST });
+
+  try {
+    const { data } = await axios.get('/users/current-user');
+
+    dispatch({ type: CURRENT_USER_SUCCESS, payload: data });
+  } catch (error) {
+    const message = (error.response.data.errors && error.response.data.errors.message) || 'Server Error';
+
+    dispatch({ type: CURRENT_USER_FAIL, payload: message });
+    dispatch(notification('error', message, dispatch));
+  }
+};
+
+export const updateCurrentUser = userData => async dispatch => {
+  dispatch({ type: CURRENT_USER_UPDATE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const { data } = await axios.put('/users/current-user', userData, config);
+
+    dispatch({ type: CURRENT_USER_UPDATE_SUCCESS });
+    dispatch({ type: CURRENT_USER_SUCCESS, payload: data });
+
+    const message = 'Successfully updated';
+    dispatch(notification('success', message, dispatch));
+  } catch (error) {
+    const { errors } = error.response.data;
+    dispatch({ type: CURRENT_USER_UPDATE_FAIL, payload: errors });
   }
 };

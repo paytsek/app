@@ -39,7 +39,9 @@ const limiter = rateLimit({
   max: 100,
 });
 
-app.use(limiter);
+if (process.env.NODE_ENV === 'production') {
+  app.use(limiter);
+}
 
 // prevent http param polution
 app.use(hpp());
