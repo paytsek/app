@@ -20,6 +20,9 @@ import {
   USER_UPDATE_DETAILS_REQUEST,
   USER_UPDATE_DETAILS_FAIL,
   USER_UPDATE_DETAILS_SUCCESS,
+  CURRENT_USER_SUCCESS,
+  CURRENT_USER_REQUEST,
+  CURRENT_USER_FAIL,
 } from './types';
 import notification from '../../utils/notification';
 
@@ -135,6 +138,21 @@ export const updateUserDetails = (id, userData) => async dispatch => {
       type: USER_UPDATE_DETAILS_FAIL,
       payload: error.response.data.errors,
     });
+    dispatch(notification('error', message, dispatch));
+  }
+};
+
+export const getCurrentUser = () => async dispatch => {
+  dispatch({ type: CURRENT_USER_REQUEST });
+
+  try {
+    const { data } = await axios.get('/users/current-user');
+
+    dispatch({ type: CURRENT_USER_SUCCESS, payload: data });
+  } catch (error) {
+    const message = (error.response.data.errors && error.response.data.errors.message) || 'Server Error';
+
+    dispatch({ type: CURRENT_USER_FAIL, payload: message });
     dispatch(notification('error', message, dispatch));
   }
 };
