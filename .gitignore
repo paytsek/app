@@ -1,3 +1,5 @@
 node_modules
 /config/config.env
 /client/src/.eslintcache
+
+.DS_Store
