@@ -24,6 +24,10 @@ import {
   CURRENT_USER_REQUEST,
   CURRENT_USER_RESET,
   CURRENT_USER_SUCCESS,
+  CURRENT_USER_UPDATE_REQUEST,
+  CURRENT_USER_UPDATE_SUCCESS,
+  CURRENT_USER_UPDATE_FAIL,
+  CURRENT_USER_UPDATE_RESET,
 } from '../actions/types';
 
 export const authUserReducers = (state = { auth: false, loading: true, user: {} }, action) => {
@@ -137,6 +141,22 @@ export const currentUserReducers = (state = { errors: {} }, action) => {
       return { ...state, loading: false, errors: payload };
     case CURRENT_USER_RESET:
       return { loading: false, errors: {} };
+    default:
+      return state;
+  }
+};
+
+export const currentUserUpdateReducers = (state = { errors: {} }, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case CURRENT_USER_UPDATE_REQUEST:
+      return { ...state, loading: true };
+    case CURRENT_USER_UPDATE_SUCCESS:
+      return { ...state, loading: false };
+    case CURRENT_USER_UPDATE_FAIL:
+      return { ...state, loading: false, errors: payload };
+    case CURRENT_USER_UPDATE_RESET:
+      return { errors: {}, loading: false };
     default:
       return state;
   }

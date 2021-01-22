@@ -6,14 +6,15 @@ import { Save, Undo, Clear, Delete } from '@material-ui/icons';
 
 import MuiSkeleton from '../../MuiSkeleton';
 
-import { getCurrentUser } from '../../../redux/actions/usersActions';
-import { CURRENT_USER_RESET } from '../../../redux/actions/types';
+import { getCurrentUser, updateCurrentUser } from '../../../redux/actions/usersActions';
+import { CURRENT_USER_RESET, CURRENT_USER_UPDATE_RESET } from '../../../redux/actions/types';
 import useStyles from './styles';
 
 const CurrentUserProfileForm = ({ history }) => {
   const dispatch = useDispatch();
 
   const { user, loading } = useSelector(state => state.currentUser);
+  const { loading: currentUserUpdateLoading, errors } = useSelector(state => state.currentUserUpdate);
 
   const [state, setState] = useState({
     email: '',
@@ -27,6 +28,11 @@ const CurrentUserProfileForm = ({ history }) => {
 
   const handleOnChange = e => setState(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
 
+  const handleOnSubmit = e => {
+    e.preventDefault();
+    dispatch(updateCurrentUser(state));
+  };
+
   const handleReset = () => {
     if (user) {
       setState(prevState => ({
@@ -37,6 +43,7 @@ const CurrentUserProfileForm = ({ history }) => {
         lastName: user.lastName,
       }));
     }
+    dispatch({ type: CURRENT_USER_UPDATE_RESET });
   };
 
   useEffect(() => {
@@ -46,6 +53,7 @@ const CurrentUserProfileForm = ({ history }) => {
 
     return () => {
       dispatch({ type: CURRENT_USER_RESET });
+      dispatch({ type: CURRENT_USER_UPDATE_RESET });
     };
   }, []);
 
@@ -58,7 +66,7 @@ const CurrentUserProfileForm = ({ history }) => {
       <MuiSkeleton />
     </Grid>
   ) : (
-    <form>
+    <form onSubmit={handleOnSubmit}>
       <Grid container>
         <Grid item xs={12} md={7} lg={8}>
           <TextField
@@ -69,6 +77,8 @@ const CurrentUserProfileForm = ({ history }) => {
             name="email"
             value={email}
             onChange={handleOnChange}
+            error={!!errors.email}
+            helperText={errors.email}
           />
         </Grid>
         <Grid item xs={12} md={7} lg={8}>
@@ -81,6 +91,8 @@ const CurrentUserProfileForm = ({ history }) => {
             name="username"
             value={username}
             onChange={handleOnChange}
+            error={!!errors.username}
+            helperText={errors.username}
           />
         </Grid>
         <Grid item xs={12} md={7} lg={8}>
@@ -92,6 +104,8 @@ const CurrentUserProfileForm = ({ history }) => {
             name="firstName"
             value={firstName}
             onChange={handleOnChange}
+            error={!!errors.firstName}
+            helperText={errors.firstName}
           />
         </Grid>
         <Grid item xs={12} md={7} lg={8}>
@@ -103,11 +117,20 @@ const CurrentUserProfileForm = ({ history }) => {
             name="lastName"
             value={lastName}
             onChange={handleOnChange}
+            error={!!errors.lastName}
+            helperText={errors.lastName}
           />
         </Grid>
       </Grid>
       <div className={formButton}>
-        <Button color="primary" variant="contained" size="small" startIcon={<Save />}>
+        <Button
+          color="primary"
+          variant="contained"
+          size="small"
+          type="submit"
+          disabled={currentUserUpdateLoading}
+          startIcon={<Save />}
+        >
           Save
         </Button>
         <Button size="small" onClick={handleReset} startIcon={<Undo />}>
