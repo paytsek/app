@@ -26,6 +26,10 @@ import {
   CURRENT_USER_UPDATE_REQUEST,
   CURRENT_USER_UPDATE_SUCCESS,
   CURRENT_USER_UPDATE_FAIL,
+  CURRENT_USER_DELETE_REQUEST,
+  CURRENT_USER_DELETE_FAIL,
+  CURRENT_USER_DELETE_SUCCESS,
+  LOGOUT,
 } from './types';
 import notification from '../../utils/notification';
 
@@ -180,5 +184,29 @@ export const updateCurrentUser = userData => async dispatch => {
   } catch (error) {
     const { errors } = error.response.data;
     dispatch({ type: CURRENT_USER_UPDATE_FAIL, payload: errors });
+  }
+};
+
+export const deleteCurrentUser = userData => async dispatch => {
+  dispatch({ type: CURRENT_USER_DELETE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: userData,
+  };
+
+  try {
+    const { data } = await axios.delete('/users/current-user', config);
+
+    dispatch(notification('success', data.message, dispatch));
+    dispatch({ type: CURRENT_USER_DELETE_SUCCESS });
+    dispatch({ type: LOGOUT });
+  } catch (error) {
+    const message = (error.response.data.errors && error.response.data.errors.message) || 'Server Error';
+
+    dispatch({ type: CURRENT_USER_DELETE_FAIL });
+    dispatch(notification('error', message, dispatch));
   }
 };
