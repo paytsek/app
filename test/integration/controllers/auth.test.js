@@ -52,7 +52,10 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toHaveProperty('username', 'Username must not exceed to 120 characters');
+      expect(res.body.errors).toHaveProperty(
+        'username',
+        'Username must not exceed to 120 characters',
+      );
     });
 
     it('should return error response if password is invalid', async () => {
@@ -122,7 +125,9 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 
       const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
 
-      expect(Object.keys(user)).toEqual(expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp']));
+      expect(Object.keys(user)).toEqual(
+        expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp']),
+      );
       expect(user).toEqual(
         expect.objectContaining({ username: 'darryl cute' }),
         expect.objectContaining({ email: 'darrylcute@gmail.com' }),
@@ -152,7 +157,9 @@ describe('POST /api/v1/auth/login - loginUser', () => {
         lastName: 'Mangibin',
       });
 
-      const res = await request(app).post(url).send({ email: 'darryl@gmail.com', password: '123456' });
+      const res = await request(app)
+        .post(url)
+        .send({ email: 'darryl@gmail.com', password: '123456' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
@@ -168,7 +175,9 @@ describe('POST /api/v1/auth/login - loginUser', () => {
         lastName: 'Mangibin',
       });
 
-      const res = await request(app).post(url).send({ email: 'test@example.com', password: '1234567' });
+      const res = await request(app)
+        .post(url)
+        .send({ email: 'test@example.com', password: '1234567' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
@@ -185,7 +194,9 @@ describe('POST /api/v1/auth/login - loginUser', () => {
       lastName: 'Mangibin',
     });
 
-    const res = await request(app).post(url).send({ email: 'test@example.com', password: '123456' });
+    const res = await request(app)
+      .post(url)
+      .send({ email: 'test@example.com', password: '123456' });
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBeTruthy();
@@ -193,7 +204,9 @@ describe('POST /api/v1/auth/login - loginUser', () => {
 
     const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
 
-    expect(Object.keys(user)).toEqual(expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp']));
+    expect(Object.keys(user)).toEqual(
+      expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp']),
+    );
     expect(user).toMatchObject({
       username: 'darryl mangibin',
       email: 'test@example.com',

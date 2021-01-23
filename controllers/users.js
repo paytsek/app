@@ -9,7 +9,9 @@ const CompanySetting = require('../models/CompanySetting');
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({}).populate('company');
 
-  res.status(200).json({ success: true, users, count: users.length });
+  const filteredUser = users.filter(user => user._id.toString() !== req.user._id.toString());
+
+  res.status(200).json({ success: true, users: filteredUser, count: filteredUser.length });
 });
 
 // @ROUTE GET /api/v1/users/:id
@@ -169,6 +171,43 @@ const updateUser = asyncHandler(async (req, res) => {
   });
 });
 
+// @ROUTE DELETE /api/v1/users/:id
+// @DESC Delete user by its Id
+// @access PRIVATE - Logged in user and Admin
+const deleteUser = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  const { password, confirmPassword } = req.body;
+  const currentUser = await User.findById(req.user._id).select('+password');
+
+  if (req.user._id.toString() === id) {
+    res.status(400);
+    return next(new ErrorResponse({ message: 'Unable to delete the user' }));
+  }
+
+  const user = await User.findById(id);
+
+  if (!user) {
+    res.status(400);
+    return next(new ErrorResponse({ message: `Resource with an id of ${id} not found` }));
+  }
+
+  if (password !== confirmPassword) {
+    res.status(400);
+    return next(new ErrorResponse({ message: 'Password and password confirmation mismatch' }));
+  }
+
+  const isMatch = await currentUser.isMatch(password);
+
+  if (!isMatch) {
+    res.status(400);
+    return next(new ErrorResponse({ message: 'Invalid password' }));
+  }
+
+  await user.remove();
+
+  return res.status(200).json({ success: true, message: 'Successfully deleted' });
+});
+
 module.exports = {
   getUsers,
   getUser,
@@ -177,4 +216,5 @@ module.exports = {
   updateCurrentUserPassword,
   deleteCurrentUser,
   updateUser,
+  deleteUser,
 };

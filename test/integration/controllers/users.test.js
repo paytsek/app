@@ -49,13 +49,14 @@ describe('GET /api/v1/users - getUsers', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBeTruthy();
-    expect(res.body.users.length).toBe(2);
+    expect(res.body.users.length).toBe(1);
 
     const loggedInUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
     const users = res.body.users.map(user => user.username);
 
-    expect(users).toEqual(expect.arrayContaining(['Carlos Rodrigo', loggedInUser.username]));
+    expect(users).toEqual(expect.arrayContaining(['Carlos Rodrigo']));
+    expect(users).not.toEqual(expect.arrayContaining([loggedInUser.name]));
   });
 });
 
@@ -111,7 +112,14 @@ describe('GET /api/v1/users/:id - getUser', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.success).toBeTruthy();
-    expect(res.body.user).toHaveProperty('_id', user._id, 'username', user.username, 'email', user.email);
+    expect(res.body.user).toHaveProperty(
+      '_id',
+      user._id,
+      'username',
+      user.username,
+      'email',
+      user.email,
+    );
   });
 });
 
@@ -401,7 +409,10 @@ describe('DELETE /api/users/current-user - deleteCurrentUser', () => {
 
     it('should return error response if password is empty', async () => {
       const token = await global.signIn(payload);
-      const res = await request(app).delete(url).auth(token, { type: 'bearer' }).send({ password: '' });
+      const res = await request(app)
+        .delete(url)
+        .auth(token, { type: 'bearer' })
+        .send({ password: '' });
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBeFalsy();
@@ -451,6 +462,107 @@ describe('DELETE /api/users/current-user - deleteCurrentUser', () => {
       expect(res.body.success).toBeTruthy();
       expect(Object.keys(res.body.user).length).toEqual(0);
       expect(res.body).toEqual(expect.objectContaining({ message: 'User successfully deleted' }));
+    });
+  });
+});
+
+describe('DELETE /api/users/:id deleteUser', () => {
+  const url = '/api/v1/users';
+  let admin;
+  let payload;
+  let user;
+
+  beforeEach(async () => {
+    admin = await User.create({
+      username: 'darryl',
+      email: 'darryl@gmail.com',
+      password: '123456',
+      firstName: 'Darryl',
+      lastName: 'Mangibin',
+      role: 'admin',
+    });
+    user = await User.create({
+      username: 'rodrigo',
+      email: 'rodrigo@gmail.com',
+      password: '123456',
+      firstName: 'rodrigo',
+      lastName: 'carlos',
+      role: 'member',
+    });
+    payload = {
+      _id: admin._id,
+      email: admin.email,
+      username: admin.username,
+      firstName: admin.firstName,
+      lastName: admin.lastName,
+    };
+  });
+
+  describe('Error Response', () => {
+    it('should return an error response if id is invalid or not found', async () => {
+      const invalidId = mongoose.Types.ObjectId();
+      const token = await global.signIn(payload);
+
+      const res = await request(app).delete(`${url}/${invalidId}`).auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({
+        message: `Resource with an id of ${invalidId} not found`,
+      });
+    });
+
+    it('should return an error response if not logged in', async () => {
+      const res = await request(app).delete(`${url}/${mongoose.Types.ObjectId()}`);
+
+      expect(res.status).toBe(401);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({ message: 'No token, access denied' });
+    });
+
+    it('should return an error if password or fields are invalid', async () => {
+      const token = await global.signIn(payload);
+
+      let res = await request(app)
+        .delete(`${url}/${user._id}`)
+        .auth(token, { type: 'bearer' })
+        .send({ password: '1234', confirmPassword: '123456' });
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({
+        message: 'Password and password confirmation mismatch',
+      });
+
+      res = await request(app)
+        .delete(`${url}/${user._id}`)
+        .auth(token, { type: 'bearer' })
+        .send({ password: '1234567', confirmPassword: '1234567' });
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({ message: 'Invalid password' });
+    });
+  });
+
+  describe('Success Response', () => {
+    it('should return a success response if password and confirmPassword are valid', async () => {
+      const token = await global.signIn(payload);
+
+      const res = await request(app)
+        .delete(`${url}/${user._id}`)
+        .auth(token, { type: 'bearer' })
+        .send({ password: '123456', confirmPassword: '123456' });
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBeTruthy();
+      expect(res.body).toEqual(expect.objectContaining({ message: 'Successfully deleted' }));
+
+      const users = await User.find({});
+
+      expect(users).not.toEqual(
+        expect.arrayContaining([expect.objectContaining({ _id: user._id })]),
+      );
     });
   });
 });
