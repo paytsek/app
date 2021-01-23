@@ -63,7 +63,7 @@ const App = () => {
               <PrivateRoute path="/users" component={UsersListPage} exact />
               <AdminRoute path="/users/:id/edit" component={UserEditPage} exact />
               <PrivateRoute path="/users/:id" component={UserDetailsPage} exact />
-              <Route path="/profile" component={CurrentUserProfilePage} exact />
+              <PrivateRoute path="/profile" component={CurrentUserProfilePage} exact />
               <Route path="/change-password" component={ChangePasswordPage} exact />
               <Route path="/companies" component={CompanyListPage} exact />
               <Route path="/company-settings" component={CompanySettingsPage} exact />
