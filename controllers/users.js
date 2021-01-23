@@ -94,7 +94,7 @@ const updateCurrentUserPassword = asyncHandler(async (req, res, next) => {
 
   if (!isMatch) {
     res.status(400);
-    return next(new ErrorResponse({ password: 'Invalid password' }));
+    return next(new ErrorResponse({ message: 'Invalid password' }));
   }
 
   currentUser.password = newPassword;
