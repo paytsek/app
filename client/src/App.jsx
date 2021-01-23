@@ -64,7 +64,7 @@ const App = () => {
               <AdminRoute path="/users/:id/edit" component={UserEditPage} exact />
               <PrivateRoute path="/users/:id" component={UserDetailsPage} exact />
               <PrivateRoute path="/profile" component={CurrentUserProfilePage} exact />
-              <Route path="/change-password" component={ChangePasswordPage} exact />
+              <PrivateRoute path="/change-password" component={ChangePasswordPage} exact />
               <Route path="/companies" component={CompanyListPage} exact />
               <Route path="/company-settings" component={CompanySettingsPage} exact />
               <Route path="/company-settings/:companyId" component={CompanySettingsCreatePage} exact />
