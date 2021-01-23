@@ -28,6 +28,9 @@ import {
   CURRENT_USER_UPDATE_SUCCESS,
   CURRENT_USER_UPDATE_FAIL,
   CURRENT_USER_UPDATE_RESET,
+  CURRENT_USER_DELETE_REQUEST,
+  CURRENT_USER_DELETE_SUCCESS,
+  CURRENT_USER_DELETE_FAIL,
 } from '../actions/types';
 
 export const authUserReducers = (state = { auth: false, loading: true, user: {} }, action) => {
@@ -157,6 +160,20 @@ export const currentUserUpdateReducers = (state = { errors: {} }, action) => {
       return { ...state, loading: false, errors: payload };
     case CURRENT_USER_UPDATE_RESET:
       return { errors: {}, loading: false };
+    default:
+      return state;
+  }
+};
+
+export const currentUserDeleteReducers = (state = {}, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case CURRENT_USER_DELETE_REQUEST:
+      return { loading: true };
+    case CURRENT_USER_DELETE_SUCCESS:
+      return { loading: false, message: payload.message };
+    case CURRENT_USER_DELETE_FAIL:
+      return { loading: false };
     default:
       return state;
   }
