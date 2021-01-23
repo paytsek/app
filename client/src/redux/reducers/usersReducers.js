@@ -166,12 +166,12 @@ export const currentUserUpdateReducers = (state = { errors: {} }, action) => {
 };
 
 export const currentUserDeleteReducers = (state = {}, action) => {
-  const { type, payload } = action;
+  const { type } = action;
   switch (type) {
     case CURRENT_USER_DELETE_REQUEST:
       return { loading: true };
     case CURRENT_USER_DELETE_SUCCESS:
-      return { loading: false, message: payload.message };
+      return { loading: false };
     case CURRENT_USER_DELETE_FAIL:
       return { loading: false };
     default:
