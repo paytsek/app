@@ -153,11 +153,11 @@ export const currentUserUpdateReducers = (state = { errors: {} }, action) => {
   const { type, payload } = action;
   switch (type) {
     case CURRENT_USER_UPDATE_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true, success: false };
     case CURRENT_USER_UPDATE_SUCCESS:
-      return { ...state, loading: false };
+      return { ...state, loading: false, errors: {}, success: true };
     case CURRENT_USER_UPDATE_FAIL:
-      return { ...state, loading: false, errors: payload };
+      return { ...state, loading: false, errors: payload, success: false };
     case CURRENT_USER_UPDATE_RESET:
       return { errors: {}, loading: false };
     default:

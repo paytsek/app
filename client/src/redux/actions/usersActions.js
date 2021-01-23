@@ -187,6 +187,31 @@ export const updateCurrentUser = userData => async dispatch => {
   }
 };
 
+export const updateCurrentUserPassword = userData => async dispatch => {
+  dispatch({ type: CURRENT_USER_UPDATE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const { data } = await axios.put('/users/current-user/password', userData, config);
+
+    dispatch({ type: CURRENT_USER_UPDATE_SUCCESS });
+    dispatch({ type: CURRENT_USER_SUCCESS, payload: data });
+
+    const message = 'Your password successfully updated';
+    dispatch(notification('success', message, dispatch));
+  } catch (error) {
+    const { errors } = error.response.data
+    const message = (errors && errors.message) || 'Server error';
+    dispatch({ type: CURRENT_USER_UPDATE_FAIL, payload: errors });
+    dispatch(notification('error', message, dispatch));
+  }
+};
+
 export const deleteCurrentUser = userData => async dispatch => {
   dispatch({ type: CURRENT_USER_DELETE_REQUEST });
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Paper, Container, Breadcrumbs, Typography } from '@material-ui/core';
 
 import ChangePasswordForm from '../../components/ChangePassword/ChangePasswordForm';
+
 import useStyles from './styles';
 
 const ChangePasswordPage = () => {

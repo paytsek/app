@@ -337,7 +337,7 @@ describe('PUT /api/v1/users/current-user/password - updateCurrentUserPassword', 
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toMatchObject({ password: 'Invalid password' });
+      expect(res.body.errors).toMatchObject({ message: 'Invalid password' });
     });
   });
 
