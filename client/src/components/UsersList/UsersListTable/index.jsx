@@ -5,7 +5,7 @@ import { DataGrid } from '@material-ui/data-grid';
 import { Button } from '@material-ui/core';
 import { Search, Edit, Delete } from '@material-ui/icons';
 
-import PasswordConfirmationDialog from '../../Dialog/PasswordConfirmationDialog';
+import DialogPasswordConfirmation from '../../Dialog/DialogPasswordConfirmation';
 
 import { getUsersList, deleteUser } from '../../../redux/actions/usersActions';
 import useStyles from './styles';
@@ -91,7 +91,7 @@ const UsersListTable = ({ history }) => {
           autoHeight
         />
       </div>
-      <PasswordConfirmationDialog
+      <DialogPasswordConfirmation
         open={open}
         handleClose={handleClose}
         title="Are you sure you want to delete this user?"

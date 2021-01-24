@@ -5,7 +5,7 @@ import { Grid, TextField, Button } from '@material-ui/core';
 import { Save, Undo, Clear, Delete } from '@material-ui/icons';
 
 import MuiSkeleton from '../../MuiSkeleton';
-import PasswordConfirmationDialog from '../../Dialog/PasswordConfirmationDialog';
+import DialogPasswordConfirmation from '../../Dialog/DialogPasswordConfirmation';
 
 import { getUserDetails, updateUserDetails, deleteUser } from '../../../redux/actions/usersActions';
 import { USER_UPDATE_DETAILS_RESET, USER_LIST_DELETE_RESET } from '../../../redux/actions/types';
@@ -94,7 +94,7 @@ const UserEditForm = ({ history, match }) => {
           Delete
         </Button>
       </div>
-      <PasswordConfirmationDialog
+      <DialogPasswordConfirmation
         open={open}
         handleClose={handleClose}
         title="Are you sure you want to delete this user?"
