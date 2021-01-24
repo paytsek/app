@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom';
 import { Grid, TextField, Button } from '@material-ui/core';
 import { Save, Undo, Clear, Delete } from '@material-ui/icons';
 
+import PasswordConfirmationDialog from '../../Dialog/PasswordConfirmationDialog';
 import MuiSkeleton from '../../MuiSkeleton';
-import PasswordConfirmationDialog from '../../Dialog/PasswordConfirmationDIalog';
 
 import { getCurrentUser, updateCurrentUser, deleteCurrentUser } from '../../../redux/actions/usersActions';
 import { CURRENT_USER_RESET, CURRENT_USER_UPDATE_RESET } from '../../../redux/actions/types';
@@ -165,6 +165,7 @@ const CurrentUserProfileForm = ({ history }) => {
         handleClose={handleClose}
         onContinue={handleDeleteCurrentUser}
         loading={currentUserDeleteLoading}
+        title="Are you sure you want to delete your profile?"
       />
     </Fragment>
   );

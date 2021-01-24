@@ -1,18 +1,38 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { DataGrid } from '@material-ui/data-grid';
 import { Button } from '@material-ui/core';
 import { Search, Edit, Delete } from '@material-ui/icons';
 
-import { getUsersList } from '../../../redux/actions/usersActions';
+import PasswordConfirmationDialog from '../../Dialog/PasswordConfirmationDialog';
+
+import { getUsersList, deleteUser } from '../../../redux/actions/usersActions';
 import useStyles from './styles';
 
 const UsersListTable = ({ history }) => {
+  const [open, setOpen] = useState(false);
+  const [userId, setUserId] = useState('');
+
   const dispatch = useDispatch();
 
   const { users, loading } = useSelector(state => state.usersList);
   const { user } = useSelector(state => state.authUser);
+  const { loading: userListDeleteLoading, success } = useSelector(state => state.userListDelete);
+
+  const handleClose = () => {
+    setOpen(false);
+    setUserId('');
+  };
+
+  const handleOpen = id => {
+    setOpen(true);
+    setUserId(id);
+  };
+
+  const handleOnContinue = userData => {
+    dispatch(deleteUser(userId, userData));
+  };
 
   const { dataGrid } = useStyles();
 
@@ -40,7 +60,9 @@ const UsersListTable = ({ history }) => {
           {user.role === 'admin' && (
             <Button color="primary" startIcon={<Edit />} onClick={() => history.push(`users/${props.row.id}/edit`)} />
           )}
-          {user.role === 'admin' && <Button color="primary" startIcon={<Delete />} />}
+          {user.role === 'admin' && (
+            <Button color="primary" onClick={() => handleOpen(props.row.id)} startIcon={<Delete />} />
+          )}
         </Fragment>
       ),
     },
@@ -48,19 +70,35 @@ const UsersListTable = ({ history }) => {
 
   useEffect(() => {
     dispatch(getUsersList());
-  }, [dispatch]);
+  }, []);
+
+  useEffect(() => {
+    if (success) {
+      handleClose();
+    }
+  }, [success]);
 
   return (
-    <DataGrid
-      className={dataGrid}
-      rows={users.map(userList => ({ ...userList, id: userList._id }))}
-      columns={columns}
-      pageSize={5}
-      checkboxSelection
-      disableSelectionOnClick
-      autoHeight
-      loading={loading}
-    />
+    <Fragment>
+      <div style={{ height: 400, width: '100%' }}>
+        <DataGrid
+          className={dataGrid}
+          rows={users.map(userList => ({ ...userList, id: userList._id }))}
+          columns={columns}
+          checkboxSelection
+          disableSelectionOnClick
+          loading={userListDeleteLoading || loading}
+          autoHeight
+        />
+      </div>
+      <PasswordConfirmationDialog
+        open={open}
+        handleClose={handleClose}
+        title="Are you sure you want to delete this user?"
+        onContinue={handleOnContinue}
+        loading={userListDeleteLoading}
+      />
+    </Fragment>
   );
 };
 

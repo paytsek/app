@@ -30,6 +30,9 @@ import {
   CURRENT_USER_DELETE_FAIL,
   CURRENT_USER_DELETE_SUCCESS,
   LOGOUT,
+  USER_LIST_DELETE_REQUEST,
+  USER_LIST_DELETE_FAIL,
+  USER_LIST_DELETE_SUCCESS,
 } from './types';
 import notification from '../../utils/notification';
 
@@ -205,7 +208,7 @@ export const updateCurrentUserPassword = userData => async dispatch => {
     const message = 'Your password successfully updated';
     dispatch(notification('success', message, dispatch));
   } catch (error) {
-    const { errors } = error.response.data
+    const { errors } = error.response.data;
     const message = (errors && errors.message) || 'Server error';
     dispatch({ type: CURRENT_USER_UPDATE_FAIL, payload: errors });
     dispatch(notification('error', message, dispatch));
@@ -233,5 +236,30 @@ export const deleteCurrentUser = userData => async dispatch => {
 
     dispatch({ type: CURRENT_USER_DELETE_FAIL });
     dispatch(notification('error', message, dispatch));
+  }
+};
+
+export const deleteUser = (id, userData) => async dispatch => {
+  dispatch({ type: USER_LIST_DELETE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: userData,
+  };
+
+  try {
+    const { data } = await axios.delete(`users/${id}`, config);
+
+    dispatch({ type: USER_LIST_DELETE_SUCCESS, payload: id });
+
+    dispatch(notification('success', data.message, dispatch));
+  } catch (error) {
+    const { errors } = error.response.data;
+    const message = (errors && errors.message) || 'Server error';
+
+    dispatch(notification('error', message, dispatch));
+    dispatch({ type: USER_LIST_DELETE_FAIL });
   }
 };

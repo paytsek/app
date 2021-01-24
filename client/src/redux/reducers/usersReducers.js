@@ -31,6 +31,10 @@ import {
   CURRENT_USER_DELETE_REQUEST,
   CURRENT_USER_DELETE_SUCCESS,
   CURRENT_USER_DELETE_FAIL,
+  USER_LIST_DELETE_REQUEST,
+  USER_LIST_DELETE_SUCCESS,
+  USER_LIST_DELETE_FAIL,
+  USER_LIST_DELETE_RESET,
 } from '../actions/types';
 
 export const authUserReducers = (state = { auth: false, loading: true, user: {} }, action) => {
@@ -92,6 +96,8 @@ export const usersListReducers = (state = { users: [] }, action) => {
       return { ...state, loading: false, users: payload.users };
     case USERS_LIST_FAIL:
       return { ...state, loading: false, users: [] };
+    case USER_LIST_DELETE_SUCCESS:
+      return { ...state, users: state.users.filter(user => user._id !== payload) };
     default:
       return state;
   }
@@ -174,6 +180,22 @@ export const currentUserDeleteReducers = (state = {}, action) => {
       return { loading: false };
     case CURRENT_USER_DELETE_FAIL:
       return { loading: false };
+    default:
+      return state;
+  }
+};
+
+export const userListDeleteReducers = (state = {}, action) => {
+  const { type } = action;
+  switch (type) {
+    case USER_LIST_DELETE_REQUEST:
+      return { loading: true };
+    case USER_LIST_DELETE_SUCCESS:
+      return { loading: false, success: true };
+    case USER_LIST_DELETE_FAIL:
+      return { loading: false, success: false };
+    case USER_LIST_DELETE_RESET:
+      return {};
     default:
       return state;
   }

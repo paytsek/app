@@ -10,6 +10,7 @@ import {
   currentUserReducers,
   currentUserUpdateReducers,
   currentUserDeleteReducers,
+  userListDeleteReducers,
 } from './usersReducers';
 
 import snackbarReducer from './snackbarReducers';
@@ -25,6 +26,7 @@ const reducers = combineReducers({
   currentUser: currentUserReducers,
   currentUserUpdate: currentUserUpdateReducers,
   currentUserDelete: currentUserDeleteReducers,
+  userListDelete: userListDeleteReducers,
 });
 
 export default reducers;

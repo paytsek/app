@@ -5,13 +5,15 @@ import { Grid, TextField, Button } from '@material-ui/core';
 import { Save, Undo, Clear, Delete } from '@material-ui/icons';
 
 import MuiSkeleton from '../../MuiSkeleton';
+import PasswordConfirmationDialog from '../../Dialog/PasswordConfirmationDialog';
 
-import { getUserDetails, updateUserDetails } from '../../../redux/actions/usersActions';
-import { USER_UPDATE_DETAILS_RESET } from '../../../redux/actions/types';
+import { getUserDetails, updateUserDetails, deleteUser } from '../../../redux/actions/usersActions';
+import { USER_UPDATE_DETAILS_RESET, USER_LIST_DELETE_RESET } from '../../../redux/actions/types';
 import useStyles from './styles';
 
 const UserEditForm = ({ history, match }) => {
   const [email, setEmail] = useState('');
+  const [open, setOpen] = useState(false);
 
   const { id } = match.params;
 
@@ -19,6 +21,7 @@ const UserEditForm = ({ history, match }) => {
 
   const { user, loading } = useSelector(state => state.userDetails);
   const { errors, loading: updateUserDetailsLoading } = useSelector(state => state.updateUserDetails);
+  const { loading: userListDeleteLoading, success } = useSelector(state => state.userListDelete);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -29,17 +32,28 @@ const UserEditForm = ({ history, match }) => {
     setEmail(user.email);
   };
 
+  const handleClose = () => setOpen(false);
+
+  const handleOnContinue = userData => {
+    dispatch(deleteUser(id, userData));
+  };
+
   const { formButton } = useStyles();
 
   useEffect(() => {
-    if (user.email) {
-      setEmail(user.email);
-    }
     dispatch(getUserDetails(id));
+  }, []);
+
+  useEffect(() => {
+    if (success) history.push('/users');
+
+    if (user.email) setEmail(user.email);
+
     return () => {
       dispatch({ type: USER_UPDATE_DETAILS_RESET });
+      dispatch({ type: USER_LIST_DELETE_RESET });
     };
-  }, [dispatch, id, user.email]);
+  }, [user.email, success]);
 
   return loading ? (
     <MuiSkeleton />
@@ -76,10 +90,17 @@ const UserEditForm = ({ history, match }) => {
         <Button size="small" startIcon={<Clear />} onClick={() => history.push('/users')}>
           Cancel
         </Button>
-        <Button size="small" variant="contained" color="secondary" startIcon={<Delete />}>
+        <Button size="small" variant="contained" color="secondary" onClick={() => setOpen(true)} startIcon={<Delete />}>
           Delete
         </Button>
       </div>
+      <PasswordConfirmationDialog
+        open={open}
+        handleClose={handleClose}
+        title="Are you sure you want to delete this user?"
+        onContinue={handleOnContinue}
+        loading={userListDeleteLoading}
+      />
     </form>
   );
 };
