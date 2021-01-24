@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import { Grid, TextField, Button } from '@material-ui/core';
 import { Save, Undo, Clear, Delete } from '@material-ui/icons';
 
-import PasswordConfirmationDialog from '../../Dialog/PasswordConfirmationDialog';
+import DialogPasswordConfirmation from '../../Dialog/DialogPasswordConfirmation';
 import MuiSkeleton from '../../MuiSkeleton';
 
 import { getCurrentUser, updateCurrentUser, deleteCurrentUser } from '../../../redux/actions/usersActions';
@@ -160,7 +160,7 @@ const CurrentUserProfileForm = ({ history }) => {
           </Button>
         </div>
       </form>
-      <PasswordConfirmationDialog
+      <DialogPasswordConfirmation
         open={open}
         handleClose={handleClose}
         onContinue={handleDeleteCurrentUser}

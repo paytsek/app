@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import MuiSkeleton from '../../MuiSkeleton';
 
-const PasswordConfirmationDialog = ({ handleClose, open, onContinue, loading, title }) => {
+const DialogPasswordConfirmation = ({ handleClose, open, onContinue, loading, title }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -62,4 +62,4 @@ const PasswordConfirmationDialog = ({ handleClose, open, onContinue, loading, ti
   );
 };
 
-export default PasswordConfirmationDialog;
+export default DialogPasswordConfirmation;
