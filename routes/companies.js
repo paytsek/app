@@ -22,7 +22,7 @@ router.route('/name').post(auth, createCompany);
 router.route('/name/:id').put(auth, updateCompanyName).delete(auth, deleteCompany);
 
 // /api/v1/companies
-router.route('/').get(getCompanies);
+router.route('/').get(auth, getCompanies);
 
 // /api/v1/companies/:id
 router.route('/:id').get(getCompany);
