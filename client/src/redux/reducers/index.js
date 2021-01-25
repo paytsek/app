@@ -12,7 +12,7 @@ import {
   currentUserDeleteReducers,
   userListDeleteReducers,
 } from './usersReducers';
-import { companiesListReducers } from './companiesReducers';
+import { companiesListReducers, companyDetailsReducers } from './companiesReducers';
 
 import snackbarReducer from './snackbarReducers';
 
@@ -31,6 +31,7 @@ const reducers = combineReducers({
   userListDelete: userListDeleteReducers,
   // COMPANIES
   companiesList: companiesListReducers,
+  companyDetails: companyDetailsReducers,
 });
 
 export default reducers;

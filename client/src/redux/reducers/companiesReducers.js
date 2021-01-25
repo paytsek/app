@@ -1,4 +1,11 @@
-import { COMPANY_LIST_FAIL, COMPANY_LIST_REQUEST, COMPANY_LIST_SUCCESS } from '../actions/types';
+import {
+  COMPANY_DETAILS_FAIL,
+  COMPANY_DETAILS_REQUEST,
+  COMPANY_DETAILS_SUCCESS,
+  COMPANY_LIST_FAIL,
+  COMPANY_LIST_REQUEST,
+  COMPANY_LIST_SUCCESS,
+} from '../actions/types';
 
 export const companiesListReducers = (state = { companies: [] }, action) => {
   const { type, payload } = action;
@@ -15,8 +22,16 @@ export const companiesListReducers = (state = { companies: [] }, action) => {
   }
 };
 
-export const companyDefaultReducers = (state, { type }) => {
+export const companyDetailsReducers = (state = { company: {} }, action) => {
+  const { type, payload } = action;
+
   switch (type) {
+    case COMPANY_DETAILS_REQUEST:
+      return { ...state, loading: true };
+    case COMPANY_DETAILS_SUCCESS:
+      return { loading: false, company: payload.company };
+    case COMPANY_DETAILS_FAIL:
+      return { loading: false, company: {} };
     default:
       return state;
   }
