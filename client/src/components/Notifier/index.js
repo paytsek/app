@@ -19,7 +19,9 @@ const Notifier = () => {
   };
 
   useEffect(() => {
-    notifications.forEach(({ key, message, options = {}, dismissed = false }) => {
+    notifications.forEach(({
+      key, message, options = {}, dismissed = false,
+    }) => {
       if (dismissed) {
         // dismiss snackbar using notistack
         closeSnackbar(key);

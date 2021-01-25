@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Container, Breadcrumbs, Typography, Button } from '@material-ui/core';
+import {
+  Paper, Container, Breadcrumbs, Typography, Button,
+} from '@material-ui/core';
 import { Delete, Add } from '@material-ui/icons';
 
 import CompaniesListFilter from '../../components/CompaniesList/CompanyiesFilter';
@@ -8,7 +10,9 @@ import CompaniesListTable from '../../components/CompaniesList/CompaniesListTabl
 import useStyles from './styles';
 
 const CompanyListPage = ({ history }) => {
-  const { active, title, paper, actions, tableContainer } = useStyles();
+  const {
+    active, title, paper, actions, tableContainer,
+  } = useStyles();
 
   return (
     <Fragment>

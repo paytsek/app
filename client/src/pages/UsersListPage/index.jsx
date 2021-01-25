@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Container, Breadcrumbs, Typography, Button } from '@material-ui/core';
+import {
+  Paper, Container, Breadcrumbs, Typography, Button,
+} from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 
 import UsersFilter from '../../components/UsersList/UsersFilter';
@@ -8,7 +10,9 @@ import UsersListTable from '../../components/UsersList/UsersListTable';
 import useStyles from './styles';
 
 const UsersListPage = () => {
-  const { active, title, paper, actions, tableContainer } = useStyles();
+  const {
+    active, title, paper, actions, tableContainer,
+  } = useStyles();
 
   return (
     <Fragment>

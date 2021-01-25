@@ -1,7 +1,9 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Grid, TextField, Button } from '@material-ui/core';
-import { Save, Clear, Undo, Delete } from '@material-ui/icons';
+import {
+  Save, Clear, Undo, Delete,
+} from '@material-ui/icons';
 
 import useStyles from './styles';
 

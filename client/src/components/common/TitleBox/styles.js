@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: 0,
     borderRadius: 3,
     background: `linear-gradient(60deg, #4156cf, ${theme.palette.primary.main})`,
-    boxShadow: `0 4px 20px 0 rgba(0, 0, 0,.14), 0 7px 10px -5px rgba(63, 81, 181,.4)`,
+    boxShadow: '0 4px 20px 0 rgba(0, 0, 0,.14), 0 7px 10px -5px rgba(63, 81, 181,.4)',
     color: '#fff',
   },
 }));

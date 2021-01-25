@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react';
-import { Typography, FormControl, FormControlLabel, Checkbox } from '@material-ui/core';
+import {
+  Typography, FormControl, FormControlLabel, Checkbox,
+} from '@material-ui/core';
 
 const SSSCalculations = () => (
   <Fragment>

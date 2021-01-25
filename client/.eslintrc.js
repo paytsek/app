@@ -6,7 +6,14 @@ module.exports = {
     jest: true,
   },
   root: true,
-  extends: ['plugin:react/recommended', 'airbnb', 'prettier', 'prettier/standard', 'prettier/babel', 'prettier/react'],
+  extends: [
+    'plugin:react/recommended',
+    'airbnb',
+    // 'prettier',
+    'prettier/standard',
+    'prettier/babel',
+    'prettier/react',
+  ],
   plugins: ['prettier', 'react'],
   globals: {
     Atomics: 'readonly',
@@ -19,11 +26,14 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
+  // cache: false,
   rules: {
     'react/prop-types': 0,
     'react/jsx-fragments': 0,
     'react/jsx-props-no-spreading': 0,
     'no-underscore-dangle': 0,
     'react/no-unescaped-entities': 0,
+    'arrow-parens': 0,
+    'object-curly-newline': 0,
   },
 };

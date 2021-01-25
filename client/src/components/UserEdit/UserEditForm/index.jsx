@@ -20,7 +20,9 @@ const UserEditForm = ({ history, match }) => {
   const dispatch = useDispatch();
 
   const { user, loading } = useSelector(state => state.userDetails);
-  const { errors, loading: updateUserDetailsLoading } = useSelector(state => state.updateUserDetails);
+  const { errors, loading: updateUserDetailsLoading } = useSelector(
+    state => state.updateUserDetails,
+  );
   const { loading: userListDeleteLoading, success } = useSelector(state => state.userListDelete);
 
   const onSubmit = e => {
@@ -90,7 +92,13 @@ const UserEditForm = ({ history, match }) => {
         <Button size="small" startIcon={<Clear />} onClick={() => history.push('/users')}>
           Cancel
         </Button>
-        <Button size="small" variant="contained" color="secondary" onClick={() => setOpen(true)} startIcon={<Delete />}>
+        <Button
+          size="small"
+          variant="contained"
+          color="secondary"
+          onClick={() => setOpen(true)}
+          startIcon={<Delete />}
+        >
           Delete
         </Button>
       </div>

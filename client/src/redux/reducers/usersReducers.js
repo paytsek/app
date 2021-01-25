@@ -43,9 +43,13 @@ export const authUserReducers = (state = { auth: false, loading: true, user: {} 
     case AUTH_REQUEST:
       return { ...state, loading: true };
     case AUTH_SUCCESS:
-      return { ...state, loading: false, auth: true, user: payload.user };
+      return {
+        ...state, loading: false, auth: true, user: payload.user,
+      };
     case AUTH_FAIL:
-      return { ...state, loading: false, auth: false, user: {} };
+      return {
+        ...state, loading: false, auth: false, user: {},
+      };
     case LOGOUT:
       localStorage.removeItem('token');
       return { ...state, auth: false, user: {} };
@@ -131,9 +135,13 @@ export const updateUserDetailsReducers = (state = { errors: {}, loading: false }
         errors: {},
       };
     case USER_UPDATE_DETAILS_FAIL:
-      return { ...state, loading: false, updatedUser: {}, errors: payload };
+      return {
+        ...state, loading: false, updatedUser: {}, errors: payload,
+      };
     case USER_UPDATE_DETAILS_RESET:
-      return { ...state, errors: {}, loading: false, updatedUser: {} };
+      return {
+        ...state, errors: {}, loading: false, updatedUser: {},
+      };
     default:
       return state;
   }
@@ -161,9 +169,13 @@ export const currentUserUpdateReducers = (state = { errors: {} }, action) => {
     case CURRENT_USER_UPDATE_REQUEST:
       return { ...state, loading: true, success: false };
     case CURRENT_USER_UPDATE_SUCCESS:
-      return { ...state, loading: false, errors: {}, success: true };
+      return {
+        ...state, loading: false, errors: {}, success: true,
+      };
     case CURRENT_USER_UPDATE_FAIL:
-      return { ...state, loading: false, errors: payload, success: false };
+      return {
+        ...state, loading: false, errors: payload, success: false,
+      };
     case CURRENT_USER_UPDATE_RESET:
       return { errors: {}, loading: false };
     default:
