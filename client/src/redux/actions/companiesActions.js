@@ -33,6 +33,10 @@ export const getCompanyDetails = id => async dispatch => {
 
     dispatch({ type: COMPANY_DETAILS_SUCCESS, payload: data });
   } catch (error) {
-    console.log(error.response);
+    const { errors } = error.response.data;
+    const message = (errors && errors.message) || 'Server Error';
+
+    dispatch({ type: COMPANY_DETAILS_FAIL });
+    dispatch(notification('error', message, dispatch));
   }
 };
