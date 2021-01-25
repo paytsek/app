@@ -12,7 +12,11 @@ import {
   currentUserDeleteReducers,
   userListDeleteReducers,
 } from './usersReducers';
-import { companiesListReducers, companyDetailsReducers } from './companiesReducers';
+import {
+  companiesListReducers,
+  companyDetailsReducers,
+  createCompanyNameReducers,
+} from './companiesReducers';
 
 import snackbarReducer from './snackbarReducers';
 
@@ -32,6 +36,7 @@ const reducers = combineReducers({
   // COMPANIES
   companiesList: companiesListReducers,
   companyDetails: companyDetailsReducers,
+  createCompanyName: createCompanyNameReducers,
 });
 
 export default reducers;

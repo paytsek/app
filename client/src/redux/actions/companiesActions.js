@@ -6,6 +6,9 @@ import {
   COMPANY_DETAILS_SUCCESS,
   COMPANY_LIST_REQUEST,
   COMPANY_LIST_SUCCESS,
+  COMPANY_NAME_CREATE_FAIL,
+  COMPANY_NAME_CREATE_REQUEST,
+  COMPANY_NAME_CREATE_SUCCESS,
 } from './types';
 import notification from '../../utils/notification';
 
@@ -38,5 +41,34 @@ export const getCompanyDetails = id => async dispatch => {
 
     dispatch({ type: COMPANY_DETAILS_FAIL });
     dispatch(notification('error', message, dispatch));
+  }
+};
+
+export const createCompanyName = company => async dispatch => {
+  dispatch({ type: COMPANY_NAME_CREATE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const { data } = await axios.post('/companies/name', company, config);
+
+    dispatch({ type: COMPANY_NAME_CREATE_SUCCESS, payload: data });
+
+    const message = 'Company name successfully created';
+    dispatch(notification('success', message, dispatch));
+  } catch (error) {
+    const { errors } = error.response.data;
+
+    const message = errors && errors.message;
+
+    if (message) {
+      dispatch(notification('error', message || 'Server Error', dispatch));
+    }
+
+    dispatch({ type: COMPANY_NAME_CREATE_FAIL, payload: errors });
   }
 };
