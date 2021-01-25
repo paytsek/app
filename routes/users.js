@@ -16,7 +16,7 @@ const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
 // /api/v1/users
-router.route('/').get(auth, getUsers);
+router.route('/').get(auth, admin, getUsers);
 // api/v1/users/current-user/password
 router.route('/current-user/password').put(auth, updateCurrentUserPassword);
 // api/v1/users/current-user

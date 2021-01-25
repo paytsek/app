@@ -1,5 +1,6 @@
 const Company = require('../models/Company');
 const CompanySetting = require('../models/CompanySetting');
+const User = require('../models/User');
 
 const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
@@ -24,9 +25,17 @@ const createCompany = asyncHandler(async (req, res, next) => {
 // @Desc Get all companies
 // access PRIVATE - Logged in user
 const getCompanies = asyncHandler(async (req, res) => {
-  const companies = await Company.find({});
+  const user = await User.findById(req.user._id).populate('companies');
 
-  res.status(200).json({ success: true, companies });
+  if (user.role === 'admin') {
+    const companies = await Company.find({});
+
+    return res.status(200).json({ success: true, companies });
+  }
+
+  const { companies } = user;
+
+  return res.status(200).json({ success: true, companies });
 });
 
 // @ROUTE GET /api/v1/companies/:id

@@ -60,7 +60,7 @@ const App = () => {
           >
             <div style={{ minHeight: 80 }} />
             <Switch>
-              <PrivateRoute path="/users" component={UsersListPage} exact />
+              <AdminRoute path="/users" component={UsersListPage} exact />
               <AdminRoute path="/users/:id/edit" component={UserEditPage} exact />
               <PrivateRoute path="/users/:id" component={UserDetailsPage} exact />
               <PrivateRoute path="/profile" component={CurrentUserProfilePage} exact />

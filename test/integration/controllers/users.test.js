@@ -8,55 +8,80 @@ const User = require('../../../models/User');
 describe('GET /api/v1/users - getUsers', () => {
   const url = '/api/v1/users';
 
-  it('should return 401 status code and error response if authorization is empty or invalid', async () => {
-    let res = await request(app).get(url).auth('', { type: 'bearer' });
+  describe('Error Response', () => {
+    it('should return 401 status code and error response if authorization is empty or invalid', async () => {
+      let res = await request(app).get(url).auth('', { type: 'bearer' });
 
-    expect(res.status).toBe(401);
-    expect(res.body.success).toBeFalsy();
-    expect(res.body.errors).toMatchObject({
-      message: 'No token, access denied',
+      expect(res.status).toBe(401);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({
+        message: 'No token, access denied',
+      });
+
+      const payload = {
+        id: mongoose.Types.ObjectId(),
+      };
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        expiresIn: 3600,
+      });
+
+      res = await request(app).get(url).auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(401);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({
+        message: 'No user, access denied',
+      });
     });
 
-    const payload = {
-      id: mongoose.Types.ObjectId(),
-    };
+    it('should return 403 status code if not an admin', async () => {
+      const token = await global.signIn();
 
-    const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
-      expiresIn: 3600,
-    });
+      const res = await request(app).get(url).auth(token, { type: 'bearer' });
 
-    res = await request(app).get(url).auth(token, { type: 'bearer' });
-
-    expect(res.status).toBe(401);
-    expect(res.body.success).toBeFalsy();
-    expect(res.body.errors).toMatchObject({
-      message: 'No user, access denied',
+      expect(res.status).toBe(403);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({
+        message: "You don't have permission to access on this route",
+      });
     });
   });
 
-  it('should return 200 status code and success response if logged in', async () => {
-    const token = await global.signIn();
+  describe('Success Response', () => {
+    it('should return success response if logged in user is an admin', async () => {
+      const admin = await User.create({
+        email: 'darryl@gmail.com',
+        username: 'darryl',
+        firstName: 'Darryl',
+        lastName: 'Mangibin',
+        password: '123456',
+        role: 'admin',
+      });
+      const payload = {
+        _id: admin._id,
+        email: admin.email,
+        username: admin.username,
+        firstName: admin.firstName,
+        lastName: admin.lastName,
+      };
+      await User.create({
+        email: 'darryl@gmail1.com',
+        username: 'darrylm',
+        firstName: 'Darryl',
+        lastName: 'Mangibin',
+        password: '123456',
+      });
+      const token = await global.signIn(payload);
 
-    await User.create({
-      username: 'Carlos Rodrigo',
-      email: 'rodrigo@gmail.com',
-      password: '123456',
-      firstName: 'Carlos',
-      lastName: 'Rodrigo',
+      const res = await request(app).get(url).auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBeTruthy();
+      expect(res.body.users).toEqual(
+        expect.arrayContaining([expect.objectContaining({ email: 'darryl@gmail1.com' })]),
+      );
     });
-
-    const res = await request(app).get(url).auth(token, { type: 'bearer' });
-
-    expect(res.status).toBe(200);
-    expect(res.body.success).toBeTruthy();
-    expect(res.body.users.length).toBe(1);
-
-    const loggedInUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
-    const users = res.body.users.map(user => user.username);
-
-    expect(users).toEqual(expect.arrayContaining(['Carlos Rodrigo']));
-    expect(users).not.toEqual(expect.arrayContaining([loggedInUser.name]));
   });
 });
 

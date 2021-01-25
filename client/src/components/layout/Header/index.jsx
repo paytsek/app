@@ -1,35 +1,25 @@
 import React, { useState, Fragment } from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-  Menu,
-  MenuItem,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from '@material-ui/core';
+import { AppBar, Toolbar, Typography, IconButton, Menu, MenuItem, Drawer } from '@material-ui/core';
 import {
   AccountCircle,
   Menu as MenuIcon,
-  People as PeopleIcon,
   PersonOutline as PersonOulineIcon,
   Https as HttpsIcon,
-  Business as BusinessIcon,
-  BusinessCenter as BusinessCenterIcon,
 } from '@material-ui/icons';
+
+import HeaderAdminList from './HeaderAdminList';
+import HeaderMemberList from './HeaderMemberList';
 
 import { LOGOUT } from '../../../redux/actions/types';
 import useStyles from './style';
 
 const Header = ({ openDrawer, setOpenDrawer, history }) => {
   const dispatch = useDispatch();
+  const { user } = useSelector(state => state.authUser);
+
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -72,6 +62,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
               color="inherit"
             >
               <AccountCircle />
+              {user.firstName}
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -110,40 +101,8 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
         }}
       >
         <div className={classes.drawerHeader} />
-        <List>
-          <Link to="/users">
-            <ListItem button>
-              <ListItemIcon>
-                <PeopleIcon />
-              </ListItemIcon>
-              <ListItemText primary="Users" />
-            </ListItem>
-          </Link>
-          <Link to="/change-password">
-            <ListItem button>
-              <ListItemIcon>
-                <HttpsIcon />
-              </ListItemIcon>
-              <ListItemText primary="Change Password" />
-            </ListItem>
-          </Link>
-          <Link to="/companies">
-            <ListItem button>
-              <ListItemIcon>
-                <BusinessIcon />
-              </ListItemIcon>
-              <ListItemText primary="Companies" />
-            </ListItem>
-          </Link>
-          <Link to="/company-settings">
-            <ListItem button>
-              <ListItemIcon>
-                <BusinessCenterIcon />
-              </ListItemIcon>
-              <ListItemText primary="Company Settings" />
-            </ListItem>
-          </Link>
-        </List>
+        {user.role === 'admin' && <HeaderAdminList />}
+        {user.role === 'member' && <HeaderMemberList />}
       </Drawer>
     </Fragment>
   );
