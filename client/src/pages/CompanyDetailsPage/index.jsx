@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useEffect, Fragment } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {
-  Paper, Container, Breadcrumbs, Typography, Button,
-} from '@material-ui/core';
+import { Paper, Container, Breadcrumbs, Typography, Button } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
+import moment from 'moment';
 
+import MuiSkeleton from '../../components/MuiSkeleton';
+
+import { getCompanyDetails } from '../../redux/actions/companiesActions';
 import useStyles from './styles';
 
-const CompanyDetailsPage = ({ history }) => {
-  const {
-    active, paper, title, actions, details,
-  } = useStyles();
+const CompanyDetailsPage = ({ history, match }) => {
+  const dispatch = useDispatch();
+  const { id } = match.params;
+
+  const { loading, company } = useSelector(state => state.companyDetails);
+
+  const { active, paper, title, actions, details } = useStyles();
+
+  useEffect(() => {
+    dispatch(getCompanyDetails(id));
+  }, []);
 
   return (
     <Container>
@@ -27,29 +37,37 @@ const CompanyDetailsPage = ({ history }) => {
         <Typography variant="h5" className={title} gutterBottom>
           View Company
         </Typography>
-        <div className={actions}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<Edit />}
-            size="small"
-            onClick={() => history.push('1/edit')}
-          >
-            Edit
-          </Button>
-        </div>
-        <div className={details}>
-          <Typography variant="subtitle2">Name</Typography>
-          <Typography variant="subtitle1">PayTsek</Typography>
-        </div>
-        <div className={details}>
-          <Typography variant="subtitle2">Slug</Typography>
-          <Typography variant="subtitle1">paytsek</Typography>
-        </div>
-        <div className={details}>
-          <Typography variant="subtitle2">Created</Typography>
-          <Typography variant="subtitle1">May 06, 20201</Typography>
-        </div>
+        {loading ? (
+          <MuiSkeleton />
+        ) : (
+          <Fragment>
+            <div className={actions}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<Edit />}
+                size="small"
+                onClick={() => history.push(`${company._id}/edit`)}
+              >
+                Edit
+              </Button>
+            </div>
+            <div className={details}>
+              <Typography variant="subtitle2">Name</Typography>
+              <Typography variant="subtitle1">{company.name}</Typography>
+            </div>
+            <div className={details}>
+              <Typography variant="subtitle2">Slug</Typography>
+              <Typography variant="subtitle1">{company.slug}</Typography>
+            </div>
+            <div className={details}>
+              <Typography variant="subtitle2">Created</Typography>
+              <Typography variant="subtitle1">
+                {moment(company.createdAt).format('MMMM DD, YYYY')}
+              </Typography>
+            </div>
+          </Fragment>
+        )}
       </Paper>
     </Container>
   );
