@@ -1,7 +1,9 @@
 import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Paper, Container, Breadcrumbs, Typography, Button } from '@material-ui/core';
+import {
+  Paper, Container, Breadcrumbs, Typography, Button,
+} from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 
 import MuiSkeleton from '../../components/MuiSkeleton';
@@ -16,7 +18,9 @@ const UserDetailsPage = ({ history, match }) => {
   const { user, loading } = useSelector(state => state.userDetails);
   const { user: loggedInUser } = useSelector(state => state.authUser);
 
-  const { active, paper, title, actions, details } = useStyles();
+  const {
+    active, paper, title, actions, details,
+  } = useStyles();
 
   useEffect(() => {
     dispatch(getUserDetails(id));

@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react';
-import { Typography, FormGroup, FormControl, FormControlLabel, Checkbox } from '@material-ui/core';
+import {
+  Typography, FormGroup, FormControl, FormControlLabel, Checkbox,
+} from '@material-ui/core';
 
 const ThirtheenthMonthPayCalculations = () => (
   <Fragment>

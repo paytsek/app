@@ -1,5 +1,7 @@
 import React from 'react';
-import { Paper, Grid, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import {
+  Paper, Grid, FormControl, InputLabel, Select, MenuItem,
+} from '@material-ui/core';
 
 import TitleBox from '../../../common/TitleBox';
 
@@ -9,12 +11,11 @@ import useStyles from '../styles';
 const AccountingJournalEntries = () => {
   const { paper, fieldsContainer } = useStyles();
 
-  const options = () =>
-    ACCOUNTING_JOURNAL_ENTRIES.map(({ name, value }) => (
+  const options = () => ACCOUNTING_JOURNAL_ENTRIES.map(({ name, value }) => (
       <MenuItem key={name} value={value}>
         {name}
       </MenuItem>
-    ));
+  ));
 
   return (
     <Paper className={paper}>

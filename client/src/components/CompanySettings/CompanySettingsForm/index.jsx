@@ -15,7 +15,9 @@ import AccountingJournalEntries from './AccountingJournalEntries';
 import useStyles from './styles';
 
 const CompanySettingsForm = () => {
-  const { paper, gridContainer, fieldsContainer, calculationsContainer } = useStyles();
+  const {
+    paper, gridContainer, fieldsContainer, calculationsContainer,
+  } = useStyles();
 
   return (
     <Grid container spacing={3} className={gridContainer}>

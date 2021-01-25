@@ -258,13 +258,34 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
 describe('GET api/v1/companies - getCompanies', () => {
   const url = '/api/v1/companies';
 
+  describe('Error Response', () => {
+    it('should return error reponse if not logged in', async () => {
+      const res = await request(app).get(url);
+
+      expect(res.status).toBe(401);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({ message: 'No token, access denied' });
+    });
+
+    it('should return error if token is invalid', async () => {
+      const token = jwt.sign({ name: 'invalid' }, 'secret');
+
+      const res = await request(app).get(url).auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(401);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({ message: 'Not authorize to access this route' });
+    });
+  });
+
   it('should get all companies and 200 status code', async () => {
+    const token = await global.signIn();
     await Company.create([
       { name: 'PayTsek', user: mongoose.Types.ObjectId() },
       { name: 'Fullsuite', user: mongoose.Types.ObjectId() },
     ]);
 
-    const { status, body } = await request(app).get(url);
+    const { status, body } = await request(app).get(url).auth(token, { type: 'bearer' });
 
     expect(status).toBe(200);
     expect(body.success).toBeTruthy();

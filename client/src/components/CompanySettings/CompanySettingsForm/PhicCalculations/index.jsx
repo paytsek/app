@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react';
-import { Typography, FormControlLabel, FormControl, Checkbox } from '@material-ui/core';
+import {
+  Typography, FormControlLabel, FormControl, Checkbox,
+} from '@material-ui/core';
 
 const PhicCalculations = () => (
   <Fragment>

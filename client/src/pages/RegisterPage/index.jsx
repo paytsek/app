@@ -19,12 +19,22 @@ const RegisterPage = ({ history }) => {
   const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
 
-  const { errors: registerUserErrors, loading: registerUsersLoading } = useSelector(state => state.registerUser);
+  const { errors: registerUserErrors, loading: registerUsersLoading } = useSelector(
+    state => state.registerUser,
+  );
   const { loading: authUserLoading, auth } = useSelector(state => state.authUser);
 
   const onSubmit = e => {
     e.preventDefault();
-    dispatch(registerUser({ email, username, firstName, lastName, password }));
+    dispatch(
+      registerUser({
+        email,
+        username,
+        firstName,
+        lastName,
+        password,
+      }),
+    );
   };
 
   const classes = useStyles();

@@ -1,12 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Container, Breadcrumbs, Typography, Button } from '@material-ui/core';
+import {
+  Paper, Container, Breadcrumbs, Typography, Button,
+} from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 
 import useStyles from './styles';
 
 const CompanyDetailsPage = ({ history }) => {
-  const { active, paper, title, actions, details } = useStyles();
+  const {
+    active, paper, title, actions, details,
+  } = useStyles();
 
   return (
     <Container>

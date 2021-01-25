@@ -7,7 +7,11 @@ import { Save, Undo, Clear, Delete } from '@material-ui/icons';
 import DialogPasswordConfirmation from '../../Dialog/DialogPasswordConfirmation';
 import MuiSkeleton from '../../MuiSkeleton';
 
-import { getCurrentUser, updateCurrentUser, deleteCurrentUser } from '../../../redux/actions/usersActions';
+import {
+  getCurrentUser,
+  updateCurrentUser,
+  deleteCurrentUser,
+} from '../../../redux/actions/usersActions';
 import { CURRENT_USER_RESET, CURRENT_USER_UPDATE_RESET } from '../../../redux/actions/types';
 import useStyles from './styles';
 
@@ -15,7 +19,9 @@ const CurrentUserProfileForm = ({ history }) => {
   const dispatch = useDispatch();
 
   const { user, loading } = useSelector(state => state.currentUser);
-  const { loading: currentUserUpdateLoading, errors } = useSelector(state => state.currentUserUpdate);
+  const { loading: currentUserUpdateLoading, errors } = useSelector(
+    state => state.currentUserUpdate,
+  );
   const { loading: currentUserDeleteLoading } = useSelector(state => state.currentUserDelete);
 
   const [state, setState] = useState({
@@ -29,7 +35,10 @@ const CurrentUserProfileForm = ({ history }) => {
 
   const { formButton } = useStyles();
 
-  const handleOnChange = e => setState(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
+  const handleOnChange = e => setState(prevState => ({
+    ...prevState,
+    [e.target.name]: e.target.value,
+  }));
 
   const handleOnSubmit = e => {
     e.preventDefault();

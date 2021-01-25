@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Paper, Container, Breadcrumbs, Typography } from '@material-ui/core';
+import {
+  Paper, Container, Breadcrumbs, Typography,
+} from '@material-ui/core';
 
 import CurrentUserProfileForm from '../../components/CurrentUserProfile/CurrentUserProfileForm';
 import useStyles from './styles';
