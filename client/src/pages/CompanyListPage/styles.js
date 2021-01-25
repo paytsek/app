@@ -29,9 +29,6 @@ const useStyles = makeStyles(theme => ({
     '& > div': {
       width: '100% !important',
     },
-    '& .MuiDataGrid-root': {
-      width: '100% !important',
-    },
   },
 }));
 

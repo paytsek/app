@@ -114,7 +114,10 @@ export const getUserDetails = id => async dispatch => {
 
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
-    const message = (error.response.data.errors && error.response.data.errors.message) || 'Server Error';
+    const message = (
+      error.response.data
+      && error.response.data.errors
+      && error.response.data.errors.message) || 'Server Error';
     dispatch({ type: USER_DETAILS_FAIL });
     dispatch(notification('error', message, dispatch));
   }
@@ -135,7 +138,11 @@ export const updateUserDetails = (id, userData) => async dispatch => {
 
     dispatch(notification('success', data.message, dispatch));
   } catch (error) {
-    const message = (error.response.data.errors && error.response.data.errors.message) || 'Server Error';
+    const message = (
+      error.response.data
+      && error.response.data.errors
+      && error.response.data.errors.message)
+      || 'Server Error';
 
     if (error.response.data.errors.email) {
       dispatch({
@@ -160,7 +167,11 @@ export const getCurrentUser = () => async dispatch => {
 
     dispatch({ type: CURRENT_USER_SUCCESS, payload: data });
   } catch (error) {
-    const message = (error.response.data.errors && error.response.data.errors.message) || 'Server Error';
+    const message = (
+      error.response.data
+      && error.response.data.errors
+      && error.response.data.errors.message)
+      || 'Server Error';
 
     dispatch({ type: CURRENT_USER_FAIL, payload: message });
     dispatch(notification('error', message, dispatch));
@@ -232,7 +243,11 @@ export const deleteCurrentUser = userData => async dispatch => {
     dispatch({ type: CURRENT_USER_DELETE_SUCCESS });
     dispatch({ type: LOGOUT });
   } catch (error) {
-    const message = (error.response.data.errors && error.response.data.errors.message) || 'Server Error';
+    const message = (
+      error.response.data
+      && error.response.data.errors
+      && error.response.data.errors.message)
+      || 'Server Error';
 
     dispatch({ type: CURRENT_USER_DELETE_FAIL });
     dispatch(notification('error', message, dispatch));

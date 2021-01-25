@@ -95,7 +95,7 @@ export const usersListReducers = (state = { users: [] }, action) => {
 
   switch (type) {
     case USERS_LIST_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true, users: [] };
     case USERS_LIST_SUCCESS:
       return { ...state, loading: false, users: payload.users };
     case USERS_LIST_FAIL:
