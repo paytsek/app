@@ -280,9 +280,11 @@ describe('GET api/v1/companies - getCompanies', () => {
 
   it('should get all companies and 200 status code', async () => {
     const token = await global.signIn();
+    const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
     await Company.create([
-      { name: 'PayTsek', user: mongoose.Types.ObjectId() },
-      { name: 'Fullsuite', user: mongoose.Types.ObjectId() },
+      { name: 'PayTsek', user: user._id },
+      { name: 'Fullsuite', user: user._id },
     ]);
 
     const { status, body } = await request(app).get(url).auth(token, { type: 'bearer' });
