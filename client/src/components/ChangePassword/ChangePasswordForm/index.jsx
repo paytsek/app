@@ -5,7 +5,7 @@ import { Grid, TextField, Button } from '@material-ui/core';
 import { Save, Undo, Clear } from '@material-ui/icons';
 
 import { updateCurrentUserPassword } from '../../../redux/actions/usersActions';
-import { CURRENT_USER_UPDATE_RESET } from '../../../redux/actions/types';
+import { CURRENT_USER_UPDATE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const ChangePasswordForm = ({ history }) => {

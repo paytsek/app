@@ -12,7 +12,7 @@ import {
   updateCurrentUser,
   deleteCurrentUser,
 } from '../../../redux/actions/usersActions';
-import { CURRENT_USER_RESET, CURRENT_USER_UPDATE_RESET } from '../../../redux/actions/types';
+import { CURRENT_USER_RESET, CURRENT_USER_UPDATE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const CurrentUserProfileForm = ({ history }) => {

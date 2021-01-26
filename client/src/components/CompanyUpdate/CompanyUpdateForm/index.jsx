@@ -6,8 +6,12 @@ import { Save, Clear, Undo, Delete } from '@material-ui/icons';
 
 import MuiSkeleton from '../../MuiSkeleton';
 
-import { getCompanyDetails, updateCompanyName } from '../../../redux/actions/companiesActions';
-import { COMPANY_NAME_UPDATE_RESET } from '../../../redux/actions/types';
+import {
+  getCompanyDetails,
+  updateCompanyName,
+  deleteCompany,
+} from '../../../redux/actions/companiesActions';
+import { COMPANY_NAME_UPDATE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const CompanyUpdateForm = ({ history, match }) => {
@@ -20,6 +24,7 @@ const CompanyUpdateForm = ({ history, match }) => {
   const { errors, loading: updateCompanyNameLoading } = useSelector(
     state => state.updateCompanyName,
   );
+  const { loading: companyDeleteLoading, success } = useSelector(state => state.companyDelete);
 
   const { formButton } = useStyles();
 
@@ -27,6 +32,8 @@ const CompanyUpdateForm = ({ history, match }) => {
     e.preventDefault();
     dispatch(updateCompanyName(id, { name }));
   };
+
+  const handleDeleteCompany = () => dispatch(deleteCompany(id));
 
   useEffect(() => {
     dispatch(getCompanyDetails(id));
@@ -40,7 +47,11 @@ const CompanyUpdateForm = ({ history, match }) => {
     if (company && company.name) {
       setName(company.name);
     }
-  }, [company.name]);
+
+    if (success) {
+      history.push('/companies');
+    }
+  }, [company.name, success]);
 
   return (
     <form onSubmit={handleOnSubmit}>
@@ -84,7 +95,8 @@ const CompanyUpdateForm = ({ history, match }) => {
               color="secondary"
               variant="contained"
               size="small"
-              disabled={updateCompanyNameLoading}
+              disabled={updateCompanyNameLoading || companyDeleteLoading}
+              onClick={handleDeleteCompany}
               startIcon={<Delete />}
             >
               Delete

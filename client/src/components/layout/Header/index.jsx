@@ -13,7 +13,7 @@ import {
 import HeaderAdminList from './HeaderAdminList';
 import HeaderMemberList from './HeaderMemberList';
 
-import { LOGOUT } from '../../../redux/actions/types';
+import { LOGOUT } from '../../../redux/types';
 import useStyles from './style';
 
 const Header = ({ openDrawer, setOpenDrawer, history }) => {

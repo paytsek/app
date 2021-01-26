@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { DataGrid } from '@material-ui/data-grid';
@@ -6,19 +6,47 @@ import { Button } from '@material-ui/core';
 import { Search, Edit, Delete } from '@material-ui/icons';
 import moment from 'moment';
 
-import { getCompaniesList } from '../../../redux/actions/companiesActions';
+import DialogAlert from '../../Dialog/DialogAlert';
+
+import { getCompaniesList, deleteCompany } from '../../../redux/actions/companiesActions';
+import { COMPANY_DELETE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const CompaniesListTable = ({ history }) => {
+  const [open, setOpen] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState({});
+
   const dispatch = useDispatch();
 
   const { companies, loading } = useSelector(state => state.companiesList);
+  const { loading: companyDeleteLoading, success } = useSelector(state => state.companyDelete);
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedCompany({});
+  };
+
+  const handleOpen = company => {
+    setOpen(true);
+    setSelectedCompany(company);
+  };
+
+  const handleOnConfirm = () => {
+    dispatch(deleteCompany(selectedCompany._id));
+    setOpen(false);
+  };
 
   const { dataGrid } = useStyles();
 
   useEffect(() => {
     dispatch(getCompaniesList());
   }, []);
+
+  useEffect(() => {
+    if (success) {
+      dispatch({ type: COMPANY_DELETE_RESET });
+    }
+  });
 
   const columns = [
     { field: 'name', headerName: 'Name', width: 200 },
@@ -44,7 +72,7 @@ const CompaniesListTable = ({ history }) => {
             startIcon={<Edit />}
             onClick={() => history.push(`companies/${props.row.id}/edit`)}
           />
-          <Button color="primary" startIcon={<Delete />} />
+          <Button color="primary" onClick={() => handleOpen(props.row)} startIcon={<Delete />} />
         </Fragment>
       ),
     },
@@ -62,8 +90,14 @@ const CompaniesListTable = ({ history }) => {
         columns={columns}
         checkboxSelection
         disableSelectionOnClick
-        loading={loading}
+        loading={loading || companyDeleteLoading}
         autoHeight
+      />
+      <DialogAlert
+        title={`Are you sure you want to remove ${selectedCompany.name || ''}?`}
+        open={open}
+        handleClose={handleClose}
+        onConfirm={handleOnConfirm}
       />
     </div>
   );

@@ -8,7 +8,7 @@ import MuiSkeleton from '../../MuiSkeleton';
 import DialogPasswordConfirmation from '../../Dialog/DialogPasswordConfirmation';
 
 import { getUserDetails, updateUserDetails, deleteUser } from '../../../redux/actions/usersActions';
-import { USER_UPDATE_DETAILS_RESET, USER_LIST_DELETE_RESET } from '../../../redux/actions/types';
+import { USER_UPDATE_DETAILS_RESET, USER_LIST_DELETE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const UserEditForm = ({ history, match }) => {

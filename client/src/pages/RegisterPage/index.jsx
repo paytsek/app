@@ -8,7 +8,7 @@ import PageLoader from '../../components/PageLoader';
 
 import useStyles from './styles';
 import { registerUser } from '../../redux/actions/usersActions';
-import { REGISTER_RESET } from '../../redux/actions/types';
+import { REGISTER_RESET } from '../../redux/types';
 
 const RegisterPage = ({ history }) => {
   const dispatch = useDispatch();

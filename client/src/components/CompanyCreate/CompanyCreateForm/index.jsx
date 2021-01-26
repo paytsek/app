@@ -5,7 +5,7 @@ import { Grid, TextField, Button } from '@material-ui/core';
 import { Save, Clear } from '@material-ui/icons';
 
 import { createCompanyName } from '../../../redux/actions/companiesActions';
-import { COMPANY_NAME_CREATE_RESET } from '../../../redux/actions/types';
+import { COMPANY_NAME_CREATE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const CompanyCreateForm = ({ history }) => {
