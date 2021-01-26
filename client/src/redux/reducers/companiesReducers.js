@@ -13,7 +13,7 @@ import {
   COMPANY_NAME_UPDATE_REQUEST,
   COMPANY_NAME_UPDATE_RESET,
   COMPANY_NAME_UPDATE_SUCCESS,
-} from '../actions/types';
+} from '../types';
 
 export const companiesListReducers = (state = { companies: [] }, action) => {
   const { type, payload } = action;

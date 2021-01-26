@@ -35,7 +35,7 @@ import {
   USER_LIST_DELETE_SUCCESS,
   USER_LIST_DELETE_FAIL,
   USER_LIST_DELETE_RESET,
-} from '../actions/types';
+} from '../types';
 
 export const authUserReducers = (state = { auth: false, loading: true, user: {} }, action) => {
   const { type, payload } = action;
@@ -44,11 +44,17 @@ export const authUserReducers = (state = { auth: false, loading: true, user: {} 
       return { ...state, loading: true };
     case AUTH_SUCCESS:
       return {
-        ...state, loading: false, auth: true, user: payload.user,
+        ...state,
+        loading: false,
+        auth: true,
+        user: payload.user,
       };
     case AUTH_FAIL:
       return {
-        ...state, loading: false, auth: false, user: {},
+        ...state,
+        loading: false,
+        auth: false,
+        user: {},
       };
     case LOGOUT:
       localStorage.removeItem('token');
@@ -136,11 +142,17 @@ export const updateUserDetailsReducers = (state = { errors: {}, loading: false }
       };
     case USER_UPDATE_DETAILS_FAIL:
       return {
-        ...state, loading: false, updatedUser: {}, errors: payload,
+        ...state,
+        loading: false,
+        updatedUser: {},
+        errors: payload,
       };
     case USER_UPDATE_DETAILS_RESET:
       return {
-        ...state, errors: {}, loading: false, updatedUser: {},
+        ...state,
+        errors: {},
+        loading: false,
+        updatedUser: {},
       };
     default:
       return state;
@@ -170,11 +182,17 @@ export const currentUserUpdateReducers = (state = { errors: {} }, action) => {
       return { ...state, loading: true, success: false };
     case CURRENT_USER_UPDATE_SUCCESS:
       return {
-        ...state, loading: false, errors: {}, success: true,
+        ...state,
+        loading: false,
+        errors: {},
+        success: true,
       };
     case CURRENT_USER_UPDATE_FAIL:
       return {
-        ...state, loading: false, errors: payload, success: false,
+        ...state,
+        loading: false,
+        errors: payload,
+        success: false,
       };
     case CURRENT_USER_UPDATE_RESET:
       return { errors: {}, loading: false };
