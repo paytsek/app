@@ -86,7 +86,8 @@ export const loginUser = userData => async dispatch => {
     dispatch({ type: LOGIN_SUCCESS, payload: data });
     dispatch(authUser(data.token));
   } catch (error) {
-    const message = (error.response.data.errors && error.response.data.errors.message) || 'Server Error';
+    const { errors } = error.response.data;
+    const message = (errors && errors.message) || 'Server error';
 
     dispatch({ type: LOGIN_FAIL });
     dispatch(notification('error', message, dispatch));
@@ -100,7 +101,9 @@ export const getUsersList = () => async dispatch => {
     const { data } = await axios.get('/users');
     dispatch({ type: USERS_LIST_SUCCESS, payload: data });
   } catch (error) {
-    const message = (error.response.data.errors && error.response.data.errors.message) || 'Server Error';
+    const { errors } = error.response.data;
+    const message = (errors && errors.message) || 'Server error';
+
     dispatch({ type: USERS_LIST_FAIL });
     dispatch(notification('error', message, dispatch));
   }
@@ -114,10 +117,9 @@ export const getUserDetails = id => async dispatch => {
 
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
   } catch (error) {
-    const message = (
-      error.response.data
-      && error.response.data.errors
-      && error.response.data.errors.message) || 'Server Error';
+    const { errors } = error.response.data;
+    const message = (errors && errors.message) || 'Server error';
+
     dispatch({ type: USER_DETAILS_FAIL });
     dispatch(notification('error', message, dispatch));
   }
@@ -138,22 +140,19 @@ export const updateUserDetails = (id, userData) => async dispatch => {
 
     dispatch(notification('success', data.message, dispatch));
   } catch (error) {
-    const message = (
-      error.response.data
-      && error.response.data.errors
-      && error.response.data.errors.message)
-      || 'Server Error';
+    const { errors } = error.response.data;
+    const message = (errors && errors.message) || 'Server error';
 
-    if (error.response.data.errors.email) {
+    if (errors.email) {
       dispatch({
         type: USER_UPDATE_DETAILS_FAIL,
-        payload: error.response.data.errors,
+        payload: errors,
       });
       return;
     }
     dispatch({
       type: USER_UPDATE_DETAILS_FAIL,
-      payload: error.response.data.errors,
+      payload: errors,
     });
     dispatch(notification('error', message, dispatch));
   }
@@ -167,11 +166,8 @@ export const getCurrentUser = () => async dispatch => {
 
     dispatch({ type: CURRENT_USER_SUCCESS, payload: data });
   } catch (error) {
-    const message = (
-      error.response.data
-      && error.response.data.errors
-      && error.response.data.errors.message)
-      || 'Server Error';
+    const { errors } = error.response.data;
+    const message = (errors && errors.message) || 'Server error';
 
     dispatch({ type: CURRENT_USER_FAIL, payload: message });
     dispatch(notification('error', message, dispatch));
@@ -220,9 +216,15 @@ export const updateCurrentUserPassword = userData => async dispatch => {
     dispatch(notification('success', message, dispatch));
   } catch (error) {
     const { errors } = error.response.data;
-    const message = (errors && errors.message) || 'Server error';
+    const message = errors && errors.message;
+    if (message) {
+      dispatch(notification('error', message, dispatch));
+    }
+
+    if (!message && errors.password) {
+      dispatch(notification('error', errors.password, dispatch));
+    }
     dispatch({ type: CURRENT_USER_UPDATE_FAIL, payload: errors });
-    dispatch(notification('error', message, dispatch));
   }
 };
 
@@ -243,11 +245,8 @@ export const deleteCurrentUser = userData => async dispatch => {
     dispatch({ type: CURRENT_USER_DELETE_SUCCESS });
     dispatch({ type: LOGOUT });
   } catch (error) {
-    const message = (
-      error.response.data
-      && error.response.data.errors
-      && error.response.data.errors.message)
-      || 'Server Error';
+    const { errors } = error.response.data;
+    const message = (errors && errors.message) || 'Server Error';
 
     dispatch({ type: CURRENT_USER_DELETE_FAIL });
     dispatch(notification('error', message, dispatch));

@@ -16,6 +16,7 @@ import {
   companiesListReducers,
   companyDetailsReducers,
   createCompanyNameReducers,
+  updateCompanyNameReducers,
 } from './companiesReducers';
 
 import snackbarReducer from './snackbarReducers';
@@ -37,6 +38,7 @@ const reducers = combineReducers({
   companiesList: companiesListReducers,
   companyDetails: companyDetailsReducers,
   createCompanyName: createCompanyNameReducers,
+  updateCompanyName: updateCompanyNameReducers,
 });
 
 export default reducers;
