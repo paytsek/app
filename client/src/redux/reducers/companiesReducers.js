@@ -1,4 +1,6 @@
 import {
+  COMPANY_DELETE_REQUEST,
+  COMPANY_DELETE_SUCCESS,
   COMPANY_DETAILS_FAIL,
   COMPANY_DETAILS_REQUEST,
   COMPANY_DETAILS_SUCCESS,
@@ -25,6 +27,8 @@ export const companiesListReducers = (state = { companies: [] }, action) => {
       return { loading: false, companies: payload.companies };
     case COMPANY_LIST_FAIL:
       return { loading: false, companies: [] };
+    case COMPANY_DELETE_SUCCESS:
+      return { ...state, companies: state.companies.filter(company => company._id !== payload) };
     default:
       return state;
   }
@@ -74,6 +78,21 @@ export const updateCompanyNameReducers = (state = { errors: {} }, action) => {
       return { loading: false, success: false, errors: payload };
     case COMPANY_NAME_UPDATE_RESET:
       return { errors: {} };
+    default:
+      return state;
+  }
+};
+
+export const companyDeleteReducers = (state = {}, action) => {
+  const { type } = action;
+
+  switch (type) {
+    case COMPANY_DELETE_REQUEST:
+      return { loading: true };
+    case COMPANY_DELETE_SUCCESS:
+      return { loading: false, success: true };
+    case COMPANY_DETAILS_FAIL:
+      return { loading: false, success: false };
     default:
       return state;
   }

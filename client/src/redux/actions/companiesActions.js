@@ -1,6 +1,9 @@
 import axios from '../../axios';
 
 import {
+  COMPANY_DELETE_FAIL,
+  COMPANY_DELETE_REQUEST,
+  COMPANY_DELETE_SUCCESS,
   COMPANY_DETAILS_FAIL,
   COMPANY_DETAILS_REQUEST,
   COMPANY_DETAILS_SUCCESS,
@@ -99,5 +102,23 @@ export const updateCompanyName = (id, companyData) => async dispatch => {
       dispatch(notification('error', message || 'Server Error', dispatch));
     }
     dispatch({ type: COMPANY_NAME_UPDATE_FAIL, payload: errors });
+  }
+};
+
+export const deleteCompany = id => async dispatch => {
+  dispatch({ type: COMPANY_DELETE_REQUEST });
+
+  try {
+    const { data } = await axios.delete(`/companies/name/${id}`);
+    const { message } = data;
+
+    dispatch({ type: COMPANY_DELETE_SUCCESS, payload: id });
+    dispatch(notification('success', message || 'Successfull delete', dispatch));
+  } catch (error) {
+    const { errors } = error.response.data;
+    const message = errors && errors.message;
+
+    dispatch(notification('error', message || 'Server Error', dispatch));
+    dispatch({ type: COMPANY_DELETE_FAIL });
   }
 };
