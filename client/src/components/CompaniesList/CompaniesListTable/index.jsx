@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { DataGrid } from '@material-ui/data-grid';
@@ -6,13 +6,28 @@ import { Button } from '@material-ui/core';
 import { Search, Edit, Delete } from '@material-ui/icons';
 import moment from 'moment';
 
+import DialogAlert from '../../Dialog/DialogAlert';
+
 import { getCompaniesList } from '../../../redux/actions/companiesActions';
 import useStyles from './styles';
 
 const CompaniesListTable = ({ history }) => {
+  const [open, setOpen] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState({});
+
   const dispatch = useDispatch();
 
   const { companies, loading } = useSelector(state => state.companiesList);
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedCompany({});
+  };
+
+  const handleOpen = company => {
+    setOpen(true);
+    setSelectedCompany(company);
+  };
 
   const { dataGrid } = useStyles();
 
@@ -44,7 +59,7 @@ const CompaniesListTable = ({ history }) => {
             startIcon={<Edit />}
             onClick={() => history.push(`companies/${props.row.id}/edit`)}
           />
-          <Button color="primary" startIcon={<Delete />} />
+          <Button color="primary" onClick={() => handleOpen(props.row)} startIcon={<Delete />} />
         </Fragment>
       ),
     },
@@ -64,6 +79,11 @@ const CompaniesListTable = ({ history }) => {
         disableSelectionOnClick
         loading={loading}
         autoHeight
+      />
+      <DialogAlert
+        title={`Are you sure you want to remove ${selectedCompany.name || ''}?`}
+        open={open}
+        handleClose={handleClose}
       />
     </div>
   );
