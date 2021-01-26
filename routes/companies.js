@@ -25,7 +25,7 @@ router.route('/name/:id').put(auth, updateCompanyName).delete(auth, deleteCompan
 router.route('/').get(auth, getCompanies);
 
 // /api/v1/companies/:id
-router.route('/:id').get(getCompany);
+router.route('/:id').get(auth, getCompany);
 
 // /api/v1/companies/:id/settings
 router.route('/:id/settings').post(auth, createCompanySettings);

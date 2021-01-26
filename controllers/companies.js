@@ -53,6 +53,11 @@ const getCompany = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: `Resource with an of ${id} not found` }));
   }
 
+  if (req.user.role !== 'admin' && req.user._id.toString() !== company.user.toString()) {
+    res.status(401);
+    return next(new ErrorResponse({ message: 'Not authorize to access this route' }));
+  }
+
   return res.status(200).json({ success: true, company });
 });
 
@@ -191,7 +196,7 @@ const updateCompanyName = asyncHandler(async (req, res, next) => {
     );
   }
 
-  if (req.user._id.toString() !== company.user.toString()) {
+  if (req.user.role !== 'admin' && req.user._id.toString() !== company.user.toString()) {
     res.status(401);
     return next(new ErrorResponse({ message: 'Not authorize to access this route' }));
   }
