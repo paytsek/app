@@ -221,7 +221,7 @@ const deleteCompany = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: `Resource with an id of ${id} not found` }));
   }
 
-  if (company.user.toString() !== req.user._id.toString()) {
+  if (req.user.role !== 'admin' && company.user.toString() !== req.user._id.toString()) {
     res.status(401);
     return next(new ErrorResponse({ message: 'Not authorized to access this route' }));
   }
