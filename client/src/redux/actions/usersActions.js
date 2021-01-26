@@ -33,7 +33,7 @@ import {
   USER_LIST_DELETE_REQUEST,
   USER_LIST_DELETE_FAIL,
   USER_LIST_DELETE_SUCCESS,
-} from './types';
+} from '../types';
 import notification from '../../utils/notification';
 
 export const authUser = () => async dispatch => {

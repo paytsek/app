@@ -7,7 +7,7 @@ import { Save, Clear, Undo, Delete } from '@material-ui/icons';
 import MuiSkeleton from '../../MuiSkeleton';
 
 import { getCompanyDetails, updateCompanyName } from '../../../redux/actions/companiesActions';
-import { COMPANY_NAME_UPDATE_RESET } from '../../../redux/actions/types';
+import { COMPANY_NAME_UPDATE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const CompanyUpdateForm = ({ history, match }) => {

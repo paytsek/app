@@ -12,7 +12,7 @@ import {
   COMPANY_NAME_UPDATE_FAIL,
   COMPANY_NAME_UPDATE_REQUEST,
   COMPANY_NAME_UPDATE_SUCCESS,
-} from './types';
+} from '../types';
 import notification from '../../utils/notification';
 
 export const getCompaniesList = () => async dispatch => {

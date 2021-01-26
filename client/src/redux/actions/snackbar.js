@@ -1,6 +1,6 @@
 import { v4 as uuidV4 } from 'uuid';
 
-import { ENQUEUE_SNACKBAR, CLOSE_SNACKBAR, REMOVE_SNACKBAR } from './types';
+import { ENQUEUE_SNACKBAR, CLOSE_SNACKBAR, REMOVE_SNACKBAR } from '../types';
 
 export const enqueueSnackbar = notification => {
   const key = notification.options && notification.options.key;
