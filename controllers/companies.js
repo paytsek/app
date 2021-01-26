@@ -1,6 +1,5 @@
 const Company = require('../models/Company');
 const CompanySetting = require('../models/CompanySetting');
-const User = require('../models/User');
 
 const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
@@ -25,15 +24,17 @@ const createCompany = asyncHandler(async (req, res, next) => {
 // @Desc Get all companies
 // access PRIVATE - Logged in user
 const getCompanies = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id).populate('companies');
+  let companies = await Company.find({ user: req.user._id }).populate({
+    path: 'companySettings',
+  });
 
-  if (user.role === 'admin') {
-    const companies = await Company.find({});
+  if (req.user.role === 'admin') {
+    companies = await Company.find({}).populate({
+      path: 'companySettings',
+    });
 
     return res.status(200).json({ success: true, companies });
   }
-
-  const { companies } = user;
 
   return res.status(200).json({ success: true, companies });
 });

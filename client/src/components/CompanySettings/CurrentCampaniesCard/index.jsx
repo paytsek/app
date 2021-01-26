@@ -1,11 +1,18 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { Card, CardActionArea, CardActions, CardContent, Button, Typography } from '@material-ui/core';
+import {
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  Button,
+  Typography,
+} from '@material-ui/core';
 import { Settings as SettingsIcon } from '@material-ui/icons';
 
 import useStyles from './styles';
 
-const CurrentCompaniesCard = ({ history }) => {
+const CurrentCompaniesCard = ({ history, company }) => {
   const { root, buttonText } = useStyles();
 
   return (
@@ -13,32 +20,36 @@ const CurrentCompaniesCard = ({ history }) => {
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            PayTsek
+            {company.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            24n St Marcoville, Baguio City, Phillipines
+            {(company.companySettings && company.companySettings.registeredAddress)
+              || 'Set your company'}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button
-          size="small"
-          color="primary"
-          startIcon={<SettingsIcon />}
-          className={buttonText}
-          onClick={() => history.push('company-settings/1')}
-        >
-          Add Settings
-        </Button>
-        <Button
-          size="small"
-          color="primary"
-          startIcon={<SettingsIcon />}
-          className={buttonText}
-          onClick={() => history.push('company-settings/1/edit')}
-        >
-          Edit Settings
-        </Button>
+        {company.companySettings ? (
+          <Button
+            size="small"
+            color="primary"
+            startIcon={<SettingsIcon />}
+            className={buttonText}
+            onClick={() => history.push(`company-settings/${company._id}/edit`)}
+          >
+            Edit Settings
+          </Button>
+        ) : (
+          <Button
+            size="small"
+            color="primary"
+            startIcon={<SettingsIcon />}
+            className={buttonText}
+            onClick={() => history.push(`company-settings/${company._id}`)}
+          >
+            Add Settings
+          </Button>
+        )}
       </CardActions>
     </Card>
   );
