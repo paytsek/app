@@ -8,7 +8,7 @@ import moment from 'moment';
 
 import DialogAlert from '../../Dialog/DialogAlert';
 
-import { getCompaniesList } from '../../../redux/actions/companiesActions';
+import { getCompaniesList, deleteCompany } from '../../../redux/actions/companiesActions';
 import useStyles from './styles';
 
 const CompaniesListTable = ({ history }) => {
@@ -18,6 +18,7 @@ const CompaniesListTable = ({ history }) => {
   const dispatch = useDispatch();
 
   const { companies, loading } = useSelector(state => state.companiesList);
+  const { loading: companyDeleteLoading } = useSelector(state => state.companyDelete);
 
   const handleClose = () => {
     setOpen(false);
@@ -27,6 +28,11 @@ const CompaniesListTable = ({ history }) => {
   const handleOpen = company => {
     setOpen(true);
     setSelectedCompany(company);
+  };
+
+  const handleOnConfirm = () => {
+    dispatch(deleteCompany(selectedCompany._id));
+    setOpen(false);
   };
 
   const { dataGrid } = useStyles();
@@ -77,13 +83,14 @@ const CompaniesListTable = ({ history }) => {
         columns={columns}
         checkboxSelection
         disableSelectionOnClick
-        loading={loading}
+        loading={loading || companyDeleteLoading}
         autoHeight
       />
       <DialogAlert
         title={`Are you sure you want to remove ${selectedCompany.name || ''}?`}
         open={open}
         handleClose={handleClose}
+        onConfirm={handleOnConfirm}
       />
     </div>
   );
