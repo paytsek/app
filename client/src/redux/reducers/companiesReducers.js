@@ -1,5 +1,7 @@
 import {
+  COMPANY_DELETE_FAIL,
   COMPANY_DELETE_REQUEST,
+  COMPANY_DELETE_RESET,
   COMPANY_DELETE_SUCCESS,
   COMPANY_DETAILS_FAIL,
   COMPANY_DETAILS_REQUEST,
@@ -91,8 +93,10 @@ export const companyDeleteReducers = (state = {}, action) => {
       return { loading: true };
     case COMPANY_DELETE_SUCCESS:
       return { loading: false, success: true };
-    case COMPANY_DETAILS_FAIL:
+    case COMPANY_DELETE_FAIL:
       return { loading: false, success: false };
+    case COMPANY_DELETE_RESET:
+      return {};
     default:
       return state;
   }

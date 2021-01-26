@@ -9,6 +9,7 @@ import moment from 'moment';
 import DialogAlert from '../../Dialog/DialogAlert';
 
 import { getCompaniesList, deleteCompany } from '../../../redux/actions/companiesActions';
+import { COMPANY_DELETE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const CompaniesListTable = ({ history }) => {
@@ -18,7 +19,7 @@ const CompaniesListTable = ({ history }) => {
   const dispatch = useDispatch();
 
   const { companies, loading } = useSelector(state => state.companiesList);
-  const { loading: companyDeleteLoading } = useSelector(state => state.companyDelete);
+  const { loading: companyDeleteLoading, success } = useSelector(state => state.companyDelete);
 
   const handleClose = () => {
     setOpen(false);
@@ -40,6 +41,12 @@ const CompaniesListTable = ({ history }) => {
   useEffect(() => {
     dispatch(getCompaniesList());
   }, []);
+
+  useEffect(() => {
+    if (success) {
+      dispatch({ type: COMPANY_DELETE_RESET });
+    }
+  });
 
   const columns = [
     { field: 'name', headerName: 'Name', width: 200 },

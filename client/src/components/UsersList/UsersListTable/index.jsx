@@ -8,6 +8,7 @@ import { Search, Edit, Delete } from '@material-ui/icons';
 import DialogPasswordConfirmation from '../../Dialog/DialogPasswordConfirmation';
 
 import { getUsersList, deleteUser } from '../../../redux/actions/usersActions';
+import { USER_LIST_DELETE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const UsersListTable = ({ history }) => {
@@ -56,12 +57,23 @@ const UsersListTable = ({ history }) => {
       width: user.role === 'admin' ? 190 : 100,
       renderCell: props => (
         <Fragment>
-          <Button color="primary" startIcon={<Search onClick={() => history.push(`users/${props.row.id}`)} />} />
+          <Button
+            color="primary"
+            startIcon={<Search onClick={() => history.push(`users/${props.row.id}`)} />}
+          />
           {user.role === 'admin' && (
-            <Button color="primary" startIcon={<Edit />} onClick={() => history.push(`users/${props.row.id}/edit`)} />
+            <Button
+              color="primary"
+              startIcon={<Edit />}
+              onClick={() => history.push(`users/${props.row.id}/edit`)}
+            />
           )}
           {user.role === 'admin' && (
-            <Button color="primary" onClick={() => handleOpen(props.row.id)} startIcon={<Delete />} />
+            <Button
+              color="primary"
+              onClick={() => handleOpen(props.row.id)}
+              startIcon={<Delete />}
+            />
           )}
         </Fragment>
       ),
@@ -75,6 +87,7 @@ const UsersListTable = ({ history }) => {
   useEffect(() => {
     if (success) {
       handleClose();
+      dispatch({ type: USER_LIST_DELETE_RESET });
     }
   }, [success]);
 
