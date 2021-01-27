@@ -58,6 +58,12 @@ const CompanySettingsForm = () => {
       taxablePays: {},
       nonTaxablePays: {},
     },
+    thirtheenthMonthPayCalculation: {
+      deminimis: false,
+      absences: false,
+      taxablePays: {},
+      nonTaxablePays: {},
+    },
   });
 
   const {
@@ -68,6 +74,7 @@ const CompanySettingsForm = () => {
     nonTaxablePays,
     sssCalculation,
     phicCalculation,
+    thirtheenthMonthPayCalculation,
   } = settings;
   const { nightDifferential, overtime, holiday } = basicSettings;
 
@@ -125,13 +132,19 @@ const CompanySettingsForm = () => {
       ...prevState.phicCalculation,
       [key]: { ...prevState.phicCalculation[key], [val]: false },
     },
+    thirtheenthMonthPayCalculation: {
+      ...prevState.thirtheenthMonthPayCalculation,
+      [key]: { ...prevState.thirtheenthMonthPayCalculation[key], [val]: false },
+    },
   }));
 
   const handleOnDelete = (key, val) => setSettings(prevState => {
     const newSssCalculation = prevState.sssCalculation;
     const newPhicCalculation = prevState.phicCalculation;
+    const newThirtheenthMonthPayCalculation = prevState.thirtheenthMonthPayCalculation;
     delete newSssCalculation[key][val];
     delete newPhicCalculation[key][val];
+    delete newThirtheenthMonthPayCalculation[key][val];
 
     return {
       ...prevState,
@@ -143,6 +156,10 @@ const CompanySettingsForm = () => {
       phicCalculation: {
         ...prevState.phicCalculation,
         ...newPhicCalculation,
+      },
+      thirtheenthMonthPayCalculation: {
+        ...prevState.newThirtheenthMonthPayCalculation,
+        ...newThirtheenthMonthPayCalculation,
       },
     };
   });
@@ -237,7 +254,12 @@ const CompanySettingsForm = () => {
               {/* 13th month pay calculation */}
               <Grid item xs={12} md={4} className={calculationsContainer}>
                 <Paper>
-                  <ThirtheenthMonthPayCalculations />
+                  <ThirtheenthMonthPayCalculations
+                    settings={thirtheenthMonthPayCalculation}
+                    onChangeCalculation={handleOnChangeCalculation}
+                    onChangeTaxablePay={handleOnChangeTaxablePay}
+                    onChangeNonTaxablePay={handleOnChangeNonTaxablePay}
+                  />
                 </Paper>
               </Grid>
             </Grid>
