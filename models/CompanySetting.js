@@ -59,7 +59,7 @@ const CompanySettingSchema = new mongoose.Schema(
     frequency: {
       type: String,
       enum: ['semiMonthly', 'monthly'],
-      default: 'semiMonthly',
+      default: 'monthly',
       required: [true, 'Payroll frequency is required'],
     },
     reportingBase: {
