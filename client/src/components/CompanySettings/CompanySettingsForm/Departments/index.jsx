@@ -36,7 +36,7 @@ const Departments = ({ departments, onAdd, onDelete }) => {
     if (existDepartment) {
       return dispatch(notification('warning', `${val} already exist`, dispatch));
     }
-    onAdd(val);
+    onAdd('departments', val);
     return setDepartmentName('');
   };
 
@@ -67,7 +67,7 @@ const Departments = ({ departments, onAdd, onDelete }) => {
               <ListItem key={department}>
                 <ListItemText primary={department} />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete(department)}>
+                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete('departments', department)}>
                     <DeleteIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
