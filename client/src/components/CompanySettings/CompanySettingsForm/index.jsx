@@ -53,6 +53,11 @@ const CompanySettingsForm = () => {
       taxablePays: {},
       nonTaxablePays: {},
     },
+    phicCalculation: {
+      deminimis: false,
+      taxablePays: {},
+      nonTaxablePays: {},
+    },
   });
 
   const {
@@ -62,6 +67,7 @@ const CompanySettingsForm = () => {
     taxablePays,
     nonTaxablePays,
     sssCalculation,
+    phicCalculation,
   } = settings;
   const { nightDifferential, overtime, holiday } = basicSettings;
 
@@ -115,11 +121,17 @@ const CompanySettingsForm = () => {
       ...prevState.sssCalculation,
       [key]: { ...prevState.sssCalculation[key], [val]: false },
     },
+    phicCalculation: {
+      ...prevState.phicCalculation,
+      [key]: { ...prevState.phicCalculation[key], [val]: false },
+    },
   }));
 
   const handleOnDelete = (key, val) => setSettings(prevState => {
     const newSssCalculation = prevState.sssCalculation;
+    const newPhicCalculation = prevState.phicCalculation;
     delete newSssCalculation[key][val];
+    delete newPhicCalculation[key][val];
 
     return {
       ...prevState,
@@ -127,6 +139,10 @@ const CompanySettingsForm = () => {
       sssCalculation: {
         ...prevState.sssCalculation,
         ...newSssCalculation,
+      },
+      phicCalculation: {
+        ...prevState.phicCalculation,
+        ...newPhicCalculation,
       },
     };
   });
@@ -210,7 +226,12 @@ const CompanySettingsForm = () => {
               {/* PHIC Calculations */}
               <Grid item xs={12} md={4} className={calculationsContainer}>
                 <Paper elevation={2}>
-                  <PhicCalculations />
+                  <PhicCalculations
+                    settings={phicCalculation}
+                    onChangeCalculation={handleOnChangeCalculation}
+                    onChangeTaxablePay={handleOnChangeTaxablePay}
+                    onChangeNonTaxablePay={handleOnChangeNonTaxablePay}
+                  />
                 </Paper>
               </Grid>
               {/* 13th month pay calculation */}
