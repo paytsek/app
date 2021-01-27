@@ -17,6 +17,9 @@ const useStyles = makeStyles(theme => ({
     '& .MuiFormControl-fullWidth': {
       display: 'block',
     },
+    '& .MuiPaper-root': {
+      padding: `${theme.spacing(2)}px`,
+    },
   },
 }));
 

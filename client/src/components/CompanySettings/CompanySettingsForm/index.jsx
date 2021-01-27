@@ -48,9 +48,21 @@ const CompanySettingsForm = () => {
     departments: [],
     taxablePays: [],
     nonTaxablePays: [],
+    sssCalculation: {
+      deminimis: false,
+      taxablePays: {},
+      nonTaxablePays: {},
+    },
   });
 
-  const { basicSettings, registeredAddress, departments, taxablePays, nonTaxablePays } = settings;
+  const {
+    basicSettings,
+    registeredAddress,
+    departments,
+    taxablePays,
+    nonTaxablePays,
+    sssCalculation,
+  } = settings;
   const { nightDifferential, overtime, holiday } = basicSettings;
 
   const handleOnChangeBasicSettings = e => setSettings(prevState => ({
@@ -66,15 +78,58 @@ const CompanySettingsForm = () => {
     registeredAddress: { ...prevState.registeredAddress, [e.target.name]: e.target.value },
   }));
 
-  const handleOnAdd = (name, department) => setSettings(prevState => ({
+  const handleOnChangeCalculation = (calculation, e) => setSettings(prevState => ({
     ...prevState,
-    [name]: [...prevState[name], department],
+    [calculation]: {
+      ...prevState[calculation],
+      [e.target.name]: e.target.checked,
+    },
   }));
 
-  const handleOnDelete = (name, department) => setSettings(prevState => ({
+  const handleOnChangeTaxablePay = (calculation, e) => setSettings(prevState => ({
     ...prevState,
-    [name]: prevState[name].filter(prevDepartment => prevDepartment !== department),
+    [calculation]: {
+      ...prevState[calculation],
+      taxablePays: {
+        ...prevState[calculation].taxablePays,
+        [e.target.name]: e.target.checked,
+      },
+    },
   }));
+
+  const handleOnChangeNonTaxablePay = (calculation, e) => setSettings(prevState => ({
+    ...prevState,
+    [calculation]: {
+      ...prevState[calculation],
+      nonTaxablePays: {
+        ...prevState[calculation].nonTaxablePays,
+        [e.target.name]: e.target.checked,
+      },
+    },
+  }));
+
+  const handleOnAdd = (key, val) => setSettings(prevState => ({
+    ...prevState,
+    [key]: [...prevState[key], val],
+    sssCalculation: {
+      ...prevState.sssCalculation,
+      [key]: { ...prevState.sssCalculation[key], [val]: false },
+    },
+  }));
+
+  const handleOnDelete = (key, val) => setSettings(prevState => {
+    const newSssCalculation = prevState.sssCalculation;
+    delete newSssCalculation[key][val];
+
+    return {
+      ...prevState,
+      [key]: prevState[key].filter(prevVal => prevVal !== val),
+      sssCalculation: {
+        ...prevState.sssCalculation,
+        ...newSssCalculation,
+      },
+    };
+  });
 
   console.log(settings);
 
@@ -143,15 +198,26 @@ const CompanySettingsForm = () => {
               </Grid>
               {/* SSS calculation */}
               <Grid item xs={12} md={4} className={calculationsContainer}>
-                <SSSCalculations />
+                <Paper elevation={2}>
+                  <SSSCalculations
+                    settings={sssCalculation}
+                    onChangeCalculation={handleOnChangeCalculation}
+                    onChangeTaxablePay={handleOnChangeTaxablePay}
+                    onChangeNonTaxablePay={handleOnChangeNonTaxablePay}
+                  />
+                </Paper>
               </Grid>
               {/* PHIC Calculations */}
               <Grid item xs={12} md={4} className={calculationsContainer}>
-                <PhicCalculations />
+                <Paper elevation={2}>
+                  <PhicCalculations />
+                </Paper>
               </Grid>
               {/* 13th month pay calculation */}
               <Grid item xs={12} md={4} className={calculationsContainer}>
-                <ThirtheenthMonthPayCalculations />
+                <Paper>
+                  <ThirtheenthMonthPayCalculations />
+                </Paper>
               </Grid>
             </Grid>
           </div>
