@@ -47,9 +47,10 @@ const CompanySettingsForm = () => {
     },
     departments: [],
     taxablePays: [],
+    nonTaxablePays: [],
   });
 
-  const { basicSettings, registeredAddress, departments, taxablePays } = settings;
+  const { basicSettings, registeredAddress, departments, taxablePays, nonTaxablePays } = settings;
   const { nightDifferential, overtime, holiday } = basicSettings;
 
   const handleOnChangeBasicSettings = e => setSettings(prevState => ({
@@ -134,7 +135,11 @@ const CompanySettingsForm = () => {
               </Grid>
               {/* Non-taxable pays */}
               <Grid item xs={12} md={6}>
-                <NonTaxablePays />
+                <NonTaxablePays
+                  nonTaxablePays={nonTaxablePays}
+                  onAdd={handleOnAdd}
+                  onDelete={handleOnDelete}
+                />
               </Grid>
               {/* SSS calculation */}
               <Grid item xs={12} md={4} className={calculationsContainer}>
