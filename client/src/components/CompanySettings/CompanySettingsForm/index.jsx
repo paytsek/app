@@ -46,9 +46,10 @@ const CompanySettingsForm = () => {
       zipCode: '',
     },
     departments: [],
+    taxablePays: [],
   });
 
-  const { basicSettings, registeredAddress, departments } = settings;
+  const { basicSettings, registeredAddress, departments, taxablePays } = settings;
   const { nightDifferential, overtime, holiday } = basicSettings;
 
   const handleOnChangeBasicSettings = e => setSettings(prevState => ({
@@ -115,11 +116,7 @@ const CompanySettingsForm = () => {
       </Grid>
       {/* DEPARTMENTS */}
       <Grid item xs={12} md={6}>
-        <Departments
-          departments={departments}
-          onAdd={handleOnAdd}
-          onDelete={handleOnDelete}
-        />
+        <Departments departments={departments} onAdd={handleOnAdd} onDelete={handleOnDelete} />
       </Grid>
       {/* GOVERNMENT REMITTANCES & 13th MONTH PAY CALCULATION */}
       <Grid item xs={12}>
@@ -129,7 +126,11 @@ const CompanySettingsForm = () => {
             <Grid container spacing={6}>
               {/* Taxable pays */}
               <Grid item xs={12} md={6}>
-                <TaxablePays />
+                <TaxablePays
+                  taxablePays={taxablePays}
+                  onAdd={handleOnAdd}
+                  onDelete={handleOnDelete}
+                />
               </Grid>
               {/* Non-taxable pays */}
               <Grid item xs={12} md={6}>
