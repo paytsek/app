@@ -68,6 +68,21 @@ const CompanySettingsForm = () => {
       taxablePays: {},
       nonTaxablePays: {},
     },
+    accountingJournal: {
+      taxableCompensation: 'wagesAndSalaries',
+      thirtheenthMonthPay: 'wagesAndSalaries',
+      nonTaxableCompensation: 'wagesAndSalaries',
+      preTaxDeduction: 'wagesAndSalaries',
+      employeeBenefits: 'wagesAndSalaries',
+      sssPayable: 'wagesAndSalaries',
+      hdmfPayable: 'wagesAndSalaries',
+      phicPayable: 'wagesAndSalaries',
+      taxDue: 'wagesAndSalaries',
+      reimbursement: 'wagesAndSalaries',
+      postTaxDeduction: 'wagesAndSalaries',
+      netPay: 'wagesAndSalaries',
+      deminimisBenefits: 'wagesAndSalaries',
+    },
   });
 
   const {
@@ -79,6 +94,7 @@ const CompanySettingsForm = () => {
     sssCalculation,
     phicCalculation,
     thirtheenthMonthPayCalculation,
+    accountingJournal,
   } = settings;
   const { nightDifferential, overtime, holiday } = basicSettings;
 
@@ -167,6 +183,14 @@ const CompanySettingsForm = () => {
       },
     };
   });
+
+  const handleOnChangeAccountingJournal = e => setSettings(prevState => ({
+    ...prevState,
+    accountingJournal: {
+      ...prevState.accountingJournal,
+      [e.target.name]: e.target.value,
+    },
+  }));
 
   console.log(settings);
 
@@ -272,7 +296,10 @@ const CompanySettingsForm = () => {
       </Grid>
       {/* Accounting journal Entries */}
       <Grid item xs={12}>
-        <AccountingJournalEntries />
+        <AccountingJournalEntries
+          settings={accountingJournal}
+          onChange={handleOnChangeAccountingJournal}
+        />
       </Grid>
     </Grid>
   );
