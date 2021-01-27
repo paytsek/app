@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid, Paper } from '@material-ui/core';
 
 import TitleBox from '../../common/TitleBox';
-import CompanySettings from './CompanySettings';
+import BasicSettings from './BasicSettings';
 import RegisteredAddress from './RegisteredAddress';
 import Departments from './Departments';
 import TaxablePays from './TaxablePays';
@@ -15,15 +15,74 @@ import AccountingJournalEntries from './AccountingJournalEntries';
 import useStyles from './styles';
 
 const CompanySettingsForm = () => {
-  const {
-    paper, gridContainer, fieldsContainer, calculationsContainer,
-  } = useStyles();
+  const [settings, setSettings] = useState({
+    basicSettings: {
+      tin: '',
+      rdoCode: '',
+      category: 'private',
+      reportingBase: 'payrollCutOffs',
+      frequency: 'monthly',
+      firstCutOff: '',
+      secondCutOff: '',
+      firstPayout: '',
+      secondPayout: '',
+      nightDifferential: 'disabled',
+      nightDifferentialPercentage: '',
+      overtime: 'disabled',
+      overtimePay: '',
+      overtimeRestDayPay: '',
+      holiday: false,
+      regularHolidayPay: '',
+      specialHolidayPay: '',
+      workingDays: 22,
+      taxReliefInternationTaxTreaty: false,
+      deminimis: false,
+      emailNotification: false,
+    },
+  });
+
+  const { basicSettings } = settings;
+  const { nightDifferential, overtime, holiday } = basicSettings;
+
+  const handleOnChangeBasicSettings = e => setSettings(prevState => ({
+    ...prevState,
+    basicSettings: {
+      ...prevState.basicSettings,
+      [e.target.name]: e.target.value || e.target.checked,
+    },
+  }));
+
+  console.log(settings);
+
+  const { paper, gridContainer, fieldsContainer, calculationsContainer } = useStyles();
+
+  useEffect(() => {
+    if (nightDifferential !== 'percentage') {
+      setSettings(prevState => ({
+        ...prevState,
+        basicSettings: { ...prevState.basicSettings, nightDifferentialPercentage: '' },
+      }));
+    }
+    if (overtime !== 'hourly') {
+      setSettings(prevState => ({
+        ...prevState,
+        basicSettings: { ...prevState.basicSettings, overtimePay: '', overtimeRestDayPay: '' },
+      }));
+    }
+
+    if (!holiday) {
+      setSettings(prevState => ({
+        ...prevState,
+        basicSettings: { ...prevState.basicSettings, regularHolidayPay: '', specialHolidayPay: '' },
+      }));
+    }
+  }, [nightDifferential, overtime, holiday]);
 
   return (
     <Grid container spacing={3} className={gridContainer}>
-      {/* COMPANY SETTINGS */}
+      {/* BASIC SETTINGS */}
       <Grid item xs={12}>
-        <CompanySettings />
+        <BasicSettings settings={basicSettings} onChange={handleOnChangeBasicSettings} />
       </Grid>
       {/* REGISTER ADDRESS */}
       <Grid item xs={12} md={6}>
