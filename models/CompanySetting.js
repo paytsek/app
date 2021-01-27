@@ -195,11 +195,11 @@ const CompanySettingSchema = new mongoose.Schema(
     phicNumber: String,
     hdmfNumber: String,
     payItemsWithCorrespondingAccountExpense: String,
-    companyTaxablePays: {
+    taxablePays: {
       type: [String],
       default: [],
     },
-    companyNonTaxablePays: {
+    nonTaxablePays: {
       type: [String],
       default: [],
     },
