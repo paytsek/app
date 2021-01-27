@@ -45,9 +45,10 @@ const CompanySettingsForm = () => {
       country: '',
       zipCode: '',
     },
+    departments: [],
   });
 
-  const { basicSettings, registeredAddress } = settings;
+  const { basicSettings, registeredAddress, departments } = settings;
   const { nightDifferential, overtime, holiday } = basicSettings;
 
   const handleOnChangeBasicSettings = e => setSettings(prevState => ({
@@ -61,6 +62,16 @@ const CompanySettingsForm = () => {
   const handleOnChangeRegisteredAddress = e => setSettings(prevState => ({
     ...prevState,
     registeredAddress: { ...prevState.registeredAddress, [e.target.name]: e.target.value },
+  }));
+
+  const handleOnAddDepartment = department => setSettings(prevState => ({
+    ...prevState,
+    departments: [...prevState.departments, department],
+  }));
+
+  const handleOnDeleteDepartment = department => setSettings(prevState => ({
+    ...prevState,
+    departments: prevState.departments.filter(prevDepartment => prevDepartment !== department),
   }));
 
   console.log(settings);
@@ -104,7 +115,11 @@ const CompanySettingsForm = () => {
       </Grid>
       {/* DEPARTMENTS */}
       <Grid item xs={12} md={6}>
-        <Departments />
+        <Departments
+          departments={departments}
+          onAdd={handleOnAddDepartment}
+          onDelete={handleOnDeleteDepartment}
+        />
       </Grid>
       {/* GOVERNMENT REMITTANCES & 13th MONTH PAY CALCULATION */}
       <Grid item xs={12}>
