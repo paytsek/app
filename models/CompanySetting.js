@@ -33,18 +33,22 @@ const CompanySettingSchema = new mongoose.Schema(
       street: {
         type: String,
         trim: true,
+        required: [true, 'Street is required'],
       },
       city: {
         type: String,
         trim: true,
+        required: [true, 'City is required'],
       },
       country: {
         type: String,
         trim: true,
+        required: [true, 'Country is required'],
       },
       zipCode: {
         type: String,
         trim: true,
+        required: [true, 'Zip code is required'],
       },
     },
     formattedAddress: String,
@@ -230,7 +234,7 @@ const CompanySettingSchema = new mongoose.Schema(
         },
       },
     },
-    thirtheenthMonthPayCalculation: {
+    thirteenthMonthPayCalculation: {
       type: Object,
       default: {
         deminimis: false,
@@ -247,6 +251,12 @@ const CompanySettingSchema = new mongoose.Schema(
     },
     departments: {
       type: [String],
+      required: [true, 'Please add department'],
+      validate(val) {
+        if (val.length <= 0) {
+          throw new Error('Please add department');
+        }
+      },
     },
     accountingJournal: {
       deminimisBenefits: {
