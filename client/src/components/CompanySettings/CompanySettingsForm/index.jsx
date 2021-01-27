@@ -19,6 +19,10 @@ const CompanySettingsForm = () => {
     basicSettings: {
       tin: '',
       rdoCode: '',
+      atc: '',
+      sssRegistrationNumber: '',
+      phicNumber: '',
+      hdmfNumber: '',
       category: 'private',
       reportingBase: 'payrollCutOffs',
       frequency: 'monthly',
@@ -82,7 +86,7 @@ const CompanySettingsForm = () => {
     ...prevState,
     basicSettings: {
       ...prevState.basicSettings,
-      [e.target.name]: e.target.value || e.target.checked,
+      [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value,
     },
   }));
 

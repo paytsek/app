@@ -190,11 +190,10 @@ const CompanySettingSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    atcCodes: String,
+    atc: String,
     sssRegistrationNumber: String,
     phicNumber: String,
     hdmfNumber: String,
-    payItemsWithCorrespondingAccountExpense: String,
     taxablePays: {
       type: [String],
       default: [],

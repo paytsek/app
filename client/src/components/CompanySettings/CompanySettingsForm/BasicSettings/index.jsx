@@ -22,6 +22,10 @@ const BasicSettings = ({ onChange, settings }) => {
   const {
     tin,
     rdoCode,
+    atc,
+    sssRegistrationNumber,
+    phicNumber,
+    hdmfNumber,
     category,
     reportingBase,
     frequency,
@@ -72,6 +76,48 @@ const BasicSettings = ({ onChange, settings }) => {
                 id="rdoCode"
                 name="rdoCode"
                 value={rdoCode}
+                onChange={onChange}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <FormControl fullWidth size="small">
+              <InputLabel htmlFor="atc">ATC (Alphanumeric Tax Codes)</InputLabel>
+              <Input autoComplete="off" id="atc" name="atc" value={atc} onChange={onChange} />
+            </FormControl>
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <FormControl fullWidth size="small">
+              <InputLabel htmlFor="sssRegistrationNumber">SSS Registration Number</InputLabel>
+              <Input
+                autoComplete="off"
+                id="sssRegistrationNumber"
+                name="sssRegistrationNumber"
+                value={sssRegistrationNumber}
+                onChange={onChange}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <FormControl fullWidth size="small">
+              <InputLabel htmlFor="phicNumber">PHIC Number</InputLabel>
+              <Input
+                autoComplete="off"
+                id="phicNumber"
+                name="phicNumber"
+                value={phicNumber}
+                onChange={onChange}
+              />
+            </FormControl>
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <FormControl fullWidth size="small">
+              <InputLabel htmlFor="hdmfNumber">HDMF Number</InputLabel>
+              <Input
+                autoComplete="off"
+                id="hdmfNumber"
+                name="hdmfNumber"
+                value={hdmfNumber}
                 onChange={onChange}
               />
             </FormControl>
