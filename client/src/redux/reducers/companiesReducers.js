@@ -17,6 +17,10 @@ import {
   COMPANY_NAME_UPDATE_REQUEST,
   COMPANY_NAME_UPDATE_RESET,
   COMPANY_NAME_UPDATE_SUCCESS,
+  COMPANY_SETTINGS_CREATE_FAIL,
+  COMPANY_SETTINGS_CREATE_REQUEST,
+  COMPANY_SETTINGS_CREATE_RESET,
+  COMPANY_SETTINGS_CREATE_SUCCESS,
 } from '../types';
 
 export const companiesListReducers = (state = { companies: [] }, action) => {
@@ -97,6 +101,23 @@ export const companyDeleteReducers = (state = {}, action) => {
       return { loading: false, success: false };
     case COMPANY_DELETE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const companySettingsCreateReducers = (state = { errors: {} }, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case COMPANY_SETTINGS_CREATE_REQUEST:
+      return { ...state, loading: true };
+    case COMPANY_SETTINGS_CREATE_SUCCESS:
+      return { ...state, loading: false, companySettings: payload.companySettings };
+    case COMPANY_SETTINGS_CREATE_FAIL:
+      return { ...state, loading: false, errors: payload };
+    case COMPANY_SETTINGS_CREATE_RESET:
+      return { errors: {} };
     default:
       return state;
   }
