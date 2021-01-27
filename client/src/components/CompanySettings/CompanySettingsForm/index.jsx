@@ -39,9 +39,15 @@ const CompanySettingsForm = () => {
       deminimis: false,
       emailNotification: false,
     },
+    registeredAddress: {
+      street: '',
+      city: '',
+      country: '',
+      zipCode: '',
+    },
   });
 
-  const { basicSettings } = settings;
+  const { basicSettings, registeredAddress } = settings;
   const { nightDifferential, overtime, holiday } = basicSettings;
 
   const handleOnChangeBasicSettings = e => setSettings(prevState => ({
@@ -50,6 +56,11 @@ const CompanySettingsForm = () => {
       ...prevState.basicSettings,
       [e.target.name]: e.target.value || e.target.checked,
     },
+  }));
+
+  const handleOnChangeRegisteredAddress = e => setSettings(prevState => ({
+    ...prevState,
+    registeredAddress: { ...prevState.registeredAddress, [e.target.name]: e.target.value },
   }));
 
   console.log(settings);
@@ -86,7 +97,10 @@ const CompanySettingsForm = () => {
       </Grid>
       {/* REGISTER ADDRESS */}
       <Grid item xs={12} md={6}>
-        <RegisteredAddress />
+        <RegisteredAddress
+          settings={registeredAddress}
+          onChange={handleOnChangeRegisteredAddress}
+        />
       </Grid>
       {/* DEPARTMENTS */}
       <Grid item xs={12} md={6}>
