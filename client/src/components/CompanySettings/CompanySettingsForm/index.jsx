@@ -192,8 +192,6 @@ const CompanySettingsForm = () => {
     },
   }));
 
-  console.log(settings);
-
   const { paper, gridContainer, fieldsContainer, calculationsContainer } = useStyles();
 
   useEffect(() => {
