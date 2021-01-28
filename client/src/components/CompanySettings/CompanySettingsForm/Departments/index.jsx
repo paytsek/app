@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Paper,
   FormControl,
@@ -10,60 +11,76 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
+  FormHelperText,
 } from '@material-ui/core';
 import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
 
 import TitleBox from '../../../common/TitleBox';
 
+import notification from '../../../../utils/notification';
 import useStyles from '../styles';
 
-const Departments = () => {
+const Departments = ({ departments, onAdd, onDelete, errors }) => {
+  const [departmentName, setDepartmentName] = useState('');
+
+  const dispatch = useDispatch();
+
   const { paper, fieldsContainer } = useStyles();
+
+  const handleOnAdd = val => {
+    const existDepartment = departments.includes(val);
+
+    if (!val) {
+      return dispatch(notification('warning', 'Please add a department name', dispatch));
+    }
+
+    if (existDepartment) {
+      return dispatch(notification('warning', `${val} already exist`, dispatch));
+    }
+    onAdd('departments', val);
+    return setDepartmentName('');
+  };
 
   return (
     <Paper className={paper}>
       <TitleBox title="Departments" />
       <div className={fieldsContainer}>
-        <FormControl fullWidth size="small" margin="normal">
-          <InputLabel htmlFor="department">Department</InputLabel>
+        <FormControl fullWidth size="small" margin="normal" error={!!errors.departments}>
+          <InputLabel htmlFor="departments">Department</InputLabel>
           <Input
-            id="department"
+            id="departments"
+            name="departmentName"
+            value={departmentName}
+            onChange={e => setDepartmentName(e.target.value)}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton color="primary">
+                <IconButton color="primary" onClick={() => handleOnAdd(departmentName)}>
                   <AddIcon />
                 </IconButton>
               </InputAdornment>
             }
           />
+          {errors.departments && <FormHelperText error>{errors.departments}</FormHelperText>}
         </FormControl>
         {/* List of departments */}
-        <List>
-          <ListItem>
-            <ListItemText primary="Intermediate" />
-            <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Senior" />
-            <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <ListItem>
-            <ListItemText primary="Lead" />
-            <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="delete">
-                <DeleteIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        </List>
+        {departments.length > 0 ? (
+          <List>
+            {departments.map(department => (
+              <ListItem key={department}>
+                <ListItemText primary={department} />
+                <ListItemSecondaryAction>
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => onDelete('departments', department)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
+        ) : null}
       </div>
     </Paper>
   );

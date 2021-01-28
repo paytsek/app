@@ -15,6 +15,9 @@ import {
   COMPANY_NAME_UPDATE_FAIL,
   COMPANY_NAME_UPDATE_REQUEST,
   COMPANY_NAME_UPDATE_SUCCESS,
+  COMPANY_SETTINGS_CREATE_FAIL,
+  COMPANY_SETTINGS_CREATE_REQUEST,
+  COMPANY_SETTINGS_CREATE_SUCCESS,
 } from '../types';
 import notification from '../../utils/notification';
 
@@ -120,5 +123,36 @@ export const deleteCompany = id => async dispatch => {
 
     dispatch(notification('error', message || 'Server Error', dispatch));
     dispatch({ type: COMPANY_DELETE_FAIL });
+  }
+};
+
+export const createCompanySettings = (companyId, companySettings) => async dispatch => {
+  dispatch({ type: COMPANY_SETTINGS_CREATE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const { data } = await axios.post(`/companies/${companyId}/settings`, companySettings, config);
+
+    const message = 'Company Setting successfully created';
+
+    dispatch(notification('success', message, dispatch));
+    dispatch({ type: COMPANY_SETTINGS_CREATE_SUCCESS, payload: data });
+  } catch (error) {
+    const { errors } = error.response.data;
+
+    const message = errors && errors.message;
+
+    if (message) {
+      dispatch(notification('error', message || 'Server Error', dispatch));
+    } else {
+      dispatch(notification('error', 'Validation Error', dispatch));
+    }
+
+    dispatch({ type: COMPANY_SETTINGS_CREATE_FAIL, payload: errors });
   }
 };

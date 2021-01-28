@@ -1,37 +1,279 @@
-import React from 'react';
-import { Grid, Paper } from '@material-ui/core';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { Grid, Paper, Button } from '@material-ui/core';
 
 import TitleBox from '../../common/TitleBox';
-import CompanySettings from './CompanySettings';
+import BasicSettings from './BasicSettings';
 import RegisteredAddress from './RegisteredAddress';
 import Departments from './Departments';
 import TaxablePays from './TaxablePays';
 import NonTaxablePays from './NonTaxablePays';
 import SSSCalculations from './SSSCalculations';
 import PhicCalculations from './PhicCalculations';
-import ThirtheenthMonthPayCalculations from './ThirtheenthMonthPayCalculations';
+import ThirteenthMonthPayCalculations from './ThirteenthMonthPayCalculations';
 import AccountingJournalEntries from './AccountingJournalEntries';
 
+import { createCompanySettings } from '../../../redux/actions/companiesActions';
+import { COMPANY_SETTINGS_CREATE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
-const CompanySettingsForm = () => {
+const CompanySettingsForm = ({ match, history }) => {
+  const [settings, setSettings] = useState({
+    basicSettings: {
+      tin: '',
+      rdoCode: '',
+      atc: '',
+      sssRegistrationNumber: '',
+      phicNumber: '',
+      hdmfNumber: '',
+      category: 'private',
+      reportingBase: 'payrollCutOffs',
+      frequency: 'monthly',
+      firstCutOff: '',
+      secondCutOff: '',
+      firstPayout: '',
+      secondPayout: '',
+      nightDifferential: 'disabled',
+      nightDifferentialPercentage: '',
+      overtime: 'disabled',
+      overtimePay: '',
+      overtimeRestDayPay: '',
+      holiday: false,
+      regularHolidayPay: '',
+      specialHolidayPay: '',
+      workingDays: 22,
+      taxReliefInternationTaxTreaty: false,
+      deminimis: false,
+      emailNotification: false,
+    },
+    registeredAddress: {
+      street: '',
+      city: '',
+      country: '',
+      zipCode: '',
+    },
+    departments: [],
+    taxablePays: [],
+    nonTaxablePays: [],
+    sssCalculation: {
+      deminimis: false,
+      taxablePays: {},
+      nonTaxablePays: {},
+    },
+    phicCalculation: {
+      deminimis: false,
+      taxablePays: {},
+      nonTaxablePays: {},
+    },
+    thirteenthMonthPayCalculation: {
+      deminimis: false,
+      absences: false,
+      taxablePays: {},
+      nonTaxablePays: {},
+    },
+    accountingJournal: {
+      taxableCompensation: 'wagesAndSalaries',
+      thirteenthMonthPay: 'wagesAndSalaries',
+      nonTaxableCompensation: 'wagesAndSalaries',
+      preTaxDeduction: 'wagesAndSalaries',
+      employeeBenefits: 'wagesAndSalaries',
+      sssPayable: 'wagesAndSalaries',
+      hdmfPayable: 'wagesAndSalaries',
+      phicPayable: 'wagesAndSalaries',
+      taxDue: 'wagesAndSalaries',
+      reimbursement: 'wagesAndSalaries',
+      postTaxDeduction: 'wagesAndSalaries',
+      netPay: 'wagesAndSalaries',
+      deminimisBenefits: 'wagesAndSalaries',
+    },
+  });
+
+  const { companyId } = match.params;
+
+  const dispatch = useDispatch();
+
+  const { errors, companySettings } = useSelector(
+    state => state.companySettingsCreate,
+  );
+
   const {
-    paper, gridContainer, fieldsContainer, calculationsContainer,
-  } = useStyles();
+    basicSettings,
+    registeredAddress,
+    departments,
+    taxablePays,
+    nonTaxablePays,
+    sssCalculation,
+    phicCalculation,
+    thirteenthMonthPayCalculation,
+    accountingJournal,
+  } = settings;
+  const { nightDifferential, overtime, holiday } = basicSettings;
+
+  const handleOnChangeBasicSettings = e => setSettings(prevState => ({
+    ...prevState,
+    basicSettings: {
+      ...prevState.basicSettings,
+      [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value,
+    },
+  }));
+
+  const handleOnChangeRegisteredAddress = e => setSettings(prevState => ({
+    ...prevState,
+    registeredAddress: { ...prevState.registeredAddress, [e.target.name]: e.target.value },
+  }));
+
+  const handleOnChangeCalculation = (calculation, e) => setSettings(prevState => ({
+    ...prevState,
+    [calculation]: {
+      ...prevState[calculation],
+      [e.target.name]: e.target.checked,
+    },
+  }));
+
+  const handleOnChangeTaxablePay = (calculation, e) => setSettings(prevState => ({
+    ...prevState,
+    [calculation]: {
+      ...prevState[calculation],
+      taxablePays: {
+        ...prevState[calculation].taxablePays,
+        [e.target.name]: e.target.checked,
+      },
+    },
+  }));
+
+  const handleOnChangeNonTaxablePay = (calculation, e) => setSettings(prevState => ({
+    ...prevState,
+    [calculation]: {
+      ...prevState[calculation],
+      nonTaxablePays: {
+        ...prevState[calculation].nonTaxablePays,
+        [e.target.name]: e.target.checked,
+      },
+    },
+  }));
+
+  const handleOnAdd = (key, val) => setSettings(prevState => ({
+    ...prevState,
+    [key]: [...prevState[key], val],
+    sssCalculation: {
+      ...prevState.sssCalculation,
+      [key]: { ...prevState.sssCalculation[key], [val]: false },
+    },
+    phicCalculation: {
+      ...prevState.phicCalculation,
+      [key]: { ...prevState.phicCalculation[key], [val]: false },
+    },
+    thirteenthMonthPayCalculation: {
+      ...prevState.thirteenthMonthPayCalculation,
+      [key]: { ...prevState.thirteenthMonthPayCalculation[key], [val]: false },
+    },
+  }));
+
+  const handleOnDelete = (key, val) => setSettings(prevState => {
+    const newSssCalculation = prevState.sssCalculation;
+    const newPhicCalculation = prevState.phicCalculation;
+    const newThirteenthMonthPayCalculation = prevState.thirteenthMonthPayCalculation;
+    delete newSssCalculation[key][val];
+    delete newPhicCalculation[key][val];
+    delete newThirteenthMonthPayCalculation[key][val];
+
+    return {
+      ...prevState,
+      [key]: prevState[key].filter(prevVal => prevVal !== val),
+      sssCalculation: {
+        ...prevState.sssCalculation,
+        ...newSssCalculation,
+      },
+      phicCalculation: {
+        ...prevState.phicCalculation,
+        ...newPhicCalculation,
+      },
+      thirteenthMonthPayCalculation: {
+        ...prevState.newThirteenthMonthPayCalculation,
+        ...newThirteenthMonthPayCalculation,
+      },
+    };
+  });
+
+  const handleOnChangeAccountingJournal = e => setSettings(prevState => ({
+    ...prevState,
+    accountingJournal: {
+      ...prevState.accountingJournal,
+      [e.target.name]: e.target.value,
+    },
+  }));
+
+  const handleOnSubmit = () => {
+    const data = {
+      ...basicSettings,
+      departments,
+      registeredAddress,
+      taxablePays,
+      nonTaxablePays,
+      sssCalculation,
+      phicCalculation,
+      thirteenthMonthPayCalculation,
+      accountingJournal,
+    };
+    dispatch(createCompanySettings(companyId, data));
+  };
+
+  const { paper, gridContainer, fieldsContainer, calculationsContainer } = useStyles();
+
+  useEffect(() => {
+    if (nightDifferential !== 'percentage') {
+      setSettings(prevState => ({
+        ...prevState,
+        basicSettings: { ...prevState.basicSettings, nightDifferentialPercentage: '' },
+      }));
+    }
+    if (overtime !== 'hourly') {
+      setSettings(prevState => ({
+        ...prevState,
+        basicSettings: { ...prevState.basicSettings, overtimePay: '', overtimeRestDayPay: '' },
+      }));
+    }
+
+    if (!holiday) {
+      setSettings(prevState => ({
+        ...prevState,
+        basicSettings: { ...prevState.basicSettings, regularHolidayPay: '', specialHolidayPay: '' },
+      }));
+    }
+
+    if (companySettings) {
+      history.push('/company-settings');
+      dispatch({ type: COMPANY_SETTINGS_CREATE_RESET });
+    }
+  }, [nightDifferential, overtime, holiday, companySettings]);
 
   return (
     <Grid container spacing={3} className={gridContainer}>
-      {/* COMPANY SETTINGS */}
+      {/* BASIC SETTINGS */}
       <Grid item xs={12}>
-        <CompanySettings />
+        <BasicSettings
+          settings={basicSettings}
+          onChange={handleOnChangeBasicSettings}
+          errors={errors}
+        />
       </Grid>
       {/* REGISTER ADDRESS */}
       <Grid item xs={12} md={6}>
-        <RegisteredAddress />
+        <RegisteredAddress
+          settings={registeredAddress}
+          onChange={handleOnChangeRegisteredAddress}
+          errors={errors}
+        />
       </Grid>
       {/* DEPARTMENTS */}
       <Grid item xs={12} md={6}>
-        <Departments />
+        <Departments
+          departments={departments}
+          onAdd={handleOnAdd}
+          onDelete={handleOnDelete}
+          errors={errors}
+        />
       </Grid>
       {/* GOVERNMENT REMITTANCES & 13th MONTH PAY CALCULATION */}
       <Grid item xs={12}>
@@ -41,23 +283,52 @@ const CompanySettingsForm = () => {
             <Grid container spacing={6}>
               {/* Taxable pays */}
               <Grid item xs={12} md={6}>
-                <TaxablePays />
+                <TaxablePays
+                  taxablePays={taxablePays}
+                  onAdd={handleOnAdd}
+                  onDelete={handleOnDelete}
+                />
               </Grid>
               {/* Non-taxable pays */}
               <Grid item xs={12} md={6}>
-                <NonTaxablePays />
+                <NonTaxablePays
+                  nonTaxablePays={nonTaxablePays}
+                  onAdd={handleOnAdd}
+                  onDelete={handleOnDelete}
+                />
               </Grid>
               {/* SSS calculation */}
               <Grid item xs={12} md={4} className={calculationsContainer}>
-                <SSSCalculations />
+                <Paper elevation={2}>
+                  <SSSCalculations
+                    settings={sssCalculation}
+                    onChangeCalculation={handleOnChangeCalculation}
+                    onChangeTaxablePay={handleOnChangeTaxablePay}
+                    onChangeNonTaxablePay={handleOnChangeNonTaxablePay}
+                  />
+                </Paper>
               </Grid>
               {/* PHIC Calculations */}
               <Grid item xs={12} md={4} className={calculationsContainer}>
-                <PhicCalculations />
+                <Paper elevation={2}>
+                  <PhicCalculations
+                    settings={phicCalculation}
+                    onChangeCalculation={handleOnChangeCalculation}
+                    onChangeTaxablePay={handleOnChangeTaxablePay}
+                    onChangeNonTaxablePay={handleOnChangeNonTaxablePay}
+                  />
+                </Paper>
               </Grid>
               {/* 13th month pay calculation */}
               <Grid item xs={12} md={4} className={calculationsContainer}>
-                <ThirtheenthMonthPayCalculations />
+                <Paper>
+                  <ThirteenthMonthPayCalculations
+                    settings={thirteenthMonthPayCalculation}
+                    onChangeCalculation={handleOnChangeCalculation}
+                    onChangeTaxablePay={handleOnChangeTaxablePay}
+                    onChangeNonTaxablePay={handleOnChangeNonTaxablePay}
+                  />
+                </Paper>
               </Grid>
             </Grid>
           </div>
@@ -65,10 +336,19 @@ const CompanySettingsForm = () => {
       </Grid>
       {/* Accounting journal Entries */}
       <Grid item xs={12}>
-        <AccountingJournalEntries />
+        <AccountingJournalEntries
+          settings={accountingJournal}
+          onChange={handleOnChangeAccountingJournal}
+          errors={errors}
+        />
+      </Grid>
+      <Grid item>
+        <Button color="primary" variant="contained" onClick={handleOnSubmit}>
+          Save Company Settings
+        </Button>
       </Grid>
     </Grid>
   );
 };
 
-export default CompanySettingsForm;
+export default withRouter(CompanySettingsForm);

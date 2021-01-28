@@ -234,6 +234,13 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
         frequency: 'monthly',
         firstCutOff: 1,
         firstPayout: 5,
+        registeredAddress: {
+          street: '24c Marcoville',
+          city: 'Baguio city',
+          country: 'Philippines',
+          zipCode: '2600',
+        },
+        departments: ['staff'],
       });
 
       expect(await CompanySetting.countDocuments()).toBe(1);
@@ -268,6 +275,13 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
         frequency: 'monthly',
         firstCutOff: 1,
         firstPayout: 5,
+        registeredAddress: {
+          street: '24c Marcoville',
+          city: 'Baguio city',
+          country: 'Philippines',
+          zipCode: '2600',
+        },
+        departments: ['staff'],
       });
 
       expect(await CompanySetting.countDocuments()).toBe(1);
@@ -516,7 +530,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
           sssPayable: 'sample',
           taxDue: 'sample',
           taxableCompensation: 'sample',
-          thirtheenthMonthPay: 'sample',
+          thirteenthMonthPay: 'sample',
         },
       });
 
@@ -553,8 +567,8 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
           '`sample` is not a valid enum value for path `accountingJournal.taxDue`.',
         'accountingJournal.taxableCompensation':
           '`sample` is not a valid enum value for path `accountingJournal.taxableCompensation`.',
-        'accountingJournal.thirtheenthMonthPay':
-          '`sample` is not a valid enum value for path `accountingJournal.thirtheenthMonthPay`.',
+        'accountingJournal.thirteenthMonthPay':
+          '`sample` is not a valid enum value for path `accountingJournal.thirteenthMonthPay`.',
       }),
     );
   });
@@ -597,6 +611,11 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
         overtimeRestDayPay: 'Overtime Rest Day Pay is required',
         regularHolidayPay: 'Regular Holiday Pay is required',
         specialHolidayPay: 'Special Holiday Pay is required',
+        departments: 'Please add department',
+        'registeredAddress.zipCode': 'Zip code is required',
+        'registeredAddress.country': 'Country is required',
+        'registeredAddress.city': 'City is required',
+        'registeredAddress.street': 'Street is required',
       }),
     );
   });
@@ -619,6 +638,13 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
         firstPayout: 1,
         secondCutOff: 20,
         firstCutOff: 5,
+        registeredAddress: {
+          street: '24c Marcoville',
+          city: 'Baguio city',
+          country: 'Philippines',
+          zipCode: '2600',
+        },
+        departments: ['staff'],
       });
 
     expect(res.status).toBe(201);
@@ -710,6 +736,13 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
         firstPayout: 5,
         secondCutOff: 15,
         secondPayout: 20,
+        registeredAddress: {
+          street: '24c Marcoville',
+          city: 'Baguio city',
+          country: 'Philippines',
+          zipCode: '2600',
+        },
+        departments: ['staff'],
       });
 
       const res = await request(app)
@@ -746,6 +779,13 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
         firstPayout: 5,
         secondCutOff: 15,
         secondPayout: 20,
+        registeredAddress: {
+          street: '24c Marcoville',
+          city: 'Baguio city',
+          country: 'Philippines',
+          zipCode: '2600',
+        },
+        departments: ['staff'],
       });
 
       const res = await request(app)
@@ -796,6 +836,13 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
         firstPayout: 5,
         secondCutOff: 15,
         secondPayout: 20,
+        registeredAddress: {
+          street: '24c Marcoville',
+          city: 'Baguio city',
+          country: 'Philippines',
+          zipCode: '2600',
+        },
+        departments: ['staff'],
       });
 
       const res = await request(app)
@@ -815,7 +862,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
             sssPayable: 'wagesPayable',
             taxDue: 'wagesPayable',
             taxableCompensation: 'wagesPayable',
-            thirtheenthMonthPay: 'wagesPayable',
+            thirteenthMonthPay: 'wagesPayable',
           },
           category: 'private',
           frequency: 'semiMonthly',
@@ -833,18 +880,18 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
           deminimis: false,
           emailNotification: false,
           hideEmployeeList: false,
-          companyTaxablePays: ['Allowance'],
-          companyNonTaxablePays: ['Food'],
+          taxablePays: ['Allowance'],
+          nonTaxablePays: ['Food'],
           sssCalculation: { deminimis: false },
           phicCalculation: { deminimis: false },
-          thirtheenthMonthPayCalculation: { deminimis: false, absences: false },
-          departments: [],
+          thirteenthMonthPayCalculation: { deminimis: false, absences: false },
+          departments: ['Staff', 'Head'],
           firstCutOff: 1,
           firstPayout: 5,
           secondCutOff: 15,
           secondPayout: 20,
           registeredAddress: {
-            street: ' 24f Marcoville',
+            street: '24f Marcoville',
             city: 'Baguio city',
             country: 'Philippines',
             zipCode: '2600',
@@ -876,7 +923,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
             sssPayable: 'wagesPayable',
             taxDue: 'wagesPayable',
             taxableCompensation: 'wagesPayable',
-            thirtheenthMonthPay: 'wagesPayable',
+            thirteenthMonthPay: 'wagesPayable',
           },
           category: 'private',
           frequency: 'semiMonthly',
@@ -894,12 +941,12 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
           deminimis: false,
           emailNotification: false,
           hideEmployeeList: false,
-          companyTaxablePays: ['Allowance'],
-          companyNonTaxablePays: ['Food'],
+          taxablePays: ['Allowance'],
+          nonTaxablePays: ['Food'],
           sssCalculation: { deminimis: false },
           phicCalculation: { deminimis: false },
-          thirtheenthMonthPayCalculation: { deminimis: false, absences: false },
-          departments: [],
+          thirteenthMonthPayCalculation: { deminimis: false, absences: false },
+          departments: ['Staff', 'Head'],
           firstCutOff: 1,
           firstPayout: 5,
           secondCutOff: 15,
@@ -996,6 +1043,13 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
         firstPayout: 5,
         firstCutOff: 1,
         company: company._id,
+        registeredAddress: {
+          street: '24c Marcoville',
+          city: 'Baguio city',
+          country: 'Philippines',
+          zipCode: '2600',
+        },
+        departments: ['staff'],
       });
 
       const res = await request(app)

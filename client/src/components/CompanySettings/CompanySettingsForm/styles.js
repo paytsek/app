@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   gridContainer: {
     marginTop: theme.spacing(5),
+    '& .MuiGrid-item': {
+      marginBottom: theme.spacing(2),
+    },
   },
   paper: {
     padding: `0px ${theme.spacing(3)}px`,
@@ -16,6 +19,9 @@ const useStyles = makeStyles(theme => ({
   calculationsContainer: {
     '& .MuiFormControl-fullWidth': {
       display: 'block',
+    },
+    '& .MuiPaper-root': {
+      padding: `${theme.spacing(2)}px`,
     },
   },
 }));

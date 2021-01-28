@@ -1,28 +1,39 @@
 import React, { Fragment } from 'react';
-import { Typography, FormControlLabel, FormControl, Checkbox } from '@material-ui/core';
+import { Typography, FormGroup, FormControl, FormControlLabel, Checkbox } from '@material-ui/core';
 
-const phicCalculation = 'phicCalculation';
+const thirteenthMonthPayCalculation = 'thirteenthMonthPayCalculation';
 
-const PhicCalculations = ({
+const ThirteenthMonthPayCalculations = ({
   settings,
   onChangeCalculation,
   onChangeTaxablePay,
   onChangeNonTaxablePay,
 }) => {
-  const { deminimis, taxablePays, nonTaxablePays } = settings;
+  const { deminimis, absences, taxablePays, nonTaxablePays } = settings;
 
   return (
     <Fragment>
-      <Typography variant="subtitle1">PHIC Calculations</Typography>
-      <FormControl fullWidth size="small">
-        <FormControlLabel
-          label="De minimis"
-          name="deminimis"
-          value={deminimis}
-          onChange={e => onChangeCalculation(phicCalculation, e)}
-          control={<Checkbox color="primary" />}
-        />
-      </FormControl>
+      <Typography variant="subtitle1">13th Month pay Calculations</Typography>
+      <FormGroup row>
+        <FormControl size="small">
+          <FormControlLabel
+            label="De minimis"
+            name="deminimis"
+            checked={deminimis}
+            onChange={e => onChangeCalculation(thirteenthMonthPayCalculation, e)}
+            control={<Checkbox color="primary" />}
+          />
+        </FormControl>
+        <FormControl size="small">
+          <FormControlLabel
+            label="Absences"
+            name="absences"
+            checked={absences}
+            onChange={e => onChangeCalculation(thirteenthMonthPayCalculation, e)}
+            control={<Checkbox color="primary" />}
+          />
+        </FormControl>
+      </FormGroup>
       {/* taxable pays */}
       <Typography variant="subtitle1">Taxable Pays</Typography>
       {taxablePays && Object.keys(taxablePays).length > 0 ? (
@@ -32,7 +43,7 @@ const PhicCalculations = ({
               label={taxablePay}
               name={taxablePay}
               checked={taxablePays[taxablePay]}
-              onChange={e => onChangeTaxablePay(phicCalculation, e)}
+              onChange={e => onChangeTaxablePay(thirteenthMonthPayCalculation, e)}
               control={<Checkbox color="primary" />}
             />
           </FormControl>
@@ -52,7 +63,7 @@ const PhicCalculations = ({
               name={nonTaxablePay}
               control={<Checkbox color="primary" />}
               checked={nonTaxablePays[nonTaxablePay]}
-              onChange={e => onChangeNonTaxablePay(phicCalculation, e)}
+              onChange={e => onChangeNonTaxablePay(thirteenthMonthPayCalculation, e)}
             />
           </FormControl>
         ))
@@ -65,4 +76,4 @@ const PhicCalculations = ({
   );
 };
 
-export default PhicCalculations;
+export default ThirteenthMonthPayCalculations;

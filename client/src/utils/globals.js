@@ -4,7 +4,7 @@ export const ACCOUNTING_JOURNAL_ENTRIES = [
   { name: 'SSS Payable', value: 'ssspayable' },
   { name: 'HDMF Payable', value: 'hdmfPayable' },
   { name: 'PHIC Payable', value: 'phicPayable' },
-  { name: 'Thirtheenth Month Pay', value: 'thirtheenthMonthPay' },
+  { name: 'Thirteenth Month Pay', value: 'thirteenthMonthPay' },
   { name: 'Employee Benefits', value: 'employeeBenefits' },
   { name: 'Advances To Employee', value: 'advancesToEmployee' },
   {

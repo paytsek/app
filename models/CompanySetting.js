@@ -33,18 +33,22 @@ const CompanySettingSchema = new mongoose.Schema(
       street: {
         type: String,
         trim: true,
+        required: [true, 'Street is required'],
       },
       city: {
         type: String,
         trim: true,
+        required: [true, 'City is required'],
       },
       country: {
         type: String,
         trim: true,
+        required: [true, 'Country is required'],
       },
       zipCode: {
         type: String,
         trim: true,
+        required: [true, 'Zip code is required'],
       },
     },
     formattedAddress: String,
@@ -59,7 +63,7 @@ const CompanySettingSchema = new mongoose.Schema(
     frequency: {
       type: String,
       enum: ['semiMonthly', 'monthly'],
-      default: 'semiMonthly',
+      default: 'monthly',
       required: [true, 'Payroll frequency is required'],
     },
     reportingBase: {
@@ -107,6 +111,7 @@ const CompanySettingSchema = new mongoose.Schema(
     workingDays: {
       type: Number,
       default: 22,
+      required: [true, 'Working days is required'],
     },
     nightDifferential: {
       type: String,
@@ -153,6 +158,7 @@ const CompanySettingSchema = new mongoose.Schema(
     holiday: {
       type: Boolean,
       default: false,
+      required: [true, 'Holiday is required'],
     },
     regularHolidayPay: {
       type: Number,
@@ -177,10 +183,12 @@ const CompanySettingSchema = new mongoose.Schema(
     taxReliefInternationTaxTreaty: {
       type: Boolean,
       default: false,
+      required: [true, 'Tax treaty is required'],
     },
     deminimis: {
       type: Boolean,
       default: false,
+      required: [true, 'De minimis is required'],
     },
     emailNotification: {
       type: Boolean,
@@ -190,16 +198,15 @@ const CompanySettingSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    atcCodes: String,
+    atc: String,
     sssRegistrationNumber: String,
     phicNumber: String,
     hdmfNumber: String,
-    payItemsWithCorrespondingAccountExpense: String,
-    companyTaxablePays: {
+    taxablePays: {
       type: [String],
       default: [],
     },
-    companyNonTaxablePays: {
+    nonTaxablePays: {
       type: [String],
       default: [],
     },
@@ -231,7 +238,7 @@ const CompanySettingSchema = new mongoose.Schema(
         },
       },
     },
-    thirtheenthMonthPayCalculation: {
+    thirteenthMonthPayCalculation: {
       type: Object,
       default: {
         deminimis: false,
@@ -248,6 +255,12 @@ const CompanySettingSchema = new mongoose.Schema(
     },
     departments: {
       type: [String],
+      required: [true, 'Please add department'],
+      validate(val) {
+        if (val.length <= 0) {
+          throw new Error('Please add department');
+        }
+      },
     },
     accountingJournal: {
       deminimisBenefits: {
@@ -310,7 +323,7 @@ const CompanySettingSchema = new mongoose.Schema(
         default: 'wagesAndSalaries',
         enum: ACCOUNTING_JOURNAL,
       },
-      thirtheenthMonthPay: {
+      thirteenthMonthPay: {
         type: String,
         default: 'wagesAndSalaries',
         enum: ACCOUNTING_JOURNAL,
