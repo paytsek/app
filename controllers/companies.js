@@ -103,7 +103,7 @@ const updateCompanySettings = asyncHandler(async (req, res, next) => {
 
   let { companySettings } = company;
 
-  if (req.user._id.toString() !== company.user.toString()) {
+  if (req.user.role !== 'admin' && req.user._id.toString() !== company.user.toString()) {
     res.status(401);
     return next(new ErrorResponse({ message: 'Not authorized to access this route' }));
   }
