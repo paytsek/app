@@ -1,0 +1,862 @@
+[
+  {
+    "_id": "60120c38f44b8109004862b1",
+    "company": "6010d3dc7951e30d3a584791",
+    "tin": "18471950195",
+    "rdoCode": "583850181",
+    "registeredAddress": {
+        "street": "11g Marcoville St",
+        "city": "Baguio city",
+        "country": "Philippines",
+        "zipCode": "2600"
+    },
+    "telephoneNumber": "4710571094",
+    "category": "government",
+    "frequency": "semiMonthly",
+    "firstCutOff": "30",
+    "firstPayout": "5",
+    "secondCutOff": "15",
+    "secondPayout": "20",
+    "reportingBase": "payoutDates",
+    "nightDifferential": "percentage",
+    "nightDifferentialPercentage": "0.4",
+    "overtime": "hourly",
+    "overtimeRestDayPay": 0.5,
+    "holiday": true,
+    "regularHoliday": 1.2,
+    "specialHoliday": 1.5,
+    "deminimis": true,
+    "emailNotification": true,
+    "hideEmployeeList": false,
+    "atcCodes": "483858501057",
+    "sssRegistrationNumber": "837401053",
+    "phicNumber": "583859105748",
+    "hdmfNumber": "5783010574",
+    "taxablePays": ["beer", "yosi"],
+    "nonTaxablePays": ["food", "snacks"],
+    "sssCalculation": {
+        "deminimis": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": false
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": true
+        }
+    },
+    "phicCalculation": {
+        "deminimis": false,
+        "taxablePays": {
+            "beer": false,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": true,
+            "snacks":true
+        }
+    },
+    "thirteenthMonthPayCalculation": {
+        "deminimis": true,
+        "absences": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": false
+        }
+    },
+    "departments": ["staff", "managers", "seniors"],
+    "accountingJournal": {
+        "deminimisBenefits": "wagesAndSalaries",
+        "employeeBenefits": "wagesAndSalaries",
+        "hdmfPayable": "wagesAndSalaries",
+        "netPay": "wagesAndSalaries",
+        "nonTaxableCompensation": "wagesAndSalaries",
+        "phicPayable": "wagesAndSalaries",
+        "postTaxDeduction": "wagesAndSalaries",
+        "preTaxDeduction": "wagesAndSalaries",
+        "reimbursement": "wagesAndSalaries",
+        "sssPayable": "wagesAndSalaries",
+        "taxDue": "wagesAndSalaries",
+        "taxableCompensation": "wagesAndSalaries",
+        "thirteenthMonthPay": "wagesAndSalaries"
+    }
+  },
+  {
+    "_id": "60120c38f44b8109004862b2",
+    "company": "6010d3dc7951e30d3a584792",
+    "tin": "1848704810",
+    "rdoCode": "58108401",
+    "registeredAddress": {
+        "street": "55 St. Agila",
+        "city": "Baguio city",
+        "country": "Philippines",
+        "zipCode": "2600"
+    },
+    "telephoneNumber": "48105018583",
+    "category": "government",
+    "frequency": "semiMonthly",
+    "firstCutOff": "30",
+    "firstPayout": "5",
+    "secondCutOff": "15",
+    "secondPayout": "20",
+    "reportingBase": "payoutDates",
+    "nightDifferential": "percentage",
+    "nightDifferentialPercentage": "0.4",
+    "overtime": "hourly",
+    "overtimeRestDayPay": 0.5,
+    "holiday": true,
+    "regularHoliday": 1.2,
+    "specialHoliday": 1.5,
+    "deminimis": true,
+    "emailNotification": true,
+    "hideEmployeeList": false,
+    "atcCodes": "456267754",
+    "sssRegistrationNumber": "66511446890",
+    "phicNumber": "1314568754",
+    "hdmfNumber": "445783211",
+    "taxablePays": ["beer", "yosi"],
+    "nonTaxablePays": ["food", "snacks"],
+    "sssCalculation": {
+        "deminimis": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": true
+        }
+    },
+    "phicCalculation": {
+        "deminimis": false,
+        "taxablePays": {
+            "beer": false,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": true,
+            "snacks":true
+        }
+    },
+    "thirteenthMonthPayCalculation": {
+        "deminimis": true,
+        "absences": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": false
+        }
+    },
+    "departments": ["staff", "managers", "seniors"],
+    "accountingJournal": {
+        "deminimisBenefits": "wagesAndSalaries",
+        "employeeBenefits": "wagesAndSalaries",
+        "hdmfPayable": "wagesAndSalaries",
+        "netPay": "wagesAndSalaries",
+        "nonTaxableCompensation": "wagesAndSalaries",
+        "phicPayable": "wagesAndSalaries",
+        "postTaxDeduction": "wagesAndSalaries",
+        "preTaxDeduction": "wagesAndSalaries",
+        "reimbursement": "wagesAndSalaries",
+        "sssPayable": "wagesAndSalaries",
+        "taxDue": "wagesAndSalaries",
+        "taxableCompensation": "wagesAndSalaries",
+        "thirteenthMonthPay": "wagesAndSalaries"
+    }
+  },
+  {
+    "_id": "60120c38f44b8109004862b3",
+    "company": "6010d3dc7951e30d3a584793",
+    "tin": "18471950195",
+    "rdoCode": "583850181",
+    "registeredAddress": {
+        "street": "Pob Este, Sta. Cruz",
+        "city": "Ilocos Sur",
+        "country": "Philippines",
+        "zipCode": "2713"
+    },
+    "telephoneNumber": "43346871",
+    "category": "government",
+    "frequency": "semiMonthly",
+    "firstCutOff": "30",
+    "firstPayout": "5",
+    "secondCutOff": "15",
+    "secondPayout": "20",
+    "reportingBase": "payoutDates",
+    "nightDifferential": "percentage",
+    "nightDifferentialPercentage": "0.4",
+    "overtime": "hourly",
+    "overtimeRestDayPay": 0.5,
+    "holiday": true,
+    "regularHoliday": 1.2,
+    "specialHoliday": 1.5,
+    "deminimis": true,
+    "emailNotification": true,
+    "hideEmployeeList": false,
+    "atcCodes": "483858501057",
+    "sssRegistrationNumber": "837401053",
+    "phicNumber": "583859105748",
+    "hdmfNumber": "5783010574",
+    "taxablePays": ["beer", "yosi"],
+    "nonTaxablePays": ["food", "snacks"],
+    "sssCalculation": {
+        "deminimis": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": false
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": true
+        }
+    },
+    "phicCalculation": {
+        "deminimis": false,
+        "taxablePays": {
+            "beer": false,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": true,
+            "snacks":true
+        }
+    },
+    "thirteenthMonthPayCalculation": {
+        "deminimis": true,
+        "absences": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": false
+        }
+    },
+    "departments": ["staff", "managers", "seniors"],
+    "accountingJournal": {
+        "deminimisBenefits": "wagesAndSalaries",
+        "employeeBenefits": "wagesAndSalaries",
+        "hdmfPayable": "wagesAndSalaries",
+        "netPay": "wagesAndSalaries",
+        "nonTaxableCompensation": "wagesAndSalaries",
+        "phicPayable": "wagesAndSalaries",
+        "postTaxDeduction": "wagesAndSalaries",
+        "preTaxDeduction": "wagesAndSalaries",
+        "reimbursement": "wagesAndSalaries",
+        "sssPayable": "wagesAndSalaries",
+        "taxDue": "wagesAndSalaries",
+        "taxableCompensation": "wagesAndSalaries",
+        "thirteenthMonthPay": "wagesAndSalaries"
+    }
+  },
+  {
+    "_id": "60120c38f44b8109004862b4",
+    "company": "6010d3dc7951e30d3a584794",
+    "tin": "18471950195",
+    "rdoCode": "583850181",
+    "registeredAddress": {
+        "street": "11g Marcoville St",
+        "city": "Baguio city",
+        "country": "Philippines",
+        "zipCode": "2600"
+    },
+    "telephoneNumber": "4710571094",
+    "category": "government",
+    "frequency": "semiMonthly",
+    "firstCutOff": "30",
+    "firstPayout": "5",
+    "secondCutOff": "15",
+    "secondPayout": "20",
+    "reportingBase": "payoutDates",
+    "nightDifferential": "percentage",
+    "nightDifferentialPercentage": "0.4",
+    "overtime": "hourly",
+    "overtimeRestDayPay": 0.5,
+    "holiday": true,
+    "regularHoliday": 1.2,
+    "specialHoliday": 1.5,
+    "deminimis": true,
+    "emailNotification": true,
+    "hideEmployeeList": false,
+    "atcCodes": "483858501057",
+    "sssRegistrationNumber": "837401053",
+    "phicNumber": "583859105748",
+    "hdmfNumber": "5783010574",
+    "taxablePays": ["beer", "yosi"],
+    "nonTaxablePays": ["food", "snacks"],
+    "sssCalculation": {
+        "deminimis": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": false
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": true
+        }
+    },
+    "phicCalculation": {
+        "deminimis": false,
+        "taxablePays": {
+            "beer": false,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": true,
+            "snacks":true
+        }
+    },
+    "thirteenthMonthPayCalculation": {
+        "deminimis": true,
+        "absences": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": false
+        }
+    },
+    "departments": ["staff", "managers", "seniors"],
+    "accountingJournal": {
+        "deminimisBenefits": "wagesAndSalaries",
+        "employeeBenefits": "wagesAndSalaries",
+        "hdmfPayable": "wagesAndSalaries",
+        "netPay": "wagesAndSalaries",
+        "nonTaxableCompensation": "wagesAndSalaries",
+        "phicPayable": "wagesAndSalaries",
+        "postTaxDeduction": "wagesAndSalaries",
+        "preTaxDeduction": "wagesAndSalaries",
+        "reimbursement": "wagesAndSalaries",
+        "sssPayable": "wagesAndSalaries",
+        "taxDue": "wagesAndSalaries",
+        "taxableCompensation": "wagesAndSalaries",
+        "thirteenthMonthPay": "wagesAndSalaries"
+    }
+  },
+  {
+    "_id": "60120c38f44b8109004862b5",
+    "company": "6010d3dc7951e30d3a584795",
+    "tin": "18471950195",
+    "rdoCode": "583850181",
+    "registeredAddress": {
+        "street": "11g Marcoville St",
+        "city": "Baguio city",
+        "country": "Philippines",
+        "zipCode": "2600"
+    },
+    "telephoneNumber": "4710571094",
+    "category": "government",
+    "frequency": "semiMonthly",
+    "firstCutOff": "30",
+    "firstPayout": "5",
+    "secondCutOff": "15",
+    "secondPayout": "20",
+    "reportingBase": "payoutDates",
+    "nightDifferential": "percentage",
+    "nightDifferentialPercentage": "0.4",
+    "overtime": "hourly",
+    "overtimeRestDayPay": 0.5,
+    "holiday": true,
+    "regularHoliday": 1.2,
+    "specialHoliday": 1.5,
+    "deminimis": true,
+    "emailNotification": true,
+    "hideEmployeeList": false,
+    "atcCodes": "483858501057",
+    "sssRegistrationNumber": "837401053",
+    "phicNumber": "583859105748",
+    "hdmfNumber": "5783010574",
+    "taxablePays": ["beer", "yosi"],
+    "nonTaxablePays": ["food", "snacks"],
+    "sssCalculation": {
+        "deminimis": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": false
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": true
+        }
+    },
+    "phicCalculation": {
+        "deminimis": false,
+        "taxablePays": {
+            "beer": false,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": true,
+            "snacks":true
+        }
+    },
+    "thirteenthMonthPayCalculation": {
+        "deminimis": true,
+        "absences": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": false
+        }
+    },
+    "departments": ["staff", "managers", "seniors"],
+    "accountingJournal": {
+        "deminimisBenefits": "wagesAndSalaries",
+        "employeeBenefits": "wagesAndSalaries",
+        "hdmfPayable": "wagesAndSalaries",
+        "netPay": "wagesAndSalaries",
+        "nonTaxableCompensation": "wagesAndSalaries",
+        "phicPayable": "wagesAndSalaries",
+        "postTaxDeduction": "wagesAndSalaries",
+        "preTaxDeduction": "wagesAndSalaries",
+        "reimbursement": "wagesAndSalaries",
+        "sssPayable": "wagesAndSalaries",
+        "taxDue": "wagesAndSalaries",
+        "taxableCompensation": "wagesAndSalaries",
+        "thirteenthMonthPay": "wagesAndSalaries"
+    }
+  },
+  {
+    "_id": "60120c38f44b8109004862b6",
+    "company": "6010d3dc7951e30d3a584796",
+    "tin": "18471950195",
+    "rdoCode": "583850181",
+    "registeredAddress": {
+        "street": "11g Marcoville St",
+        "city": "Baguio city",
+        "country": "Philippines",
+        "zipCode": "2600"
+    },
+    "telephoneNumber": "4710571094",
+    "category": "government",
+    "frequency": "semiMonthly",
+    "firstCutOff": "30",
+    "firstPayout": "5",
+    "secondCutOff": "15",
+    "secondPayout": "20",
+    "reportingBase": "payoutDates",
+    "nightDifferential": "percentage",
+    "nightDifferentialPercentage": "0.4",
+    "overtime": "hourly",
+    "overtimeRestDayPay": 0.5,
+    "holiday": true,
+    "regularHoliday": 1.2,
+    "specialHoliday": 1.5,
+    "deminimis": true,
+    "emailNotification": true,
+    "hideEmployeeList": false,
+    "atcCodes": "483858501057",
+    "sssRegistrationNumber": "837401053",
+    "phicNumber": "583859105748",
+    "hdmfNumber": "5783010574",
+    "taxablePays": ["beer", "yosi"],
+    "nonTaxablePays": ["food", "snacks"],
+    "sssCalculation": {
+        "deminimis": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": false
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": true
+        }
+    },
+    "phicCalculation": {
+        "deminimis": false,
+        "taxablePays": {
+            "beer": false,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": true,
+            "snacks":true
+        }
+    },
+    "thirteenthMonthPayCalculation": {
+        "deminimis": true,
+        "absences": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": false
+        }
+    },
+    "departments": ["staff", "managers", "seniors"],
+    "accountingJournal": {
+        "deminimisBenefits": "wagesAndSalaries",
+        "employeeBenefits": "wagesAndSalaries",
+        "hdmfPayable": "wagesAndSalaries",
+        "netPay": "wagesAndSalaries",
+        "nonTaxableCompensation": "wagesAndSalaries",
+        "phicPayable": "wagesAndSalaries",
+        "postTaxDeduction": "wagesAndSalaries",
+        "preTaxDeduction": "wagesAndSalaries",
+        "reimbursement": "wagesAndSalaries",
+        "sssPayable": "wagesAndSalaries",
+        "taxDue": "wagesAndSalaries",
+        "taxableCompensation": "wagesAndSalaries",
+        "thirteenthMonthPay": "wagesAndSalaries"
+    }
+  },
+  {
+    "_id": "60120c38f44b8109004862b7",
+    "company": "6010d3dc7951e30d3a584797",
+    "tin": "18471950195",
+    "rdoCode": "583850181",
+    "registeredAddress": {
+        "street": "11g Marcoville St",
+        "city": "Baguio city",
+        "country": "Philippines",
+        "zipCode": "2600"
+    },
+    "telephoneNumber": "4710571094",
+    "category": "government",
+    "frequency": "semiMonthly",
+    "firstCutOff": "30",
+    "firstPayout": "5",
+    "secondCutOff": "15",
+    "secondPayout": "20",
+    "reportingBase": "payoutDates",
+    "nightDifferential": "percentage",
+    "nightDifferentialPercentage": "0.4",
+    "overtime": "hourly",
+    "overtimeRestDayPay": 0.5,
+    "holiday": true,
+    "regularHoliday": 1.2,
+    "specialHoliday": 1.5,
+    "deminimis": true,
+    "emailNotification": true,
+    "hideEmployeeList": false,
+    "atcCodes": "483858501057",
+    "sssRegistrationNumber": "837401053",
+    "phicNumber": "583859105748",
+    "hdmfNumber": "5783010574",
+    "taxablePays": ["beer", "yosi"],
+    "nonTaxablePays": ["food", "snacks"],
+    "sssCalculation": {
+        "deminimis": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": false
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": true
+        }
+    },
+    "phicCalculation": {
+        "deminimis": false,
+        "taxablePays": {
+            "beer": false,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": true,
+            "snacks":true
+        }
+    },
+    "thirteenthMonthPayCalculation": {
+        "deminimis": true,
+        "absences": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": false
+        }
+    },
+    "departments": ["staff", "managers", "seniors"],
+    "accountingJournal": {
+        "deminimisBenefits": "wagesAndSalaries",
+        "employeeBenefits": "wagesAndSalaries",
+        "hdmfPayable": "wagesAndSalaries",
+        "netPay": "wagesAndSalaries",
+        "nonTaxableCompensation": "wagesAndSalaries",
+        "phicPayable": "wagesAndSalaries",
+        "postTaxDeduction": "wagesAndSalaries",
+        "preTaxDeduction": "wagesAndSalaries",
+        "reimbursement": "wagesAndSalaries",
+        "sssPayable": "wagesAndSalaries",
+        "taxDue": "wagesAndSalaries",
+        "taxableCompensation": "wagesAndSalaries",
+        "thirteenthMonthPay": "wagesAndSalaries"
+    }
+  },
+  {
+    "_id": "60120c38f44b8109004862b8",
+    "company": "6010d3dc7951e30d3a584798",
+    "tin": "18471950195",
+    "rdoCode": "583850181",
+    "registeredAddress": {
+        "street": "11g Marcoville St",
+        "city": "Baguio city",
+        "country": "Philippines",
+        "zipCode": "2600"
+    },
+    "telephoneNumber": "4710571094",
+    "category": "government",
+    "frequency": "semiMonthly",
+    "firstCutOff": "30",
+    "firstPayout": "5",
+    "secondCutOff": "15",
+    "secondPayout": "20",
+    "reportingBase": "payoutDates",
+    "nightDifferential": "percentage",
+    "nightDifferentialPercentage": "0.4",
+    "overtime": "hourly",
+    "overtimeRestDayPay": 0.5,
+    "holiday": true,
+    "regularHoliday": 1.2,
+    "specialHoliday": 1.5,
+    "deminimis": true,
+    "emailNotification": true,
+    "hideEmployeeList": false,
+    "atcCodes": "483858501057",
+    "sssRegistrationNumber": "837401053",
+    "phicNumber": "583859105748",
+    "hdmfNumber": "5783010574",
+    "taxablePays": ["beer", "yosi"],
+    "nonTaxablePays": ["food", "snacks"],
+    "sssCalculation": {
+        "deminimis": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": false
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": true
+        }
+    },
+    "phicCalculation": {
+        "deminimis": false,
+        "taxablePays": {
+            "beer": false,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": true,
+            "snacks":true
+        }
+    },
+    "thirteenthMonthPayCalculation": {
+        "deminimis": true,
+        "absences": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": false
+        }
+    },
+    "departments": ["staff", "managers", "seniors"],
+    "accountingJournal": {
+        "deminimisBenefits": "wagesAndSalaries",
+        "employeeBenefits": "wagesAndSalaries",
+        "hdmfPayable": "wagesAndSalaries",
+        "netPay": "wagesAndSalaries",
+        "nonTaxableCompensation": "wagesAndSalaries",
+        "phicPayable": "wagesAndSalaries",
+        "postTaxDeduction": "wagesAndSalaries",
+        "preTaxDeduction": "wagesAndSalaries",
+        "reimbursement": "wagesAndSalaries",
+        "sssPayable": "wagesAndSalaries",
+        "taxDue": "wagesAndSalaries",
+        "taxableCompensation": "wagesAndSalaries",
+        "thirteenthMonthPay": "wagesAndSalaries"
+    }
+  },
+  {
+    "_id": "60120c38f44b8109004862b9",
+    "company": "6010d3dc7951e30d3a584799",
+    "tin": "18471950195",
+    "rdoCode": "583850181",
+    "registeredAddress": {
+        "street": "11g Marcoville St",
+        "city": "Baguio city",
+        "country": "Philippines",
+        "zipCode": "2600"
+    },
+    "telephoneNumber": "4710571094",
+    "category": "government",
+    "frequency": "semiMonthly",
+    "firstCutOff": "30",
+    "firstPayout": "5",
+    "secondCutOff": "15",
+    "secondPayout": "20",
+    "reportingBase": "payoutDates",
+    "nightDifferential": "percentage",
+    "nightDifferentialPercentage": "0.4",
+    "overtime": "hourly",
+    "overtimeRestDayPay": 0.5,
+    "holiday": true,
+    "regularHoliday": 1.2,
+    "specialHoliday": 1.5,
+    "deminimis": true,
+    "emailNotification": true,
+    "hideEmployeeList": false,
+    "atcCodes": "483858501057",
+    "sssRegistrationNumber": "837401053",
+    "phicNumber": "583859105748",
+    "hdmfNumber": "5783010574",
+    "taxablePays": ["beer", "yosi"],
+    "nonTaxablePays": ["food", "snacks"],
+    "sssCalculation": {
+        "deminimis": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": false
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": true
+        }
+    },
+    "phicCalculation": {
+        "deminimis": false,
+        "taxablePays": {
+            "beer": false,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": true,
+            "snacks":true
+        }
+    },
+    "thirteenthMonthPayCalculation": {
+        "deminimis": true,
+        "absences": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": false
+        }
+    },
+    "departments": ["staff", "managers", "seniors"],
+    "accountingJournal": {
+        "deminimisBenefits": "wagesAndSalaries",
+        "employeeBenefits": "wagesAndSalaries",
+        "hdmfPayable": "wagesAndSalaries",
+        "netPay": "wagesAndSalaries",
+        "nonTaxableCompensation": "wagesAndSalaries",
+        "phicPayable": "wagesAndSalaries",
+        "postTaxDeduction": "wagesAndSalaries",
+        "preTaxDeduction": "wagesAndSalaries",
+        "reimbursement": "wagesAndSalaries",
+        "sssPayable": "wagesAndSalaries",
+        "taxDue": "wagesAndSalaries",
+        "taxableCompensation": "wagesAndSalaries",
+        "thirteenthMonthPay": "wagesAndSalaries"
+    }
+  },
+  {
+    "_id": "60120c38f44b8109004862c0",
+    "company": "6010d3dc7951e30d3a584800",
+    "tin": "18471950195",
+    "rdoCode": "583850181",
+    "registeredAddress": {
+        "street": "11g Marcoville St",
+        "city": "Baguio city",
+        "country": "Philippines",
+        "zipCode": "2600"
+    },
+    "telephoneNumber": "4710571094",
+    "category": "government",
+    "frequency": "semiMonthly",
+    "firstCutOff": "30",
+    "firstPayout": "5",
+    "secondCutOff": "15",
+    "secondPayout": "20",
+    "reportingBase": "payoutDates",
+    "nightDifferential": "percentage",
+    "nightDifferentialPercentage": "0.4",
+    "overtime": "hourly",
+    "overtimeRestDayPay": 0.5,
+    "holiday": true,
+    "regularHoliday": 1.2,
+    "specialHoliday": 1.5,
+    "deminimis": true,
+    "emailNotification": true,
+    "hideEmployeeList": false,
+    "atcCodes": "483858501057",
+    "sssRegistrationNumber": "837401053",
+    "phicNumber": "583859105748",
+    "hdmfNumber": "5783010574",
+    "taxablePays": ["beer", "yosi"],
+    "nonTaxablePays": ["food", "snacks"],
+    "sssCalculation": {
+        "deminimis": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": false
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": true
+        }
+    },
+    "phicCalculation": {
+        "deminimis": false,
+        "taxablePays": {
+            "beer": false,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": true,
+            "snacks":true
+        }
+    },
+    "thirteenthMonthPayCalculation": {
+        "deminimis": true,
+        "absences": true,
+        "taxablePays": {
+            "beer": true,
+            "yosi": true
+        },
+        "nonTaxablePays": {
+            "food": false,
+            "snacks": false
+        }
+    },
+    "departments": ["staff", "managers", "seniors"],
+    "accountingJournal": {
+        "deminimisBenefits": "wagesAndSalaries",
+        "employeeBenefits": "wagesAndSalaries",
+        "hdmfPayable": "wagesAndSalaries",
+        "netPay": "wagesAndSalaries",
+        "nonTaxableCompensation": "wagesAndSalaries",
+        "phicPayable": "wagesAndSalaries",
+        "postTaxDeduction": "wagesAndSalaries",
+        "preTaxDeduction": "wagesAndSalaries",
+        "reimbursement": "wagesAndSalaries",
+        "sssPayable": "wagesAndSalaries",
+        "taxDue": "wagesAndSalaries",
+        "taxableCompensation": "wagesAndSalaries",
+        "thirteenthMonthPay": "wagesAndSalaries"
+    }
+  }
+]
