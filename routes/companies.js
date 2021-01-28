@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const auth = require('../middleware/auth');
+const slug = require('../middleware/slug.js');
 
 const {
   createCompany,
@@ -13,6 +14,8 @@ const {
   deleteCompany,
   updateCompanySettings,
   deleteCompanySettings,
+  getCompanySlug,
+  setCompanySlug,
 } = require('../controllers/companies');
 
 // /api/v1/companies/name
@@ -20,6 +23,9 @@ router.route('/name').post(auth, createCompany);
 
 // api/v1/companies/name/:id
 router.route('/name/:id').put(auth, updateCompanyName).delete(auth, deleteCompany);
+
+// api/v1/companies/slug/:slug
+router.route('/slug/:slug').post(auth, setCompanySlug).get(auth, slug, getCompanySlug);
 
 // /api/v1/companies
 router.route('/').get(auth, getCompanies);

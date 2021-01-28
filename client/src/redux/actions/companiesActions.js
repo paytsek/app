@@ -1,4 +1,5 @@
 import axios from '../../axios';
+import setCompanySlug from '../../utils/setCompanySlug';
 
 import {
   COMPANY_DELETE_FAIL,
@@ -18,6 +19,12 @@ import {
   COMPANY_SETTINGS_CREATE_FAIL,
   COMPANY_SETTINGS_CREATE_REQUEST,
   COMPANY_SETTINGS_CREATE_SUCCESS,
+  COMPANY_SLUG_FAIL,
+  COMPANY_SLUG_HEADERS_FAIL,
+  COMPANY_SLUG_HEADERS_REQUEST,
+  COMPANY_SLUG_HEADERS_SUCCESS,
+  COMPANY_SLUG_REQUEST,
+  COMPANY_SLUG_SUCCESS,
 } from '../types';
 import notification from '../../utils/notification';
 
@@ -158,7 +165,9 @@ export const createCompanySettings = (companyId, companySettings) => async dispa
 };
 
 export const updateCompanySettings = (
-  companyId, companySettings, companySettingsId,
+  companyId,
+  companySettings,
+  companySettingsId,
 ) => async dispatch => {
   dispatch({ type: COMPANY_SETTINGS_CREATE_REQUEST });
 
@@ -191,5 +200,48 @@ export const updateCompanySettings = (
     }
 
     dispatch({ type: COMPANY_SETTINGS_CREATE_FAIL, payload: errors });
+  }
+};
+
+export const getCompanySlug = () => async dispatch => {
+  const slug = localStorage.getItem('slug');
+
+  setCompanySlug(slug);
+
+  dispatch({ type: COMPANY_SLUG_REQUEST });
+
+  try {
+    const { data } = await axios.get(`/companies/slug/${slug}`);
+
+    dispatch({ type: COMPANY_SLUG_SUCCESS, payload: data });
+  } catch (error) {
+    const { errors } = error.response.data;
+    const message = errors && errors.message;
+
+    if (message) {
+      dispatch(notification('error', message, dispatch));
+    }
+
+    dispatch({ type: COMPANY_SLUG_FAIL, payload: errors });
+  }
+};
+
+export const setSlug = slug => async dispatch => {
+  dispatch({ type: COMPANY_SLUG_HEADERS_REQUEST });
+
+  try {
+    const { data } = await axios.post(`/companies/slug/${slug}`);
+
+    dispatch({ type: COMPANY_SLUG_HEADERS_SUCCESS, payload: data });
+    dispatch(getCompanySlug());
+  } catch (error) {
+    const { errors } = error.response.data;
+    const message = errors && errors.message;
+
+    if (message) {
+      dispatch(notification('error', message, dispatch));
+    }
+
+    dispatch({ type: COMPANY_SLUG_HEADERS_FAIL, payload: errors });
   }
 };

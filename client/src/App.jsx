@@ -6,9 +6,10 @@ import cx from 'classnames';
 
 import Notifier from './components/Notifier';
 import Layout from './components/layout';
-import PrivateRoute from './components/routes/PrivateRoute';
+// import PrivateRoute from './components/routes/PrivateRoute';
+import LoggedInRoute from './components/routes/LoggedInRoute';
 import AdminRoute from './components/routes/AdminRoute';
-import Dashboard from './pages/Dashboard';
+import SelectCompanyPage from './pages/SelectCompanyPage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import UsersListPage from './pages/UsersListPage';
@@ -26,13 +27,19 @@ import CompanySettingsEditPage from './pages/CompanySettingsEditPage';
 
 import { authUser } from './redux/actions/usersActions';
 import setAuthToken from './utils/setAuthToken';
+import setCompanySlug from './utils/setCompanySlug';
 import './stylesheets/main.scss';
 import useStyles from './styles';
 
 const token = localStorage.getItem('token');
+const slug = localStorage.getItem('slug');
 
 if (token) {
   setAuthToken(token);
+}
+
+if (slug) {
+  setCompanySlug(slug);
 }
 
 const App = () => {
@@ -42,7 +49,9 @@ const App = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   useEffect(() => {
-    dispatch(authUser());
+    if (token) {
+      dispatch(authUser());
+    }
   }, [dispatch]);
 
   return (
@@ -52,6 +61,8 @@ const App = () => {
       <Switch>
         <Route path="/register" component={RegisterPage} exact />
         <Route path="/login" component={LoginPage} exact />
+        <LoggedInRoute path="/select-company" component={SelectCompanyPage} />
+        <LoggedInRoute path="/" component={SelectCompanyPage} exact />
         <Layout openDrawer={openDrawer} setOpenDrawer={setOpenDrawer}>
           <main
             className={cx(classes.content, {
@@ -62,9 +73,9 @@ const App = () => {
             <Switch>
               <AdminRoute path="/users" component={UsersListPage} exact />
               <AdminRoute path="/users/:id/edit" component={UserEditPage} exact />
-              <PrivateRoute path="/users/:id" component={UserDetailsPage} exact />
-              <PrivateRoute path="/profile" component={CurrentUserProfilePage} exact />
-              <PrivateRoute path="/change-password" component={ChangePasswordPage} exact />
+              <LoggedInRoute path="/users/:id" component={UserDetailsPage} exact />
+              <LoggedInRoute path="/profile" component={CurrentUserProfilePage} exact />
+              <LoggedInRoute path="/change-password" component={ChangePasswordPage} exact />
               <Route path="/companies" component={CompanyListPage} exact />
               <Route path="/company-settings" component={CompanySettingsPage} exact />
               <Route
@@ -79,7 +90,6 @@ const App = () => {
               <Route path="/companies/create" component={CompanyCreatePage} exact />
               <Route path="/companies/:id" component={CompanyDetailsPage} exact />
               <Route path="/companies/:id/edit" component={CompanyUpdatePage} exact />
-              <PrivateRoute path="/" component={Dashboard} exact />
             </Switch>
           </main>
         </Layout>
