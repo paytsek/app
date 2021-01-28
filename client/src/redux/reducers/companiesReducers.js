@@ -22,6 +22,13 @@ import {
   COMPANY_SETTINGS_CREATE_REQUEST,
   COMPANY_SETTINGS_CREATE_RESET,
   COMPANY_SETTINGS_CREATE_SUCCESS,
+  COMPANY_SLUG_FAIL,
+  COMPANY_SLUG_HEADERS_FAIL,
+  COMPANY_SLUG_HEADERS_REQUEST,
+  COMPANY_SLUG_HEADERS_SUCCESS,
+  COMPANY_SLUG_REMOVE,
+  COMPANY_SLUG_REQUEST,
+  COMPANY_SLUG_SUCCESS,
 } from '../types';
 
 export const companiesListReducers = (state = { companies: [] }, action) => {
@@ -121,6 +128,40 @@ export const companySettingsCreateReducers = (state = { errors: {} }, action) =>
       return { ...state, loading: false, errors: payload };
     case COMPANY_SETTINGS_CREATE_RESET:
       return { errors: {} };
+    default:
+      return state;
+  }
+};
+
+export const companySlugReducers = (state = { authSlug: false }, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case COMPANY_SLUG_REQUEST:
+      return { ...state, loading: true };
+    case COMPANY_SLUG_SUCCESS:
+      return { ...state, loading: false, slug: payload.slug, authSlug: true };
+    case COMPANY_SLUG_FAIL:
+      return { loading: false, authSlug: false };
+    case COMPANY_SLUG_REMOVE:
+      localStorage.removeItem('slug');
+      return { authSlug: false };
+    default:
+      return state;
+  }
+};
+
+export const companySetSlugReducers = (state = {}, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case COMPANY_SLUG_HEADERS_REQUEST:
+      return { loading: true };
+    case COMPANY_SLUG_HEADERS_SUCCESS:
+      localStorage.setItem('slug', payload.slug);
+      return { loading: false, slug: payload.slug };
+    case COMPANY_SLUG_HEADERS_FAIL:
+      return { loading: false };
     default:
       return state;
   }
