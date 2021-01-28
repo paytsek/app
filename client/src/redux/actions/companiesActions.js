@@ -156,3 +156,40 @@ export const createCompanySettings = (companyId, companySettings) => async dispa
     dispatch({ type: COMPANY_SETTINGS_CREATE_FAIL, payload: errors });
   }
 };
+
+export const updateCompanySettings = (
+  companyId, companySettings, companySettingsId,
+) => async dispatch => {
+  dispatch({ type: COMPANY_SETTINGS_CREATE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const { data } = await axios.put(
+      `/companies/${companyId}/settings/${companySettingsId}`,
+      companySettings,
+      config,
+    );
+
+    const message = 'Company Setting successfully updated';
+
+    dispatch(notification('success', message, dispatch));
+    dispatch({ type: COMPANY_SETTINGS_CREATE_SUCCESS, payload: data });
+  } catch (error) {
+    const { errors } = error.response.data;
+
+    const message = errors && errors.message;
+
+    if (message) {
+      dispatch(notification('error', message || 'Server Error', dispatch));
+    } else {
+      dispatch(notification('error', 'Validation Error', dispatch));
+    }
+
+    dispatch({ type: COMPANY_SETTINGS_CREATE_FAIL, payload: errors });
+  }
+};

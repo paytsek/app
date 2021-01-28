@@ -14,8 +14,8 @@ import PhicCalculations from './PhicCalculations';
 import ThirteenthMonthPayCalculations from './ThirteenthMonthPayCalculations';
 import AccountingJournalEntries from './AccountingJournalEntries';
 
-import { createCompanySettings } from '../../../redux/actions/companiesActions';
-import { COMPANY_SETTINGS_CREATE_RESET } from '../../../redux/types';
+import { createCompanySettings, getCompanyDetails, updateCompanySettings } from '../../../redux/actions/companiesActions';
+import { COMPANY_SETTINGS_CREATE_RESET, COMPANY_DETAILS_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const CompanySettingsForm = ({ match, history }) => {
@@ -89,13 +89,14 @@ const CompanySettingsForm = ({ match, history }) => {
     },
   });
 
-  const { companyId } = match.params;
+  const { companyId, companySettingsId } = match.params;
 
   const dispatch = useDispatch();
 
   const { errors, companySettings } = useSelector(
     state => state.companySettingsCreate,
   );
+  const { company } = useSelector(state => state.companyDetails);
 
   const {
     basicSettings,
@@ -216,7 +217,11 @@ const CompanySettingsForm = ({ match, history }) => {
       thirteenthMonthPayCalculation,
       accountingJournal,
     };
-    dispatch(createCompanySettings(companyId, data));
+    if (companySettingsId) {
+      dispatch(updateCompanySettings(companyId, data, companySettingsId));
+    } else {
+      dispatch(createCompanySettings(companyId, data));
+    }
   };
 
   const { paper, gridContainer, fieldsContainer, calculationsContainer } = useStyles();
@@ -246,7 +251,69 @@ const CompanySettingsForm = ({ match, history }) => {
       history.push('/company-settings');
       dispatch({ type: COMPANY_SETTINGS_CREATE_RESET });
     }
-  }, [nightDifferential, overtime, holiday, companySettings]);
+
+    if (company._id && company.companySettings) {
+      setSettings(prevState => ({
+        ...prevState,
+        basicSettings: {
+          ...prevState.basicSettings,
+          tin: company.companySettings.tin,
+          rdoCode: company.companySettings.rdoCode,
+          atc: company.companySettings.atc,
+          sssRegistrationNumber: company.companySettings.sssRegistrationNumber,
+          phicNumber: company.companySettings.phicNumber,
+          hdmfNumber: company.companySettings.hdmfNumber,
+          category: company.companySettings.category,
+          reportingBase: company.companySettings.reportingBase,
+          frequency: company.companySettings.frequency,
+          firstCutOff: company.companySettings.firstCutOff,
+          secondCutOff: company.companySettings.secondCutOff,
+          firstPayout: company.companySettings.firstPayout,
+          secondPayout: company.companySettings.secondCutOff,
+          nightDifferential: company.companySettings.nightDifferential,
+          nightDifferentialPercentage: company.companySettings.nightDifferentialPercentage,
+          overtime: company.companySettings.overtime,
+          overtimePay: company.companySettings.overtimePay,
+          overtimeRestDayPay: company.companySettings.overtimeRestDayPay,
+          holiday: company.companySettings.holiday,
+          regularHolidayPay: company.companySettings.regularHolidayPay,
+          specialHolidayPay: company.companySettings.specialHolidayPay,
+          workingDays: company.companySettings.workingDays,
+          taxReliefInternationTaxTreaty: company.companySettings.taxReliefInternationTaxTreaty,
+          deminimis: company.companySettings.deminimis,
+          emailNotification: company.companySettings.emailNotification,
+        },
+        registeredAddress: {
+          ...prevState.registeredAddress,
+          ...company.companySettings.registeredAddress,
+        },
+        departments: company.companySettings.departments,
+        taxablePays: company.companySettings.taxablePays,
+        nonTaxablePays: company.companySettings.nonTaxablePays,
+        sssCalculation: company.companySettings.sssCalculation,
+        phicCalculation: company.companySettings.phicCalculation,
+        thirteenthMonthPayCalculation: company.companySettings.thirteenthMonthPayCalculation,
+        accountingJournal: company.companySettings.accountingJournal,
+      }));
+    }
+
+    return () => {
+      dispatch({ type: COMPANY_DETAILS_RESET });
+    };
+  }, [
+    nightDifferential,
+    overtime,
+    holiday,
+    companySettings,
+    companySettingsId,
+    company.companySettings,
+  ]);
+
+  useEffect(() => {
+    if (companySettingsId) {
+      dispatch(getCompanyDetails(companyId));
+    }
+  }, []);
 
   return (
     <Grid container spacing={3} className={gridContainer}>
