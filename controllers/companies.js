@@ -34,17 +34,22 @@ const getCompanySlug = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ success: true, slug: company.slug });
 });
 
-// @ROUTE GET /api/v1/companies/slug/:slug
-// @Desc Get a company slug
+// @ROUTE POST /api/v1/companies/slug/:slug
+// @Desc SET a company slug
 // access PRIVATE - Logged in user
 const setCompanySlug = asyncHandler(async (req, res, next) => {
-  const company = await Company.findOne({ slug: req.params.slug }).select('slug');
+  const company = await Company.findOne({ slug: req.params.slug }).select('slug user');
 
   if (!company) {
     res.status(400);
     return next(
       new ErrorResponse({ message: `Resource with an id of ${req.params.slug} not found` }),
     );
+  }
+
+  if (req.user.role !== 'admin' && company.user.toString() !== req.user._id.toString()) {
+    res.status(401);
+    return next(new ErrorResponse({ message: 'Not authorize to access this route' }));
   }
 
   return res.status(200).json({ success: true, slug: company.slug });
