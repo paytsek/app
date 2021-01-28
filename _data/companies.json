@@ -1,0 +1,56 @@
+[
+  {
+    "_id": "6010d3dc7951e30d3a584791",
+    "user": "5d7a514b5d2c12c7449be051",
+    "name": "PayTsek",
+    "slug": "paytsek"
+  },
+  {
+    "_id": "6010d3dc7951e30d3a584792",
+    "user": "5d7a514b5d2c12c7449be052",
+    "name": "Full suite",
+    "slug": "full-suite"
+  },
+  {
+    "_id": "6010d3dc7951e30d3a584793",
+    "user": "5d7a514b5d2c12c7449be053",
+    "name": "TsekPay",
+    "slug": "tsekpay"
+  },
+  {
+    "_id": "6010d3dc7951e30d3a584794",
+    "user": "5d7a514b5d2c12c7449be054",
+    "name": "Asia Tsek",
+    "slug": "asia-tsek"
+  },
+  {
+    "_id": "6010d3dc7951e30d3a584795",
+    "user": "5d7a514b5d2c12c7449be054",
+    "name": "Rodrigo Disco Club",
+    "slug": "rodrigo-disco-club"
+  },
+  {
+    "_id": "6010d3dc7951e30d3a584796",
+    "user": "5d7a514b5d2c12c7449be055",
+    "name": "Bankrupt Companyy",
+    "slug": "bankrupt-company"
+  },
+  {
+    "_id": "6010d3dc7951e30d3a584797",
+    "user": "5d7a514b5d2c12c7449be052",
+    "name": "Salon de Baguio",
+    "slug": "salon-de-baguio"
+  },
+  {
+    "_id": "6010d3dc7951e30d3a584798",
+    "user": "5d7a514b5d2c12c7449be052",
+    "name": "Inuman Session",
+    "slug": "inuman-session"
+  },
+  {
+    "_id": "6010d3dc7951e30d3a584799",
+    "user": "5d7a514b5d2c12c7449be054",
+    "name": "Hangover resort",
+    "slug": "hangover-resort"
+  }
+]
