@@ -6,6 +6,7 @@ require('colors');
 dotenv.config({ path: './config/config.env' });
 
 const User = require('./models/User');
+const Company = require('./models/Company');
 
 const db = process.env.MONGO_URI_DEV;
 
@@ -18,10 +19,12 @@ mongoose.connect(db, {
 
 // Read JSON
 const users = JSON.parse(fs.readFileSync(`${__dirname}/_data/users.json`, 'utf-8'));
+const companies = JSON.parse(fs.readFileSync(`${__dirname}/_data/companies.json`, 'utf-8'));
 
 const importData = async () => {
   try {
     await User.create(users);
+    await Company.create(companies);
 
     console.log('Data imported...'.green.inverse);
     process.exit(1);
@@ -34,6 +37,7 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await User.deleteMany({});
+    await Company.deleteMany({});
 
     console.log('Data deleted...'.red.inverse);
     process.exit(1);
