@@ -1125,3 +1125,83 @@ describe('POST /api/v1/companies/slug/:slug - setCompanySlug', () => {
     });
   });
 });
+
+describe('GET /api/v1/companies/slug/:slug - getCompanySlug', () => {
+  const url = '/api/v1/companies/slug';
+
+  describe('Error Response', () => {
+    it('should return error response if no token', async () => {
+      const res = await request(app).get(`${url}/test-company`);
+
+      expect(res.status).toBe(401);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({ message: 'No token, access denied' });
+    });
+
+    it('should return error response if no x-company-slug set', async () => {
+      const token = await global.signIn();
+
+      const res = await request(app).get(`${url}/test-company`).auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(401);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({ message: 'No slug, access denied' });
+    });
+
+    it('should return error response if invalid slug params', async () => {
+      const token = await global.signIn();
+      const company = await Company.create({ name: 'PayTsek', user: mongoose.Types.ObjectId() });
+
+      let res = await await request(app)
+        .get(`${url}/invalid`)
+        .set({ 'x-company-slug': `${company.slug}` })
+        .auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(401);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({
+        message: 'No Company, access denied',
+      });
+
+      res = await request(app)
+        .get(`${url}/${company.slug}`)
+        .set({ 'x-company-slug': `${company.slug}` })
+        .auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(401);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({ message: 'Not authorize to access this route' });
+    });
+  });
+
+  describe('Success Response', () => {
+    it('should return success response if valid slug', async () => {
+      const token = await global.signIn();
+      const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const company = await Company.create({ name: 'payTsek', user: user._id });
+
+      const res = await request(app)
+        .get(`${url}/${company.slug}`)
+        .set({ 'x-company-slug': `${company.slug}` })
+        .auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBeTruthy();
+      expect(res.body.slug).toMatch(/paytsek/);
+    });
+
+    it('should return success response if user is an admin', async () => {
+      const token = await global.signInAdmin();
+      const company = await Company.create({ name: 'payTsek', user: mongoose.Types.ObjectId() });
+
+      const res = await request(app)
+        .get(`${url}/paytsek`)
+        .set({ 'x-company-slug': `${company.slug}` })
+        .auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBeTruthy();
+      expect(res.body).toMatchObject({ slug: 'paytsek' });
+    });
+  });
+});
