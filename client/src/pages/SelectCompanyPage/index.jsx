@@ -9,6 +9,8 @@ import { getCompaniesList, setSlug, getCompanySlug } from '../../redux/actions/c
 import { LOGOUT, COMPANY_SLUG_REMOVE } from '../../redux/types';
 import useStyles from './styles';
 
+const localStorageSlug = localStorage.getItem('slug');
+
 const SelectCompanyPage = ({ history }) => {
   const dispatch = useDispatch();
 
@@ -19,7 +21,9 @@ const SelectCompanyPage = ({ history }) => {
 
   useEffect(() => {
     dispatch(getCompaniesList());
-    dispatch(getCompanySlug());
+    if (localStorageSlug) {
+      dispatch(getCompanySlug());
+    }
   }, []);
 
   useEffect(() => {
