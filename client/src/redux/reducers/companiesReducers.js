@@ -5,6 +5,7 @@ import {
   COMPANY_DELETE_SUCCESS,
   COMPANY_DETAILS_FAIL,
   COMPANY_DETAILS_REQUEST,
+  COMPANY_DETAILS_RESET,
   COMPANY_DETAILS_SUCCESS,
   COMPANY_LIST_FAIL,
   COMPANY_LIST_REQUEST,
@@ -50,6 +51,8 @@ export const companyDetailsReducers = (state = { company: {} }, action) => {
       return { loading: false, company: payload.company };
     case COMPANY_DETAILS_FAIL:
       return { loading: false, company: {} };
+    case COMPANY_DETAILS_RESET:
+      return { company: {} };
     default:
       return state;
   }
