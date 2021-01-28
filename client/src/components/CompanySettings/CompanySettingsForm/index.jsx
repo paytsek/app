@@ -14,7 +14,7 @@ import PhicCalculations from './PhicCalculations';
 import ThirteenthMonthPayCalculations from './ThirteenthMonthPayCalculations';
 import AccountingJournalEntries from './AccountingJournalEntries';
 
-import { createCompanySettings, getCompanyDetails } from '../../../redux/actions/companiesActions';
+import { createCompanySettings, getCompanyDetails, updateCompanySettings } from '../../../redux/actions/companiesActions';
 import { COMPANY_SETTINGS_CREATE_RESET, COMPANY_DETAILS_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
@@ -97,7 +97,6 @@ const CompanySettingsForm = ({ match, history }) => {
     state => state.companySettingsCreate,
   );
   const { company } = useSelector(state => state.companyDetails);
-  console.log(company);
 
   const {
     basicSettings,
@@ -218,7 +217,11 @@ const CompanySettingsForm = ({ match, history }) => {
       thirteenthMonthPayCalculation,
       accountingJournal,
     };
-    dispatch(createCompanySettings(companyId, data));
+    if (companySettingsId) {
+      dispatch(updateCompanySettings(companyId, data, companySettingsId));
+    } else {
+      dispatch(createCompanySettings(companyId, data));
+    }
   };
 
   const { paper, gridContainer, fieldsContainer, calculationsContainer } = useStyles();
