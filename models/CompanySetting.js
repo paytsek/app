@@ -111,6 +111,7 @@ const CompanySettingSchema = new mongoose.Schema(
     workingDays: {
       type: Number,
       default: 22,
+      required: [true, 'Working days is required'],
     },
     nightDifferential: {
       type: String,
@@ -157,6 +158,7 @@ const CompanySettingSchema = new mongoose.Schema(
     holiday: {
       type: Boolean,
       default: false,
+      required: [true, 'Holiday is required'],
     },
     regularHolidayPay: {
       type: Number,
@@ -181,10 +183,12 @@ const CompanySettingSchema = new mongoose.Schema(
     taxReliefInternationTaxTreaty: {
       type: Boolean,
       default: false,
+      required: [true, 'Tax treaty is required'],
     },
     deminimis: {
       type: Boolean,
       default: false,
+      required: [true, 'De minimis is required'],
     },
     emailNotification: {
       type: Boolean,
@@ -319,7 +323,7 @@ const CompanySettingSchema = new mongoose.Schema(
         default: 'wagesAndSalaries',
         enum: ACCOUNTING_JOURNAL,
       },
-      thirtheenthMonthPay: {
+      thirteenthMonthPay: {
         type: String,
         default: 'wagesAndSalaries',
         enum: ACCOUNTING_JOURNAL,

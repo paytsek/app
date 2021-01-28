@@ -23,7 +23,7 @@ const CurrentCompaniesCard = ({ history, company }) => {
             {company.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {(company.companySettings && company.companySettings.registeredAddress)
+            {(company.companySettings && company.companySettings.formattedAddress)
               || 'Set your company'}
           </Typography>
         </CardContent>
@@ -35,7 +35,7 @@ const CurrentCompaniesCard = ({ history, company }) => {
             color="primary"
             startIcon={<SettingsIcon />}
             className={buttonText}
-            onClick={() => history.push(`company-settings/${company._id}/edit`)}
+            onClick={() => history.push(`company-settings/${company._id}/settings/${company.companySettings._id}/edit`)}
           >
             Edit Settings
           </Button>

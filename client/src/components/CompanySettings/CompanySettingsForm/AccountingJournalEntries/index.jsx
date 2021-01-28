@@ -1,15 +1,23 @@
 import React from 'react';
-import { Paper, Grid, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import {
+  Paper,
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormHelperText,
+} from '@material-ui/core';
 
 import TitleBox from '../../../common/TitleBox';
 
 import { ACCOUNTING_JOURNAL_ENTRIES } from '../../../../utils/globals';
 import useStyles from '../styles';
 
-const AccountingJournalEntries = ({ settings, onChange }) => {
+const AccountingJournalEntries = ({ settings, onChange, errors }) => {
   const {
     taxableCompensation,
-    thirtheenthMonthPay,
+    thirteenthMonthPay,
     nonTaxableCompensation,
     preTaxDeduction,
     employeeBenefits,
@@ -37,7 +45,7 @@ const AccountingJournalEntries = ({ settings, onChange }) => {
       <div className={fieldsContainer}>
         <Grid container spacing={3}>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors['accountingJournal.taxableCompensation']}>
               <InputLabel htmlFor="taxableCompensation">
                 Taxable Compensation (except 13th month)
               </InputLabel>
@@ -49,23 +57,33 @@ const AccountingJournalEntries = ({ settings, onChange }) => {
               >
                 {options()}
               </Select>
+              {errors['accountingJournal.taxableCompensation'] && (
+                <FormHelperText error>
+                  {errors['accountingJournal.taxableCompensation']}
+                </FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor="thirtheenthMonthPay">13th Month Pay</InputLabel>
+            <FormControl fullWidth error={!!errors['accountingJournal.thirteenthMonthPay']}>
+              <InputLabel htmlFor="thirteenthMonthPay">13th Month Pay</InputLabel>
               <Select
-                id="thirtheenthMonthPay"
-                name="thirtheenthMonthPay"
-                value={thirtheenthMonthPay}
+                id="thirteenthMonthPay"
+                name="thirteenthMonthPay"
+                value={thirteenthMonthPay}
                 onChange={onChange}
               >
                 {options()}
               </Select>
+              {errors['accountingJournal.thirteenthMonthPay'] && (
+                <FormHelperText error>
+                  {errors['accountingJournal.thirteenthMonthPay']}
+                </FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors['accountingJournal.nonTaxableCompensation']}>
               <InputLabel htmlFor="nonTaxableCompensation">
                 NonTaxable Compensation (except 13th month)
               </InputLabel>
@@ -77,10 +95,15 @@ const AccountingJournalEntries = ({ settings, onChange }) => {
               >
                 {options()}
               </Select>
+              {errors['accountingJournal.nonTaxableCompensation'] && (
+                <FormHelperText error>
+                  {errors['accountingJournal.nonTaxableCompensation']}
+                </FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors['accountingJournal.preTaxDeduction']}>
               <InputLabel htmlFor="preTaxDeduction">Pre-tax Deductions</InputLabel>
               <Select
                 id="preTaxDeduction"
@@ -90,10 +113,13 @@ const AccountingJournalEntries = ({ settings, onChange }) => {
               >
                 {options()}
               </Select>
+              {errors['accountingJournal.preTaxDeduction'] && (
+                <FormHelperText error>{errors['accountingJournal.preTaxDeduction']}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors['accountingJournal.employeeBenefits']}>
               <InputLabel htmlFor="employeeBenefits">Employee Benefits (SSS/PHIC/HDMF)</InputLabel>
               <Select
                 id="employeeBenefits"
@@ -103,42 +129,59 @@ const AccountingJournalEntries = ({ settings, onChange }) => {
               >
                 {options()}
               </Select>
+              {errors['accountingJournal.employeeBenefits'] && (
+                <FormHelperText error>
+                  {errors['accountingJournal.employeeBenefits']}
+                </FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors['accountingJournal.sssPayable']}>
               <InputLabel htmlFor="sssPayable">SSS Payable</InputLabel>
               <Select id="sssPayable" name="sssPayable" value={sssPayable} onChange={onChange}>
                 {options()}
               </Select>
+              {errors['accountingJournal.sssPayable'] && (
+                <FormHelperText error>{errors['accountingJournal.sssPayable']}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors['accountingJournal.hdmfPayable']}>
               <InputLabel htmlFor="hdmfPayable">HDMF Payable</InputLabel>
               <Select id="hdmfPayable" name="hdmfPayable" value={hdmfPayable} onChange={onChange}>
                 {options()}
               </Select>
+              {errors['accountingJournal.hdmfPayable'] && (
+                <FormHelperText error>{errors['accountingJournal.hdmfPayable']}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors['accountingJournal.phicPayable']}>
               <InputLabel htmlFor="phicPayable">PHIC Payable</InputLabel>
               <Select id="phicPayable" name="phicPayable" value={phicPayable} onChange={onChange}>
                 {options()}
               </Select>
+              {errors['accountingJournal.phicPayable'] && (
+                <FormHelperText error>{errors['accountingJournal.phicPayable']}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors['accountingJournal.taxDue']}>
               <InputLabel htmlFor="taxDue">Tax Due</InputLabel>
               <Select id="taxDue" name="taxDue" value={taxDue} onChange={onChange}>
                 {options()}
               </Select>
+              {errors['accountingJournal.taxDue'] && (
+                <FormHelperText error>{errors['accountingJournal.taxDue']}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors['accountingJournal.reimbursement']}>
               <InputLabel htmlFor="reimbursement">Reimbursements</InputLabel>
               <Select
                 id="reimbursement"
@@ -148,10 +191,13 @@ const AccountingJournalEntries = ({ settings, onChange }) => {
               >
                 {options()}
               </Select>
+              {errors['accountingJournal.reimbursement'] && (
+                <FormHelperText error>{errors['accountingJournal.reimbursement']}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors['accountingJournal.postTaxDeduction']}>
               <InputLabel htmlFor="postTaxDeduction">Post-tax Deductions</InputLabel>
               <Select
                 id="postTaxDeduction"
@@ -161,18 +207,26 @@ const AccountingJournalEntries = ({ settings, onChange }) => {
               >
                 {options()}
               </Select>
+              {errors['accountingJournal.postTaxDeduction'] && (
+                <FormHelperText error>
+                  {errors['accountingJournal.postTaxDeduction']}
+                </FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors['accountingJournal.netPay']}>
               <InputLabel htmlFor="netPay">Net Pay</InputLabel>
               <Select id="netPay" name="netPay" value={netPay} onChange={onChange}>
                 {options()}
               </Select>
+              {errors['accountingJournal.netPay'] && (
+                <FormHelperText error>{errors['accountingJournal.netPay']}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth>
+            <FormControl fullWidth error={!!errors['accountingJournal.deminimisBenefits']}>
               <InputLabel htmlFor="deminimisBenefits">De minimis benefit</InputLabel>
               <Select
                 id="deminimisBenefits"
@@ -182,6 +236,9 @@ const AccountingJournalEntries = ({ settings, onChange }) => {
               >
                 {options()}
               </Select>
+              {errors['accountingJournal.deminimisBenefits'] && (
+                <FormHelperText error>{errors['accountingJournal.deminimisBenefits']}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
         </Grid>

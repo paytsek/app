@@ -11,6 +11,7 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
+  FormHelperText,
 } from '@material-ui/core';
 import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
 
@@ -19,7 +20,7 @@ import TitleBox from '../../../common/TitleBox';
 import notification from '../../../../utils/notification';
 import useStyles from '../styles';
 
-const Departments = ({ departments, onAdd, onDelete }) => {
+const Departments = ({ departments, onAdd, onDelete, errors }) => {
   const [departmentName, setDepartmentName] = useState('');
 
   const dispatch = useDispatch();
@@ -44,10 +45,10 @@ const Departments = ({ departments, onAdd, onDelete }) => {
     <Paper className={paper}>
       <TitleBox title="Departments" />
       <div className={fieldsContainer}>
-        <FormControl fullWidth size="small" margin="normal">
-          <InputLabel htmlFor="department">Department</InputLabel>
+        <FormControl fullWidth size="small" margin="normal" error={!!errors.departments}>
+          <InputLabel htmlFor="departments">Department</InputLabel>
           <Input
-            id="department"
+            id="departments"
             name="departmentName"
             value={departmentName}
             onChange={e => setDepartmentName(e.target.value)}
@@ -59,6 +60,7 @@ const Departments = ({ departments, onAdd, onDelete }) => {
               </InputAdornment>
             }
           />
+          {errors.departments && <FormHelperText error>{errors.departments}</FormHelperText>}
         </FormControl>
         {/* List of departments */}
         {departments.length > 0 ? (
@@ -67,7 +69,11 @@ const Departments = ({ departments, onAdd, onDelete }) => {
               <ListItem key={department}>
                 <ListItemText primary={department} />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="delete" onClick={() => onDelete('departments', department)}>
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    onClick={() => onDelete('departments', department)}
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </ListItemSecondaryAction>

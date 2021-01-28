@@ -67,8 +67,15 @@ const App = () => {
               <PrivateRoute path="/change-password" component={ChangePasswordPage} exact />
               <Route path="/companies" component={CompanyListPage} exact />
               <Route path="/company-settings" component={CompanySettingsPage} exact />
-              <Route path="/company-settings/:companyId" component={CompanySettingsCreatePage} exact />
-              <Route path="/company-settings/:companyId/edit" component={CompanySettingsEditPage} exact />
+              <Route
+                path="/company-settings/:companyId"
+                component={CompanySettingsCreatePage}
+                exact
+              />
+              <Route
+                path="/company-settings/:companyId/settings/:companySettingsId"
+                component={CompanySettingsEditPage}
+              />
               <Route path="/companies/create" component={CompanyCreatePage} exact />
               <Route path="/companies/:id" component={CompanyDetailsPage} exact />
               <Route path="/companies/:id/edit" component={CompanyUpdatePage} exact />

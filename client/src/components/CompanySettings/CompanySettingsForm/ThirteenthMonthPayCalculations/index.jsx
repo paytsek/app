@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import { Typography, FormGroup, FormControl, FormControlLabel, Checkbox } from '@material-ui/core';
 
-const thirtheenthMonthPayCalculation = 'thirtheenthMonthPayCalculation';
+const thirteenthMonthPayCalculation = 'thirteenthMonthPayCalculation';
 
-const ThirtheenthMonthPayCalculations = ({
+const ThirteenthMonthPayCalculations = ({
   settings,
   onChangeCalculation,
   onChangeTaxablePay,
@@ -20,7 +20,7 @@ const ThirtheenthMonthPayCalculations = ({
             label="De minimis"
             name="deminimis"
             checked={deminimis}
-            onChange={e => onChangeCalculation(thirtheenthMonthPayCalculation, e)}
+            onChange={e => onChangeCalculation(thirteenthMonthPayCalculation, e)}
             control={<Checkbox color="primary" />}
           />
         </FormControl>
@@ -29,7 +29,7 @@ const ThirtheenthMonthPayCalculations = ({
             label="Absences"
             name="absences"
             checked={absences}
-            onChange={e => onChangeCalculation(thirtheenthMonthPayCalculation, e)}
+            onChange={e => onChangeCalculation(thirteenthMonthPayCalculation, e)}
             control={<Checkbox color="primary" />}
           />
         </FormControl>
@@ -43,7 +43,7 @@ const ThirtheenthMonthPayCalculations = ({
               label={taxablePay}
               name={taxablePay}
               checked={taxablePays[taxablePay]}
-              onChange={e => onChangeTaxablePay(thirtheenthMonthPayCalculation, e)}
+              onChange={e => onChangeTaxablePay(thirteenthMonthPayCalculation, e)}
               control={<Checkbox color="primary" />}
             />
           </FormControl>
@@ -63,7 +63,7 @@ const ThirtheenthMonthPayCalculations = ({
               name={nonTaxablePay}
               control={<Checkbox color="primary" />}
               checked={nonTaxablePays[nonTaxablePay]}
-              onChange={e => onChangeNonTaxablePay(thirtheenthMonthPayCalculation, e)}
+              onChange={e => onChangeNonTaxablePay(thirteenthMonthPayCalculation, e)}
             />
           </FormControl>
         ))
@@ -76,4 +76,4 @@ const ThirtheenthMonthPayCalculations = ({
   );
 };
 
-export default ThirtheenthMonthPayCalculations;
+export default ThirteenthMonthPayCalculations;

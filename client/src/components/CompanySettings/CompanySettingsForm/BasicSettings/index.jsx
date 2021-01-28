@@ -18,7 +18,7 @@ import PercentageInput from '../../../common/PercentageInput';
 
 import useStyles from '../styles';
 
-const BasicSettings = ({ onChange, settings }) => {
+const BasicSettings = ({ onChange, settings, errors }) => {
   const {
     tin,
     rdoCode,
@@ -123,16 +123,17 @@ const BasicSettings = ({ onChange, settings }) => {
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth size="small">
+            <FormControl fullWidth size="small" error={!!errors.category}>
               <InputLabel htmlFor="category">Category of Withholding Agent</InputLabel>
               <Select id="category" name="category" value={category} onChange={onChange}>
                 <MenuItem value="government">Government</MenuItem>
                 <MenuItem value="private">Private</MenuItem>
               </Select>
+              {errors.category && <FormHelperText>{errors.category}</FormHelperText>}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
-            <FormControl fullWidth size="small">
+            <FormControl fullWidth size="small" error={!!errors.reportingBase}>
               <InputLabel htmlFor="reportingBase">Reporting Base</InputLabel>
               <Select
                 id="reportingBase"
@@ -144,8 +145,10 @@ const BasicSettings = ({ onChange, settings }) => {
                 <MenuItem value="payrollCutOffs">Payroll Cutoffs</MenuItem>
                 <MenuItem value="payoutDates">Payout Dates</MenuItem>
               </Select>
-              <FormHelperText id="reportingBaseHelper">
-                Generated reports will be based on the option you will choose here.
+              <FormHelperText id="reportingBaseHelper" error={!!errors.reportingBase}>
+                {errors.reportingBase
+                  ? errors.reportingBase
+                  : 'Generated reports will be based on the option you will choose here.'}
               </FormHelperText>
             </FormControl>
           </Grid>
@@ -156,18 +159,19 @@ const BasicSettings = ({ onChange, settings }) => {
         {/* PAYROLL FREQUENCY */}
         <Grid container spacing={6}>
           <Grid item xs={12} md={6}>
-            <FormControl fullWidth size="small">
+            <FormControl fullWidth size="small" error={!!errors.frequency}>
               <InputLabel htmlFor="frequency">Payroll Frequency</InputLabel>
               <Select id="frequency" name="frequency" value={frequency} onChange={onChange}>
                 <MenuItem value="monthly">Monthly</MenuItem>
                 <MenuItem value="semiMonthly">Semi monthly</MenuItem>
               </Select>
+              {errors.frequency && <FormHelperText error>{errors.frequency}</FormHelperText>}
             </FormControl>
           </Grid>
           <Grid item xs={12} md={6}>
             <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
-                <FormControl fullWidth size="small">
+                <FormControl fullWidth size="small" error={!!errors.firstCutOff}>
                   <InputLabel htmlFor="firstCutOff">First Cutoff</InputLabel>
                   <Input
                     id="firstCutOff"
@@ -175,11 +179,15 @@ const BasicSettings = ({ onChange, settings }) => {
                     name="firstCutOff"
                     value={firstCutOff}
                     onChange={onChange}
+                    error={!!errors.firstCutOff}
                   />
+                  {errors.firstCutOff && (
+                    <FormHelperText error>{errors.firstCutOff}</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid item xs={12} md={6}>
-                <FormControl fullWidth size="small">
+                <FormControl fullWidth size="small" error={!!errors.firstPayout}>
                   <InputLabel htmlFor="firstPayout">First Payout</InputLabel>
                   <Input
                     type="number"
@@ -188,12 +196,13 @@ const BasicSettings = ({ onChange, settings }) => {
                     value={firstPayout}
                     onChange={onChange}
                   />
+                  {errors.firstPayout && <FormHelperText>{errors.firstPayout}</FormHelperText>}
                 </FormControl>
               </Grid>
               {frequency === 'semiMonthly' && (
                 <Fragment>
                   <Grid item xs={12} md={6}>
-                    <FormControl fullWidth size="small">
+                    <FormControl fullWidth size="small" error={!!errors.secondCutOff}>
                       <InputLabel htmlFor="secondCutOff">Second CutOff</InputLabel>
                       <Input
                         id="secondCutOff"
@@ -202,10 +211,13 @@ const BasicSettings = ({ onChange, settings }) => {
                         value={secondCutOff}
                         onChange={onChange}
                       />
+                      {errors.secondCutOff && (
+                        <FormHelperText error>{errors.secondCutOff}</FormHelperText>
+                      )}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12} md={6}>
-                    <FormControl fullWidth size="small">
+                    <FormControl fullWidth size="small" error={!!errors.secondPayout}>
                       <InputLabel htmlFor="secondPayout">Second Payout</InputLabel>
                       <Input
                         id="secondPayout"
@@ -214,6 +226,9 @@ const BasicSettings = ({ onChange, settings }) => {
                         value={secondPayout}
                         onChange={onChange}
                       />
+                      {errors.secondPayout && (
+                        <FormHelperText error>{errors.secondPayout}</FormHelperText>
+                      )}
                     </FormControl>
                   </Grid>
                 </Fragment>
@@ -227,7 +242,7 @@ const BasicSettings = ({ onChange, settings }) => {
         {/* NIGHT DIFFERENTIAL */}
         <Grid container spacing={6}>
           <Grid item xs={12} md={6}>
-            <FormControl fullWidth size="small">
+            <FormControl fullWidth size="small" error={!!errors.nightDifferential}>
               <InputLabel htmlFor="nightDifferential">Night Differential</InputLabel>
               <Select
                 id="nightDifferential"
@@ -239,11 +254,14 @@ const BasicSettings = ({ onChange, settings }) => {
                 <MenuItem value="percentage">Percentage</MenuItem>
                 <MenuItem value="fixed">Fixed</MenuItem>
               </Select>
+              {errors.nightDifferential && (
+                <FormHelperText error>{errors.nightDifferential}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           {nightDifferential === 'percentage' && (
             <Grid item xs={12} md={3}>
-              <FormControl fullWidth size="small">
+              <FormControl fullWidth size="small" error={!!errors.nightDifferentialPercentage}>
                 <InputLabel htmlFor="nightDifferentialPercentage">
                   Night Differential Percentage
                 </InputLabel>
@@ -253,6 +271,9 @@ const BasicSettings = ({ onChange, settings }) => {
                   value={nightDifferentialPercentage}
                   onChange={onChange}
                 />
+                {errors.nightDifferentialPercentage && (
+                  <FormHelperText error>{errors.nightDifferentialPercentage}</FormHelperText>
+                )}
               </FormControl>
             </Grid>
           )}
@@ -263,19 +284,20 @@ const BasicSettings = ({ onChange, settings }) => {
         {/* OVERTIME */}
         <Grid container spacing={6}>
           <Grid item xs={12} md={6}>
-            <FormControl fullWidth size="small">
+            <FormControl fullWidth size="small" error={!!errors.overtime}>
               <InputLabel htmlFor="overtime">Over time</InputLabel>
               <Select id="overtime" name="overtime" value={overtime} onChange={onChange}>
                 <MenuItem value="disabled">Disabled</MenuItem>
                 <MenuItem value="hourly">Hourly</MenuItem>
                 <MenuItem value="fixed">Fixed</MenuItem>
               </Select>
+              {errors.overtime && <FormHelperText error>{errors.overtime}</FormHelperText>}
             </FormControl>
           </Grid>
           {overtime === 'hourly' && (
             <Fragment>
               <Grid item xs={12} md={3}>
-                <FormControl fullWidth size="small">
+                <FormControl fullWidth size="small" error={!!errors.overtimePay}>
                   <InputLabel htmlFor="overtimePay">Overtime Pay</InputLabel>
                   <PercentageInput
                     id="overtimePay"
@@ -283,10 +305,13 @@ const BasicSettings = ({ onChange, settings }) => {
                     value={overtimePay}
                     onChange={onChange}
                   />
+                  {errors.overtimePay && (
+                    <FormHelperText error>{errors.overtimePay}</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid item xs={12} md={3}>
-                <FormControl fullWidth size="small">
+                <FormControl fullWidth size="small" error={!!errors.overtimeRestDayPay}>
                   <InputLabel htmlFor="overtimeRestDayPay">Overtime Rest Day Pay</InputLabel>
                   <PercentageInput
                     id="overtimeRestDayPay"
@@ -294,6 +319,9 @@ const BasicSettings = ({ onChange, settings }) => {
                     value={overtimeRestDayPay}
                     onChange={onChange}
                   />
+                  {errors.overtimeRestDayPay && (
+                    <FormHelperText error>{errors.overtimeRestDayPay}</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
             </Fragment>
@@ -313,11 +341,12 @@ const BasicSettings = ({ onChange, settings }) => {
               checked={holiday}
               onChange={onChange}
             />
+            {errors.holiday && <FormHelperText error>{errors.holiday}</FormHelperText>}
           </Grid>
           {holiday && (
             <Fragment>
               <Grid item xs={12} md={3}>
-                <FormControl fullWidth size="small">
+                <FormControl fullWidth size="small" error={!!errors.regularHolidayPay}>
                   <InputLabel htmlFor="regularHolidayPay">Regular Holiday Pay</InputLabel>
                   <PercentageInput
                     id="regularHolidayPay"
@@ -325,10 +354,13 @@ const BasicSettings = ({ onChange, settings }) => {
                     value={regularHolidayPay}
                     onChange={onChange}
                   />
+                  {errors.regularHolidayPay && (
+                    <FormHelperText error>{errors.regularHolidayPay}</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
               <Grid item xs={12} md={3}>
-                <FormControl fullWidth size="small">
+                <FormControl fullWidth size="small" error={!!errors.specialHolidayPay}>
                   <InputLabel htmlFor="specialHolidayPay">Special Holiday Pay</InputLabel>
                   <PercentageInput
                     id="specialHolidayPay"
@@ -336,6 +368,9 @@ const BasicSettings = ({ onChange, settings }) => {
                     value={specialHolidayPay}
                     onChange={onChange}
                   />
+                  {errors.specialHolidayPay && (
+                    <FormHelperText error>{errors.specialHolidayPay}</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
             </Fragment>
@@ -346,7 +381,7 @@ const BasicSettings = ({ onChange, settings }) => {
         </Grid>
         <Grid container spacing={6}>
           <Grid item xs={6} md={4} lg={3}>
-            <FormControl fullWidth size="small">
+            <FormControl fullWidth size="small" error={!!errors.workingDays}>
               <InputLabel htmlFor="workingDays">Working Days</InputLabel>
               <Input
                 type="number"
@@ -355,6 +390,7 @@ const BasicSettings = ({ onChange, settings }) => {
                 value={workingDays}
                 onChange={onChange}
               />
+              {errors.workingDays && <FormHelperText error>{errors.workingDays}</FormHelperText>}
             </FormControl>
           </Grid>
           <Grid item xs={6} md={4} lg={3}>
@@ -366,6 +402,9 @@ const BasicSettings = ({ onChange, settings }) => {
               checked={taxReliefInternationTaxTreaty}
               onChange={onChange}
             />
+            {errors.taxReliefInternationTaxTreaty && (
+              <FormHelperText error>{errors.taxReliefInternationTaxTreaty}</FormHelperText>
+            )}
           </Grid>
           <Grid item xs={6} md={4} lg={3}>
             <FormControlLabel
@@ -376,6 +415,7 @@ const BasicSettings = ({ onChange, settings }) => {
               value={deminimis}
               onChange={onChange}
             />
+            {errors.deminimis && <FormHelperText error>{errors.deminimis}</FormHelperText>}
           </Grid>
           <Grid item xs={6} md={4} lg={3}>
             <FormControlLabel

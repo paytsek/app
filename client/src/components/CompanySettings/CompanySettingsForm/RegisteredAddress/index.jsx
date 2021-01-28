@@ -5,7 +5,7 @@ import TitleBox from '../../../common/TitleBox';
 
 import useStyles from '../styles';
 
-const RegisteredAddress = ({ settings, onChange }) => {
+const RegisteredAddress = ({ settings, onChange, errors }) => {
   const { street, city, country, zipCode } = settings;
 
   const { paper, fieldsContainer } = useStyles();
@@ -22,6 +22,8 @@ const RegisteredAddress = ({ settings, onChange }) => {
           name="street"
           value={street}
           onChange={onChange}
+          error={!!errors['registeredAddress.street']}
+          helperText={errors['registeredAddress.street']}
         />
         <TextField
           fullWidth
@@ -31,6 +33,8 @@ const RegisteredAddress = ({ settings, onChange }) => {
           name="city"
           value={city}
           onChange={onChange}
+          error={!!errors['registeredAddress.city']}
+          helperText={errors['registeredAddress.city']}
         />
         <TextField
           fullWidth
@@ -40,6 +44,8 @@ const RegisteredAddress = ({ settings, onChange }) => {
           name="country"
           value={country}
           onChange={onChange}
+          error={!!errors['registeredAddress.country']}
+          helperText={errors['registeredAddress.country']}
         />
         <TextField
           fullWidth
@@ -49,6 +55,8 @@ const RegisteredAddress = ({ settings, onChange }) => {
           name="zipCode"
           value={zipCode}
           onChange={onChange}
+          error={!!errors['registeredAddress.zipCode']}
+          helperText={errors['registeredAddress.zipCode']}
         />
       </div>
     </Paper>

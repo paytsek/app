@@ -530,7 +530,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
           sssPayable: 'sample',
           taxDue: 'sample',
           taxableCompensation: 'sample',
-          thirtheenthMonthPay: 'sample',
+          thirteenthMonthPay: 'sample',
         },
       });
 
@@ -567,8 +567,8 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
           '`sample` is not a valid enum value for path `accountingJournal.taxDue`.',
         'accountingJournal.taxableCompensation':
           '`sample` is not a valid enum value for path `accountingJournal.taxableCompensation`.',
-        'accountingJournal.thirtheenthMonthPay':
-          '`sample` is not a valid enum value for path `accountingJournal.thirtheenthMonthPay`.',
+        'accountingJournal.thirteenthMonthPay':
+          '`sample` is not a valid enum value for path `accountingJournal.thirteenthMonthPay`.',
       }),
     );
   });
@@ -862,7 +862,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
             sssPayable: 'wagesPayable',
             taxDue: 'wagesPayable',
             taxableCompensation: 'wagesPayable',
-            thirtheenthMonthPay: 'wagesPayable',
+            thirteenthMonthPay: 'wagesPayable',
           },
           category: 'private',
           frequency: 'semiMonthly',
@@ -923,7 +923,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
             sssPayable: 'wagesPayable',
             taxDue: 'wagesPayable',
             taxableCompensation: 'wagesPayable',
-            thirtheenthMonthPay: 'wagesPayable',
+            thirteenthMonthPay: 'wagesPayable',
           },
           category: 'private',
           frequency: 'semiMonthly',

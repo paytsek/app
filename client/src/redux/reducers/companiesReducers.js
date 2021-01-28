@@ -113,7 +113,7 @@ export const companySettingsCreateReducers = (state = { errors: {} }, action) =>
     case COMPANY_SETTINGS_CREATE_REQUEST:
       return { ...state, loading: true };
     case COMPANY_SETTINGS_CREATE_SUCCESS:
-      return { ...state, loading: false, companySettings: payload.companySettings };
+      return { ...state, loading: false, companySettings: payload.companySettings, errors: {} };
     case COMPANY_SETTINGS_CREATE_FAIL:
       return { ...state, loading: false, errors: payload };
     case COMPANY_SETTINGS_CREATE_RESET:
