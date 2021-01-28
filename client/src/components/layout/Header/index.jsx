@@ -13,7 +13,7 @@ import {
 import HeaderAdminList from './HeaderAdminList';
 import HeaderMemberList from './HeaderMemberList';
 
-import { LOGOUT } from '../../../redux/types';
+import { LOGOUT, COMPANY_SLUG_REMOVE } from '../../../redux/types';
 import useStyles from './style';
 
 const Header = ({ openDrawer, setOpenDrawer, history }) => {
@@ -35,6 +35,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 
   const handleLogout = () => {
     dispatch({ type: LOGOUT });
+    dispatch({ type: COMPANY_SLUG_REMOVE });
     history.push('/login');
   };
 
