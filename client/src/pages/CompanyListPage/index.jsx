@@ -9,7 +9,9 @@ import CompaniesListFilter from '../../components/CompaniesList/CompanyiesFilter
 import CompaniesListTable from '../../components/CompaniesList/CompaniesListTable';
 import useStyles from './styles';
 
-const CompanyListPage = ({ history }) => {
+const CompanyListPage = ({ history, match }) => {
+  const { slug } = match.params;
+
   const {
     active, title, paper, actions, tableContainer,
   } = useStyles();
@@ -18,8 +20,8 @@ const CompanyListPage = ({ history }) => {
     <Fragment>
       <Container>
         <Breadcrumbs>
-          <Link to="/">Dashboard</Link>
-          <Link className={active} to="/companies" aria-current="page">
+          <Link to={`/${slug}/dashboard`}>Dashboard</Link>
+          <Link className={active} to="companies" aria-current="page">
             Companies
           </Link>
         </Breadcrumbs>

@@ -12,7 +12,7 @@ import useStyles from './styles';
 
 const CompanyDetailsPage = ({ history, match }) => {
   const dispatch = useDispatch();
-  const { id } = match.params;
+  const { id, slug } = match.params;
 
   const { loading, company } = useSelector(state => state.companyDetails);
 
@@ -25,11 +25,11 @@ const CompanyDetailsPage = ({ history, match }) => {
   return (
     <Container>
       <Breadcrumbs>
-        <Link to="/">Dashboard</Link>
-        <Link to="/companies" aria-current="page">
+        <Link to={`/${slug}/dashboard`}>Dashboard</Link>
+        <Link to={`/${slug}/companies`} aria-current="page">
           Companies
         </Link>
-        <Link className={active} to="/companies/1" aria-current="page">
+        <Link className={active} to={`${id}`} aria-current="page">
           View Company
         </Link>
       </Breadcrumbs>
