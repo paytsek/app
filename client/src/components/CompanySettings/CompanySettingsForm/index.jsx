@@ -89,7 +89,7 @@ const CompanySettingsForm = ({ match, history }) => {
     },
   });
 
-  const { companyId, companySettingsId } = match.params;
+  const { companyId, companySettingsId, slug } = match.params;
 
   const dispatch = useDispatch();
 
@@ -220,7 +220,7 @@ const CompanySettingsForm = ({ match, history }) => {
     if (companySettingsId) {
       dispatch(updateCompanySettings(companyId, data, companySettingsId));
     } else {
-      dispatch(createCompanySettings(companyId, data));
+      dispatch(createCompanySettings(data));
     }
   };
 
@@ -248,7 +248,7 @@ const CompanySettingsForm = ({ match, history }) => {
     }
 
     if (companySettings) {
-      history.push('/company-settings');
+      history.push(`/${slug}/company-settings`);
       dispatch({ type: COMPANY_SETTINGS_CREATE_RESET });
     }
 

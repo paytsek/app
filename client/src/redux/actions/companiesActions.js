@@ -133,7 +133,7 @@ export const deleteCompany = id => async dispatch => {
   }
 };
 
-export const createCompanySettings = (companyId, companySettings) => async dispatch => {
+export const createCompanySettings = companySettings => async dispatch => {
   dispatch({ type: COMPANY_SETTINGS_CREATE_REQUEST });
 
   const config = {
@@ -143,7 +143,7 @@ export const createCompanySettings = (companyId, companySettings) => async dispa
   };
 
   try {
-    const { data } = await axios.post(`/companies/${companyId}/settings`, companySettings, config);
+    const { data } = await axios.post('/companies/settings', companySettings, config);
 
     const message = 'Company Setting successfully created';
 
