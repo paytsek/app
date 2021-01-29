@@ -31,7 +31,7 @@ const LayoutRouter = () => (
           <LoggedInRoute path="/:slug/companies" component={CompanyListPage} exact />
           <LoggedInRoute path="/:slug/company-settings" component={CompanySettingsPage} exact />
           <LoggedInRoute
-            path="/:slug/company-settings/:companyId"
+            path="/:slug/company-settings/create"
             component={CompanySettingsCreatePage}
             exact
           />

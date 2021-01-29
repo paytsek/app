@@ -1,20 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Paper, Container, Breadcrumbs, Typography,
-} from '@material-ui/core';
+import { Paper, Container, Breadcrumbs, Typography } from '@material-ui/core';
 
 import CurrentCompaniesContainer from '../../components/CompanySettings/CurrentCompaniesContainer';
 import useStyles from './styles';
 
-const CompanySettings = () => {
+const CompanySettingsPage = ({ match }) => {
+  const { slug } = match.params;
+
   const { paper, active, title } = useStyles();
 
   return (
     <Container>
       <Breadcrumbs>
-        <Link to="/">Dashboard</Link>
-        <Link className={active} to="/company-settings" aria-current="page">
+        <Link to={`/${slug}/dashboard`}>Dashboard</Link>
+        <Link className={active} to="company-settings" aria-current="page">
           Company Settings
         </Link>
       </Breadcrumbs>
@@ -28,4 +28,4 @@ const CompanySettings = () => {
   );
 };
 
-export default CompanySettings;
+export default CompanySettingsPage;

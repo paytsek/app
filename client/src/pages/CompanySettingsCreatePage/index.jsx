@@ -7,17 +7,19 @@ import CompanySettingsForm from '../../components/CompanySettings/CompanySetting
 
 import useStyles from './styles';
 
-const CompanySettingsCreatePage = () => {
+const CompanySettingsCreatePage = ({ match }) => {
+  const { slug } = match.params;
+
   const { paper, active, title } = useStyles();
 
   return (
     <Container>
       <Breadcrumbs>
-        <Link to="/">Dashboard</Link>
-        <Link to="/company-settings" aria-current="page">
+        <Link to={`/${slug}/dashboard`}>Dashboard</Link>
+        <Link to={`/${slug}/company-settings`} aria-current="page">
           Company Settings
         </Link>
-        <Link className={active} to="/company-settings/1" aria-current="page">
+        <Link className={active} to="create" aria-current="page">
           Create Company Settings
         </Link>
       </Breadcrumbs>

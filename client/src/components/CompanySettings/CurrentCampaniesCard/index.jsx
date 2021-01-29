@@ -35,7 +35,10 @@ const CurrentCompaniesCard = ({ history, company }) => {
             color="primary"
             startIcon={<SettingsIcon />}
             className={buttonText}
-            onClick={() => history.push(`company-settings/${company._id}/settings/${company.companySettings._id}/edit`)}
+            onClick={() => history.push(
+              `company-settings/${company._id}/settings/${company.companySettings._id}/edit`,
+            )
+            }
           >
             Edit Settings
           </Button>
@@ -45,7 +48,7 @@ const CurrentCompaniesCard = ({ history, company }) => {
             color="primary"
             startIcon={<SettingsIcon />}
             className={buttonText}
-            onClick={() => history.push(`company-settings/${company._id}`)}
+            onClick={() => history.push('company-settings/create')}
           >
             Add Settings
           </Button>
