@@ -88,7 +88,11 @@ const CompanyUpdateForm = ({ history, match }) => {
             <Button size="small" onClick={() => setName(company.name)} startIcon={<Undo />}>
               Reset
             </Button>
-            <Button size="small" startIcon={<Clear />} onClick={() => history.push('/companies')}>
+            <Button
+              size="small"
+              startIcon={<Clear />}
+              onClick={() => history.push(`/${slug}/companies/${id}`)}
+            >
               Cancel
             </Button>
             <Button
