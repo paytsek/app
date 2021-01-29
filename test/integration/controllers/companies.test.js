@@ -436,29 +436,22 @@ describe('GET /api/v1/companies/:id - getCompany', () => {
 });
 
 describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
-  const url = '/api/v1/companies';
+  const url = '/api/v1/companies/settings';
 
-  it('should return 400 Not found and error response if company is invalid or not found', async () => {
+  it('should return 401 Not found and error response if company/slug is invalid or not found', async () => {
     const token = await global.signIn();
 
-    const id = mongoose.Types.ObjectId();
+    const res = await request(app).post(`${url}`).auth(token, { type: 'bearer' });
 
-    const res = await request(app).post(`${url}/${id}/settings`).auth(token, { type: 'bearer' });
-
-    expect(res.status).toBe(404);
+    expect(res.status).toBe(401);
     expect(res.body.success).toBeFalsy();
     expect(res.body.errors).toMatchObject({
-      message: 'No company is selected',
+      message: 'No slug, access denied',
     });
   });
 
   it('should return 401 if not logged in', async () => {
-    const company = await Company.create({
-      name: 'PayTsek',
-      user: mongoose.Types.ObjectId(),
-    });
-
-    const res = await request(app).post(`${url}/${company._id}/settings`).send({});
+    const res = await request(app).post(`${url}`).send({});
 
     expect(res.status).toBe(401);
     expect(res.body.success).toBeFalsy();
@@ -484,7 +477,8 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     });
 
     const res = await request(app)
-      .post(`${url}/${company._id}/settings`)
+      .post(`${url}`)
+      .set({ 'x-company-slug': company.slug })
       .auth(token, { type: 'bearer' });
 
     expect(res.status).toBe(401);
@@ -505,7 +499,8 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     const { company } = res.body;
 
     res = await request(app)
-      .post(`${url}/${company._id}/settings`)
+      .post(`${url}`)
+      .set({ 'x-company-slug': company.slug })
       .auth(token, { type: 'bearer' })
       .send({
         secondPayout: 30,
@@ -584,7 +579,8 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     const { company } = res.body;
 
     res = await request(app)
-      .post(`${url}/${company._id}/settings`)
+      .post(`${url}`)
+      .set({ 'x-company-slug': company.slug })
       .auth(token, { type: 'bearer' })
       .send({
         frequency: 'semiMonthly',
@@ -631,8 +627,9 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     const { company } = res.body;
 
     res = await request(app)
-      .post(`${url}/${company._id}/settings`)
+      .post(`${url}`)
       .auth(token, { type: 'bearer' })
+      .set({ 'x-company-slug': company.slug })
       .send({
         secondPayout: 30,
         firstPayout: 1,
@@ -1154,7 +1151,7 @@ describe('GET /api/v1/companies/slug/:slug - getCompanySlug', () => {
 
       let res = await await request(app)
         .get(`${url}/invalid`)
-        .set({ 'x-company-slug': `${company.slug}` })
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -1165,7 +1162,7 @@ describe('GET /api/v1/companies/slug/:slug - getCompanySlug', () => {
 
       res = await request(app)
         .get(`${url}/${company.slug}`)
-        .set({ 'x-company-slug': `${company.slug}` })
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -1182,7 +1179,7 @@ describe('GET /api/v1/companies/slug/:slug - getCompanySlug', () => {
 
       const res = await request(app)
         .get(`${url}/${company.slug}`)
-        .set({ 'x-company-slug': `${company.slug}` })
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);
@@ -1196,7 +1193,7 @@ describe('GET /api/v1/companies/slug/:slug - getCompanySlug', () => {
 
       const res = await request(app)
         .get(`${url}/paytsek`)
-        .set({ 'x-company-slug': `${company.slug}` })
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);
