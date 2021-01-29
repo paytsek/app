@@ -41,7 +41,7 @@ const RegisterPage = ({ history }) => {
 
   useEffect(() => {
     if (auth) {
-      history.push('/');
+      history.push('/select-company');
     }
 
     return () => {

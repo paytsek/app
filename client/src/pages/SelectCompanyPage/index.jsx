@@ -28,7 +28,7 @@ const SelectCompanyPage = ({ history }) => {
 
   useEffect(() => {
     if (authSlug && slug) {
-      history.push(`/${slug}`);
+      history.push(`/${slug}/dashboard`);
     }
   }, [authSlug]);
 
@@ -49,7 +49,7 @@ const SelectCompanyPage = ({ history }) => {
                 button
                 onClick={() => {
                   dispatch(setSlug(company.slug));
-                  history.push(`/${company.slug}`);
+                  history.push(`/${company.slug}/dashboard`);
                 }}
               >
                 <ListItemText primary={company.name} />

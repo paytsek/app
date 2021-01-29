@@ -27,7 +27,7 @@ const LoginPage = ({ history }) => {
 
   useEffect(() => {
     if (auth) {
-      history.push('/');
+      history.push('/select-company');
     }
   }, [auth, history]);
 
