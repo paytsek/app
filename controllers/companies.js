@@ -106,7 +106,7 @@ const getCompany = asyncHandler(async (req, res, next) => {
 // @Desc Create a company settings
 // access PRIVATE - Logged in user
 const createCompanySettings = asyncHandler(async (req, res, next) => {
-  const company = await Company.findById(req.params.id);
+  const company = await Company.findById(req.company._id);
 
   if (!company) {
     res.status(404);
@@ -119,7 +119,7 @@ const createCompanySettings = asyncHandler(async (req, res, next) => {
   }
 
   const companySettings = await CompanySetting.create({
-    company: req.params.id,
+    company: company._id,
     ...req.body,
   });
 

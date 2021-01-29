@@ -33,8 +33,8 @@ router.route('/').get(auth, getCompanies);
 // /api/v1/companies/:id
 router.route('/:id').get(auth, getCompany);
 
-// /api/v1/companies/:id/settings
-router.route('/:id/settings').post(auth, createCompanySettings);
+// /api/v1/companies/settings
+router.route('/settings').post(auth, slug, createCompanySettings);
 
 // api/v1/companies/:id/settings/:companySettingsId
 router
