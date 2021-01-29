@@ -15,7 +15,7 @@ import { COMPANY_NAME_UPDATE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const CompanyUpdateForm = ({ history, match }) => {
-  const { id } = match.params;
+  const { id, slug } = match.params;
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
@@ -49,7 +49,7 @@ const CompanyUpdateForm = ({ history, match }) => {
     }
 
     if (success) {
-      history.push('/companies');
+      history.push(`/${slug}/companies`);
     }
   }, [company.name, success]);
 

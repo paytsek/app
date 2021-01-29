@@ -8,7 +8,9 @@ import { createCompanyName } from '../../../redux/actions/companiesActions';
 import { COMPANY_NAME_CREATE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
-const CompanyCreateForm = ({ history }) => {
+const CompanyCreateForm = ({ history, match }) => {
+  const { slug } = match.params;
+
   const [name, setName] = useState('');
 
   const dispatch = useDispatch();
@@ -24,7 +26,7 @@ const CompanyCreateForm = ({ history }) => {
 
   useEffect(() => {
     if (company) {
-      history.push('/companies');
+      history.push(`/${slug}/companies/${company._id}`);
     }
 
     return () => {
@@ -53,7 +55,7 @@ const CompanyCreateForm = ({ history }) => {
         <Button type="submit" color="primary" variant="contained" size="small" startIcon={<Save />}>
           Save
         </Button>
-        <Button size="small" startIcon={<Clear />} onClick={() => history.push('/companies')}>
+        <Button size="small" startIcon={<Clear />} onClick={() => history.push(`/${slug}/companies`)}>
           Cancel
         </Button>
       </div>
