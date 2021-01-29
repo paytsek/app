@@ -18,8 +18,8 @@ const UsersListPage = () => {
     <Fragment>
       <Container>
         <Breadcrumbs>
-          <Link to="/">Dashboard</Link>
-          <Link className={active} to="/users" aria-current="page">
+          <Link to="dashboard">Dashboard</Link>
+          <Link className={active} to="users" aria-current="page">
             Users
           </Link>
         </Breadcrumbs>

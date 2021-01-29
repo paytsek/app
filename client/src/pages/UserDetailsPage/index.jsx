@@ -1,9 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {
-  Paper, Container, Breadcrumbs, Typography, Button,
-} from '@material-ui/core';
+import { Paper, Container, Breadcrumbs, Typography, Button } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 
 import MuiSkeleton from '../../components/MuiSkeleton';
@@ -12,15 +10,13 @@ import { getUserDetails } from '../../redux/actions/usersActions';
 import useStyles from './styles';
 
 const UserDetailsPage = ({ history, match }) => {
-  const { id } = match.params;
+  const { id, slug } = match.params;
   const dispatch = useDispatch();
 
   const { user, loading } = useSelector(state => state.userDetails);
   const { user: loggedInUser } = useSelector(state => state.authUser);
 
-  const {
-    active, paper, title, actions, details,
-  } = useStyles();
+  const { active, paper, title, actions, details } = useStyles();
 
   useEffect(() => {
     dispatch(getUserDetails(id));
@@ -29,11 +25,11 @@ const UserDetailsPage = ({ history, match }) => {
   return (
     <Container>
       <Breadcrumbs>
-        <Link to="/">Dashboard</Link>
-        <Link to="/users" aria-current="page">
+        <Link to={`/${slug}/dashboard`}>Dashboard</Link>
+        <Link to={`/${slug}/users`} aria-current="page">
           Users
         </Link>
-        <Link className={active} to="/users/1" aria-current="page">
+        <Link className={active} to={`${id}`} aria-current="page">
           View User
         </Link>
       </Breadcrumbs>

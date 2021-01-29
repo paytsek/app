@@ -6,26 +6,15 @@ import cx from 'classnames';
 
 import Notifier from './components/Notifier';
 import Layout from './components/layout';
-// import PrivateRoute from './components/routes/PrivateRoute';
+import LayoutRouter from './routers/LayoutRouter';
 import LoggedInRoute from './components/routes/LoggedInRoute';
-import AdminRoute from './components/routes/AdminRoute';
+import PrivateRoute from './components/routes/PrivateRoute';
 import SelectCompanyPage from './pages/SelectCompanyPage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
-import UsersListPage from './pages/UsersListPage';
-import UserDetailsPage from './pages/UserDetailsPage';
-import UserEditPage from './pages/UserEditPage';
-import CurrentUserProfilePage from './pages/CurrentUserProfilePage';
-import ChangePasswordPage from './pages/ChangePasswordPage';
-import CompanyListPage from './pages/CompanyListPage';
-import CompanyDetailsPage from './pages/CompanyDetailsPage';
-import CompanyCreatePage from './pages/CompanyCreatePage';
-import CompanyUpdatePage from './pages/CompanyUpdatePage';
-import CompanySettingsPage from './pages/CompanySettingsPage';
-import CompanySettingsCreatePage from './pages/CompanySettingsCreatePage';
-import CompanySettingsEditPage from './pages/CompanySettingsEditPage';
 
 import { authUser } from './redux/actions/usersActions';
+import { getCompanySlug } from './redux/actions/companiesActions';
 import setAuthToken from './utils/setAuthToken';
 import setCompanySlug from './utils/setCompanySlug';
 import './stylesheets/main.scss';
@@ -49,10 +38,9 @@ const App = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   useEffect(() => {
-    if (token) {
-      dispatch(authUser());
-    }
-  }, [dispatch]);
+    dispatch(authUser());
+    dispatch(getCompanySlug());
+  }, [slug]);
 
   return (
     <Router>
@@ -61,8 +49,7 @@ const App = () => {
       <Switch>
         <Route path="/register" component={RegisterPage} exact />
         <Route path="/login" component={LoginPage} exact />
-        <LoggedInRoute path="/select-company" component={SelectCompanyPage} />
-        <LoggedInRoute path="/" component={SelectCompanyPage} exact />
+        <LoggedInRoute path="/select-company" component={SelectCompanyPage} exact />
         <Layout openDrawer={openDrawer} setOpenDrawer={setOpenDrawer}>
           <main
             className={cx(classes.content, {
@@ -70,27 +57,11 @@ const App = () => {
             })}
           >
             <div style={{ minHeight: 80 }} />
-            <Switch>
-              <AdminRoute path="/users" component={UsersListPage} exact />
-              <AdminRoute path="/users/:id/edit" component={UserEditPage} exact />
-              <LoggedInRoute path="/users/:id" component={UserDetailsPage} exact />
-              <LoggedInRoute path="/profile" component={CurrentUserProfilePage} exact />
-              <LoggedInRoute path="/change-password" component={ChangePasswordPage} exact />
-              <Route path="/companies" component={CompanyListPage} exact />
-              <Route path="/company-settings" component={CompanySettingsPage} exact />
-              <Route
-                path="/company-settings/:companyId"
-                component={CompanySettingsCreatePage}
-                exact
-              />
-              <Route
-                path="/company-settings/:companyId/settings/:companySettingsId"
-                component={CompanySettingsEditPage}
-              />
-              <Route path="/companies/create" component={CompanyCreatePage} exact />
-              <Route path="/companies/:id" component={CompanyDetailsPage} exact />
-              <Route path="/companies/:id/edit" component={CompanyUpdatePage} exact />
-            </Switch>
+
+            <PrivateRoute
+              path="/:slug"
+              component={props => <LayoutRouter {...props} />}
+            />
           </main>
         </Layout>
       </Switch>
