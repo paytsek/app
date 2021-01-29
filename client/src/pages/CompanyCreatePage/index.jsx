@@ -7,14 +7,16 @@ import {
 import CompanyCreateForm from '../../components/CompanyCreate/CompanyCreateForm';
 import useStyles from './styles';
 
-const CompanyCreatePage = () => {
+const CompanyCreatePage = ({ match }) => {
+  const { slug } = match.params;
+
   const { paper, active, title } = useStyles();
 
   return (
     <Container>
       <Breadcrumbs>
-        <Link to="/">Dashboard</Link>
-        <Link to="/companies" aria-current="page">
+        <Link to={`/${slug}/dashboard`}>Dashboard</Link>
+        <Link to={`/${slug}/companies`} aria-current="page">
           Companies
         </Link>
         <Link className={active} to="create" aria-current="page">
