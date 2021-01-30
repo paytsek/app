@@ -106,7 +106,7 @@ const getCompany = asyncHandler(async (req, res, next) => {
 // @Desc Create a company settings
 // access PRIVATE - Logged in user
 const createCompanySettings = asyncHandler(async (req, res, next) => {
-  const company = await Company.findById(req.params.id);
+  const company = await Company.findById(req.company._id);
 
   if (!company) {
     res.status(404);
@@ -119,7 +119,7 @@ const createCompanySettings = asyncHandler(async (req, res, next) => {
   }
 
   const companySettings = await CompanySetting.create({
-    company: req.params.id,
+    company: company._id,
     ...req.body,
   });
 
@@ -130,15 +130,15 @@ const createCompanySettings = asyncHandler(async (req, res, next) => {
 // @DESC Update a company settings
 // @ACCESS PRIVATE - Logged in user
 const updateCompanySettings = asyncHandler(async (req, res, next) => {
-  const { companySettingsId, id } = req.params;
+  const { id } = req.params;
 
-  const company = await Company.findById(id).populate({
+  const company = await Company.findOne({ slug: req.company.slug }).populate({
     path: 'companySettings',
   });
 
   if (!company) {
     res.status(401);
-    return next(new ErrorResponse({ message: 'Invalid Company id' }));
+    return next(new ErrorResponse({ message: 'Invalid company slug' }));
   }
 
   let { companySettings } = company;
@@ -152,17 +152,17 @@ const updateCompanySettings = asyncHandler(async (req, res, next) => {
     res.status(404);
     return next(
       new ErrorResponse({
-        message: `Resource with an id of ${companySettingsId} not found`,
+        message: `Resource with an id of ${id} not found`,
       }),
     );
   }
 
-  if (id.toString() !== companySettings.company.toString()) {
+  if (req.company._id.toString() !== companySettings.company.toString()) {
     res.status(401);
     return next(new ErrorResponse({ message: 'Not authorized to access this route' }));
   }
 
-  companySettings = await CompanySetting.findById(companySettingsId);
+  companySettings = await CompanySetting.findById(id);
 
   const fields = Object.keys(req.body);
   fields.forEach(field => {
@@ -174,24 +174,24 @@ const updateCompanySettings = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ success: true, companySettings: updatedCompanySettings });
 });
 
-// @ROUTE DELETE /api/v1/companies/:id/settings/:companySettingsId
+// @ROUTE DELETE /api/v1/companies/settings/:id
 // @DESC Delete a company settings
 // @ACCESS PRIVATE - Logged in user
 const deleteCompanySettings = asyncHandler(async (req, res, next) => {
-  const { companySettingsId, id } = req.params;
+  const { id } = req.params;
 
-  const company = await Company.findById(id).populate({
+  const company = await Company.findOne({ slug: req.company.slug }).populate({
     path: 'companySettings',
   });
 
   if (!company) {
     res.status(401);
-    return next(new ErrorResponse({ message: 'Invalid Company id' }));
+    return next(new ErrorResponse({ message: 'Invalid company slug' }));
   }
 
   const { companySettings } = company;
 
-  if (req.user._id.toString() !== company.user.toString()) {
+  if (req.user.role !== 'admin' && req.user._id.toString() !== company.user.toString()) {
     res.status(401);
     return next(new ErrorResponse({ message: 'Not authorized to access this route' }));
   }
@@ -200,22 +200,22 @@ const deleteCompanySettings = asyncHandler(async (req, res, next) => {
     res.status(404);
     return next(
       new ErrorResponse({
-        message: `Resource with an id of ${companySettingsId} not found`,
+        message: `Resource with an id of ${id} not found`,
       }),
     );
   }
 
-  if (id.toString() !== companySettings.company.toString()) {
+  if (companySettings._id.toString() !== id) {
     res.status(401);
     return next(new ErrorResponse({ message: 'Not authorized to access this route' }));
   }
 
-  await CompanySetting.findByIdAndDelete(companySettings._id);
+  await CompanySetting.findByIdAndDelete(id);
 
   return res.status(200).json({
     success: true,
     companySettings: {},
-    message: `Company Settings - ID:${companySettings._id} successfully deleted`,
+    message: `Company Settings - ID:${id} successfully deleted`,
   });
 });
 

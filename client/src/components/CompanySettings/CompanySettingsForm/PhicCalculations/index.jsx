@@ -18,7 +18,7 @@ const PhicCalculations = ({
         <FormControlLabel
           label="De minimis"
           name="deminimis"
-          value={deminimis}
+          checked={deminimis}
           onChange={e => onChangeCalculation(phicCalculation, e)}
           control={<Checkbox color="primary" />}
         />

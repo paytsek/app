@@ -436,29 +436,22 @@ describe('GET /api/v1/companies/:id - getCompany', () => {
 });
 
 describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
-  const url = '/api/v1/companies';
+  const url = '/api/v1/companies/settings';
 
-  it('should return 400 Not found and error response if company is invalid or not found', async () => {
+  it('should return 401 Not found and error response if company/slug is invalid or not found', async () => {
     const token = await global.signIn();
 
-    const id = mongoose.Types.ObjectId();
+    const res = await request(app).post(`${url}`).auth(token, { type: 'bearer' });
 
-    const res = await request(app).post(`${url}/${id}/settings`).auth(token, { type: 'bearer' });
-
-    expect(res.status).toBe(404);
+    expect(res.status).toBe(401);
     expect(res.body.success).toBeFalsy();
     expect(res.body.errors).toMatchObject({
-      message: 'No company is selected',
+      message: 'No slug, access denied',
     });
   });
 
   it('should return 401 if not logged in', async () => {
-    const company = await Company.create({
-      name: 'PayTsek',
-      user: mongoose.Types.ObjectId(),
-    });
-
-    const res = await request(app).post(`${url}/${company._id}/settings`).send({});
+    const res = await request(app).post(`${url}`).send({});
 
     expect(res.status).toBe(401);
     expect(res.body.success).toBeFalsy();
@@ -484,7 +477,8 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     });
 
     const res = await request(app)
-      .post(`${url}/${company._id}/settings`)
+      .post(`${url}`)
+      .set({ 'x-company-slug': company.slug })
       .auth(token, { type: 'bearer' });
 
     expect(res.status).toBe(401);
@@ -505,7 +499,8 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     const { company } = res.body;
 
     res = await request(app)
-      .post(`${url}/${company._id}/settings`)
+      .post(`${url}`)
+      .set({ 'x-company-slug': company.slug })
       .auth(token, { type: 'bearer' })
       .send({
         secondPayout: 30,
@@ -584,7 +579,8 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     const { company } = res.body;
 
     res = await request(app)
-      .post(`${url}/${company._id}/settings`)
+      .post(`${url}`)
+      .set({ 'x-company-slug': company.slug })
       .auth(token, { type: 'bearer' })
       .send({
         frequency: 'semiMonthly',
@@ -631,8 +627,9 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     const { company } = res.body;
 
     res = await request(app)
-      .post(`${url}/${company._id}/settings`)
+      .post(`${url}`)
       .auth(token, { type: 'bearer' })
+      .set({ 'x-company-slug': company.slug })
       .send({
         secondPayout: 30,
         firstPayout: 1,
@@ -654,13 +651,11 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 });
 
 describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanySettings', () => {
-  const url = '/api/v1/companies';
+  const url = '/api/v1/companies/settings';
 
   describe('Error Response', () => {
     it('should return error response if not logged in', async () => {
-      const res = await request(app).put(
-        `${url}/${mongoose.Types.ObjectId()}/settings/${mongoose.Types.ObjectId()}`,
-      );
+      const res = await request(app).put(`${url}/${mongoose.Types.ObjectId()}`);
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
@@ -681,7 +676,8 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
       const token = await global.signIn();
 
       const res = await request(app)
-        .put(`${url}/${company._id}/settings/${mongoose.Types.ObjectId()}`)
+        .put(`${url}/${mongoose.Types.ObjectId()}`)
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -691,18 +687,17 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
       });
     });
 
-    it('should return error if company id params is invalid', async () => {
+    it('should return error if no company slug or invalid', async () => {
       const token = await global.signIn();
-      const id = mongoose.Types.ObjectId();
 
       const res = await request(app)
-        .put(`${url}/${id}/settings/${mongoose.Types.ObjectId()}`)
+        .put(`${url}/${mongoose.Types.ObjectId()}`)
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
       expect(res.body.errors).toMatchObject({
-        message: 'Invalid Company id',
+        message: 'No slug, access denied',
       });
     });
 
@@ -716,7 +711,8 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
       });
 
       const res = await request(app)
-        .put(`${url}/${company._id}/settings/${companySettingsId}`)
+        .put(`${url}/${companySettingsId}`)
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -746,7 +742,8 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
       });
 
       const res = await request(app)
-        .put(`${url}/${company._id}/settings/${companySettings._id}`)
+        .put(`${url}/${companySettings._id}`)
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' })
         .send({
           category: '',
@@ -789,8 +786,9 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
       });
 
       const res = await request(app)
-        .put(`${url}/${company._id}/settings/${companySettings._id}`)
+        .put(`${url}/${companySettings._id}`)
         .auth(token, { type: 'bearer' })
+        .set({ 'x-company-slug': company.slug })
         .send({
           frequency: 'semiMonthly',
           nightDifferential: 'percentage',
@@ -846,8 +844,9 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
       });
 
       const res = await request(app)
-        .put(`${url}/${company._id}/settings/${companySettings._id}`)
+        .put(`${url}/${companySettings._id}`)
         .auth(token, { type: 'bearer' })
+        .set({ 'x-company-slug': company.slug })
         .send({
           accountingJournal: {
             deminimisBenefits: 'wagesPayable',
@@ -960,13 +959,11 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 });
 
 describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompanySettings', () => {
-  const url = '/api/v1/companies';
+  const url = '/api/v1/companies/settings';
 
   describe('Error Response', () => {
     it('should return error response if not logged in', async () => {
-      const res = await request(app).put(
-        `${url}/${mongoose.Types.ObjectId()}/settings/${mongoose.Types.ObjectId()}`,
-      );
+      const res = await request(app).put(`${url}/${mongoose.Types.ObjectId()}`);
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
@@ -987,7 +984,8 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
       const token = await global.signIn();
 
       const res = await request(app)
-        .put(`${url}/${company._id}/settings/${mongoose.Types.ObjectId()}`)
+        .put(`${url}/${mongoose.Types.ObjectId()}`)
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -997,18 +995,18 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
       });
     });
 
-    it('should return error if company id params is invalid', async () => {
+    it('should return error if company slug is invalid or not found', async () => {
       const token = await global.signIn();
-      const id = mongoose.Types.ObjectId();
 
       const res = await request(app)
-        .put(`${url}/${id}/settings/${mongoose.Types.ObjectId()}`)
+        .put(`${url}/${mongoose.Types.ObjectId()}`)
+        .set({ 'x-company-slug': 'invalid-company' })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
       expect(res.body.errors).toMatchObject({
-        message: 'Invalid Company id',
+        message: 'No Company, access denied',
       });
     });
 
@@ -1022,7 +1020,8 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
       });
 
       const res = await request(app)
-        .put(`${url}/${company._id}/settings/${companySettingsId}`)
+        .put(`${url}/${companySettingsId}`)
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -1053,7 +1052,8 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
       });
 
       const res = await request(app)
-        .delete(`${url}/${company._id}/settings/${companySettings._id}`)
+        .delete(`${url}/${companySettings._id}`)
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);
@@ -1154,7 +1154,7 @@ describe('GET /api/v1/companies/slug/:slug - getCompanySlug', () => {
 
       let res = await await request(app)
         .get(`${url}/invalid`)
-        .set({ 'x-company-slug': `${company.slug}` })
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -1165,7 +1165,7 @@ describe('GET /api/v1/companies/slug/:slug - getCompanySlug', () => {
 
       res = await request(app)
         .get(`${url}/${company.slug}`)
-        .set({ 'x-company-slug': `${company.slug}` })
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -1182,7 +1182,7 @@ describe('GET /api/v1/companies/slug/:slug - getCompanySlug', () => {
 
       const res = await request(app)
         .get(`${url}/${company.slug}`)
-        .set({ 'x-company-slug': `${company.slug}` })
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);
@@ -1196,7 +1196,7 @@ describe('GET /api/v1/companies/slug/:slug - getCompanySlug', () => {
 
       const res = await request(app)
         .get(`${url}/paytsek`)
-        .set({ 'x-company-slug': `${company.slug}` })
+        .set({ 'x-company-slug': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);

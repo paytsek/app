@@ -31,13 +31,14 @@ const LayoutRouter = () => (
           <LoggedInRoute path="/:slug/companies" component={CompanyListPage} exact />
           <LoggedInRoute path="/:slug/company-settings" component={CompanySettingsPage} exact />
           <LoggedInRoute
-            path="/:slug/company-settings/:companyId"
+            path="/:slug/company-settings/create"
             component={CompanySettingsCreatePage}
             exact
           />
           <LoggedInRoute
-            path="/:slug/company-settings/:companyId/settings/:companySettingsId"
+            path="/:slug/company-settings/:companyId/edit"
             component={CompanySettingsEditPage}
+            exact
           />
           <LoggedInRoute path="/:slug/companies/create" component={CompanyCreatePage} exact />
           <LoggedInRoute path="/:slug/companies/:id" component={CompanyDetailsPage} exact />

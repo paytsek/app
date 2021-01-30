@@ -14,7 +14,11 @@ import PhicCalculations from './PhicCalculations';
 import ThirteenthMonthPayCalculations from './ThirteenthMonthPayCalculations';
 import AccountingJournalEntries from './AccountingJournalEntries';
 
-import { createCompanySettings, getCompanyDetails, updateCompanySettings } from '../../../redux/actions/companiesActions';
+import {
+  createCompanySettings,
+  getCompanyDetails,
+  updateCompanySettings,
+} from '../../../redux/actions/companiesActions';
 import { COMPANY_SETTINGS_CREATE_RESET, COMPANY_DETAILS_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
@@ -89,13 +93,11 @@ const CompanySettingsForm = ({ match, history }) => {
     },
   });
 
-  const { companyId, companySettingsId } = match.params;
+  const { companyId, slug } = match.params;
 
   const dispatch = useDispatch();
 
-  const { errors, companySettings } = useSelector(
-    state => state.companySettingsCreate,
-  );
+  const { errors, companySettings } = useSelector(state => state.companySettingsCreate);
   const { company } = useSelector(state => state.companyDetails);
 
   const {
@@ -109,15 +111,16 @@ const CompanySettingsForm = ({ match, history }) => {
     thirteenthMonthPayCalculation,
     accountingJournal,
   } = settings;
-  const { nightDifferential, overtime, holiday } = basicSettings;
 
-  const handleOnChangeBasicSettings = e => setSettings(prevState => ({
-    ...prevState,
-    basicSettings: {
-      ...prevState.basicSettings,
-      [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value,
-    },
-  }));
+  const handleOnChangeBasicSettings = e => {
+    setSettings(prevState => ({
+      ...prevState,
+      basicSettings: {
+        ...prevState.basicSettings,
+        [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value,
+      },
+    }));
+  };
 
   const handleOnChangeRegisteredAddress = e => setSettings(prevState => ({
     ...prevState,
@@ -175,6 +178,7 @@ const CompanySettingsForm = ({ match, history }) => {
     const newSssCalculation = prevState.sssCalculation;
     const newPhicCalculation = prevState.phicCalculation;
     const newThirteenthMonthPayCalculation = prevState.thirteenthMonthPayCalculation;
+
     delete newSssCalculation[key][val];
     delete newPhicCalculation[key][val];
     delete newThirteenthMonthPayCalculation[key][val];
@@ -197,6 +201,11 @@ const CompanySettingsForm = ({ match, history }) => {
     };
   });
 
+  const handleOnDeleteDepartment = (key, val) => setSettings(prevState => ({
+    ...prevState,
+    [key]: prevState[key].filter(department => department !== val),
+  }));
+
   const handleOnChangeAccountingJournal = e => setSettings(prevState => ({
     ...prevState,
     accountingJournal: {
@@ -217,42 +226,22 @@ const CompanySettingsForm = ({ match, history }) => {
       thirteenthMonthPayCalculation,
       accountingJournal,
     };
-    if (companySettingsId) {
-      dispatch(updateCompanySettings(companyId, data, companySettingsId));
+    if (companyId) {
+      dispatch(updateCompanySettings(company.companySettings._id, data));
     } else {
-      dispatch(createCompanySettings(companyId, data));
+      dispatch(createCompanySettings(data));
     }
   };
 
   const { paper, gridContainer, fieldsContainer, calculationsContainer } = useStyles();
 
   useEffect(() => {
-    if (nightDifferential !== 'percentage') {
-      setSettings(prevState => ({
-        ...prevState,
-        basicSettings: { ...prevState.basicSettings, nightDifferentialPercentage: '' },
-      }));
-    }
-    if (overtime !== 'hourly') {
-      setSettings(prevState => ({
-        ...prevState,
-        basicSettings: { ...prevState.basicSettings, overtimePay: '', overtimeRestDayPay: '' },
-      }));
-    }
-
-    if (!holiday) {
-      setSettings(prevState => ({
-        ...prevState,
-        basicSettings: { ...prevState.basicSettings, regularHolidayPay: '', specialHolidayPay: '' },
-      }));
-    }
-
     if (companySettings) {
-      history.push('/company-settings');
+      history.push(`/${slug}/company-settings`);
       dispatch({ type: COMPANY_SETTINGS_CREATE_RESET });
     }
 
-    if (company._id && company.companySettings) {
+    if (company && company.companySettings) {
       setSettings(prevState => ({
         ...prevState,
         basicSettings: {
@@ -296,23 +285,16 @@ const CompanySettingsForm = ({ match, history }) => {
         accountingJournal: company.companySettings.accountingJournal,
       }));
     }
+  }, [company, companySettings]);
+
+  useEffect(() => {
+    if (companyId) {
+      dispatch(getCompanyDetails(companyId));
+    }
 
     return () => {
       dispatch({ type: COMPANY_DETAILS_RESET });
     };
-  }, [
-    nightDifferential,
-    overtime,
-    holiday,
-    companySettings,
-    companySettingsId,
-    company.companySettings,
-  ]);
-
-  useEffect(() => {
-    if (companySettingsId) {
-      dispatch(getCompanyDetails(companyId));
-    }
   }, []);
 
   return (
@@ -338,7 +320,7 @@ const CompanySettingsForm = ({ match, history }) => {
         <Departments
           departments={departments}
           onAdd={handleOnAdd}
-          onDelete={handleOnDelete}
+          onDelete={handleOnDeleteDepartment}
           errors={errors}
         />
       </Grid>

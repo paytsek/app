@@ -38,7 +38,7 @@ const HeaderAdminList = () => {
           <ListItemText primary="Companies" />
         </ListItem>
       </Link>
-      <Link to="/company-settings">
+      <Link to={`/${slug}/company-settings`}>
         <ListItem button>
           <ListItemIcon>
             <BusinessCenterIcon />
