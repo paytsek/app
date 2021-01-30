@@ -36,10 +36,10 @@ router.route('/:id').get(auth, getCompany);
 // /api/v1/companies/settings
 router.route('/settings').post(auth, slug, createCompanySettings);
 
-// api/v1/companies/:id/settings/:companySettingsId
+// api/v1/companies/settings/:id
 router
-  .route('/:id/settings/:companySettingsId')
-  .put(auth, updateCompanySettings)
-  .delete(auth, deleteCompanySettings);
+  .route('/settings/:id')
+  .put(auth, slug, updateCompanySettings)
+  .delete(auth, slug, deleteCompanySettings);
 
 module.exports = router;
