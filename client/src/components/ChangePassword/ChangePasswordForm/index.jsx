@@ -16,6 +16,7 @@ const ChangePasswordForm = ({ history }) => {
   const dispatch = useDispatch();
 
   const { loading, success } = useSelector(state => state.currentUserUpdate);
+  const { slug } = useSelector(state => state.companySlug);
 
   const { formButton } = useStyles();
 
@@ -83,7 +84,7 @@ const ChangePasswordForm = ({ history }) => {
         <Button size="small" onClick={handleReset} startIcon={<Undo />}>
           Reset
         </Button>
-        <Button size="small" startIcon={<Clear />} onClick={() => history.push('/users')}>
+        <Button size="small" startIcon={<Clear />} onClick={() => history.push(`/${slug}/dashboard`)}>
           Cancel
         </Button>
       </div>

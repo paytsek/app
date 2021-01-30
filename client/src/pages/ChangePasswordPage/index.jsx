@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
   Paper, Container, Breadcrumbs, Typography,
@@ -9,13 +10,15 @@ import ChangePasswordForm from '../../components/ChangePassword/ChangePasswordFo
 import useStyles from './styles';
 
 const ChangePasswordPage = () => {
+  const { slug } = useSelector(state => state.companySlug);
+
   const { paper, active, title } = useStyles();
 
   return (
     <Container>
       <Breadcrumbs>
-        <Link to="/">Dashboard</Link>
-        <Link to="/users" aria-current="page" className={active}>
+        <Link to={`/${slug}/dashboard`}>Dashboard</Link>
+        <Link to="change-password" aria-current="page" className={active}>
           Change Password
         </Link>
       </Breadcrumbs>

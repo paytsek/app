@@ -19,6 +19,7 @@ import useStyles from './style';
 const Header = ({ openDrawer, setOpenDrawer, history }) => {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.authUser);
+  const { slug } = useSelector(state => state.companySlug);
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -80,11 +81,11 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={() => handleClose('/profile')}>
+              <MenuItem onClick={() => handleClose(`/${slug}/profile`)}>
                 <PersonOulineIcon />
                 Profile
               </MenuItem>
-              <MenuItem onClick={() => handleClose('/change-password')}>
+              <MenuItem onClick={() => handleClose(`/${slug}/change-password`)}>
                 <HttpsIcon />
                 Change Password
               </MenuItem>
