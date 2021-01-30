@@ -36,7 +36,7 @@ const CurrentCompaniesCard = ({ history, company }) => {
             startIcon={<SettingsIcon />}
             className={buttonText}
             onClick={() => history.push(
-              `company-settings/${company._id}/settings/${company.companySettings._id}/edit`,
+              `company-settings/${company._id}/edit`,
             )
             }
           >

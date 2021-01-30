@@ -14,7 +14,7 @@ const CompanySettingsPage = ({ match }) => {
     <Container>
       <Breadcrumbs>
         <Link to={`/${slug}/dashboard`}>Dashboard</Link>
-        <Link className={active} to="company-settings" aria-current="page">
+        <Link className={active} to={`/${slug}/company-settings`} aria-current="page">
           Company Settings
         </Link>
       </Breadcrumbs>

@@ -1,23 +1,23 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Paper, Container, Breadcrumbs, Typography,
-} from '@material-ui/core';
+import { Paper, Container, Breadcrumbs, Typography } from '@material-ui/core';
 import CompanySettingsForm from '../../components/CompanySettings/CompanySettingsForm';
 
 import useStyles from './styles';
 
-const CompanySettingsEditPage = () => {
+const CompanySettingsEditPage = ({ match }) => {
+  const { slug } = match.params;
+
   const { paper, active, title } = useStyles();
 
   return (
     <Container>
       <Breadcrumbs>
-        <Link to="/">Dashboard</Link>
-        <Link to="/company-settings" aria-current="page">
+        <Link to={`/${slug}/dashboard`}>Dashboard</Link>
+        <Link to={`/${slug}/company-settings`} aria-current="page">
           Company Settings
         </Link>
-        <Link className={active} to="/company-settings/1/edit" aria-current="page">
+        <Link className={active} to="edit" aria-current="page">
           Edit Company Settings
         </Link>
       </Breadcrumbs>
