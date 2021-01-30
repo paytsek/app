@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 
 import CurrentCompaniesCard from '../CurrentCampaniesCard';
 import MuiSkeleton from '../../MuiSkeleton';
@@ -24,11 +24,16 @@ const CurrentCompaniesContainer = () => {
               <MuiSkeleton />
             </Grid>
         ))
-        : companies.map(company => (
-            <Grid item md={4} sm={6} xs={12} key={company._id}>
-              <CurrentCompaniesCard company={company} />
+        : (companies.length > 0
+            && companies.map(company => (
+              <Grid item md={4} sm={6} xs={12} key={company._id}>
+                <CurrentCompaniesCard company={company} />
+              </Grid>
+            ))) || (
+            <Grid item md={4} sm={6} xs={12}>
+              <Typography>No Companies to show</Typography>
             </Grid>
-        ))}
+        )}
     </Grid>
   );
 };
