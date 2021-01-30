@@ -23,6 +23,7 @@ const CurrentUserProfileForm = ({ history }) => {
     state => state.currentUserUpdate,
   );
   const { loading: currentUserDeleteLoading } = useSelector(state => state.currentUserDelete);
+  const { slug } = useSelector(state => state.companySlug);
 
   const [state, setState] = useState({
     email: '',
@@ -155,7 +156,7 @@ const CurrentUserProfileForm = ({ history }) => {
           <Button size="small" onClick={handleReset} startIcon={<Undo />}>
             Reset
           </Button>
-          <Button size="small" startIcon={<Clear />} onClick={() => history.push('/users')}>
+          <Button size="small" startIcon={<Clear />} onClick={() => history.push(`/${slug}/dashboard`)}>
             Cancel
           </Button>
           <Button
