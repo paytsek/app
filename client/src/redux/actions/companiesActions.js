@@ -164,11 +164,7 @@ export const createCompanySettings = companySettings => async dispatch => {
   }
 };
 
-export const updateCompanySettings = (
-  companyId,
-  companySettings,
-  companySettingsId,
-) => async dispatch => {
+export const updateCompanySettings = (id, companySettings) => async dispatch => {
   dispatch({ type: COMPANY_SETTINGS_CREATE_REQUEST });
 
   const config = {
@@ -178,11 +174,7 @@ export const updateCompanySettings = (
   };
 
   try {
-    const { data } = await axios.put(
-      `/companies/${companyId}/settings/${companySettingsId}`,
-      companySettings,
-      config,
-    );
+    const { data } = await axios.put(`/companies/settings/${id}`, companySettings, config);
 
     const message = 'Company Setting successfully updated';
 
