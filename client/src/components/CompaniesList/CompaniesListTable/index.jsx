@@ -10,7 +10,7 @@ import DialogAlert from '../../Dialog/DialogAlert';
 import SwitchCompanyButton from '../../common/SwitchCompanyButton';
 
 import { getCompaniesList, deleteCompany } from '../../../redux/actions/companiesActions';
-import { COMPANY_DELETE_RESET } from '../../../redux/types';
+import { COMPANY_DELETE_RESET, COMPANY_SLUG_REMOVE } from '../../../redux/types';
 import useStyles from './styles';
 
 const CompaniesListTable = ({ history }) => {
@@ -19,6 +19,7 @@ const CompaniesListTable = ({ history }) => {
 
   const dispatch = useDispatch();
 
+  const { slug } = useSelector(state => state.companySlug);
   const { companies, loading } = useSelector(state => state.companiesList);
   const { loading: companyDeleteLoading, success } = useSelector(state => state.companyDelete);
 
@@ -32,9 +33,13 @@ const CompaniesListTable = ({ history }) => {
     setSelectedCompany(company);
   };
 
-  const handleOnConfirm = () => {
-    dispatch(deleteCompany(selectedCompany._id));
+  const handleOnConfirm = async () => {
+    await dispatch(deleteCompany(selectedCompany._id));
     setOpen(false);
+    if (slug === selectedCompany.slug) {
+      dispatch({ type: COMPANY_SLUG_REMOVE });
+      history.push('/select-company');
+    }
   };
 
   const { dataGrid } = useStyles();
@@ -100,6 +105,7 @@ const CompaniesListTable = ({ history }) => {
         open={open}
         handleClose={handleClose}
         onConfirm={handleOnConfirm}
+        loading={companyDeleteLoading}
       />
     </div>
   );
