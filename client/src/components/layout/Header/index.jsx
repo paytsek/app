@@ -8,6 +8,7 @@ import {
   Menu as MenuIcon,
   PersonOutline as PersonOulineIcon,
   Https as HttpsIcon,
+  Business as BusinessIcon,
 } from '@material-ui/icons';
 
 import HeaderAdminList from './HeaderAdminList';
@@ -88,6 +89,10 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
               <MenuItem onClick={() => handleClose(`/${slug}/change-password`)}>
                 <HttpsIcon />
                 Change Password
+              </MenuItem>
+              <MenuItem onClick={() => handleClose(`/${slug}/companies`)}>
+                <BusinessIcon />
+                Companies
               </MenuItem>
               <MenuItem onClick={handleLogout}>Log out</MenuItem>
             </Menu>
