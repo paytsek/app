@@ -128,6 +128,11 @@ const CompanySettingSchema = new mongoose.Schema(
         },
         'Night Differential Percentage is required',
       ],
+      validate(val) {
+        if (this.nightDifferential === 'percentage' && val <= 0) {
+          throw new Error("Can't be blank or negative");
+        }
+      },
     },
     overtime: {
       type: String,
@@ -144,6 +149,11 @@ const CompanySettingSchema = new mongoose.Schema(
         },
         'Overtime Pay is required',
       ],
+      validate(val) {
+        if (this.overtime === 'hourly' && val <= 0) {
+          throw new Error("Can't be blank or negative");
+        }
+      },
     },
     overtimeRestDayPay: {
       type: Number,
@@ -154,6 +164,11 @@ const CompanySettingSchema = new mongoose.Schema(
         },
         'Overtime Rest Day Pay is required',
       ],
+      validate(val) {
+        if (this.overtime === 'hourly' && val <= 0) {
+          throw new Error("Can't be blank or negative");
+        }
+      },
     },
     holiday: {
       type: Boolean,
@@ -169,6 +184,11 @@ const CompanySettingSchema = new mongoose.Schema(
         },
         'Regular Holiday Pay is required',
       ],
+      validate(val) {
+        if (this.holiday && val <= 0) {
+          throw new Error("Can't be blank or negative");
+        }
+      },
     },
     specialHolidayPay: {
       type: Number,
@@ -179,6 +199,11 @@ const CompanySettingSchema = new mongoose.Schema(
         },
         'Special Holiday Pay is required',
       ],
+      validate(val) {
+        if (this.holiday && val <= 0) {
+          throw new Error("Can't be blank or negative");
+        }
+      },
     },
     taxReliefInternationTaxTreaty: {
       type: Boolean,
