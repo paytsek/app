@@ -208,11 +208,6 @@ export const getCompanySlug = () => async dispatch => {
     dispatch({ type: COMPANY_SLUG_SUCCESS, payload: data });
   } catch (error) {
     const { errors } = error.response.data;
-    // const message = errors && errors.message;
-
-    // if (message) {
-    //   dispatch(notification('error', message, dispatch));
-    // }
 
     dispatch({ type: COMPANY_SLUG_FAIL, payload: errors });
   }

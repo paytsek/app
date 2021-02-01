@@ -140,7 +140,7 @@ export const companySlugReducers = (state = { authSlug: false }, action) => {
     case COMPANY_SLUG_REQUEST:
       return { ...state, loading: true };
     case COMPANY_SLUG_SUCCESS:
-      return { ...state, loading: false, slug: payload.slug, authSlug: true };
+      return { ...state, loading: false, slug: payload.slug, authSlug: true, id: payload.id };
     case COMPANY_SLUG_FAIL:
       return { loading: false, authSlug: false };
     case COMPANY_SLUG_REMOVE:

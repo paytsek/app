@@ -1201,7 +1201,7 @@ describe('GET /api/v1/companies/slug/:slug - getCompanySlug', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
-      expect(res.body).toMatchObject({ slug: 'paytsek' });
+      expect(res.body).toMatchObject({ slug: 'paytsek', id: company._id.toString() });
     });
   });
 });

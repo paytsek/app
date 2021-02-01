@@ -36,7 +36,7 @@ const getCompanySlug = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Not authorize to access this route' }));
   }
 
-  return res.status(200).json({ success: true, slug: company.slug });
+  return res.status(200).json({ success: true, slug: company.slug, id: company._id });
 });
 
 // @ROUTE POST /api/v1/companies/slug/:slug
@@ -102,7 +102,7 @@ const getCompany = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ success: true, company });
 });
 
-// @ROUTE POST /api/v1/companies/:id/settings
+// @ROUTE POST /api/v1/companies/settings
 // @Desc Create a company settings
 // access PRIVATE - Logged in user
 const createCompanySettings = asyncHandler(async (req, res, next) => {
@@ -126,7 +126,7 @@ const createCompanySettings = asyncHandler(async (req, res, next) => {
   return res.status(201).json({ success: true, companySettings });
 });
 
-// @ROUTE PUT /api/v1/companies/:id/settings/:companySettingsId
+// @ROUTE PUT /api/v1/companies/settings/:id
 // @DESC Update a company settings
 // @ACCESS PRIVATE - Logged in user
 const updateCompanySettings = asyncHandler(async (req, res, next) => {
