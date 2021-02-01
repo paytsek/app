@@ -95,7 +95,7 @@ const CompanySettingsForm = () => {
 
   const dispatch = useDispatch();
 
-  const { errors } = useSelector(state => state.companySettingsCreate);
+  const { errors, companySettings } = useSelector(state => state.companySettingsCreate);
   const { company } = useSelector(state => state.companyDetails);
   const { id } = useSelector(state => state.companySlug);
 
@@ -225,8 +225,13 @@ const CompanySettingsForm = () => {
       thirteenthMonthPayCalculation,
       accountingJournal,
     };
-    if (company && company.companySettings) {
-      dispatch(updateCompanySettings(company.companySettings._id, data));
+    if ((company && company.companySettings) || companySettings) {
+      dispatch(
+        updateCompanySettings(
+          (company.companySettings && company.companySettings._id) || companySettings._id,
+          data,
+        ),
+      );
     } else {
       dispatch(createCompanySettings(data));
     }
