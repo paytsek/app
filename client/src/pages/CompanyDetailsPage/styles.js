@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     alignItems: 'center',
     marginBottom: 16,
+    '& :not(:first-child)': {
+      marginLeft: theme.spacing(2),
+    },
   },
   details: {
     marginBottom: theme.spacing(2),
