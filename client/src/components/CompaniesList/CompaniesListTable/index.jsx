@@ -7,6 +7,7 @@ import { Search, Edit, Delete } from '@material-ui/icons';
 import moment from 'moment';
 
 import DialogAlert from '../../Dialog/DialogAlert';
+import SwitchCompanyButton from '../../common/SwitchCompanyButton';
 
 import { getCompaniesList, deleteCompany } from '../../../redux/actions/companiesActions';
 import { COMPANY_DELETE_RESET } from '../../../redux/types';
@@ -60,19 +61,20 @@ const CompaniesListTable = ({ history }) => {
       field: '',
       headerName: '',
       sortable: false,
-      width: 200,
-      renderCell: props => (
+      width: 290,
+      renderCell: ({ row }) => (
         <Fragment>
+          <SwitchCompanyButton slug={row.slug} />
           <Button
             color="primary"
-            startIcon={<Search onClick={() => history.push(`companies/${props.row.id}`)} />}
+            startIcon={<Search onClick={() => history.push(`companies/${row.id}`)} />}
           />
           <Button
             color="primary"
             startIcon={<Edit />}
-            onClick={() => history.push(`companies/${props.row.id}/edit`)}
+            onClick={() => history.push(`companies/${row.id}/edit`)}
           />
-          <Button color="primary" onClick={() => handleOpen(props.row)} startIcon={<Delete />} />
+          <Button color="primary" onClick={() => handleOpen(row)} startIcon={<Delete />} />
         </Fragment>
       ),
     },

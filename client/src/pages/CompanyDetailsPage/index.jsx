@@ -6,6 +6,7 @@ import { Edit } from '@material-ui/icons';
 import moment from 'moment';
 
 import MuiSkeleton from '../../components/MuiSkeleton';
+import SwitchCompanyButton from '../../components/common/SwitchCompanyButton';
 
 import { getCompanyDetails } from '../../redux/actions/companiesActions';
 import useStyles from './styles';
@@ -51,6 +52,7 @@ const CompanyDetailsPage = ({ history, match }) => {
               >
                 Edit
               </Button>
+              <SwitchCompanyButton slug={company.slug} />
             </div>
             <div className={details}>
               <Typography variant="subtitle2">Name</Typography>
