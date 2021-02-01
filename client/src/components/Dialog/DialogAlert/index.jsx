@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 
-const DialogAlert = ({ open, handleClose, title, onConfirm }) => (
+const DialogAlert = ({ open, handleClose, title, onConfirm, loading }) => (
   <div>
     <Dialog
       open={open}
@@ -21,10 +21,10 @@ const DialogAlert = ({ open, handleClose, title, onConfirm }) => (
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
 
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} color="primary" disabled={loading}>
           Cancel
         </Button>
-        <Button onClick={onConfirm} color="primary" autoFocus>
+        <Button onClick={onConfirm} color="primary" autoFocus disabled={loading}>
           Ok
         </Button>
       </DialogActions>
