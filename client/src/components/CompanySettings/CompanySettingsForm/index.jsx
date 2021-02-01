@@ -19,10 +19,10 @@ import {
   getCompanyDetails,
   updateCompanySettings,
 } from '../../../redux/actions/companiesActions';
-import { COMPANY_SETTINGS_CREATE_RESET, COMPANY_DETAILS_RESET } from '../../../redux/types';
+import { COMPANY_DETAILS_RESET, COMPANY_SETTINGS_CREATE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
-const CompanySettingsForm = ({ match, history }) => {
+const CompanySettingsForm = () => {
   const [settings, setSettings] = useState({
     basicSettings: {
       tin: '',
@@ -93,12 +93,11 @@ const CompanySettingsForm = ({ match, history }) => {
     },
   });
 
-  const { companyId, slug } = match.params;
-
   const dispatch = useDispatch();
 
-  const { errors, companySettings } = useSelector(state => state.companySettingsCreate);
+  const { errors } = useSelector(state => state.companySettingsCreate);
   const { company } = useSelector(state => state.companyDetails);
+  const { id } = useSelector(state => state.companySlug);
 
   const {
     basicSettings,
@@ -226,7 +225,7 @@ const CompanySettingsForm = ({ match, history }) => {
       thirteenthMonthPayCalculation,
       accountingJournal,
     };
-    if (companyId) {
+    if (company && company.companySettings) {
       dispatch(updateCompanySettings(company.companySettings._id, data));
     } else {
       dispatch(createCompanySettings(data));
@@ -236,11 +235,6 @@ const CompanySettingsForm = ({ match, history }) => {
   const { paper, gridContainer, fieldsContainer, calculationsContainer } = useStyles();
 
   useEffect(() => {
-    if (companySettings) {
-      history.push(`/${slug}/company-settings`);
-      dispatch({ type: COMPANY_SETTINGS_CREATE_RESET });
-    }
-
     if (company && company.companySettings) {
       setSettings(prevState => ({
         ...prevState,
@@ -285,15 +279,16 @@ const CompanySettingsForm = ({ match, history }) => {
         accountingJournal: company.companySettings.accountingJournal,
       }));
     }
-  }, [company, companySettings]);
+  }, [company]);
 
   useEffect(() => {
-    if (companyId) {
-      dispatch(getCompanyDetails(companyId));
+    if (id) {
+      dispatch(getCompanyDetails(id));
     }
 
     return () => {
       dispatch({ type: COMPANY_DETAILS_RESET });
+      dispatch({ type: COMPANY_SETTINGS_CREATE_RESET });
     };
   }, []);
 

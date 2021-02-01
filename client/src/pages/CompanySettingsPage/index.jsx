@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Paper, Container, Breadcrumbs, Typography } from '@material-ui/core';
 
-import CurrentCompaniesContainer from '../../components/CompanySettings/CurrentCompaniesContainer';
+import CompanySettingsForm from '../../components/CompanySettings/CompanySettingsForm';
+
 import useStyles from './styles';
 
 const CompanySettingsPage = ({ match }) => {
@@ -22,7 +23,9 @@ const CompanySettingsPage = ({ match }) => {
         <Typography variant="h5" className={title} gutterBottom>
           Company Settings
         </Typography>
-        <CurrentCompaniesContainer />
+        <Container>
+          <CompanySettingsForm />
+        </Container>
       </Paper>
     </Container>
   );
