@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import { Avatar, Button, CssBaseline, TextField, Paper, Grid, Typography } from '@material-ui/core';
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons/';
 
-import PageLoader from '../../components/PageLoader';
-
 import useStyles from './styles';
 import { registerUser } from '../../redux/actions/usersActions';
 import { REGISTER_RESET } from '../../redux/types';
@@ -22,7 +20,7 @@ const RegisterPage = ({ history }) => {
   const { errors: registerUserErrors, loading: registerUsersLoading } = useSelector(
     state => state.registerUser,
   );
-  const { loading: authUserLoading, auth } = useSelector(state => state.authUser);
+  const { auth } = useSelector(state => state.authUser);
 
   const onSubmit = e => {
     e.preventDefault();
@@ -49,14 +47,10 @@ const RegisterPage = ({ history }) => {
     };
   }, [history, auth, dispatch]);
 
-  if (authUserLoading) {
-    return <PageLoader />;
-  }
-
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      <Grid item xs={false} sm={4} md={7} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
