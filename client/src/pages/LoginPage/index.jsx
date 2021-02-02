@@ -15,6 +15,7 @@ const LoginPage = ({ history }) => {
   const dispatch = useDispatch();
 
   const { auth } = useSelector((state) => state.authUser);
+  const { loading } = useSelector((state) => state.loginUser);
 
   const classes = useStyles();
 
@@ -72,6 +73,7 @@ const LoginPage = ({ history }) => {
               variant="contained"
               color="primary"
               className={classes.submit}
+              disabled={loading}
             >
               Sign In
             </Button>
