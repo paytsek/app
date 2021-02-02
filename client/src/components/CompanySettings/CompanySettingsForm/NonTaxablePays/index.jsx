@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Typography,
@@ -21,7 +21,7 @@ const NonTaxablePays = ({ nonTaxablePays, onAdd, onDelete }) => {
 
   const dispatch = useDispatch();
 
-  const handleOnAdd = val => {
+  const handleOnAdd = (val) => {
     const existNonTaxablePay = nonTaxablePays.includes(val);
 
     if (!val) {
@@ -36,7 +36,7 @@ const NonTaxablePays = ({ nonTaxablePays, onAdd, onDelete }) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Typography variant="h6">Non-Taxable Pays</Typography>
       <FormControl fullWidth size="small" margin="normal">
         <InputLabel htmlFor="nonTaxablePays">Non-Taxable Pays</InputLabel>
@@ -44,20 +44,20 @@ const NonTaxablePays = ({ nonTaxablePays, onAdd, onDelete }) => {
           id="nonTaxablePays"
           name="nonTaxablePayName"
           value={nonTaxablePayName}
-          onChange={e => setNonTaxabalePayName(e.target.value)}
-          endAdornment={
+          onChange={(e) => setNonTaxabalePayName(e.target.value)}
+          endAdornment={(
             <InputAdornment position="end">
               <IconButton color="primary" onClick={() => handleOnAdd(nonTaxablePayName)}>
                 <AddIcon />
               </IconButton>
             </InputAdornment>
-          }
+          )}
         />
       </FormControl>
       {/* List of non-taxable pays */}
       {nonTaxablePays.length > 0 ? (
         <List>
-          {nonTaxablePays.map(nonTaxablePay => (
+          {nonTaxablePays.map((nonTaxablePay) => (
             <ListItem key={nonTaxablePay}>
               <ListItemText primary={nonTaxablePay} />
               <ListItemSecondaryAction>
@@ -73,7 +73,7 @@ const NonTaxablePays = ({ nonTaxablePays, onAdd, onDelete }) => {
           ))}
         </List>
       ) : null}
-    </Fragment>
+    </>
   );
 };
 

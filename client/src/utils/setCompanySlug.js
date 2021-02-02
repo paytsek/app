@@ -1,6 +1,6 @@
 import axios from '../axios';
 
-const setCompanySlug = slug => {
+const setCompanySlug = (slug) => {
   if (slug) {
     axios.defaults.headers.common['x-company-slug'] = slug;
   } else {

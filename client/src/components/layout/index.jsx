@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
   const { content, contentShift } = useStyles();
 
   return (
-    <Fragment>
+    <>
       <Header setOpenDrawer={setOpenDrawer} openDrawer={openDrawer} />
       <main
         className={cx(content, {
@@ -24,7 +24,7 @@ const Layout = ({ children }) => {
         {children}
       </main>
       <Footer />
-    </Fragment>
+    </>
   );
 };
 

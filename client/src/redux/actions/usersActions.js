@@ -36,7 +36,7 @@ import {
 } from '../types';
 import notification from '../../utils/notification';
 
-export const authUser = () => async dispatch => {
+export const authUser = () => async (dispatch) => {
   const token = localStorage.getItem('token');
 
   setAuthToken(token);
@@ -52,7 +52,7 @@ export const authUser = () => async dispatch => {
   }
 };
 
-export const registerUser = userData => async dispatch => {
+export const registerUser = (userData) => async (dispatch) => {
   dispatch({ type: REGISTER_REQUEST });
 
   const config = {
@@ -71,7 +71,7 @@ export const registerUser = userData => async dispatch => {
   }
 };
 
-export const loginUser = userData => async dispatch => {
+export const loginUser = (userData) => async (dispatch) => {
   dispatch({ type: LOGIN_REQUEST });
 
   const config = {
@@ -94,7 +94,7 @@ export const loginUser = userData => async dispatch => {
   }
 };
 
-export const getUsersList = () => async dispatch => {
+export const getUsersList = () => async (dispatch) => {
   dispatch({ type: USERS_LIST_REQUEST });
 
   try {
@@ -109,7 +109,7 @@ export const getUsersList = () => async dispatch => {
   }
 };
 
-export const getUserDetails = id => async dispatch => {
+export const getUserDetails = (id) => async (dispatch) => {
   dispatch({ type: USER_DETAILS_REQUEST });
 
   try {
@@ -125,7 +125,7 @@ export const getUserDetails = id => async dispatch => {
   }
 };
 
-export const updateUserDetails = (id, userData) => async dispatch => {
+export const updateUserDetails = (id, userData) => async (dispatch) => {
   dispatch({ type: USER_UPDATE_DETAILS_REQUEST });
 
   const config = {
@@ -158,7 +158,7 @@ export const updateUserDetails = (id, userData) => async dispatch => {
   }
 };
 
-export const getCurrentUser = () => async dispatch => {
+export const getCurrentUser = () => async (dispatch) => {
   dispatch({ type: CURRENT_USER_REQUEST });
 
   try {
@@ -174,7 +174,7 @@ export const getCurrentUser = () => async dispatch => {
   }
 };
 
-export const updateCurrentUser = userData => async dispatch => {
+export const updateCurrentUser = (userData) => async (dispatch) => {
   dispatch({ type: CURRENT_USER_UPDATE_REQUEST });
 
   const config = {
@@ -197,7 +197,7 @@ export const updateCurrentUser = userData => async dispatch => {
   }
 };
 
-export const updateCurrentUserPassword = userData => async dispatch => {
+export const updateCurrentUserPassword = (userData) => async (dispatch) => {
   dispatch({ type: CURRENT_USER_UPDATE_REQUEST });
 
   const config = {
@@ -228,7 +228,7 @@ export const updateCurrentUserPassword = userData => async dispatch => {
   }
 };
 
-export const deleteCurrentUser = userData => async dispatch => {
+export const deleteCurrentUser = (userData) => async (dispatch) => {
   dispatch({ type: CURRENT_USER_DELETE_REQUEST });
 
   const config = {
@@ -253,7 +253,7 @@ export const deleteCurrentUser = userData => async dispatch => {
   }
 };
 
-export const deleteUser = (id, userData) => async dispatch => {
+export const deleteUser = (id, userData) => async (dispatch) => {
   dispatch({ type: USER_LIST_DELETE_REQUEST });
 
   const config = {

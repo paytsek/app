@@ -42,7 +42,7 @@ export const companiesListReducers = (state = { companies: [] }, action) => {
     case COMPANY_LIST_FAIL:
       return { loading: false, companies: [] };
     case COMPANY_DELETE_SUCCESS:
-      return { ...state, companies: state.companies.filter(company => company._id !== payload) };
+      return { ...state, companies: state.companies.filter((company) => company._id !== payload) };
     default:
       return state;
   }

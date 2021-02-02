@@ -28,7 +28,7 @@ import {
 } from '../types';
 import notification from '../../utils/notification';
 
-export const getCompaniesList = () => async dispatch => {
+export const getCompaniesList = () => async (dispatch) => {
   dispatch({ type: COMPANY_LIST_REQUEST });
 
   try {
@@ -44,7 +44,7 @@ export const getCompaniesList = () => async dispatch => {
   }
 };
 
-export const getCompanyDetails = id => async dispatch => {
+export const getCompanyDetails = (id) => async (dispatch) => {
   dispatch({ type: COMPANY_DETAILS_REQUEST });
 
   try {
@@ -60,7 +60,7 @@ export const getCompanyDetails = id => async dispatch => {
   }
 };
 
-export const createCompanyName = company => async dispatch => {
+export const createCompanyName = (company) => async (dispatch) => {
   dispatch({ type: COMPANY_NAME_CREATE_REQUEST });
 
   const config = {
@@ -89,7 +89,7 @@ export const createCompanyName = company => async dispatch => {
   }
 };
 
-export const updateCompanyName = (id, companyData) => async dispatch => {
+export const updateCompanyName = (id, companyData) => async (dispatch) => {
   dispatch({ type: COMPANY_NAME_UPDATE_REQUEST });
 
   const config = {
@@ -115,7 +115,7 @@ export const updateCompanyName = (id, companyData) => async dispatch => {
   }
 };
 
-export const deleteCompany = id => async dispatch => {
+export const deleteCompany = (id) => async (dispatch) => {
   dispatch({ type: COMPANY_DELETE_REQUEST });
 
   try {
@@ -133,7 +133,7 @@ export const deleteCompany = id => async dispatch => {
   }
 };
 
-export const createCompanySettings = companySettings => async dispatch => {
+export const createCompanySettings = (companySettings) => async (dispatch) => {
   dispatch({ type: COMPANY_SETTINGS_CREATE_REQUEST });
 
   const config = {
@@ -164,7 +164,7 @@ export const createCompanySettings = companySettings => async dispatch => {
   }
 };
 
-export const updateCompanySettings = (id, companySettings) => async dispatch => {
+export const updateCompanySettings = (id, companySettings) => async (dispatch) => {
   dispatch({ type: COMPANY_SETTINGS_CREATE_REQUEST });
 
   const config = {
@@ -195,7 +195,7 @@ export const updateCompanySettings = (id, companySettings) => async dispatch => 
   }
 };
 
-export const getCompanySlug = () => async dispatch => {
+export const getCompanySlug = () => async (dispatch) => {
   const slug = localStorage.getItem('slug');
 
   setCompanySlug(slug);
@@ -213,7 +213,7 @@ export const getCompanySlug = () => async dispatch => {
   }
 };
 
-export const setSlug = slug => async dispatch => {
+export const setSlug = (slug) => async (dispatch) => {
   dispatch({ type: COMPANY_SLUG_HEADERS_REQUEST });
 
   try {

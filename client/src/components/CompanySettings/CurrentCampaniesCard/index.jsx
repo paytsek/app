@@ -23,8 +23,8 @@ const CurrentCompaniesCard = ({ history, company }) => {
             {company.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {(company.companySettings && company.companySettings.formattedAddress)
-              || 'Set your company'}
+            {(company.companySettings && company.companySettings.formattedAddress) ||
+              'Set your company'}
           </Typography>
         </CardContent>
       </CardActionArea>

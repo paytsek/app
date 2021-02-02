@@ -7,21 +7,19 @@ let displayed = [];
 
 const Notifier = () => {
   const dispatch = useDispatch();
-  const { notifications } = useSelector(state => state.snackbar || []);
+  const { notifications } = useSelector((state) => state.snackbar || []);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const storeDisplayed = id => {
+  const storeDisplayed = (id) => {
     displayed = [...displayed, id];
   };
 
-  const removeDisplayed = id => {
-    displayed = [...displayed.filter(key => id !== key)];
+  const removeDisplayed = (id) => {
+    displayed = [...displayed.filter((key) => id !== key)];
   };
 
   useEffect(() => {
-    notifications.forEach(({
-      key, message, options = {}, dismissed = false,
-    }) => {
+    notifications.forEach(({ key, message, options = {}, dismissed = false }) => {
       if (dismissed) {
         // dismiss snackbar using notistack
         closeSnackbar(key);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Grid, TextField, Button } from '@material-ui/core';
@@ -18,12 +18,12 @@ import useStyles from './styles';
 const CurrentUserProfileForm = ({ history }) => {
   const dispatch = useDispatch();
 
-  const { user, loading } = useSelector(state => state.currentUser);
+  const { user, loading } = useSelector((state) => state.currentUser);
   const { loading: currentUserUpdateLoading, errors } = useSelector(
-    state => state.currentUserUpdate,
+    (state) => state.currentUserUpdate,
   );
-  const { loading: currentUserDeleteLoading } = useSelector(state => state.currentUserDelete);
-  const { slug } = useSelector(state => state.companySlug);
+  const { loading: currentUserDeleteLoading } = useSelector((state) => state.currentUserDelete);
+  const { slug } = useSelector((state) => state.companySlug);
 
   const [state, setState] = useState({
     email: '',
@@ -36,12 +36,12 @@ const CurrentUserProfileForm = ({ history }) => {
 
   const { formButton } = useStyles();
 
-  const handleOnChange = e => setState(prevState => ({
+  const handleOnChange = (e) => setState((prevState) => ({
     ...prevState,
     [e.target.name]: e.target.value,
   }));
 
-  const handleOnSubmit = e => {
+  const handleOnSubmit = (e) => {
     e.preventDefault();
     dispatch(updateCurrentUser(state));
   };
@@ -50,7 +50,7 @@ const CurrentUserProfileForm = ({ history }) => {
 
   const handleReset = () => {
     if (user) {
-      setState(prevState => ({
+      setState((prevState) => ({
         ...prevState,
         email: user.email,
         username: user.username,
@@ -61,7 +61,7 @@ const CurrentUserProfileForm = ({ history }) => {
     dispatch({ type: CURRENT_USER_UPDATE_RESET });
   };
 
-  const handleDeleteCurrentUser = userData => dispatch(deleteCurrentUser(userData));
+  const handleDeleteCurrentUser = (userData) => dispatch(deleteCurrentUser(userData));
 
   useEffect(() => {
     if (!user) {
@@ -85,7 +85,7 @@ const CurrentUserProfileForm = ({ history }) => {
       <MuiSkeleton />
     </Grid>
   ) : (
-    <Fragment>
+    <>
       <form onSubmit={handleOnSubmit}>
         <Grid container>
           <Grid item xs={12} md={7} lg={8}>
@@ -177,7 +177,7 @@ const CurrentUserProfileForm = ({ history }) => {
         loading={currentUserDeleteLoading}
         title="Are you sure you want to delete your profile?"
       />
-    </Fragment>
+    </>
   );
 };
 

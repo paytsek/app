@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -19,14 +19,14 @@ import useStyles from './style';
 
 const Header = ({ openDrawer, setOpenDrawer, history }) => {
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.authUser);
-  const { slug } = useSelector(state => state.companySlug);
+  const { user } = useSelector((state) => state.authUser);
+  const { slug } = useSelector((state) => state.companySlug);
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleMenu = event => {
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -42,14 +42,14 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
   };
 
   return (
-    <Fragment>
+    <>
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <IconButton
             edge="start"
             color="inherit"
             aria-label="menu"
-            onClick={() => setOpenDrawer(prevState => !prevState)}
+            onClick={() => setOpenDrawer((prevState) => !prevState)}
           >
             <MenuIcon />
           </IconButton>
@@ -113,7 +113,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
         {user.role === 'admin' && <HeaderAdminList />}
         {user.role === 'member' && <HeaderMemberList />}
       </Drawer>
-    </Fragment>
+    </>
   );
 };
 

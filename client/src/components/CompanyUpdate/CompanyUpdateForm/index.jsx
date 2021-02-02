@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Grid, TextField, Button } from '@material-ui/core';
@@ -20,16 +20,16 @@ const CompanyUpdateForm = ({ history, match }) => {
 
   const [name, setName] = useState('');
 
-  const { slug } = useSelector(state => state.companySlug);
-  const { company, loading } = useSelector(state => state.companyDetails);
+  const { slug } = useSelector((state) => state.companySlug);
+  const { company, loading } = useSelector((state) => state.companyDetails);
   const { errors, loading: updateCompanyNameLoading } = useSelector(
-    state => state.updateCompanyName,
+    (state) => state.updateCompanyName,
   );
-  const { loading: companyDeleteLoading, success } = useSelector(state => state.companyDelete);
+  const { loading: companyDeleteLoading, success } = useSelector((state) => state.companyDelete);
 
   const { formButton } = useStyles();
 
-  const handleOnSubmit = e => {
+  const handleOnSubmit = (e) => {
     e.preventDefault();
     dispatch(updateCompanyName(id, { name }));
   };
@@ -66,7 +66,7 @@ const CompanyUpdateForm = ({ history, match }) => {
       {loading ? (
         <MuiSkeleton />
       ) : (
-        <Fragment>
+        <>
           <Grid container>
             <Grid item xs={12} md={7} lg={8}>
               <TextField
@@ -76,7 +76,7 @@ const CompanyUpdateForm = ({ history, match }) => {
                 margin="normal"
                 name="name"
                 value={name}
-                onChange={e => setName(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 error={!!errors.name}
                 helperText={errors.name}
               />
@@ -114,7 +114,7 @@ const CompanyUpdateForm = ({ history, match }) => {
               Delete
             </Button>
           </div>
-        </Fragment>
+        </>
       )}
     </form>
   );

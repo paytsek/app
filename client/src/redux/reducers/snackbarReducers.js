@@ -21,7 +21,7 @@ const snackbarReducer = (state = { notifications: [] }, action) => {
     case CLOSE_SNACKBAR:
       return {
         ...state,
-        notifications: state.notifications.map(notif =>
+        notifications: state.notifications.map((notif) =>
           dismissAll || notif.key === key ? { ...notif, dismissed: true } : { ...notif },
         ),
       };
@@ -29,7 +29,7 @@ const snackbarReducer = (state = { notifications: [] }, action) => {
     case REMOVE_SNACKBAR:
       return {
         ...state,
-        notifications: state.notifications.filter(notif => notif.key !== key),
+        notifications: state.notifications.filter((notif) => notif.key !== key),
       };
 
     default:

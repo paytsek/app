@@ -23,5 +23,8 @@ module.exports = {
     'operator-linebreak': 0,
     'object-curly-newline': 0,
     'func-names': 0,
+    'react/prop-types': 0,
+    'implicit-arrow-linebreak': 0,
+    'react/jsx-props-no-spreading': 0,
   },
 };

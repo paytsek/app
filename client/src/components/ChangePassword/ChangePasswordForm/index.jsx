@@ -15,8 +15,8 @@ const ChangePasswordForm = ({ history }) => {
 
   const dispatch = useDispatch();
 
-  const { loading, success } = useSelector(state => state.currentUserUpdate);
-  const { slug } = useSelector(state => state.companySlug);
+  const { loading, success } = useSelector((state) => state.currentUserUpdate);
+  const { slug } = useSelector((state) => state.companySlug);
 
   const { formButton } = useStyles();
 
@@ -26,7 +26,7 @@ const ChangePasswordForm = ({ history }) => {
     setConfirmPassword('');
   };
 
-  const handleOnSubmit = async e => {
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     dispatch(updateCurrentUserPassword({ currentPassword, newPassword, confirmPassword }));
   };
@@ -51,7 +51,7 @@ const ChangePasswordForm = ({ history }) => {
             fullWidth
             margin="normal"
             value={currentPassword}
-            onChange={e => setCurrentPassword(e.target.value)}
+            onChange={(e) => setCurrentPassword(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} md={7} lg={8}>
@@ -62,7 +62,7 @@ const ChangePasswordForm = ({ history }) => {
             fullWidth
             margin="normal"
             value={newPassword}
-            onChange={e => setNewPassword(e.target.value)}
+            onChange={(e) => setNewPassword(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} md={7} lg={8}>
@@ -73,18 +73,29 @@ const ChangePasswordForm = ({ history }) => {
             fullWidth
             margin="normal"
             value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </Grid>
       </Grid>
       <div className={formButton}>
-        <Button type="submit" color="primary" variant="contained" size="small" disabled={loading} startIcon={<Save />}>
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          size="small"
+          disabled={loading}
+          startIcon={<Save />}
+        >
           Save
         </Button>
         <Button size="small" onClick={handleReset} startIcon={<Undo />}>
           Reset
         </Button>
-        <Button size="small" startIcon={<Clear />} onClick={() => history.push(`/${slug}/dashboard`)}>
+        <Button
+          size="small"
+          startIcon={<Clear />}
+          onClick={() => history.push(`/${slug}/dashboard`)}
+        >
           Cancel
         </Button>
       </div>

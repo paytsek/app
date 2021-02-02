@@ -95,9 +95,9 @@ const CompanySettingsForm = () => {
 
   const dispatch = useDispatch();
 
-  const { errors, companySettings } = useSelector(state => state.companySettingsCreate);
-  const { company } = useSelector(state => state.companyDetails);
-  const { id } = useSelector(state => state.companySlug);
+  const { errors, companySettings } = useSelector((state) => state.companySettingsCreate);
+  const { company } = useSelector((state) => state.companyDetails);
+  const { id } = useSelector((state) => state.companySlug);
 
   const {
     basicSettings,
@@ -111,8 +111,8 @@ const CompanySettingsForm = () => {
     accountingJournal,
   } = settings;
 
-  const handleOnChangeBasicSettings = e => {
-    setSettings(prevState => ({
+  const handleOnChangeBasicSettings = (e) => {
+    setSettings((prevState) => ({
       ...prevState,
       basicSettings: {
         ...prevState.basicSettings,
@@ -121,97 +121,105 @@ const CompanySettingsForm = () => {
     }));
   };
 
-  const handleOnChangeRegisteredAddress = e => setSettings(prevState => ({
-    ...prevState,
-    registeredAddress: { ...prevState.registeredAddress, [e.target.name]: e.target.value },
-  }));
-
-  const handleOnChangeCalculation = (calculation, e) => setSettings(prevState => ({
-    ...prevState,
-    [calculation]: {
-      ...prevState[calculation],
-      [e.target.name]: e.target.checked,
-    },
-  }));
-
-  const handleOnChangeTaxablePay = (calculation, e) => setSettings(prevState => ({
-    ...prevState,
-    [calculation]: {
-      ...prevState[calculation],
-      taxablePays: {
-        ...prevState[calculation].taxablePays,
-        [e.target.name]: e.target.checked,
-      },
-    },
-  }));
-
-  const handleOnChangeNonTaxablePay = (calculation, e) => setSettings(prevState => ({
-    ...prevState,
-    [calculation]: {
-      ...prevState[calculation],
-      nonTaxablePays: {
-        ...prevState[calculation].nonTaxablePays,
-        [e.target.name]: e.target.checked,
-      },
-    },
-  }));
-
-  const handleOnAdd = (key, val) => setSettings(prevState => ({
-    ...prevState,
-    [key]: [...prevState[key], val],
-    sssCalculation: {
-      ...prevState.sssCalculation,
-      [key]: { ...prevState.sssCalculation[key], [val]: false },
-    },
-    phicCalculation: {
-      ...prevState.phicCalculation,
-      [key]: { ...prevState.phicCalculation[key], [val]: false },
-    },
-    thirteenthMonthPayCalculation: {
-      ...prevState.thirteenthMonthPayCalculation,
-      [key]: { ...prevState.thirteenthMonthPayCalculation[key], [val]: false },
-    },
-  }));
-
-  const handleOnDelete = (key, val) => setSettings(prevState => {
-    const newSssCalculation = prevState.sssCalculation;
-    const newPhicCalculation = prevState.phicCalculation;
-    const newThirteenthMonthPayCalculation = prevState.thirteenthMonthPayCalculation;
-
-    delete newSssCalculation[key][val];
-    delete newPhicCalculation[key][val];
-    delete newThirteenthMonthPayCalculation[key][val];
-
-    return {
+  const handleOnChangeRegisteredAddress = (e) =>
+    setSettings((prevState) => ({
       ...prevState,
-      [key]: prevState[key].filter(prevVal => prevVal !== val),
+      registeredAddress: { ...prevState.registeredAddress, [e.target.name]: e.target.value },
+    }));
+
+  const handleOnChangeCalculation = (calculation, e) =>
+    setSettings((prevState) => ({
+      ...prevState,
+      [calculation]: {
+        ...prevState[calculation],
+        [e.target.name]: e.target.checked,
+      },
+    }));
+
+  const handleOnChangeTaxablePay = (calculation, e) =>
+    setSettings((prevState) => ({
+      ...prevState,
+      [calculation]: {
+        ...prevState[calculation],
+        taxablePays: {
+          ...prevState[calculation].taxablePays,
+          [e.target.name]: e.target.checked,
+        },
+      },
+    }));
+
+  const handleOnChangeNonTaxablePay = (calculation, e) =>
+    setSettings((prevState) => ({
+      ...prevState,
+      [calculation]: {
+        ...prevState[calculation],
+        nonTaxablePays: {
+          ...prevState[calculation].nonTaxablePays,
+          [e.target.name]: e.target.checked,
+        },
+      },
+    }));
+
+  const handleOnAdd = (key, val) =>
+    setSettings((prevState) => ({
+      ...prevState,
+      [key]: [...prevState[key], val],
       sssCalculation: {
         ...prevState.sssCalculation,
-        ...newSssCalculation,
+        [key]: { ...prevState.sssCalculation[key], [val]: false },
       },
       phicCalculation: {
         ...prevState.phicCalculation,
-        ...newPhicCalculation,
+        [key]: { ...prevState.phicCalculation[key], [val]: false },
       },
       thirteenthMonthPayCalculation: {
-        ...prevState.newThirteenthMonthPayCalculation,
-        ...newThirteenthMonthPayCalculation,
+        ...prevState.thirteenthMonthPayCalculation,
+        [key]: { ...prevState.thirteenthMonthPayCalculation[key], [val]: false },
       },
-    };
-  });
+    }));
 
-  const handleOnDeleteDepartment = (key, val) => setSettings(prevState => ({
-    ...prevState,
-    [key]: prevState[key].filter(department => department !== val),
-  }));
+  const handleOnDelete = (key, val) =>
+    setSettings((prevState) => {
+      const newSssCalculation = prevState.sssCalculation;
+      const newPhicCalculation = prevState.phicCalculation;
+      const newThirteenthMonthPayCalculation = prevState.thirteenthMonthPayCalculation;
 
-  const handleOnChangeAccountingJournal = e => setSettings(prevState => ({
-    ...prevState,
-    accountingJournal: {
-      ...prevState.accountingJournal,
-      [e.target.name]: e.target.value,
-    },
-  }));
+      delete newSssCalculation[key][val];
+      delete newPhicCalculation[key][val];
+      delete newThirteenthMonthPayCalculation[key][val];
+
+      return {
+        ...prevState,
+        [key]: prevState[key].filter((prevVal) => prevVal !== val),
+        sssCalculation: {
+          ...prevState.sssCalculation,
+          ...newSssCalculation,
+        },
+        phicCalculation: {
+          ...prevState.phicCalculation,
+          ...newPhicCalculation,
+        },
+        thirteenthMonthPayCalculation: {
+          ...prevState.newThirteenthMonthPayCalculation,
+          ...newThirteenthMonthPayCalculation,
+        },
+      };
+    });
+
+  const handleOnDeleteDepartment = (key, val) =>
+    setSettings((prevState) => ({
+      ...prevState,
+      [key]: prevState[key].filter((department) => department !== val),
+    }));
+
+  const handleOnChangeAccountingJournal = (e) =>
+    setSettings((prevState) => ({
+      ...prevState,
+      accountingJournal: {
+        ...prevState.accountingJournal,
+        [e.target.name]: e.target.value,
+      },
+    }));
 
   const handleOnSubmit = () => {
     const data = {
@@ -241,7 +249,7 @@ const CompanySettingsForm = () => {
 
   useEffect(() => {
     if (company && company.companySettings) {
-      setSettings(prevState => ({
+      setSettings((prevState) => ({
         ...prevState,
         basicSettings: {
           ...prevState.basicSettings,

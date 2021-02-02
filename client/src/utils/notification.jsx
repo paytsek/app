@@ -9,7 +9,7 @@ const notification = (variant, message, dispatch) => enqueueSnackbar({
   options: {
     key: uuidV4(),
     variant,
-    action: key => <Button onClick={() => dispatch(closeSnackbar(key))}>dismiss me</Button>,
+    action: (key) => <Button onClick={() => dispatch(closeSnackbar(key))}>dismiss me</Button>,
   },
 });
 

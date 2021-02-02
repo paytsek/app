@@ -13,8 +13,8 @@ const UserDetailsPage = ({ history, match }) => {
   const { id, slug } = match.params;
   const dispatch = useDispatch();
 
-  const { user, loading } = useSelector(state => state.userDetails);
-  const { user: loggedInUser } = useSelector(state => state.authUser);
+  const { user, loading } = useSelector((state) => state.userDetails);
+  const { user: loggedInUser } = useSelector((state) => state.authUser);
 
   const { active, paper, title, actions, details } = useStyles();
 
@@ -40,7 +40,7 @@ const UserDetailsPage = ({ history, match }) => {
         {loading ? (
           <MuiSkeleton />
         ) : (
-          <Fragment>
+          <>
             {loggedInUser.role === 'admin' && (
               <div className={actions}>
                 <Button
@@ -74,7 +74,7 @@ const UserDetailsPage = ({ history, match }) => {
               <Typography variant="subtitle2">Last Name</Typography>
               <Typography variant="subtitle1">{user.lastName}</Typography>
             </div>
-          </Fragment>
+          </>
         )}
       </Paper>
     </Container>

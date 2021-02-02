@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Typography, FormGroup, FormControl, FormControlLabel, Checkbox } from '@material-ui/core';
 
 const thirteenthMonthPayCalculation = 'thirteenthMonthPayCalculation';
@@ -12,7 +12,7 @@ const ThirteenthMonthPayCalculations = ({
   const { deminimis, absences, taxablePays, nonTaxablePays } = settings;
 
   return (
-    <Fragment>
+    <>
       <Typography variant="subtitle1">13th Month pay Calculations</Typography>
       <FormGroup row>
         <FormControl size="small">
@@ -20,7 +20,7 @@ const ThirteenthMonthPayCalculations = ({
             label="De minimis"
             name="deminimis"
             checked={deminimis}
-            onChange={e => onChangeCalculation(thirteenthMonthPayCalculation, e)}
+            onChange={(e) => onChangeCalculation(thirteenthMonthPayCalculation, e)}
             control={<Checkbox color="primary" />}
           />
         </FormControl>
@@ -29,7 +29,7 @@ const ThirteenthMonthPayCalculations = ({
             label="Absences"
             name="absences"
             checked={absences}
-            onChange={e => onChangeCalculation(thirteenthMonthPayCalculation, e)}
+            onChange={(e) => onChangeCalculation(thirteenthMonthPayCalculation, e)}
             control={<Checkbox color="primary" />}
           />
         </FormControl>
@@ -37,13 +37,13 @@ const ThirteenthMonthPayCalculations = ({
       {/* taxable pays */}
       <Typography variant="subtitle1">Taxable Pays</Typography>
       {taxablePays && Object.keys(taxablePays).length > 0 ? (
-        Object.keys(taxablePays).map(taxablePay => (
+        Object.keys(taxablePays).map((taxablePay) => (
           <FormControl fullWidth size="small" key={taxablePay}>
             <FormControlLabel
               label={taxablePay}
               name={taxablePay}
               checked={taxablePays[taxablePay]}
-              onChange={e => onChangeTaxablePay(thirteenthMonthPayCalculation, e)}
+              onChange={(e) => onChangeTaxablePay(thirteenthMonthPayCalculation, e)}
               control={<Checkbox color="primary" />}
             />
           </FormControl>
@@ -56,14 +56,14 @@ const ThirteenthMonthPayCalculations = ({
       {/* non taxable pays */}
       <Typography variant="subtitle1">Non-Taxable Pays</Typography>
       {nonTaxablePays && Object.keys(nonTaxablePays).length > 0 ? (
-        Object.keys(nonTaxablePays).map(nonTaxablePay => (
+        Object.keys(nonTaxablePays).map((nonTaxablePay) => (
           <FormControl fullWidth size="small" key={nonTaxablePay}>
             <FormControlLabel
               label={nonTaxablePay}
               name={nonTaxablePay}
               control={<Checkbox color="primary" />}
               checked={nonTaxablePays[nonTaxablePay]}
-              onChange={e => onChangeNonTaxablePay(thirteenthMonthPayCalculation, e)}
+              onChange={(e) => onChangeNonTaxablePay(thirteenthMonthPayCalculation, e)}
             />
           </FormControl>
         ))
@@ -72,7 +72,7 @@ const ThirteenthMonthPayCalculations = ({
           No records
         </Typography>
       )}
-    </Fragment>
+    </>
   );
 };
 

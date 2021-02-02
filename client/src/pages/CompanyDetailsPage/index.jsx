@@ -15,7 +15,7 @@ const CompanyDetailsPage = ({ history, match }) => {
   const dispatch = useDispatch();
   const { id, slug } = match.params;
 
-  const { loading, company } = useSelector(state => state.companyDetails);
+  const { loading, company } = useSelector((state) => state.companyDetails);
 
   const { active, paper, title, actions, details } = useStyles();
 
@@ -41,7 +41,7 @@ const CompanyDetailsPage = ({ history, match }) => {
         {loading ? (
           <MuiSkeleton />
         ) : (
-          <Fragment>
+          <>
             <div className={actions}>
               <Button
                 variant="contained"
@@ -68,7 +68,7 @@ const CompanyDetailsPage = ({ history, match }) => {
                 {moment(company.createdAt).format('MMMM DD, YYYY')}
               </Typography>
             </div>
-          </Fragment>
+          </>
         )}
       </Paper>
     </Container>

@@ -17,7 +17,7 @@ const CompanyListPage = ({ history, match }) => {
   } = useStyles();
 
   return (
-    <Fragment>
+    <>
       <Container>
         <Breadcrumbs>
           <Link to={`/${slug}/dashboard`}>Dashboard</Link>
@@ -49,7 +49,7 @@ const CompanyListPage = ({ history, match }) => {
       <Container className={tableContainer}>
         <CompaniesListTable />
       </Container>
-    </Fragment>
+    </>
   );
 };
 

@@ -18,11 +18,11 @@ const RegisterPage = ({ history }) => {
   const [password, setPassword] = useState('');
 
   const { errors: registerUserErrors, loading: registerUsersLoading } = useSelector(
-    state => state.registerUser,
+    (state) => state.registerUser,
   );
-  const { auth } = useSelector(state => state.authUser);
+  const { auth } = useSelector((state) => state.authUser);
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
     dispatch(
       registerUser({
@@ -70,7 +70,7 @@ const RegisterPage = ({ history }) => {
               name="email"
               autoComplete="off"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               error={!!registerUserErrors.email}
               helperText={registerUserErrors.email}
             />
@@ -84,7 +84,7 @@ const RegisterPage = ({ history }) => {
               name="username"
               autoComplete="off"
               value={username}
-              onChange={e => setUsername(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
               error={!!registerUserErrors.username}
               helperText={registerUserErrors.username}
             />
@@ -98,7 +98,7 @@ const RegisterPage = ({ history }) => {
               name="firstName"
               autoComplete="off"
               value={firstName}
-              onChange={e => setFirstName(e.target.value)}
+              onChange={(e) => setFirstName(e.target.value)}
               error={!!registerUserErrors.firstName}
               helperText={registerUserErrors.firstName}
             />
@@ -112,7 +112,7 @@ const RegisterPage = ({ history }) => {
               name="lastName"
               autoComplete="off"
               value={lastName}
-              onChange={e => setLastName(e.target.value)}
+              onChange={(e) => setLastName(e.target.value)}
               error={!!registerUserErrors.lastName}
               helperText={registerUserErrors.lastName}
             />
@@ -126,7 +126,7 @@ const RegisterPage = ({ history }) => {
               type="password"
               id="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               error={!!registerUserErrors.password}
               helperText={registerUserErrors.password}
             />

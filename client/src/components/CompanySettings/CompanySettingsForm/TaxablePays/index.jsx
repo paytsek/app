@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Typography,
@@ -21,7 +21,7 @@ const TaxablePays = ({ taxablePays, onAdd, onDelete }) => {
 
   const dispatch = useDispatch();
 
-  const handleOnAdd = val => {
+  const handleOnAdd = (val) => {
     const existTaxablePay = taxablePays.includes(val);
 
     if (!val) {
@@ -36,7 +36,7 @@ const TaxablePays = ({ taxablePays, onAdd, onDelete }) => {
   };
 
   return (
-    <Fragment>
+    <>
       <Typography variant="h6">Taxable Pays</Typography>
       <FormControl fullWidth size="small" margin="normal">
         <InputLabel htmlFor="taxablePays">Taxable Pays</InputLabel>
@@ -44,23 +44,20 @@ const TaxablePays = ({ taxablePays, onAdd, onDelete }) => {
           id="taxablePays"
           name="taxablePayName"
           value={taxablePayName}
-          onChange={e => setTaxabalePayName(e.target.value)}
-          endAdornment={
+          onChange={(e) => setTaxabalePayName(e.target.value)}
+          endAdornment={(
             <InputAdornment position="end">
-              <IconButton
-                color="primary"
-                onClick={() => handleOnAdd(taxablePayName)}
-              >
+              <IconButton color="primary" onClick={() => handleOnAdd(taxablePayName)}>
                 <AddIcon />
               </IconButton>
             </InputAdornment>
-          }
+          )}
         />
       </FormControl>
       {/* List of taxable pays */}
       {taxablePays.length > 0 ? (
         <List>
-          {taxablePays.map(taxablePay => (
+          {taxablePays.map((taxablePay) => (
             <ListItem key={taxablePay}>
               <ListItemText primary={taxablePay} />
               <ListItemSecondaryAction>
@@ -76,7 +73,7 @@ const TaxablePays = ({ taxablePays, onAdd, onDelete }) => {
           ))}
         </List>
       ) : null}
-    </Fragment>
+    </>
   );
 };
 

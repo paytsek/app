@@ -15,9 +15,9 @@ const CompanyCreateForm = ({ history, match }) => {
 
   const dispatch = useDispatch();
 
-  const { errors, company } = useSelector(state => state.createCompanyName);
+  const { errors, company } = useSelector((state) => state.createCompanyName);
 
-  const handleOnSubmit = e => {
+  const handleOnSubmit = (e) => {
     e.preventDefault();
     dispatch(createCompanyName({ name }));
   };
@@ -45,7 +45,7 @@ const CompanyCreateForm = ({ history, match }) => {
             margin="normal"
             name="name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             error={!!errors.name}
             helperText={errors.name}
           />
@@ -55,7 +55,11 @@ const CompanyCreateForm = ({ history, match }) => {
         <Button type="submit" color="primary" variant="contained" size="small" startIcon={<Save />}>
           Save
         </Button>
-        <Button size="small" startIcon={<Clear />} onClick={() => history.push(`/${slug}/companies`)}>
+        <Button
+          size="small"
+          startIcon={<Clear />}
+          onClick={() => history.push(`/${slug}/companies`)}
+        >
           Cancel
         </Button>
       </div>

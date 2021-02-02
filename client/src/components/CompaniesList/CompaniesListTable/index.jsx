@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { DataGrid } from '@material-ui/data-grid';
@@ -19,16 +19,16 @@ const CompaniesListTable = ({ history }) => {
 
   const dispatch = useDispatch();
 
-  const { slug } = useSelector(state => state.companySlug);
-  const { companies, loading } = useSelector(state => state.companiesList);
-  const { loading: companyDeleteLoading, success } = useSelector(state => state.companyDelete);
+  const { slug } = useSelector((state) => state.companySlug);
+  const { companies, loading } = useSelector((state) => state.companiesList);
+  const { loading: companyDeleteLoading, success } = useSelector((state) => state.companyDelete);
 
   const handleClose = () => {
     setOpen(false);
     setSelectedCompany({});
   };
 
-  const handleOpen = company => {
+  const handleOpen = (company) => {
     setOpen(true);
     setSelectedCompany(company);
   };
@@ -68,7 +68,7 @@ const CompaniesListTable = ({ history }) => {
       sortable: false,
       width: 290,
       renderCell: ({ row }) => (
-        <Fragment>
+        <>
           <SwitchCompanyButton slug={row.slug} />
           <Button
             color="primary"
@@ -80,7 +80,7 @@ const CompaniesListTable = ({ history }) => {
             onClick={() => history.push(`companies/${row.id}/edit`)}
           />
           <Button color="primary" onClick={() => handleOpen(row)} startIcon={<Delete />} />
-        </Fragment>
+        </>
       ),
     },
   ];
@@ -89,7 +89,7 @@ const CompaniesListTable = ({ history }) => {
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
         className={dataGrid}
-        rows={companies.map(company => ({
+        rows={companies.map((company) => ({
           ...company,
           id: company._id,
           createdAt: moment(company.createdAt).format('MMM DD, YYYY'),

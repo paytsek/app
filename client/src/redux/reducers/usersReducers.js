@@ -107,7 +107,7 @@ export const usersListReducers = (state = { users: [] }, action) => {
     case USERS_LIST_FAIL:
       return { ...state, loading: false, users: [] };
     case USER_LIST_DELETE_SUCCESS:
-      return { ...state, users: state.users.filter(user => user._id !== payload) };
+      return { ...state, users: state.users.filter((user) => user._id !== payload) };
     default:
       return state;
   }

@@ -33,11 +33,12 @@ const AccountingJournalEntries = ({ settings, onChange, errors }) => {
 
   const { paper, fieldsContainer } = useStyles();
 
-  const options = () => ACCOUNTING_JOURNAL_ENTRIES.map(({ name, value }) => (
+  const options = () =>
+    ACCOUNTING_JOURNAL_ENTRIES.map(({ name, value }) => (
       <MenuItem key={name} value={value}>
         {name}
       </MenuItem>
-  ));
+    ));
 
   return (
     <Paper className={paper}>
@@ -237,7 +238,9 @@ const AccountingJournalEntries = ({ settings, onChange, errors }) => {
                 {options()}
               </Select>
               {errors['accountingJournal.deminimisBenefits'] && (
-                <FormHelperText error>{errors['accountingJournal.deminimisBenefits']}</FormHelperText>
+                <FormHelperText error>
+                  {errors['accountingJournal.deminimisBenefits']}
+                </FormHelperText>
               )}
             </FormControl>
           </Grid>
