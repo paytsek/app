@@ -78,13 +78,24 @@ const ChangePasswordForm = ({ history }) => {
         </Grid>
       </Grid>
       <div className={formButton}>
-        <Button type="submit" color="primary" variant="contained" size="small" disabled={loading} startIcon={<Save />}>
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          size="small"
+          disabled={loading}
+          startIcon={<Save />}
+        >
           Save
         </Button>
         <Button size="small" onClick={handleReset} startIcon={<Undo />}>
           Reset
         </Button>
-        <Button size="small" startIcon={<Clear />} onClick={() => history.push(`/${slug}/dashboard`)}>
+        <Button
+          size="small"
+          startIcon={<Clear />}
+          onClick={() => history.push(`/${slug}/dashboard`)}
+        >
           Cancel
         </Button>
       </div>
