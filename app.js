@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
@@ -28,7 +29,11 @@ app.use(express.json());
 app.use(mongoSanitize());
 
 // Set sucurity headers
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  }),
+);
 
 // Prevent XSS attacks
 app.use(xss());
@@ -58,6 +63,14 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/v1/companies', companyRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/client/build')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 
 app.use(notFound);
 app.use(errorHandler);
