@@ -8,7 +8,7 @@ import MuiSkeleton from '../../MuiSkeleton';
 import DialogPasswordConfirmation from '../../Dialog/DialogPasswordConfirmation';
 
 import { getUserDetails, updateUserDetails, deleteUser } from '../../../redux/actions/usersActions';
-import { USER_UPDATE_DETAILS_RESET, USER_LIST_DELETE_RESET } from '../../../redux/types';
+import { USER_UPDATE_DETAILS_RESET, USER_LIST_DELETE_RESET, LOGOUT } from '../../../redux/types';
 import useStyles from './styles';
 
 const UserEditForm = ({ history, match }) => {
@@ -36,8 +36,9 @@ const UserEditForm = ({ history, match }) => {
 
   const handleClose = () => setOpen(false);
 
-  const handleOnContinue = userData => {
+  const handleOnContinue = async userData => {
     dispatch(deleteUser(id, userData));
+    dispatch({ type: LOGOUT });
   };
 
   const { formButton } = useStyles();
