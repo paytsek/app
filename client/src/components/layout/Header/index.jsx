@@ -80,7 +80,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
                 horizontal: 'right',
               }}
               open={open}
-              onClose={handleClose}
+              onClose={() => handleClose()}
             >
               <MenuItem onClick={() => handleClose(`/${slug}/profile`)}>
                 <PersonOulineIcon />
