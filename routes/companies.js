@@ -37,9 +37,6 @@ router.route('/:id').get(auth, getCompany);
 router.route('/settings').post(auth, slug, createCompanySettings);
 
 // api/v1/companies/settings/:id
-router
-  .route('/settings/:id')
-  .put(auth, slug, updateCompanySettings)
-  .delete(auth, slug, deleteCompanySettings);
+router.route('/settings/:id').put(auth, slug, updateCompanySettings).delete(auth, slug, deleteCompanySettings);
 
 module.exports = router;

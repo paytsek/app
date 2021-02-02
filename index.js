@@ -9,9 +9,10 @@ dotenv.config({ path: './config/config.env' });
 const PORT = process.env.PORT || 5001;
 
 const start = async () => {
-  const db = (process.env.NODE_ENV === 'development' && process.env.MONGO_URI_DEV)
-    || (process.env.NODE_ENV === 'production' && process.env.MONGO_URI_PROD)
-    || process.env.MONGO_URI_LOCAL;
+  const db =
+    (process.env.NODE_ENV === 'development' && process.env.MONGO_URI_DEV) ||
+    (process.env.NODE_ENV === 'production' && process.env.MONGO_URI_PROD) ||
+    process.env.MONGO_URI_LOCAL;
 
   try {
     await mongoose.connect(db, {

@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Typography, Paper, Button } from '@material-ui/core';
+import {
+  Container, Typography, Paper, Button,
+} from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -14,10 +16,12 @@ const localStorageSlug = localStorage.getItem('slug');
 const SelectCompanyPage = ({ history }) => {
   const dispatch = useDispatch();
 
-  const { companies } = useSelector(state => state.companiesList);
-  const { authSlug, slug } = useSelector(state => state.companySlug);
+  const { companies } = useSelector((state) => state.companiesList);
+  const { authSlug, slug } = useSelector((state) => state.companySlug);
 
-  const { title, root, paper, buttonContainer } = useStyles();
+  const {
+    title, root, paper, buttonContainer,
+  } = useStyles();
 
   useEffect(() => {
     dispatch(getCompaniesList());
@@ -43,7 +47,7 @@ const SelectCompanyPage = ({ history }) => {
       </Typography>
       <div className={root}>
         <List component="nav">
-          {companies.map(company => (
+          {companies.map((company) => (
             <Paper className={paper} key={company._id}>
               <ListItem
                 button

@@ -3,7 +3,7 @@ import { Input, InputAdornment } from '@material-ui/core';
 
 const PercentageInput = ({ onChange, value, ...props }) => {
   const reference = createRef();
-  const wheelHandler = (e) => {
+  const wheelHandler = e => {
     if (e.target.type === 'number') {
       e.target.blur();
     }
