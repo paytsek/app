@@ -64,6 +64,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
               aria-haspopup="true"
               onClick={handleMenu}
               color="inherit"
+              style={{ fontSize: 'inherit' }}
             >
               <AccountCircle />
               {user.firstName}
