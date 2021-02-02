@@ -4,6 +4,9 @@
   "description": "Payroll system",
   "main": "index.js",
   "private": true,
+  "engines": {
+    "node": "14.15.1"
+  },
   "scripts": {
     "test:api": "jest --runInBand",
     "test:client": "npm test --prefix client",
