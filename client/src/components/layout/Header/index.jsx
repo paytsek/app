@@ -54,6 +54,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
+            <img src="/images/logo.png" alt="logo" />
             PayTsek
           </Typography>
           <div>
@@ -63,6 +64,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
               aria-haspopup="true"
               onClick={handleMenu}
               color="inherit"
+              style={{ fontSize: 'inherit' }}
             >
               <AccountCircle />
               {user.firstName}
@@ -80,7 +82,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
                 horizontal: 'right',
               }}
               open={open}
-              onClose={handleClose}
+              onClose={() => handleClose()}
             >
               <MenuItem onClick={() => handleClose(`/${slug}/profile`)}>
                 <PersonOulineIcon />

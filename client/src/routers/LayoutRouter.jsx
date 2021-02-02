@@ -1,8 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import LoggedInRoute from '../components/routes/LoggedInRoute';
-import AdminRoute from '../components/routes/AdminRoute';
 import UsersListPage from '../pages/UsersListPage';
 import UserDetailsPage from '../pages/UserDetailsPage';
 import UserEditPage from '../pages/UserEditPage';
@@ -23,27 +21,27 @@ const LayoutRouter = () => (
       path="/:slug"
       component={() => (
         <Switch>
-          <AdminRoute path="/:slug/users" component={UsersListPage} exact />
-          <AdminRoute path="/:slug/users/:id/edit" component={UserEditPage} exact />
-          <LoggedInRoute path="/:slug/users/:id" component={UserDetailsPage} exact />
-          <LoggedInRoute path="/:slug/profile" component={CurrentUserProfilePage} exact />
-          <LoggedInRoute path="/:slug/change-password" component={ChangePasswordPage} exact />
-          <LoggedInRoute path="/:slug/companies" component={CompanyListPage} exact />
-          <LoggedInRoute path="/:slug/company-settings" component={CompanySettingsPage} exact />
-          <LoggedInRoute
+          <Route path="/:slug/users" component={UsersListPage} exact />
+          <Route path="/:slug/users/:id/edit" component={UserEditPage} exact />
+          <Route path="/:slug/users/:id" component={UserDetailsPage} exact />
+          <Route path="/:slug/profile" component={CurrentUserProfilePage} exact />
+          <Route path="/:slug/change-password" component={ChangePasswordPage} exact />
+          <Route path="/:slug/companies" component={CompanyListPage} exact />
+          <Route path="/:slug/company-settings" component={CompanySettingsPage} exact />
+          <Route
             path="/:slug/company-settings/create"
             component={CompanySettingsCreatePage}
             exact
           />
-          <LoggedInRoute
+          <Route
             path="/:slug/company-settings/:companyId/edit"
             component={CompanySettingsEditPage}
             exact
           />
-          <LoggedInRoute path="/:slug/companies/create" component={CompanyCreatePage} exact />
-          <LoggedInRoute path="/:slug/companies/:id" component={CompanyDetailsPage} exact />
-          <LoggedInRoute path="/:slug/companies/:id/edit" component={CompanyUpdatePage} exact />
-          <LoggedInRoute path="/:slug/dashboard" component={Dashboard} />
+          <Route path="/:slug/companies/create" component={CompanyCreatePage} exact />
+          <Route path="/:slug/companies/:id" component={CompanyDetailsPage} exact />
+          <Route path="/:slug/companies/:id/edit" component={CompanyUpdatePage} exact />
+          <Route path="/:slug/dashboard" component={Dashboard} />
           <Route path="/" component={() => <h1 style={{ fontSize: 50 }}>Page not found</h1>} />
         </Switch>
       )}
