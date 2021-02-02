@@ -41,7 +41,7 @@ const AccountingJournalEntries = ({ settings, onChange, errors }) => {
     ));
 
   return (
-    <Paper className={paper}>
+    <Paper className={paper} elevation={6}>
       <TitleBox title="Accounting Journal Entries" />
       <div className={fieldsContainer}>
         <Grid container spacing={3}>

@@ -16,6 +16,7 @@ const CompanyCreateForm = ({ history, match }) => {
   const dispatch = useDispatch();
 
   const { errors, company } = useSelector((state) => state.createCompanyName);
+  const { authSlug } = useSelector((state) => state.companySlug);
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +26,7 @@ const CompanyCreateForm = ({ history, match }) => {
   const { formButton } = useStyles();
 
   useEffect(() => {
-    if (company) {
+    if (company && authSlug) {
       history.push(`/${slug}/companies/${company._id}`);
     }
 
@@ -55,13 +56,15 @@ const CompanyCreateForm = ({ history, match }) => {
         <Button type="submit" color="primary" variant="contained" size="small" startIcon={<Save />}>
           Save
         </Button>
-        <Button
-          size="small"
-          startIcon={<Clear />}
-          onClick={() => history.push(`/${slug}/companies`)}
-        >
-          Cancel
-        </Button>
+        {slug && (
+          <Button
+            size="small"
+            startIcon={<Clear />}
+            onClick={() => history.push(`/${slug}/companies`)}
+          >
+            Cancel
+          </Button>
+        )}
       </div>
     </form>
   );

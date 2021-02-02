@@ -19,7 +19,7 @@ const CurrentUserProfile = () => {
           Profile
         </Link>
       </Breadcrumbs>
-      <Paper className={paper}>
+      <Paper className={paper} elevation={6}>
         <Typography variant="h5" className={title} gutterBottom>
           Profile
         </Typography>

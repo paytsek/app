@@ -31,13 +31,14 @@ const ChangePasswordForm = ({ history }) => {
     dispatch(updateCurrentUserPassword({ currentPassword, newPassword, confirmPassword }));
   };
 
+  useEffect(() => () => {
+    dispatch({ type: CURRENT_USER_UPDATE_RESET });
+  }, []);
+
   useEffect(() => {
     if (success) {
       handleReset();
     }
-    return () => {
-      dispatch({ type: CURRENT_USER_UPDATE_RESET });
-    };
   }, [success]);
 
   return (
@@ -88,11 +89,12 @@ const ChangePasswordForm = ({ history }) => {
         >
           Save
         </Button>
-        <Button size="small" onClick={handleReset} startIcon={<Undo />}>
+        <Button size="small" disabled={loading} onClick={handleReset} startIcon={<Undo />}>
           Reset
         </Button>
         <Button
           size="small"
+          disabled={loading}
           startIcon={<Clear />}
           onClick={() => history.push(`/${slug}/dashboard`)}
         >

@@ -42,7 +42,7 @@ const Departments = ({ departments, onAdd, onDelete, errors }) => {
   };
 
   return (
-    <Paper className={paper}>
+    <Paper className={paper} elevation={6}>
       <TitleBox title="Departments" />
       <div className={fieldsContainer}>
         <FormControl fullWidth size="small" margin="normal" error={!!errors.departments}>

@@ -8,7 +8,7 @@ import MuiSkeleton from '../../MuiSkeleton';
 import DialogPasswordConfirmation from '../../Dialog/DialogPasswordConfirmation';
 
 import { getUserDetails, updateUserDetails, deleteUser } from '../../../redux/actions/usersActions';
-import { USER_UPDATE_DETAILS_RESET, USER_LIST_DELETE_RESET, LOGOUT } from '../../../redux/types';
+import { USER_UPDATE_DETAILS_RESET, USER_LIST_DELETE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const UserEditForm = ({ history, match }) => {
@@ -19,6 +19,7 @@ const UserEditForm = ({ history, match }) => {
 
   const dispatch = useDispatch();
 
+  const { slug } = useSelector((state) => state.companySlug);
   const { user, loading } = useSelector((state) => state.userDetails);
   const { errors, loading: updateUserDetailsLoading } = useSelector(
     (state) => state.updateUserDetails,
@@ -38,7 +39,6 @@ const UserEditForm = ({ history, match }) => {
 
   const handleOnContinue = async (userData) => {
     dispatch(deleteUser(id, userData));
-    dispatch({ type: LOGOUT });
   };
 
   const { formButton } = useStyles();
@@ -48,7 +48,7 @@ const UserEditForm = ({ history, match }) => {
   }, []);
 
   useEffect(() => {
-    if (success) history.push('/users');
+    if (success) history.push(`/${slug}/users`);
 
     if (user.email) setEmail(user.email);
 
@@ -87,16 +87,27 @@ const UserEditForm = ({ history, match }) => {
         >
           Save
         </Button>
-        <Button size="small" onClick={handlerReset} startIcon={<Undo />}>
+        <Button
+          size="small"
+          disabled={updateUserDetailsLoading}
+          onClick={handlerReset}
+          startIcon={<Undo />}
+        >
           Reset
         </Button>
-        <Button size="small" startIcon={<Clear />} onClick={() => history.push('/users')}>
+        <Button
+          size="small"
+          disabled={updateUserDetailsLoading}
+          startIcon={<Clear />}
+          onClick={() => history.push('/users')}
+        >
           Cancel
         </Button>
         <Button
           size="small"
           variant="contained"
           color="secondary"
+          disabled={updateUserDetailsLoading}
           onClick={() => setOpen(true)}
           startIcon={<Delete />}
         >

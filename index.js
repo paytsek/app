@@ -11,22 +11,23 @@ const PORT = process.env.PORT || 5001;
 const start = async () => {
   const db =
     (process.env.NODE_ENV === 'development' && process.env.MONGO_URI_DEV) ||
-    (process.env.NODE_ENV === 'production' && process.env.MONGO_URI_PROD) ||
-    process.env.MONGO_URI_LOCAL;
+    (process.env.NODE_ENV === 'production' && process.env.MONGO_URI_PROD);
 
   try {
-    await mongoose.connect(db, {
+    const conn = await mongoose.connect(db, {
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
     });
-    console.log('MongoDB connected'.white.inverse.bold);
+    console.log(`MongoDB connected ${conn.connection.host}`.cyan.underline);
   } catch (error) {
-    console.log('Connection failed'.red.bold, error);
+    console.error('Connection failed'.red.bold, error);
+    process.exit(1);
   }
 
-  app.listen(PORT, () => console.log(`Server running at port: ${PORT}`.green.inverse.bold));
+  app.listen(PORT, () =>
+    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold));
 };
 
 start();

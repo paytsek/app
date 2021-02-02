@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Grid, Paper, Button } from '@material-ui/core';
+import { Undo } from '@material-ui/icons';
 
 import TitleBox from '../../common/TitleBox';
 import BasicSettings from './BasicSettings';
@@ -13,6 +14,7 @@ import SSSCalculations from './SSSCalculations';
 import PhicCalculations from './PhicCalculations';
 import ThirteenthMonthPayCalculations from './ThirteenthMonthPayCalculations';
 import AccountingJournalEntries from './AccountingJournalEntries';
+import MuiSkeleton from '../../MuiSkeleton';
 
 import {
   createCompanySettings,
@@ -95,8 +97,8 @@ const CompanySettingsForm = () => {
 
   const dispatch = useDispatch();
 
-  const { errors, companySettings } = useSelector((state) => state.companySettingsCreate);
-  const { company } = useSelector((state) => state.companyDetails);
+  const { errors, companySettings, loading } = useSelector((state) => state.companySettingsCreate);
+  const { company, loading: companyDetailsLoading } = useSelector((state) => state.companyDetails);
   const { id } = useSelector((state) => state.companySlug);
 
   const {
@@ -245,52 +247,56 @@ const CompanySettingsForm = () => {
     }
   };
 
-  const { paper, gridContainer, fieldsContainer, calculationsContainer } = useStyles();
+  const setCompanySettings = () => {
+    setSettings((prevState) => ({
+      ...prevState,
+      basicSettings: {
+        ...prevState.basicSettings,
+        tin: company.companySettings.tin,
+        rdoCode: company.companySettings.rdoCode,
+        atc: company.companySettings.atc,
+        sssRegistrationNumber: company.companySettings.sssRegistrationNumber,
+        phicNumber: company.companySettings.phicNumber,
+        hdmfNumber: company.companySettings.hdmfNumber,
+        category: company.companySettings.category,
+        reportingBase: company.companySettings.reportingBase,
+        frequency: company.companySettings.frequency,
+        firstCutOff: company.companySettings.firstCutOff,
+        secondCutOff: company.companySettings.secondCutOff,
+        firstPayout: company.companySettings.firstPayout,
+        secondPayout: company.companySettings.secondCutOff,
+        nightDifferential: company.companySettings.nightDifferential,
+        nightDifferentialPercentage: company.companySettings.nightDifferentialPercentage,
+        overtime: company.companySettings.overtime,
+        overtimePay: company.companySettings.overtimePay,
+        overtimeRestDayPay: company.companySettings.overtimeRestDayPay,
+        holiday: company.companySettings.holiday,
+        regularHolidayPay: company.companySettings.regularHolidayPay,
+        specialHolidayPay: company.companySettings.specialHolidayPay,
+        workingDays: company.companySettings.workingDays,
+        taxReliefInternationTaxTreaty: company.companySettings.taxReliefInternationTaxTreaty,
+        deminimis: company.companySettings.deminimis,
+        emailNotification: company.companySettings.emailNotification,
+      },
+      registeredAddress: {
+        ...prevState.registeredAddress,
+        ...company.companySettings.registeredAddress,
+      },
+      departments: company.companySettings.departments,
+      taxablePays: company.companySettings.taxablePays,
+      nonTaxablePays: company.companySettings.nonTaxablePays,
+      sssCalculation: company.companySettings.sssCalculation,
+      phicCalculation: company.companySettings.phicCalculation,
+      thirteenthMonthPayCalculation: company.companySettings.thirteenthMonthPayCalculation,
+      accountingJournal: company.companySettings.accountingJournal,
+    }));
+  };
+
+  const { paper, gridContainer, fieldsContainer, calculationsContainer, formButton } = useStyles();
 
   useEffect(() => {
     if (company && company.companySettings) {
-      setSettings((prevState) => ({
-        ...prevState,
-        basicSettings: {
-          ...prevState.basicSettings,
-          tin: company.companySettings.tin,
-          rdoCode: company.companySettings.rdoCode,
-          atc: company.companySettings.atc,
-          sssRegistrationNumber: company.companySettings.sssRegistrationNumber,
-          phicNumber: company.companySettings.phicNumber,
-          hdmfNumber: company.companySettings.hdmfNumber,
-          category: company.companySettings.category,
-          reportingBase: company.companySettings.reportingBase,
-          frequency: company.companySettings.frequency,
-          firstCutOff: company.companySettings.firstCutOff,
-          secondCutOff: company.companySettings.secondCutOff,
-          firstPayout: company.companySettings.firstPayout,
-          secondPayout: company.companySettings.secondCutOff,
-          nightDifferential: company.companySettings.nightDifferential,
-          nightDifferentialPercentage: company.companySettings.nightDifferentialPercentage,
-          overtime: company.companySettings.overtime,
-          overtimePay: company.companySettings.overtimePay,
-          overtimeRestDayPay: company.companySettings.overtimeRestDayPay,
-          holiday: company.companySettings.holiday,
-          regularHolidayPay: company.companySettings.regularHolidayPay,
-          specialHolidayPay: company.companySettings.specialHolidayPay,
-          workingDays: company.companySettings.workingDays,
-          taxReliefInternationTaxTreaty: company.companySettings.taxReliefInternationTaxTreaty,
-          deminimis: company.companySettings.deminimis,
-          emailNotification: company.companySettings.emailNotification,
-        },
-        registeredAddress: {
-          ...prevState.registeredAddress,
-          ...company.companySettings.registeredAddress,
-        },
-        departments: company.companySettings.departments,
-        taxablePays: company.companySettings.taxablePays,
-        nonTaxablePays: company.companySettings.nonTaxablePays,
-        sssCalculation: company.companySettings.sssCalculation,
-        phicCalculation: company.companySettings.phicCalculation,
-        thirteenthMonthPayCalculation: company.companySettings.thirteenthMonthPayCalculation,
-        accountingJournal: company.companySettings.accountingJournal,
-      }));
+      setCompanySettings();
     }
   }, [company]);
 
@@ -304,6 +310,8 @@ const CompanySettingsForm = () => {
       dispatch({ type: COMPANY_SETTINGS_CREATE_RESET });
     };
   }, []);
+
+  if (companyDetailsLoading) return <MuiSkeleton />;
 
   return (
     <Grid container spacing={3} className={gridContainer}>
@@ -334,7 +342,7 @@ const CompanySettingsForm = () => {
       </Grid>
       {/* GOVERNMENT REMITTANCES & 13th MONTH PAY CALCULATION */}
       <Grid item xs={12}>
-        <Paper className={paper}>
+        <Paper className={paper} elevation={6}>
           <TitleBox title="Government Remittances and 13th month pay Calculations" />
           <div className={fieldsContainer}>
             <Grid container spacing={6}>
@@ -400,9 +408,20 @@ const CompanySettingsForm = () => {
         />
       </Grid>
       <Grid item>
-        <Button color="primary" variant="contained" onClick={handleOnSubmit}>
-          Save Company Settings
-        </Button>
+        <div className={formButton}>
+          <Button color="primary" variant="contained" disabled={loading} onClick={handleOnSubmit}>
+            Save Company Settings
+          </Button>
+          {company.companySettings && (
+            <Button
+              size="small"
+              onClick={() => (company.companySettings && setCompanySettings()) || null}
+              startIcon={<Undo />}
+            >
+              Reset
+            </Button>
+          )}
+        </div>
       </Grid>
     </Grid>
   );

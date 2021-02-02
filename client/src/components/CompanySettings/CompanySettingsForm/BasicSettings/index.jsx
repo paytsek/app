@@ -50,7 +50,7 @@ const BasicSettings = ({ onChange, settings, errors }) => {
   const { paper, fieldsContainer } = useStyles();
 
   return (
-    <Paper className={paper}>
+    <Paper className={paper} elevation={6}>
       <TitleBox title="Company Settings" />
       <div className={fieldsContainer}>
         <Grid container spacing={6}>

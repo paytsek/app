@@ -12,7 +12,7 @@ import {
   updateCurrentUser,
   deleteCurrentUser,
 } from '../../../redux/actions/usersActions';
-import { CURRENT_USER_RESET, CURRENT_USER_UPDATE_RESET } from '../../../redux/types';
+import { COMPANY_SLUG_REMOVE, CURRENT_USER_RESET, CURRENT_USER_UPDATE_RESET, LOGOUT } from '../../../redux/types';
 import useStyles from './styles';
 
 const CurrentUserProfileForm = ({ history }) => {
@@ -36,10 +36,11 @@ const CurrentUserProfileForm = ({ history }) => {
 
   const { formButton } = useStyles();
 
-  const handleOnChange = (e) => setState((prevState) => ({
-    ...prevState,
-    [e.target.name]: e.target.value,
-  }));
+  const handleOnChange = (e) =>
+    setState((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
@@ -61,7 +62,12 @@ const CurrentUserProfileForm = ({ history }) => {
     dispatch({ type: CURRENT_USER_UPDATE_RESET });
   };
 
-  const handleDeleteCurrentUser = (userData) => dispatch(deleteCurrentUser(userData));
+  const handleDeleteCurrentUser = async (userData) => {
+    await dispatch(deleteCurrentUser(userData));
+    dispatch({ type: LOGOUT });
+    dispatch({ type: COMPANY_SLUG_REMOVE });
+    history.push('/login');
+  };
 
   useEffect(() => {
     if (!user) {
@@ -153,16 +159,27 @@ const CurrentUserProfileForm = ({ history }) => {
           >
             Save
           </Button>
-          <Button size="small" onClick={handleReset} startIcon={<Undo />}>
+          <Button
+            size="small"
+            onClick={handleReset}
+            disabled={currentUserUpdateLoading}
+            startIcon={<Undo />}
+          >
             Reset
           </Button>
-          <Button size="small" startIcon={<Clear />} onClick={() => history.push(`/${slug}/dashboard`)}>
+          <Button
+            size="small"
+            disabled={currentUserUpdateLoading}
+            startIcon={<Clear />}
+            onClick={() => history.push(`/${slug}/dashboard`)}
+          >
             Cancel
           </Button>
           <Button
             size="small"
             variant="contained"
             color="secondary"
+            disabled={currentUserUpdateLoading}
             onClick={() => setOpen(true)}
             startIcon={<Delete />}
           >

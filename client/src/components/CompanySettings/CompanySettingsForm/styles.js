@@ -24,6 +24,14 @@ const useStyles = makeStyles((theme) => ({
       padding: `${theme.spacing(2)}px`,
     },
   },
+  formButton: {
+    paddingTop: theme.spacing(2),
+    display: 'flex',
+    '& > *': {
+      marginRight: theme.spacing(2),
+      marginBottom: theme.spacing(2),
+    },
+  },
 }));
 
 export default useStyles;
