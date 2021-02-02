@@ -15,7 +15,7 @@ const UsersListPage = () => {
   } = useStyles();
 
   return (
-    <Fragment>
+    <>
       <Container>
         <Breadcrumbs>
           <Link to="dashboard">Dashboard</Link>
@@ -38,7 +38,7 @@ const UsersListPage = () => {
       <Container className={tableContainer}>
         <UsersListTable />
       </Container>
-    </Fragment>
+    </>
   );
 };
 

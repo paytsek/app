@@ -39,10 +39,12 @@ export const companiesListReducers = (state = { companies: [] }, action) => {
       return { loading: true, companies: [] };
     case COMPANY_LIST_SUCCESS:
       return { loading: false, companies: payload.companies };
+    case COMPANY_NAME_CREATE_SUCCESS:
+      return { ...state, companies: [...state.companies, payload.company] };
     case COMPANY_LIST_FAIL:
       return { loading: false, companies: [] };
     case COMPANY_DELETE_SUCCESS:
-      return { ...state, companies: state.companies.filter(company => company._id !== payload) };
+      return { ...state, companies: state.companies.filter((company) => company._id !== payload) };
     default:
       return state;
   }

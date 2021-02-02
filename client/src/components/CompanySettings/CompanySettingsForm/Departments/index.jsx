@@ -27,7 +27,7 @@ const Departments = ({ departments, onAdd, onDelete, errors }) => {
 
   const { paper, fieldsContainer } = useStyles();
 
-  const handleOnAdd = val => {
+  const handleOnAdd = (val) => {
     const existDepartment = departments.includes(val);
 
     if (!val) {
@@ -42,7 +42,7 @@ const Departments = ({ departments, onAdd, onDelete, errors }) => {
   };
 
   return (
-    <Paper className={paper}>
+    <Paper className={paper} elevation={6}>
       <TitleBox title="Departments" />
       <div className={fieldsContainer}>
         <FormControl fullWidth size="small" margin="normal" error={!!errors.departments}>
@@ -51,21 +51,21 @@ const Departments = ({ departments, onAdd, onDelete, errors }) => {
             id="departments"
             name="departmentName"
             value={departmentName}
-            onChange={e => setDepartmentName(e.target.value)}
-            endAdornment={
+            onChange={(e) => setDepartmentName(e.target.value)}
+            endAdornment={(
               <InputAdornment position="end">
                 <IconButton color="primary" onClick={() => handleOnAdd(departmentName)}>
                   <AddIcon />
                 </IconButton>
               </InputAdornment>
-            }
+            )}
           />
           {errors.departments && <FormHelperText error>{errors.departments}</FormHelperText>}
         </FormControl>
         {/* List of departments */}
         {departments.length > 0 ? (
           <List>
-            {departments.map(department => (
+            {departments.map((department) => (
               <ListItem key={department}>
                 <ListItemText primary={department} />
                 <ListItemSecondaryAction>

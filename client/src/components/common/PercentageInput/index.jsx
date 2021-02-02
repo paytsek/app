@@ -17,7 +17,7 @@ const PercentageInput = ({ onChange, value, ...props }) => {
 
   const val = value * 100;
 
-  const handleOnChange = e => {
+  const handleOnChange = (e) => {
     const event = { ...e };
     const newValue = e.target.value / 100;
     event.target.value = Number(newValue.toFixed(4));
@@ -26,11 +26,12 @@ const PercentageInput = ({ onChange, value, ...props }) => {
 
   return (
     <Input
+      // eslint-disable-next-line react/jsx-props-no-spreading
       {...props}
       type="number"
       value={Number(val.toFixed(2)) || ''}
       endAdornment={<InputAdornment position="end">%</InputAdornment>}
-      onWheel={e => e.currentTarget.blur()}
+      onWheel={(e) => e.currentTarget.blur()}
       onChange={handleOnChange}
       ref={reference}
     />

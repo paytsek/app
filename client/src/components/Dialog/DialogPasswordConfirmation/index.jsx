@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,9 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import MuiSkeleton from '../../MuiSkeleton';
 
-const DialogPasswordConfirmation = ({
-  handleClose, open, onContinue, loading, title,
-}) => {
+const DialogPasswordConfirmation = ({ handleClose, open, onContinue, loading, title }) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -22,14 +20,20 @@ const DialogPasswordConfirmation = ({
   }, [open]);
 
   return (
-    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth maxWidth="sm">
-      <Fragment>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="form-dialog-title"
+      fullWidth
+      maxWidth="sm"
+    >
+      <>
         <DialogTitle id="form-dialog-title">{title}</DialogTitle>
         <DialogContent>
           {loading ? (
             <MuiSkeleton />
           ) : (
-            <Fragment>
+            <>
               <TextField
                 margin="dense"
                 id="password"
@@ -37,7 +41,7 @@ const DialogPasswordConfirmation = ({
                 type="password"
                 fullWidth
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <TextField
                 margin="dense"
@@ -46,9 +50,9 @@ const DialogPasswordConfirmation = ({
                 type="password"
                 fullWidth
                 value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
-            </Fragment>
+            </>
           )}
         </DialogContent>
         <DialogActions>
@@ -59,7 +63,7 @@ const DialogPasswordConfirmation = ({
             Continue
           </Button>
         </DialogActions>
-      </Fragment>
+      </>
     </Dialog>
   );
 };

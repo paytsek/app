@@ -42,7 +42,10 @@ const LayoutRouter = () => (
           <Route path="/:slug/companies/:id" component={CompanyDetailsPage} exact />
           <Route path="/:slug/companies/:id/edit" component={CompanyUpdatePage} exact />
           <Route path="/:slug/dashboard" component={Dashboard} />
-          <Route path="/" component={() => <h1 style={{ fontSize: 50 }}>Page not found</h1>} />
+          <Route
+            path="/"
+            component={() => <h1 style={{ fontSize: 50 }}>Page not found</h1>}
+          />
         </Switch>
       )}
     />

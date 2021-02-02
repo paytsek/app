@@ -10,7 +10,7 @@ import ChangePasswordForm from '../../components/ChangePassword/ChangePasswordFo
 import useStyles from './styles';
 
 const ChangePasswordPage = () => {
-  const { slug } = useSelector(state => state.companySlug);
+  const { slug } = useSelector((state) => state.companySlug);
 
   const { paper, active, title } = useStyles();
 
@@ -22,7 +22,7 @@ const ChangePasswordPage = () => {
           Change Password
         </Link>
       </Breadcrumbs>
-      <Paper className={paper}>
+      <Paper className={paper} elevation={6}>
         <Typography variant="h5" className={title} gutterBottom>
           Change Password
         </Typography>

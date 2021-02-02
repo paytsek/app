@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   gridContainer: {
     marginTop: theme.spacing(5),
     '& .MuiGrid-item': {
@@ -22,6 +22,14 @@ const useStyles = makeStyles(theme => ({
     },
     '& .MuiPaper-root': {
       padding: `${theme.spacing(2)}px`,
+    },
+  },
+  formButton: {
+    paddingTop: theme.spacing(2),
+    display: 'flex',
+    '& > *': {
+      marginRight: theme.spacing(2),
+      marginBottom: theme.spacing(2),
     },
   },
 }));

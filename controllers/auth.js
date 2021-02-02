@@ -9,7 +9,13 @@ const User = require('../models/User');
 const registerUser = asyncHandler(async (req, res) => {
   const { username, email, password, firstName, lastName } = req.body;
 
-  let user = new User({ username, email, password, firstName, lastName });
+  let user = new User({
+    username,
+    email,
+    password,
+    firstName,
+    lastName,
+  });
 
   user = await user.save();
 

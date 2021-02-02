@@ -11,7 +11,7 @@ const RegisteredAddress = ({ settings, onChange, errors }) => {
   const { paper, fieldsContainer } = useStyles();
 
   return (
-    <Paper className={paper}>
+    <Paper className={paper} elevation={6}>
       <TitleBox title="Register Address" />
       <div className={fieldsContainer}>
         <TextField

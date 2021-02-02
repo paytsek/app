@@ -16,6 +16,7 @@
     "lint:client": "npm run lint --prefix client",
     "lint:client:fix": "npm run lint:fix --prefix client",
     "lint:server": "eslint controllers middleware models routes test utils app.js index.js",
+    "lint:server:fix": "eslint controllers middleware models routes test utils app.js index.js --fix",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
@@ -65,6 +66,12 @@
     "xss-clean": "^0.1.1"
   },
   "devDependencies": {
+    "eslint": "^7.19.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "jest": "^26.6.0",
     "mongodb-memory-server": "^6.9.2",
     "supertest": "^6.0.1"

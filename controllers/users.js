@@ -9,7 +9,7 @@ const CompanySetting = require('../models/CompanySetting');
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({}).populate('company');
 
-  const filteredUser = users.filter(user => user._id.toString() !== req.user._id.toString());
+  const filteredUser = users.filter((user) => user._id.toString() !== req.user._id.toString());
 
   res.status(200).json({ success: true, users: filteredUser, count: filteredUser.length });
 });
@@ -143,7 +143,7 @@ const deleteCurrentUser = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Invalid password' }));
   }
 
-  const companySettings = user.companies.map(company => company.companySettings._id);
+  const companySettings = user.companies.map((company) => company.companySettings._id);
 
   await CompanySetting.deleteMany({ _id: { $in: companySettings } });
 

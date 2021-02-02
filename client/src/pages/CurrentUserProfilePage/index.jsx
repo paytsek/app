@@ -7,7 +7,7 @@ import CurrentUserProfileForm from '../../components/CurrentUserProfile/CurrentU
 import useStyles from './styles';
 
 const CurrentUserProfile = () => {
-  const { slug } = useSelector(state => state.companySlug);
+  const { slug } = useSelector((state) => state.companySlug);
 
   const { paper, active, title } = useStyles();
 
@@ -19,7 +19,7 @@ const CurrentUserProfile = () => {
           Profile
         </Link>
       </Breadcrumbs>
-      <Paper className={paper}>
+      <Paper className={paper} elevation={6}>
         <Typography variant="h5" className={title} gutterBottom>
           Profile
         </Typography>

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
   Paper,
   Grid,
@@ -50,7 +50,7 @@ const BasicSettings = ({ onChange, settings, errors }) => {
   const { paper, fieldsContainer } = useStyles();
 
   return (
-    <Paper className={paper}>
+    <Paper className={paper} elevation={6}>
       <TitleBox title="Company Settings" />
       <div className={fieldsContainer}>
         <Grid container spacing={6}>
@@ -200,7 +200,7 @@ const BasicSettings = ({ onChange, settings, errors }) => {
                 </FormControl>
               </Grid>
               {frequency === 'semiMonthly' && (
-                <Fragment>
+                <>
                   <Grid item xs={12} md={6}>
                     <FormControl fullWidth size="small" error={!!errors.secondCutOff}>
                       <InputLabel htmlFor="secondCutOff">Second CutOff</InputLabel>
@@ -231,7 +231,7 @@ const BasicSettings = ({ onChange, settings, errors }) => {
                       )}
                     </FormControl>
                   </Grid>
-                </Fragment>
+                </>
               )}
             </Grid>
           </Grid>
@@ -295,7 +295,7 @@ const BasicSettings = ({ onChange, settings, errors }) => {
             </FormControl>
           </Grid>
           {overtime === 'hourly' && (
-            <Fragment>
+            <>
               <Grid item xs={12} md={3}>
                 <FormControl fullWidth size="small" error={!!errors.overtimePay}>
                   <InputLabel htmlFor="overtimePay">Overtime Pay</InputLabel>
@@ -324,7 +324,7 @@ const BasicSettings = ({ onChange, settings, errors }) => {
                   )}
                 </FormControl>
               </Grid>
-            </Fragment>
+            </>
           )}
           <Grid item xs={12}>
             <Divider />
@@ -344,7 +344,7 @@ const BasicSettings = ({ onChange, settings, errors }) => {
             {errors.holiday && <FormHelperText error>{errors.holiday}</FormHelperText>}
           </Grid>
           {holiday && (
-            <Fragment>
+            <>
               <Grid item xs={12} md={3}>
                 <FormControl fullWidth size="small" error={!!errors.regularHolidayPay}>
                   <InputLabel htmlFor="regularHolidayPay">Regular Holiday Pay</InputLabel>
@@ -373,7 +373,7 @@ const BasicSettings = ({ onChange, settings, errors }) => {
                   )}
                 </FormControl>
               </Grid>
-            </Fragment>
+            </>
           )}
           <Grid item xs={12}>
             <Divider />

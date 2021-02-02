@@ -32,7 +32,7 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-global.signIn = async loggedInUser => {
+global.signIn = async (loggedInUser) => {
   const user = await User.create({
     username: 'John Doe',
     email: 'john@example.com',
@@ -56,7 +56,7 @@ global.signIn = async loggedInUser => {
   return token;
 };
 
-global.signInAdmin = async loggedInUser => {
+global.signInAdmin = async (loggedInUser) => {
   const user = await User.create({
     username: 'Jane Doe',
     email: 'jane@example.com',

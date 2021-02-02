@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import {
-  Avatar, Button, CssBaseline, TextField, Paper, Grid, Typography,
-} from '@material-ui/core';
+import { Avatar, Button, CssBaseline, TextField, Paper, Grid, Typography } from '@material-ui/core';
 import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons/';
 
 import { loginUser } from '../../redux/actions/usersActions';
@@ -16,11 +14,12 @@ const LoginPage = ({ history }) => {
 
   const dispatch = useDispatch();
 
-  const { auth } = useSelector(state => state.authUser);
+  const { auth } = useSelector((state) => state.authUser);
+  const { loading } = useSelector((state) => state.loginUser);
 
   const classes = useStyles();
 
-  const onSubmit = e => {
+  const onSubmit = (e) => {
     e.preventDefault();
     dispatch(loginUser({ email, password }));
   };
@@ -54,7 +53,7 @@ const LoginPage = ({ history }) => {
               name="email"
               autoComplete="off"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               variant="outlined"
@@ -66,16 +65,23 @@ const LoginPage = ({ history }) => {
               type="password"
               id="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             />
-            <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              disabled={loading}
+            >
               Sign In
             </Button>
             <Grid container>
               <Grid item>
                 <Link to="/register">
                   <Typography paragraph color="primary">
-                    Don't have an account? Sign Up
+                    Don&apos;t have an account? Sign Up
                   </Typography>
                 </Link>
               </Grid>

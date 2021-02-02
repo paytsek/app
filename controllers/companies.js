@@ -47,9 +47,7 @@ const setCompanySlug = asyncHandler(async (req, res, next) => {
 
   if (!company) {
     res.status(400);
-    return next(
-      new ErrorResponse({ message: `Resource with an id of ${req.params.slug} not found` }),
-    );
+    return next(new ErrorResponse({ message: `Resource with an id of ${req.params.slug} not found` }));
   }
 
   if (req.user.role !== 'admin' && company.user.toString() !== req.user._id.toString()) {
@@ -165,7 +163,7 @@ const updateCompanySettings = asyncHandler(async (req, res, next) => {
   companySettings = await CompanySetting.findById(id);
 
   const fields = Object.keys(req.body);
-  fields.forEach(field => {
+  fields.forEach((field) => {
     companySettings[field] = req.body[field];
   });
 

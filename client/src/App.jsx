@@ -46,7 +46,7 @@ const App = () => {
         <Route path="/login" component={LoginPage} exact />
         <LoggedInRoute path="/select-company" component={SelectCompanyPage} exact />
         <Layout>
-          <PrivateRoute path="/:slug" component={props => <LayoutRouter {...props} />} />
+          <PrivateRoute path="/:slug" component={(props) => <LayoutRouter {...props} />} />
         </Layout>
       </Switch>
     </Router>

@@ -10,7 +10,7 @@ import { getCompaniesList } from '../../../redux/actions/companiesActions';
 const CurrentCompaniesContainer = () => {
   const dispatch = useDispatch();
 
-  const { companies, loading } = useSelector(state => state.companiesList);
+  const { companies, loading } = useSelector((state) => state.companiesList);
 
   useEffect(() => {
     dispatch(getCompaniesList());
@@ -19,13 +19,13 @@ const CurrentCompaniesContainer = () => {
   return (
     <Grid container spacing={4} justify="space-between">
       {loading
-        ? [...Array(3).keys()].map(a => (
-            <Grid item md={4} key={a}>
-              <MuiSkeleton />
-            </Grid>
+        ? [...Array(3).keys()].map((a) => (
+          <Grid item md={4} key={a}>
+            <MuiSkeleton />
+          </Grid>
         ))
-        : (companies.length > 0
-            && companies.map(company => (
+        : (companies.length > 0 &&
+            companies.map((company) => (
               <Grid item md={4} sm={6} xs={12} key={company._id}>
                 <CurrentCompaniesCard company={company} />
               </Grid>

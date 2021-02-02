@@ -26,7 +26,7 @@ const errorHandler = (err, req, res, next) => {
     const validationError = { ...err };
     const errorFields = Object.keys(error.errors);
 
-    errorFields.forEach(field => {
+    errorFields.forEach((field) => {
       validationError.errors[field] = validationError.errors[field].message;
     });
 

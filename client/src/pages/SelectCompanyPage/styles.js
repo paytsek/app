@@ -1,10 +1,11 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     width: '100%',
     justifyContent: 'center',
+    margin: `${theme.spacing(2)}px 0`,
     '& .MuiList-root': {
       width: '100%',
       maxWidth: 600,
@@ -16,6 +17,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(1),
     borderRadius: 5,
     backgroundColor: '#fff',
+    padding: theme.spacing(2),
     '& .MuiButtonBase-root': {
       padding: theme.spacing(2),
     },
@@ -37,6 +39,24 @@ const useStyles = makeStyles(theme => ({
   },
   buttonContainer: {
     textAlign: 'center',
+  },
+  listItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'start',
+
+    '&:hover': {
+      '& .MuiSvgIcon-root': {
+        fontSize: 32,
+      },
+    },
+    '& .MuiSvgIcon-root': {
+      position: 'absolute',
+      right: '2%',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      transistion: 'all 0.2s ease',
+    },
   },
 }));
 

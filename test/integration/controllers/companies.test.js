@@ -23,10 +23,7 @@ describe('POST /api/v1/companies/name - createCompany', () => {
   it('should return 201 status code and success response if name is valid', async () => {
     const token = await global.signIn();
 
-    const res = await request(app)
-      .post(url)
-      .auth(token, { type: 'bearer' })
-      .send({ name: 'PayTsek' });
+    const res = await request(app).post(url).auth(token, { type: 'bearer' }).send({ name: 'PayTsek' });
 
     expect(res.status).toBe(201);
     expect(res.body.success).toBeTruthy();
@@ -36,10 +33,7 @@ describe('POST /api/v1/companies/name - createCompany', () => {
   it('should generate a slug when saving a company name', async () => {
     const token = await global.signIn();
 
-    const { body } = await request(app)
-      .post(url)
-      .auth(token, { type: 'bearer' })
-      .send({ name: 'Pay Tsek' });
+    const { body } = await request(app).post(url).auth(token, { type: 'bearer' }).send({ name: 'Pay Tsek' });
 
     expect(body.company.slug).toMatch(/pay-tsek/);
   });
@@ -47,10 +41,7 @@ describe('POST /api/v1/companies/name - createCompany', () => {
   it('should return 400 status code and error response if name is empty', async () => {
     const token = await global.signIn();
 
-    const { status, body } = await request(app)
-      .post(url)
-      .auth(token, { type: 'bearer' })
-      .send({ name: '' });
+    const { status, body } = await request(app).post(url).auth(token, { type: 'bearer' }).send({ name: '' });
 
     expect(status).toBe(400);
     expect(body.success).toBeFalsy();
@@ -61,10 +52,7 @@ describe('POST /api/v1/companies/name - createCompany', () => {
     const token = await global.signIn();
 
     await Company.create({ name: 'PayTsek', user: mongoose.Types.ObjectId() });
-    const { status, body } = await request(app)
-      .post(url)
-      .auth(token, { type: 'bearer' })
-      .send({ name: 'PayTsek' });
+    const { status, body } = await request(app).post(url).auth(token, { type: 'bearer' }).send({ name: 'PayTsek' });
 
     expect(status).toBe(400);
     expect(body.success).toBeFalsy();
@@ -212,9 +200,7 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
         user: user._id,
       });
 
-      const res = await request(app)
-        .delete(`${url}/${company._id}`)
-        .auth(token, { type: 'bearer' });
+      const res = await request(app).delete(`${url}/${company._id}`).auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
@@ -245,9 +231,7 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
 
       expect(await CompanySetting.countDocuments()).toBe(1);
 
-      const res = await request(app)
-        .delete(`${url}/${company._id}`)
-        .auth(token, { type: 'bearer' });
+      const res = await request(app).delete(`${url}/${company._id}`).auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
@@ -286,9 +270,7 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
 
       expect(await CompanySetting.countDocuments()).toBe(1);
 
-      const res = await request(app)
-        .delete(`${url}/${company._id}`)
-        .auth(token, { type: 'bearer' });
+      const res = await request(app).delete(`${url}/${company._id}`).auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
@@ -542,24 +524,19 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
           '`sample` is not a valid enum value for path `accountingJournal.deminimisBenefits`.',
         'accountingJournal.employeeBenefits':
           '`sample` is not a valid enum value for path `accountingJournal.employeeBenefits`.',
-        'accountingJournal.hdmfPayable':
-          '`sample` is not a valid enum value for path `accountingJournal.hdmfPayable`.',
-        'accountingJournal.netPay':
-          '`sample` is not a valid enum value for path `accountingJournal.netPay`.',
+        'accountingJournal.hdmfPayable': '`sample` is not a valid enum value for path `accountingJournal.hdmfPayable`.',
+        'accountingJournal.netPay': '`sample` is not a valid enum value for path `accountingJournal.netPay`.',
         'accountingJournal.nonTaxableCompensation':
           '`sample` is not a valid enum value for path `accountingJournal.nonTaxableCompensation`.',
-        'accountingJournal.phicPayable':
-          '`sample` is not a valid enum value for path `accountingJournal.phicPayable`.',
+        'accountingJournal.phicPayable': '`sample` is not a valid enum value for path `accountingJournal.phicPayable`.',
         'accountingJournal.postTaxDeduction':
           '`sample` is not a valid enum value for path `accountingJournal.postTaxDeduction`.',
         'accountingJournal.preTaxDeduction':
           '`sample` is not a valid enum value for path `accountingJournal.preTaxDeduction`.',
         'accountingJournal.reimbursement':
           '`sample` is not a valid enum value for path `accountingJournal.reimbursement`.',
-        'accountingJournal.sssPayable':
-          '`sample` is not a valid enum value for path `accountingJournal.sssPayable`.',
-        'accountingJournal.taxDue':
-          '`sample` is not a valid enum value for path `accountingJournal.taxDue`.',
+        'accountingJournal.sssPayable': '`sample` is not a valid enum value for path `accountingJournal.sssPayable`.',
+        'accountingJournal.taxDue': '`sample` is not a valid enum value for path `accountingJournal.taxDue`.',
         'accountingJournal.taxableCompensation':
           '`sample` is not a valid enum value for path `accountingJournal.taxableCompensation`.',
         'accountingJournal.thirteenthMonthPay':
@@ -690,9 +667,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
     it('should return error if no company slug or invalid', async () => {
       const token = await global.signIn();
 
-      const res = await request(app)
-        .put(`${url}/${mongoose.Types.ObjectId()}`)
-        .auth(token, { type: 'bearer' });
+      const res = await request(app).put(`${url}/${mongoose.Types.ObjectId()}`).auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();

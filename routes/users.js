@@ -20,16 +20,8 @@ router.route('/').get(auth, admin, getUsers);
 // api/v1/users/current-user/password
 router.route('/current-user/password').put(auth, updateCurrentUserPassword);
 // api/v1/users/current-user
-router
-  .route('/current-user')
-  .get(auth, getCurrentUser)
-  .put(auth, updateCurrentUser)
-  .delete(auth, deleteCurrentUser);
+router.route('/current-user').get(auth, getCurrentUser).put(auth, updateCurrentUser).delete(auth, deleteCurrentUser);
 // api/v1/users/:id
-router
-  .route('/:id')
-  .get(auth, getUser)
-  .put(auth, admin, updateUser)
-  .delete(auth, admin, deleteUser);
+router.route('/:id').get(auth, getUser).put(auth, admin, updateUser).delete(auth, admin, deleteUser);
 
 module.exports = router;

@@ -3,11 +3,11 @@ import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const AdminRoute = ({ component: Component, ...rest }) => {
-  const { auth, loading, user } = useSelector(state => state.authUser);
+  const { auth, loading, user } = useSelector((state) => state.authUser);
   return (
     <Route
       {...rest}
-      render={props => {
+      render={(props) => {
         if (!auth && !loading) {
           return <Redirect to="/login" />;
         }

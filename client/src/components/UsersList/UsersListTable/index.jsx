@@ -17,21 +17,21 @@ const UsersListTable = ({ history }) => {
 
   const dispatch = useDispatch();
 
-  const { users, loading } = useSelector(state => state.usersList);
-  const { user } = useSelector(state => state.authUser);
-  const { loading: userListDeleteLoading, success } = useSelector(state => state.userListDelete);
+  const { users, loading } = useSelector((state) => state.usersList);
+  const { user } = useSelector((state) => state.authUser);
+  const { loading: userListDeleteLoading, success } = useSelector((state) => state.userListDelete);
 
   const handleClose = () => {
     setOpen(false);
     setUserId('');
   };
 
-  const handleOpen = id => {
+  const handleOpen = (id) => {
     setOpen(true);
     setUserId(id);
   };
 
-  const handleOnContinue = userData => {
+  const handleOnContinue = (userData) => {
     dispatch(deleteUser(userId, userData));
   };
 
@@ -55,8 +55,8 @@ const UsersListTable = ({ history }) => {
       headerName: 'Action',
       sortable: false,
       width: user.role === 'admin' ? 190 : 100,
-      renderCell: props => (
-        <Fragment>
+      renderCell: (props) => (
+        <>
           <Button
             color="primary"
             startIcon={<Search onClick={() => history.push(`users/${props.row.id}`)} />}
@@ -75,7 +75,7 @@ const UsersListTable = ({ history }) => {
               startIcon={<Delete />}
             />
           )}
-        </Fragment>
+        </>
       ),
     },
   ];
@@ -92,11 +92,11 @@ const UsersListTable = ({ history }) => {
   }, [success]);
 
   return (
-    <Fragment>
+    <>
       <div style={{ height: 400, width: '100%' }}>
         <DataGrid
           className={dataGrid}
-          rows={users.map(userList => ({ ...userList, id: userList._id }))}
+          rows={users.map((userList) => ({ ...userList, id: userList._id }))}
           columns={columns}
           checkboxSelection
           disableSelectionOnClick
@@ -111,7 +111,7 @@ const UsersListTable = ({ history }) => {
         onContinue={handleOnContinue}
         loading={userListDeleteLoading}
       />
-    </Fragment>
+    </>
   );
 };
 
