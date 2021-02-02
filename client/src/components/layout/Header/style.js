@@ -9,6 +9,14 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     flexGrow: 1,
+    display: 'flex',
+    alignItems: 'center',
+
+    '& img': {
+      maxHeight: '100%',
+      width: '100%',
+      maxWidth: '40px',
+    },
   },
   drawer: {
     width: 240,

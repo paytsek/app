@@ -54,6 +54,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
+            <img src="/images/logo.png" alt="logo" />
             PayTsek
           </Typography>
           <div>
