@@ -69,6 +69,12 @@ staticUrls.forEach((url) => {
   });
 });
 
+// API DOCUMENTATION
+app.use(express.static(path.join(__dirname, 'doc')));
+app.get('/api/v1/documentation', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'doc', 'index.html'));
+});
+
 // API ROUTES
 app.use('/api/v1/companies', companyRoutes);
 app.use('/api/v1/auth', authRoutes);
