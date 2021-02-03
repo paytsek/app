@@ -116,7 +116,7 @@ const SelectCompanyPage = ({ history }) => {
           Sign out
         </Button>
       </div>
-      <CompanyCreateFormDialog open={open} handleClose={handleOnClose} />
+      <CompanyCreateFormDialog open={open} handleClose={handleOnClose} title="Add a company name" />
     </Container>
   );
 };
