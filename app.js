@@ -59,12 +59,22 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+// TODO
+// CHANGE INTO SSR
+app.use(express.static(path.join(__dirname, 'web-app')));
+const staticUrls = ['/', '/pricing', '/accountants', '/resources', '/free-trial'];
+staticUrls.forEach((url) => {
+  app.get(url, (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'web-app', 'index.html'));
+  });
+});
+
 // API ROUTES
 app.use('/api/v1/companies', companyRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'development') {
   app.use(express.static(path.join(__dirname, '/client/build')));
 
   app.get('*', (req, res) => {
