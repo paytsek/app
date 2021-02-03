@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Avatar, Button, CssBaseline, TextField, Paper, Grid, Typography } from '@material-ui/core';
-import { LockOutlined as LockOutlinedIcon } from '@material-ui/icons/';
 
 import useStyles from './styles';
 import { registerUser } from '../../redux/actions/usersActions';
@@ -54,7 +53,9 @@ const RegisterPage = ({ history }) => {
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+            <a href="/">
+              <img src="/images/logo.png" alt="logo" />
+            </a>
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign Up
