@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const auth = require('../middleware/auth');
-const slug = require('../middleware/slug.js');
+const tenant = require('../middleware/tenant');
 
 const {
   createCompany,
@@ -14,8 +14,8 @@ const {
   deleteCompany,
   updateCompanySettings,
   deleteCompanySettings,
-  getCompanySlug,
-  setCompanySlug,
+  getTenant,
+  setTenant,
 } = require('../controllers/companies');
 
 // /api/v1/companies/name
@@ -24,8 +24,8 @@ router.route('/name').post(auth, createCompany);
 // api/v1/companies/name/:id
 router.route('/name/:id').put(auth, updateCompanyName).delete(auth, deleteCompany);
 
-// api/v1/companies/slug/:slug
-router.route('/slug/:slug').post(auth, setCompanySlug).get(auth, slug, getCompanySlug);
+// api/v1/companies/tenant/:slug
+router.route('/tenant/:slug').post(auth, setTenant).get(auth, tenant, getTenant);
 
 // /api/v1/companies
 router.route('/').get(auth, getCompanies);
@@ -34,9 +34,12 @@ router.route('/').get(auth, getCompanies);
 router.route('/:id').get(auth, getCompany);
 
 // /api/v1/companies/settings
-router.route('/settings').post(auth, slug, createCompanySettings);
+router.route('/settings').post(auth, tenant, createCompanySettings);
 
 // api/v1/companies/settings/:id
-router.route('/settings/:id').put(auth, slug, updateCompanySettings).delete(auth, slug, deleteCompanySettings);
+router
+  .route('/settings/:id')
+  .put(auth, tenant, updateCompanySettings)
+  .delete(auth, tenant, deleteCompanySettings);
 
 module.exports = router;
