@@ -16,7 +16,7 @@ const CompanyCreateForm = ({ history, match }) => {
   const dispatch = useDispatch();
 
   const { errors, company } = useSelector((state) => state.createCompanyName);
-  const { authSlug } = useSelector((state) => state.companySlug);
+  const { authSlug } = useSelector((state) => state.companyTenant);
 
   const handleOnSubmit = (e) => {
     e.preventDefault();

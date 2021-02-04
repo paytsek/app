@@ -9,7 +9,7 @@ import {
 } from '@material-ui/icons';
 
 const HeaderAdminList = () => {
-  const { slug } = useSelector((state) => state.companySlug);
+  const { slug } = useSelector((state) => state.companyTenant);
 
   return (
     <List>

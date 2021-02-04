@@ -10,7 +10,7 @@ import ChangePasswordForm from '../../components/ChangePassword/ChangePasswordFo
 import useStyles from './styles';
 
 const ChangePasswordPage = () => {
-  const { slug } = useSelector((state) => state.companySlug);
+  const { slug } = useSelector((state) => state.companyTenant);
 
   const { paper, active, title } = useStyles();
 

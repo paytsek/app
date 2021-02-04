@@ -14,13 +14,13 @@ import {
 import HeaderAdminList from './HeaderAdminList';
 import HeaderMemberList from './HeaderMemberList';
 
-import { LOGOUT, COMPANY_SLUG_REMOVE } from '../../../redux/types';
+import { LOGOUT, COMPANY_TENANT_REMOVE } from '../../../redux/types';
 import useStyles from './style';
 
 const Header = ({ openDrawer, setOpenDrawer, history }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.authUser);
-  const { slug } = useSelector((state) => state.companySlug);
+  const { slug } = useSelector((state) => state.companyTenant);
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -37,7 +37,7 @@ const Header = ({ openDrawer, setOpenDrawer, history }) => {
 
   const handleLogout = () => {
     dispatch({ type: LOGOUT });
-    dispatch({ type: COMPANY_SLUG_REMOVE });
+    dispatch({ type: COMPANY_TENANT_REMOVE });
     history.push('/login');
   };
 

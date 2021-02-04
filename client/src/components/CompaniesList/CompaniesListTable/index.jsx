@@ -10,7 +10,7 @@ import DialogAlert from '../../Dialog/DialogAlert';
 import SwitchCompanyButton from '../../common/SwitchCompanyButton';
 
 import { getCompaniesList, deleteCompany } from '../../../redux/actions/companiesActions';
-import { COMPANY_DELETE_RESET, COMPANY_SLUG_REMOVE } from '../../../redux/types';
+import { COMPANY_DELETE_RESET, COMPANY_TENANT_REMOVE } from '../../../redux/types';
 import useStyles from './styles';
 
 const CompaniesListTable = ({ history }) => {
@@ -19,7 +19,7 @@ const CompaniesListTable = ({ history }) => {
 
   const dispatch = useDispatch();
 
-  const { slug } = useSelector((state) => state.companySlug);
+  const { slug } = useSelector((state) => state.companyTenant);
   const { companies, loading } = useSelector((state) => state.companiesList);
   const { loading: companyDeleteLoading, success } = useSelector((state) => state.companyDelete);
 
@@ -37,7 +37,7 @@ const CompaniesListTable = ({ history }) => {
     await dispatch(deleteCompany(selectedCompany._id));
     setOpen(false);
     if (slug === selectedCompany.slug) {
-      dispatch({ type: COMPANY_SLUG_REMOVE });
+      dispatch({ type: COMPANY_TENANT_REMOVE });
       history.push('/select-company');
     }
   };

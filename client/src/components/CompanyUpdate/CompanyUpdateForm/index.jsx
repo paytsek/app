@@ -11,7 +11,7 @@ import {
   updateCompanyName,
   deleteCompany,
 } from '../../../redux/actions/companiesActions';
-import { COMPANY_NAME_UPDATE_RESET, COMPANY_SLUG_REMOVE } from '../../../redux/types';
+import { COMPANY_NAME_UPDATE_RESET, COMPANY_TENANT_REMOVE } from '../../../redux/types';
 import useStyles from './styles';
 
 const CompanyUpdateForm = ({ history, match }) => {
@@ -20,7 +20,7 @@ const CompanyUpdateForm = ({ history, match }) => {
 
   const [name, setName] = useState('');
 
-  const { slug } = useSelector((state) => state.companySlug);
+  const { slug } = useSelector((state) => state.companyTenant);
   const { company, loading } = useSelector((state) => state.companyDetails);
   const { errors, loading: updateCompanyNameLoading } = useSelector(
     (state) => state.updateCompanyName,
@@ -38,7 +38,7 @@ const CompanyUpdateForm = ({ history, match }) => {
     await dispatch(deleteCompany(id));
 
     if (slug === company.slug) {
-      dispatch({ type: COMPANY_SLUG_REMOVE });
+      dispatch({ type: COMPANY_TENANT_REMOVE });
       history.push('/select-company');
     }
   };

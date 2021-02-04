@@ -7,7 +7,7 @@ import CurrentUserProfileForm from '../../components/CurrentUserProfile/CurrentU
 import useStyles from './styles';
 
 const CurrentUserProfile = () => {
-  const { slug } = useSelector((state) => state.companySlug);
+  const { slug } = useSelector((state) => state.companyTenant);
 
   const { paper, active, title } = useStyles();
 

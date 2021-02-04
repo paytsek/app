@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const { auth } = useSelector((state) => state.authUser);
-  const { authSlug } = useSelector((state) => state.companySlug);
+  const { authSlug } = useSelector((state) => state.companyTenant);
 
   return (
     <Route

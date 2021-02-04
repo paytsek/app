@@ -1,5 +1,5 @@
 import axios from '../../axios';
-import setCompanySlug from '../../utils/setCompanySlug';
+import setTenant from '../../utils/setTenant';
 
 import {
   COMPANY_DELETE_FAIL,
@@ -19,12 +19,12 @@ import {
   COMPANY_SETTINGS_CREATE_FAIL,
   COMPANY_SETTINGS_CREATE_REQUEST,
   COMPANY_SETTINGS_CREATE_SUCCESS,
-  COMPANY_SLUG_FAIL,
-  COMPANY_SLUG_HEADERS_FAIL,
-  COMPANY_SLUG_HEADERS_REQUEST,
-  COMPANY_SLUG_HEADERS_SUCCESS,
-  COMPANY_SLUG_REQUEST,
-  COMPANY_SLUG_SUCCESS,
+  COMPANY_TENANT_HEADERS_FAIL,
+  COMPANY_TENANT_HEADERS_REQUEST,
+  COMPANY_TENANT_HEADERS_SUCCESS,
+  COMPANY_TENANT_REQUEST,
+  COMPANY_TENANT_SUCCESS,
+  COMPANY_TENANT_FAIL,
 } from '../types';
 import notification from '../../utils/notification';
 
@@ -195,32 +195,32 @@ export const updateCompanySettings = (id, companySettings) => async (dispatch) =
   }
 };
 
-export const getCompanySlug = () => async (dispatch) => {
-  const slug = localStorage.getItem('slug');
+export const getCompanyTenant = () => async (dispatch) => {
+  const slug = localStorage.getItem('tenant');
 
-  setCompanySlug(slug);
+  setTenant(slug);
 
-  dispatch({ type: COMPANY_SLUG_REQUEST });
+  dispatch({ type: COMPANY_TENANT_REQUEST });
 
   try {
-    const { data } = await axios.get(`/companies/slug/${slug}`);
+    const { data } = await axios.get(`/companies/tenant/${slug}`);
 
-    dispatch({ type: COMPANY_SLUG_SUCCESS, payload: data });
+    dispatch({ type: COMPANY_TENANT_SUCCESS, payload: data });
   } catch (error) {
     const { errors } = error.response.data;
 
-    dispatch({ type: COMPANY_SLUG_FAIL, payload: errors });
+    dispatch({ type: COMPANY_TENANT_FAIL, payload: errors });
   }
 };
 
-export const setSlug = (slug) => async (dispatch) => {
-  dispatch({ type: COMPANY_SLUG_HEADERS_REQUEST });
+export const setCompanyTenant = (slug) => async (dispatch) => {
+  dispatch({ type: COMPANY_TENANT_HEADERS_REQUEST });
 
   try {
-    const { data } = await axios.post(`/companies/slug/${slug}`);
+    const { data } = await axios.post(`/companies/tenant/${slug}`);
 
-    dispatch({ type: COMPANY_SLUG_HEADERS_SUCCESS, payload: data });
-    dispatch(getCompanySlug());
+    dispatch({ type: COMPANY_TENANT_HEADERS_SUCCESS, payload: data });
+    dispatch(getCompanyTenant());
   } catch (error) {
     const { errors } = error.response.data;
     const message = errors && errors.message;
@@ -229,6 +229,6 @@ export const setSlug = (slug) => async (dispatch) => {
       dispatch(notification('error', message, dispatch));
     }
 
-    dispatch({ type: COMPANY_SLUG_HEADERS_FAIL, payload: errors });
+    dispatch({ type: COMPANY_TENANT_HEADERS_FAIL, payload: errors });
   }
 };
