@@ -16,7 +16,7 @@ const ChangePasswordForm = ({ history }) => {
   const dispatch = useDispatch();
 
   const { loading, success } = useSelector((state) => state.currentUserUpdate);
-  const { slug } = useSelector((state) => state.companySlug);
+  const { slug } = useSelector((state) => state.companyTenant);
 
   const { formButton } = useStyles();
 

@@ -19,7 +19,7 @@ const UserEditForm = ({ history, match }) => {
 
   const dispatch = useDispatch();
 
-  const { slug } = useSelector((state) => state.companySlug);
+  const { slug } = useSelector((state) => state.companyTenant);
   const { user, loading } = useSelector((state) => state.userDetails);
   const { errors, loading: updateUserDetailsLoading } = useSelector(
     (state) => state.updateUserDetails,

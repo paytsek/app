@@ -7,26 +7,25 @@ import Notifier from './components/Notifier';
 import Layout from './components/layout';
 import LayoutRouter from './routers/LayoutRouter';
 import LoggedInRoute from './components/routes/LoggedInRoute';
-import PrivateRoute from './components/routes/PrivateRoute';
 import SelectCompanyPage from './pages/SelectCompanyPage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 
 import { authUser } from './redux/actions/usersActions';
-import { getCompanySlug } from './redux/actions/companiesActions';
+import { getCompanyTenant } from './redux/actions/companiesActions';
 import setAuthToken from './utils/setAuthToken';
-import setCompanySlug from './utils/setCompanySlug';
+import setTenant from './utils/setTenant';
 import './stylesheets/main.scss';
 
 const token = localStorage.getItem('token');
-const slug = localStorage.getItem('slug');
+const slug = localStorage.getItem('tenant');
 
 if (token) {
   setAuthToken(token);
 }
 
 if (slug) {
-  setCompanySlug(slug);
+  setTenant(slug);
 }
 
 const App = () => {
@@ -34,7 +33,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(authUser());
-    dispatch(getCompanySlug());
+    dispatch(getCompanyTenant());
   }, [slug]);
 
   return (
@@ -46,7 +45,7 @@ const App = () => {
         <Route path="/login" component={LoginPage} exact />
         <LoggedInRoute path="/select-company" component={SelectCompanyPage} exact />
         <Layout>
-          <PrivateRoute path="/:slug" component={(props) => <LayoutRouter {...props} />} />
+          <Route path="/:slug" component={(props) => <LayoutRouter {...props} />} />
         </Layout>
       </Switch>
     </Router>

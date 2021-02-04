@@ -99,7 +99,7 @@ const CompanySettingsForm = () => {
 
   const { errors, companySettings, loading } = useSelector((state) => state.companySettingsCreate);
   const { company, loading: companyDetailsLoading } = useSelector((state) => state.companyDetails);
-  const { id } = useSelector((state) => state.companySlug);
+  const { id } = useSelector((state) => state.companyTenant);
 
   const {
     basicSettings,

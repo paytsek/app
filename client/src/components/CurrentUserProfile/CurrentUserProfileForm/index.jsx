@@ -12,7 +12,7 @@ import {
   updateCurrentUser,
   deleteCurrentUser,
 } from '../../../redux/actions/usersActions';
-import { COMPANY_SLUG_REMOVE, CURRENT_USER_RESET, CURRENT_USER_UPDATE_RESET, LOGOUT } from '../../../redux/types';
+import { COMPANY_TENANT_REMOVE, CURRENT_USER_RESET, CURRENT_USER_UPDATE_RESET, LOGOUT } from '../../../redux/types';
 import useStyles from './styles';
 
 const CurrentUserProfileForm = ({ history }) => {
@@ -23,7 +23,7 @@ const CurrentUserProfileForm = ({ history }) => {
     (state) => state.currentUserUpdate,
   );
   const { loading: currentUserDeleteLoading } = useSelector((state) => state.currentUserDelete);
-  const { slug } = useSelector((state) => state.companySlug);
+  const { slug } = useSelector((state) => state.companyTenant);
 
   const [state, setState] = useState({
     email: '',
@@ -65,7 +65,7 @@ const CurrentUserProfileForm = ({ history }) => {
   const handleDeleteCurrentUser = async (userData) => {
     await dispatch(deleteCurrentUser(userData));
     dispatch({ type: LOGOUT });
-    dispatch({ type: COMPANY_SLUG_REMOVE });
+    dispatch({ type: COMPANY_TENANT_REMOVE });
     history.push('/login');
   };
 

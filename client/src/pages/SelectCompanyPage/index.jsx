@@ -9,11 +9,11 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import CompanyCreateFormDialog from '../../components/Dialog/CompanyCreateFormDialog';
 import MuiSkeleton from '../../components/MuiSkeleton';
 
-import { getCompaniesList, setSlug, getCompanySlug } from '../../redux/actions/companiesActions';
-import { LOGOUT, COMPANY_SLUG_REMOVE } from '../../redux/types';
+import { getCompaniesList, setCompanyTenant, getCompanyTenant } from '../../redux/actions/companiesActions';
+import { LOGOUT, COMPANY_TENANT_REMOVE } from '../../redux/types';
 import useStyles from './styles';
 
-const localStorageSlug = localStorage.getItem('slug');
+const localStorageSlug = localStorage.getItem('tenant');
 
 const SelectCompanyPage = ({ history }) => {
   const [open, setOpen] = useState(false);
@@ -21,7 +21,7 @@ const SelectCompanyPage = ({ history }) => {
   const dispatch = useDispatch();
 
   const { companies, loading } = useSelector((state) => state.companiesList);
-  const { authSlug, slug } = useSelector((state) => state.companySlug);
+  const { authSlug, slug } = useSelector((state) => state.companyTenant);
   const { user } = useSelector((state) => state.authUser);
   const { company } = useSelector((state) => state.createCompanyName);
 
@@ -32,7 +32,7 @@ const SelectCompanyPage = ({ history }) => {
   useEffect(() => {
     dispatch(getCompaniesList());
     if (localStorageSlug) {
-      dispatch(getCompanySlug());
+      dispatch(getCompanyTenant());
     }
   }, []);
 
@@ -76,7 +76,7 @@ const SelectCompanyPage = ({ history }) => {
                     className={listItem}
                     button
                     onClick={() => {
-                      dispatch(setSlug(comp.slug));
+                      dispatch(setCompanyTenant(comp.slug));
                       history.push(`/${comp.slug}/dashboard`);
                     }}
                   >
@@ -109,7 +109,7 @@ const SelectCompanyPage = ({ history }) => {
           style={{ margin: '16px 0' }}
           onClick={() => {
             dispatch({ type: LOGOUT });
-            dispatch({ type: COMPANY_SLUG_REMOVE });
+            dispatch({ type: COMPANY_TENANT_REMOVE });
             history.push('/login');
           }}
         >

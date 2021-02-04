@@ -14,6 +14,7 @@ import CompanySettingsPage from '../pages/CompanySettingsPage';
 import CompanySettingsCreatePage from '../pages/CompanySettingsCreatePage';
 import CompanySettingsEditPage from '../pages/CompanySettingsEditPage';
 import Dashboard from '../pages/Dashboard';
+import PrivateRoute from '../components/routes/PrivateRoute';
 
 const LayoutRouter = () => (
   <Switch>
@@ -21,28 +22,28 @@ const LayoutRouter = () => (
       path="/:slug"
       component={() => (
         <Switch>
-          <Route path="/:slug/users" component={UsersListPage} exact />
-          <Route path="/:slug/users/:id/edit" component={UserEditPage} exact />
-          <Route path="/:slug/users/:id" component={UserDetailsPage} exact />
-          <Route path="/:slug/profile" component={CurrentUserProfilePage} exact />
-          <Route path="/:slug/change-password" component={ChangePasswordPage} exact />
-          <Route path="/:slug/companies" component={CompanyListPage} exact />
-          <Route path="/:slug/company-settings" component={CompanySettingsPage} exact />
-          <Route
+          <PrivateRoute path="/:slug/users" component={UsersListPage} exact />
+          <PrivateRoute path="/:slug/users/:id/edit" component={UserEditPage} exact />
+          <PrivateRoute path="/:slug/users/:id" component={UserDetailsPage} exact />
+          <PrivateRoute path="/:slug/profile" component={CurrentUserProfilePage} exact />
+          <PrivateRoute path="/:slug/change-password" component={ChangePasswordPage} exact />
+          <PrivateRoute path="/:slug/companies" component={CompanyListPage} exact />
+          <PrivateRoute path="/:slug/company-settings" component={CompanySettingsPage} exact />
+          <PrivateRoute
             path="/:slug/company-settings/create"
             component={CompanySettingsCreatePage}
             exact
           />
-          <Route
+          <PrivateRoute
             path="/:slug/company-settings/:companyId/edit"
             component={CompanySettingsEditPage}
             exact
           />
-          <Route path="/:slug/companies/create" component={CompanyCreatePage} exact />
-          <Route path="/:slug/companies/:id" component={CompanyDetailsPage} exact />
-          <Route path="/:slug/companies/:id/edit" component={CompanyUpdatePage} exact />
-          <Route path="/:slug/dashboard" component={Dashboard} />
-          <Route
+          <PrivateRoute path="/:slug/companies/create" component={CompanyCreatePage} exact />
+          <PrivateRoute path="/:slug/companies/:id" component={CompanyDetailsPage} exact />
+          <PrivateRoute path="/:slug/companies/:id/edit" component={CompanyUpdatePage} exact />
+          <PrivateRoute path="/:slug/dashboard" component={Dashboard} />
+          <PrivateRoute
             path="/"
             component={() => <h1 style={{ fontSize: 50 }}>Page not found</h1>}
           />
