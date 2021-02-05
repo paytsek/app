@@ -99,7 +99,7 @@ const UserEditForm = ({ history, match }) => {
           size="small"
           disabled={updateUserDetailsLoading}
           startIcon={<Clear />}
-          onClick={() => history.push('/users')}
+          onClick={() => history.push(`/${slug}/users/${id}`)}
         >
           Cancel
         </Button>
