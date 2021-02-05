@@ -99,7 +99,7 @@ describe('GET /api/v1/users/:id - getUser', () => {
   });
 
   it('should return 404 is id is not found or invalid', async () => {
-    const token = await global.signIn();
+    const token = await global.signInAdmin();
 
     const id = mongoose.Types.ObjectId();
 
@@ -122,8 +122,24 @@ describe('GET /api/v1/users/:id - getUser', () => {
     });
   });
 
-  it('should return 200 success reponse if id is valid', async () => {
+  it('should return 403 status code and error response if not admin', async () => {
     const token = await global.signIn();
+    const id = mongoose.Types.ObjectId();
+    const res = await request(app).get(`${url}/${id}`).auth(token, { type: 'bearer' });
+
+    expect(res.status).toBe(403);
+    expect(res.body).toEqual(
+      expect.objectContaining({
+        success: false,
+        errors: expect.objectContaining({
+          message: "You don't have permission to access on this route",
+        }),
+      }),
+    );
+  });
+
+  it('should return 200 success reponse if id is valid', async () => {
+    const token = await global.signInAdmin();
 
     const user = await User.create({
       username: 'Rodrigo Carlos',
