@@ -8,7 +8,13 @@ const DepartmentSchema = new mongoose.Schema(
     },
     company: {
       type: mongoose.Schema.Types.ObjectId,
+      ref: 'Company',
       required: [true, 'Company must exist'],
+    },
+    companySettings: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'CompanySetting',
+      required: [true, 'Company Setting must exist'],
     },
   },
   {
