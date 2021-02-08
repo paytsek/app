@@ -16,6 +16,7 @@ const errorHandler = require('./middleware/errorHandler');
 const companyRoutes = require('./routes/companies');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
+const departmentRoutes = require('./routes/departments');
 
 const envPath = process.env.NODE_ENV === 'test' ? './config/test.env' : './config/config.env';
 
@@ -79,6 +80,7 @@ app.get('/api/v1/documentation', (req, res) => {
 app.use('/api/v1/companies', companyRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/departments', departmentRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/client/build')));
