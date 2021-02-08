@@ -240,7 +240,7 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
           country: 'Philippines',
           zipCode: '2600',
         },
-        departments: ['staff'],
+        departments: [mongoose.Types.ObjectId()],
       });
 
       expect(await CompanySetting.countDocuments()).toBe(1);
@@ -281,7 +281,7 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
           country: 'Philippines',
           zipCode: '2600',
         },
-        departments: ['staff'],
+        departments: [mongoose.Types.ObjectId()],
       });
 
       expect(await CompanySetting.countDocuments()).toBe(1);
@@ -607,7 +607,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
         overtimeRestDayPay: 'Overtime Rest Day Pay is required',
         regularHolidayPay: 'Regular Holiday Pay is required',
         specialHolidayPay: 'Special Holiday Pay is required',
-        departments: 'Please add department',
+        // departments: 'Please add department',
         'registeredAddress.zipCode': 'Zip code is required',
         'registeredAddress.country': 'Country is required',
         'registeredAddress.city': 'City is required',
@@ -641,7 +641,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
           country: 'Philippines',
           zipCode: '2600',
         },
-        departments: ['staff'],
+        departments: [mongoose.Types.ObjectId()],
       });
 
     expect(res.status).toBe(201);
@@ -738,7 +738,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
           country: 'Philippines',
           zipCode: '2600',
         },
-        departments: ['staff'],
+        departments: [mongoose.Types.ObjectId()],
       });
 
       const res = await request(app)
@@ -782,7 +782,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
           country: 'Philippines',
           zipCode: '2600',
         },
-        departments: ['staff'],
+        departments: [mongoose.Types.ObjectId()],
       });
 
       const res = await request(app)
@@ -840,7 +840,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
           country: 'Philippines',
           zipCode: '2600',
         },
-        departments: ['staff'],
+        departments: [mongoose.Types.ObjectId()],
       });
 
       const res = await request(app)
@@ -884,7 +884,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
           sssCalculation: { deminimis: false },
           phicCalculation: { deminimis: false },
           thirteenthMonthPayCalculation: { deminimis: false, absences: false },
-          departments: ['Staff', 'Head'],
+          departments: [mongoose.Types.ObjectId(), mongoose.Types.ObjectId()],
           firstCutOff: 1,
           firstPayout: 5,
           secondCutOff: 15,
@@ -945,7 +945,6 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
           sssCalculation: { deminimis: false },
           phicCalculation: { deminimis: false },
           thirteenthMonthPayCalculation: { deminimis: false, absences: false },
-          departments: ['Staff', 'Head'],
           firstCutOff: 1,
           firstPayout: 5,
           secondCutOff: 15,
@@ -1048,7 +1047,7 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
           country: 'Philippines',
           zipCode: '2600',
         },
-        departments: ['staff'],
+        departments: [mongoose.Types.ObjectId()],
       });
 
       const res = await request(app)
