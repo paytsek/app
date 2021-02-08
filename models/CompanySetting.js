@@ -279,13 +279,8 @@ const CompanySettingSchema = new mongoose.Schema(
       },
     },
     departments: {
-      type: [String],
-      required: [true, 'Please add department'],
-      validate(val) {
-        if (val.length <= 0) {
-          throw new Error('Please add department');
-        }
-      },
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: 'Departments',
     },
     accountingJournal: {
       deminimisBenefits: {
