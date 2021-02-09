@@ -1,0 +1,122 @@
+[
+  {
+    "_id": "602210ac3df32e1350e34bc1",
+    "name": "PayTsek Staff",
+    "company": "6010d3dc7951e30d3a584791",
+    "companySettings": "60120c38f44b8109004862b1"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bc2",
+    "name": "PayTsek Senior",
+    "company": "6010d3dc7951e30d3a584791",
+    "companySettings": "60120c38f44b8109004862b1"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bc3",
+    "name": "Full suite Senior",
+    "company": "6010d3dc7951e30d3a584792",
+    "companySettings": "60120c38f44b8109004862b2"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bc4",
+    "name": "Full suite Staff",
+    "company": "6010d3dc7951e30d3a584792",
+    "companySettings": "60120c38f44b8109004862b2"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bc5",
+    "name": "TsekPay Staff",
+    "company": "6010d3dc7951e30d3a584793",
+    "companySettings": "60120c38f44b8109004862b3"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bc6",
+    "name": "TsekPay Senior",
+    "company": "6010d3dc7951e30d3a584793",
+    "companySettings": "60120c38f44b8109004862b3"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bc7",
+    "name": "Asia Tsekay Senior",
+    "company": "6010d3dc7951e30d3a584794",
+    "companySettings": "60120c38f44b8109004862b4"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bc8",
+    "name": "Asia Tsekay Staff",
+    "company": "6010d3dc7951e30d3a584794",
+    "companySettings": "60120c38f44b8109004862b4"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bc9",
+    "name": "Rodrigo Disco Club Staff",
+    "company": "6010d3dc7951e30d3a584795",
+    "companySettings": "60120c38f44b8109004862b5"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bd0",
+    "name": "Rodrigo Disco Club Senior",
+    "company": "6010d3dc7951e30d3a584795",
+    "companySettings": "60120c38f44b8109004862b5"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bd1",
+    "name": "Bankrupt Company Senior",
+    "company": "6010d3dc7951e30d3a584796",
+    "companySettings": "60120c38f44b8109004862b6"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bd2",
+    "name": "Bankrupt Company Staff",
+    "company": "6010d3dc7951e30d3a584796",
+    "companySettings": "60120c38f44b8109004862b6"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bd3",
+    "name": "Salon de Baguio Staff",
+    "company": "6010d3dc7951e30d3a584797",
+    "companySettings": "60120c38f44b8109004862b7"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bd4",
+    "name": "Salon de Baguio Senior",
+    "company": "6010d3dc7951e30d3a584797",
+    "companySettings": "60120c38f44b8109004862b7"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bd5",
+    "name": "Inuman Session Senior",
+    "company": "6010d3dc7951e30d3a584798",
+    "companySettings": "60120c38f44b8109004862b8"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bd6",
+    "name": "Inuman Session Senior",
+    "company": "6010d3dc7951e30d3a584798",
+    "companySettings": "60120c38f44b8109004862b8"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bd7",
+    "name": "Hangover resort Senior",
+    "company": "6010d3dc7951e30d3a584799",
+    "companySettings": "60120c38f44b8109004862b9"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bd8",
+    "name": "Hangover resort Staff",
+    "company": "6010d3dc7951e30d3a584799",
+    "companySettings": "60120c38f44b8109004862b9"
+  },
+  {
+    "_id": "602210ac3df32e1350e34bd9",
+    "name": "Hangover spa Staff",
+    "company": "6010d3dc7951e30d3a584800",
+    "companySettings": "60120c38f44b8109004862c0"
+  },
+  {
+    "_id": "602210ac3df32e1350e34be0",
+    "name": "Hangover spa Staff",
+    "company": "6010d3dc7951e30d3a584800",
+    "companySettings": "60120c38f44b8109004862c0"
+  }
+]

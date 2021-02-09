@@ -68,7 +68,6 @@
             "snacks": false
         }
     },
-    "departments": ["staff", "managers", "seniors"],
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
         "employeeBenefits": "wagesAndSalaries",
@@ -154,7 +153,6 @@
             "snacks": false
         }
     },
-    "departments": ["staff", "managers", "seniors"],
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
         "employeeBenefits": "wagesAndSalaries",
@@ -240,7 +238,6 @@
             "snacks": false
         }
     },
-    "departments": ["staff", "managers", "seniors"],
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
         "employeeBenefits": "wagesAndSalaries",
@@ -326,7 +323,6 @@
             "snacks": false
         }
     },
-    "departments": ["staff", "managers", "seniors"],
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
         "employeeBenefits": "wagesAndSalaries",
@@ -412,7 +408,6 @@
             "snacks": false
         }
     },
-    "departments": ["staff", "managers", "seniors"],
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
         "employeeBenefits": "wagesAndSalaries",
@@ -498,7 +493,6 @@
             "snacks": false
         }
     },
-    "departments": ["staff", "managers", "seniors"],
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
         "employeeBenefits": "wagesAndSalaries",
@@ -584,7 +578,6 @@
             "snacks": false
         }
     },
-    "departments": ["staff", "managers", "seniors"],
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
         "employeeBenefits": "wagesAndSalaries",
@@ -670,7 +663,6 @@
             "snacks": false
         }
     },
-    "departments": ["staff", "managers", "seniors"],
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
         "employeeBenefits": "wagesAndSalaries",
@@ -756,7 +748,6 @@
             "snacks": false
         }
     },
-    "departments": ["staff", "managers", "seniors"],
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
         "employeeBenefits": "wagesAndSalaries",
@@ -842,7 +833,6 @@
             "snacks": false
         }
     },
-    "departments": ["staff", "managers", "seniors"],
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
         "employeeBenefits": "wagesAndSalaries",

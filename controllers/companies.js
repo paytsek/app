@@ -99,6 +99,9 @@ const getCompany = asyncHandler(async (req, res, next) => {
 
   const company = await Company.findById(id).populate({
     path: 'companySettings',
+    populate: {
+      path: 'departments',
+    },
   });
 
   if (!company) {
