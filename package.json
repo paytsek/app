@@ -61,6 +61,7 @@
     "mongoose": "^5.11.9",
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
+    "run-rs": "^0.7.4",
     "slugify": "^1.4.6",
     "validator": "^13.5.2",
     "xss-clean": "^0.1.1"
@@ -73,7 +74,7 @@
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "jest": "^26.6.0",
-    "mongodb-memory-server": "^6.9.2",
+    "mongodb-memory-server": "^6.9.3",
     "supertest": "^6.0.1"
   }
 }

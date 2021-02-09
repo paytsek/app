@@ -1,12 +1,19 @@
-const { MongoMemoryServer } = require('mongodb-memory-server');
+const { MongoMemoryReplSet } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 let mongo;
 
+jest.setTimeout(500000);
+
 beforeAll(async () => {
-  mongo = new MongoMemoryServer();
+  mongo = new MongoMemoryReplSet({
+    replSet: { storageEngine: 'wiredTiger' },
+  });
+
+  await mongo.waitUntilRunning();
+
   const mongoUri = await mongo.getUri();
 
   await mongoose.connect(mongoUri, {

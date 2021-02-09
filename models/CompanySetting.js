@@ -278,10 +278,6 @@ const CompanySettingSchema = new mongoose.Schema(
         },
       },
     },
-    departments: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: 'Departments',
-    },
     accountingJournal: {
       deminimisBenefits: {
         type: String,
@@ -352,6 +348,8 @@ const CompanySettingSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   },
 );
 
@@ -375,6 +373,13 @@ CompanySettingSchema.pre('save', function (next) {
   this.zipCode = zipCode;
 
   next();
+});
+
+// REVERS POPULATE DEPARTMENT
+CompanySettingSchema.virtual('departments', {
+  ref: 'Department',
+  localField: '_id',
+  foreignField: 'companySettings',
 });
 
 module.exports = mongoose.model('CompanySetting', CompanySettingSchema);

@@ -1,5 +1,7 @@
+const mongoose = require('mongoose');
 const Company = require('../models/Company');
 const CompanySetting = require('../models/CompanySetting');
+const Department = require('../models/Department');
 
 const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
@@ -128,12 +130,46 @@ const createCompanySettings = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'User is not authorized' }));
   }
 
-  const companySettings = await CompanySetting.create({
-    company: company._id,
-    ...req.body,
-  });
+  const session = await mongoose.startSession();
 
-  return res.status(201).json({ success: true, companySettings });
+  try {
+    session.startTransaction();
+    const opts = { session };
+    const body = { ...req.body };
+    delete body.departments;
+
+    let [companySettings] = await CompanySetting.create([{ company: company._id, ...body }], opts);
+
+    const departments = req.body.departments.map((department) => ({
+      name: department,
+      company: company._id,
+      companySettings: companySettings._id,
+    }));
+
+    const duplicateDepartment = new Set(req.body.departments).size !== req.body.departments.length;
+
+    if (duplicateDepartment) {
+      await session.abortTransaction();
+      session.endSession();
+      res.status(400);
+      return next(new ErrorResponse({ departments: 'Duplicate field value entered' }));
+    }
+
+    await Department.create(departments, opts);
+
+    await session.commitTransaction();
+    session.endSession();
+
+    companySettings = await CompanySetting.findById(companySettings._id).populate({
+      path: 'departments',
+    });
+
+    return res.status(201).json({ success: true, companySettings });
+  } catch (err) {
+    await session.abortTransaction();
+    session.endSession();
+    throw err;
+  }
 });
 
 // @ROUTE PUT /api/v1/companies/settings/:id

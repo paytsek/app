@@ -5,6 +5,7 @@ const request = require('supertest');
 const app = require('../../../app');
 const Company = require('../../../models/Company');
 const Department = require('../../../models/Department');
+const CompanySetting = require('../../../models/CompanySetting');
 
 describe('GET /api/v1/departments', () => {
   const url = '/api/v1/departments';
@@ -60,9 +61,22 @@ describe('GET /api/v1/departments', () => {
       const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const company = await Company.create({ name: 'PayTsek', user: user._id });
+      const companySettings = await CompanySetting.create({
+        company: company._id,
+        firstCutOff: 1,
+        firstPayout: 5,
+        secondCutOff: 15,
+        secondPayout: 20,
+        registeredAddress: {
+          street: '24c Marcoville',
+          city: 'Baguio city',
+          country: 'Philippines',
+          zipCode: '2600',
+        },
+      });
       Department.create([
-        { name: 'Staff', company: company._id },
-        { name: 'Senior', company: company._id },
+        { name: 'Staff', company: company._id, companySettings: companySettings._id },
+        { name: 'Senior', company: company._id, companySettings: companySettings._id },
       ]);
 
       const res = await request(app)
