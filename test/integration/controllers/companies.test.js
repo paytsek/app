@@ -617,6 +617,8 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   });
 
   it('should return 201 status code and success response if fields are valid', async () => {
+    mongoose.connection.db.createCollection('departments');
+
     const token = await global.signIn();
 
     let res = await request(app)
@@ -641,7 +643,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
           country: 'Philippines',
           zipCode: '2600',
         },
-        departments: [mongoose.Types.ObjectId()],
+        departments: ['Staff'],
       });
 
     expect(res.status).toBe(201);
