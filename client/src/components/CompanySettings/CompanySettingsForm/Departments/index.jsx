@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Paper,
@@ -18,6 +18,7 @@ import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@materia
 import TitleBox from '../../../common/TitleBox';
 import DepartmentFormDialog from '../../../Dialog/DepartmentFormDialog';
 
+import { DEPARTMENT_UPDATE_RESET } from '../../../../redux/types';
 import { createDepartment } from '../../../../redux/actions/departmentsActions';
 import notification from '../../../../utils/notification';
 import useStyles from '../styles';
@@ -30,6 +31,9 @@ const Departments = ({ departments = [] }) => {
   const dispatch = useDispatch();
 
   const { errors, loading } = useSelector((state) => state.departmentCreate);
+  const { success, errors: departmentUpdateErrors, loading: departmentUpdateLoading } = useSelector(
+    (state) => state.departmentUpdate,
+  );
 
   const { paper, fieldsContainer } = useStyles();
 
@@ -52,12 +56,19 @@ const Departments = ({ departments = [] }) => {
   const handleOnClose = () => {
     setSelectedDepartment({});
     setOpen(false);
+    dispatch({ type: DEPARTMENT_UPDATE_RESET });
   };
 
   const handleOnOpen = (dep) => {
     setSelectedDepartment(dep);
     setOpen(true);
   };
+
+  useEffect(() => {
+    if (success) {
+      handleOnClose();
+    }
+  }, [success]);
 
   return (
     <>
@@ -114,6 +125,8 @@ const Departments = ({ departments = [] }) => {
         handleClose={handleOnClose}
         department={selectedDepartment}
         title="Edit a department"
+        errors={departmentUpdateErrors}
+        loading={departmentUpdateLoading}
       />
     </>
   );

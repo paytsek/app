@@ -6,11 +6,10 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
 import DepartmentForm from '../../Department/DepartmentForm';
-import MuiSkeleton from '../../MuiSkeleton';
 
 import useStyles from './styles';
 
-const DepartmentFormDialog = ({ handleClose, open, loading, title, department }) => {
+const DepartmentFormDialog = ({ handleClose, open, loading, title, department, errors }) => {
   const { closeButton } = useStyles();
 
   return (
@@ -27,7 +26,7 @@ const DepartmentFormDialog = ({ handleClose, open, loading, title, department })
           <CloseIcon />
         </IconButton>
         <DialogContent>
-          {loading ? <MuiSkeleton /> : <DepartmentForm department={department} />}
+          <DepartmentForm department={department} errors={errors} loading={loading} />
         </DialogContent>
       </>
     </Dialog>
