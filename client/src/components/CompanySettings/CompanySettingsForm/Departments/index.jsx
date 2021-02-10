@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Paper,
   FormControl,
@@ -17,18 +17,23 @@ import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
 
 import TitleBox from '../../../common/TitleBox';
 
+import { createDepartment } from '../../../../redux/actions/departmentsActions';
 import notification from '../../../../utils/notification';
 import useStyles from '../styles';
 
-const Departments = ({ departments, onAdd, onDelete, errors }) => {
-  const [departmentName, setDepartmentName] = useState('');
+const Departments = ({ departments = [] }) => {
+  const [name, setName] = useState('');
 
   const dispatch = useDispatch();
+
+  const { errors, loading } = useSelector((state) => state.departmentCreate);
 
   const { paper, fieldsContainer } = useStyles();
 
   const handleOnAdd = (val) => {
-    const existDepartment = departments.includes(val);
+    const existDepartment = departments
+      .map((department) => department.name.toLowerCase())
+      .includes(val.toLowerCase());
 
     if (!val) {
       return dispatch(notification('warning', 'Please add a department name', dispatch));
@@ -37,42 +42,42 @@ const Departments = ({ departments, onAdd, onDelete, errors }) => {
     if (existDepartment) {
       return dispatch(notification('warning', `${val} already exist`, dispatch));
     }
-    onAdd('departments', val);
-    return setDepartmentName('');
+    dispatch(createDepartment({ name }));
+    return setName('');
   };
 
   return (
     <Paper className={paper} elevation={6}>
       <TitleBox title="Departments" />
       <div className={fieldsContainer}>
-        <FormControl fullWidth size="small" margin="normal" error={!!errors.departments}>
+        <FormControl fullWidth size="small" margin="normal" error={!!errors.name}>
           <InputLabel htmlFor="departments">Department</InputLabel>
           <Input
             id="departments"
             name="departmentName"
-            value={departmentName}
-            onChange={(e) => setDepartmentName(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             endAdornment={(
               <InputAdornment position="end">
-                <IconButton color="primary" onClick={() => handleOnAdd(departmentName)}>
+                <IconButton color="primary" onClick={() => handleOnAdd(name)} disabled={loading}>
                   <AddIcon />
                 </IconButton>
               </InputAdornment>
             )}
           />
-          {errors.departments && <FormHelperText error>{errors.departments}</FormHelperText>}
+          {errors.name && <FormHelperText error={!!errors.name}>{errors.name}</FormHelperText>}
         </FormControl>
         {/* List of departments */}
         {departments.length > 0 ? (
           <List>
             {departments.map((department) => (
-              <ListItem key={department}>
-                <ListItemText primary={department} />
+              <ListItem key={department._id}>
+                <ListItemText primary={department.name} />
                 <ListItemSecondaryAction>
                   <IconButton
                     edge="end"
                     aria-label="delete"
-                    onClick={() => onDelete('departments', department)}
+                    onClick={() => console.log(department)}
                   >
                     <DeleteIcon />
                   </IconButton>

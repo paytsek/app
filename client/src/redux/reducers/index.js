@@ -22,6 +22,7 @@ import {
   companyTenantReducers,
   companySetCompanyTenantReducers,
 } from './companiesReducers';
+import { departmentCreateReducers } from './departmentsReducers';
 
 import snackbarReducer from './snackbarReducers';
 
@@ -47,6 +48,8 @@ const reducers = combineReducers({
   companySettingsCreate: companySettingsCreateReducers,
   companyTenant: companyTenantReducers,
   companySetCompanyTenant: companySetCompanyTenantReducers,
+  // DEPARTMENTS
+  departmentCreate: departmentCreateReducers,
 });
 
 export default reducers;
