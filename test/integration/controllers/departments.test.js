@@ -246,27 +246,6 @@ describe('PUT /api/v1/departments/:id', () => {
       );
     });
 
-    it('should return error response if no company settings', async () => {
-      const token = await global.signIn();
-      const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'Fullsuite', user: user._id });
-
-      const res = await request(app)
-        .put(`${url}/${mongoose.Types.ObjectId()}`)
-        .set({ 'x-company-tenant': company.slug })
-        .auth(token, { type: 'bearer' });
-
-      expect(res.status).toBe(401);
-      expect(res.body).toEqual(
-        expect.objectContaining({
-          success: false,
-          errors: expect.objectContaining({
-            message: 'No Company settings, access denied',
-          }),
-        }),
-      );
-    });
-
     it('should return error response if id is not found id invalid', async () => {
       const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
@@ -365,27 +344,6 @@ describe('DELETE /api/v1/departments/:id', () => {
         expect.objectContaining({
           success: false,
           errors: expect.objectContaining({ message: 'Not authorized, access denied' }),
-        }),
-      );
-    });
-
-    it('should return error response if no company settings', async () => {
-      const token = await global.signIn();
-      const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'Fullsuite', user: user._id });
-
-      const res = await request(app)
-        .delete(`${url}/${mongoose.Types.ObjectId()}`)
-        .set({ 'x-company-tenant': company.slug })
-        .auth(token, { type: 'bearer' });
-
-      expect(res.status).toBe(401);
-      expect(res.body).toEqual(
-        expect.objectContaining({
-          success: false,
-          errors: expect.objectContaining({
-            message: 'No Company settings, access denied',
-          }),
         }),
       );
     });

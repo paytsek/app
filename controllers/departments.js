@@ -65,11 +65,6 @@ const updateDepartment = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
 
-  if (!company.companySettings) {
-    res.status(401);
-    return next(new ErrorResponse({ message: 'No Company settings, access denied' }));
-  }
-
   const departmentExistInCompany = company.departments.find(
     (department) => department._id.toString() === req.params.id,
   );
@@ -113,11 +108,6 @@ const deleteDepartment = asyncHandler(async (req, res, next) => {
   ) {
     res.status(401);
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
-  }
-
-  if (!company.companySettings) {
-    res.status(401);
-    return next(new ErrorResponse({ message: 'No Company settings, access denied' }));
   }
 
   const departmentExistInCompany = company.departments.find(
