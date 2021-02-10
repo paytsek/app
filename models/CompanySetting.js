@@ -375,11 +375,11 @@ CompanySettingSchema.pre('save', function (next) {
   next();
 });
 
-// REVERS POPULATE DEPARTMENT
+// REVERSE POPULATE DEPARTMENT
 CompanySettingSchema.virtual('departments', {
   ref: 'Department',
-  localField: '_id',
-  foreignField: 'companySettings',
+  localField: 'company',
+  foreignField: 'company',
 });
 
 module.exports = mongoose.model('CompanySetting', CompanySettingSchema);
