@@ -27,11 +27,11 @@ const getDepartments = asyncHandler(async (req, res, next) => {
 const updateDepartment = asyncHandler(async (req, res, next) => {
   const company = await Company.findById(req.company._id).populate({
     path: 'companySettings',
-    select: 'departments',
     populate: {
       path: 'departments',
     },
   });
+
   const user = await User.findById(req.user._id);
 
   if (!company || !user || company.user.toString() !== user._id.toString()) {
