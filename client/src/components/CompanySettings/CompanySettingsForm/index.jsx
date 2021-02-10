@@ -59,7 +59,6 @@ const CompanySettingsForm = () => {
       country: '',
       zipCode: '',
     },
-    departments: [],
     taxablePays: [],
     nonTaxablePays: [],
     sssCalculation: {
@@ -104,7 +103,6 @@ const CompanySettingsForm = () => {
   const {
     basicSettings,
     registeredAddress,
-    departments,
     taxablePays,
     nonTaxablePays,
     sssCalculation,
@@ -208,11 +206,11 @@ const CompanySettingsForm = () => {
       };
     });
 
-  const handleOnDeleteDepartment = (key, val) =>
-    setSettings((prevState) => ({
-      ...prevState,
-      [key]: prevState[key].filter((department) => department !== val),
-    }));
+  // const handleOnDeleteDepartment = (key, val) =>
+  //   setSettings((prevState) => ({
+  //     ...prevState,
+  //     [key]: prevState[key].filter((department) => department !== val),
+  //   }));
 
   const handleOnChangeAccountingJournal = (e) =>
     setSettings((prevState) => ({
@@ -226,7 +224,6 @@ const CompanySettingsForm = () => {
   const handleOnSubmit = () => {
     const data = {
       ...basicSettings,
-      departments,
       registeredAddress,
       taxablePays,
       nonTaxablePays,
@@ -333,12 +330,11 @@ const CompanySettingsForm = () => {
       </Grid>
       {/* DEPARTMENTS */}
       <Grid item xs={12} md={6}>
-        <Departments
-          departments={departments}
-          onAdd={handleOnAdd}
-          onDelete={handleOnDeleteDepartment}
-          errors={errors}
-        />
+        {companyDetailsLoading ? (
+          <MuiSkeleton />
+        ) : (
+          <Departments departments={company.departments} />
+        )}
       </Grid>
       {/* GOVERNMENT REMITTANCES & 13th MONTH PAY CALCULATION */}
       <Grid item xs={12}>

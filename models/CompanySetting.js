@@ -375,11 +375,4 @@ CompanySettingSchema.pre('save', function (next) {
   next();
 });
 
-// REVERSE POPULATE DEPARTMENT
-CompanySettingSchema.virtual('departments', {
-  ref: 'Department',
-  localField: 'company',
-  foreignField: 'company',
-});
-
 module.exports = mongoose.model('CompanySetting', CompanySettingSchema);

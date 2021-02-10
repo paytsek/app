@@ -30,10 +30,7 @@ const getDepartments = asyncHandler(async (req, res, next) => {
 const createDepartment = asyncHandler(async (req, res, next) => {
   const { name } = req.body;
   const company = await Company.findById(req.company._id).populate({
-    path: 'companySettings',
-    populate: {
-      path: 'departments',
-    },
+    path: 'departments',
   });
   const user = await User.findById(req.user._id);
 
@@ -54,12 +51,9 @@ const createDepartment = asyncHandler(async (req, res, next) => {
 // @Desc Update a department by id
 // access PRIVATE - Logged in user
 const updateDepartment = asyncHandler(async (req, res, next) => {
-  const company = await Company.findById(req.company._id).populate({
-    path: 'companySettings',
-    populate: {
-      path: 'departments',
-    },
-  });
+  const company = await Company.findById(req.company._id)
+    .populate('departments')
+    .populate('companySettings');
 
   const user = await User.findById(req.user._id);
 
@@ -71,12 +65,7 @@ const updateDepartment = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
 
-  if (!company.companySettings) {
-    res.status(401);
-    return next(new ErrorResponse({ message: 'No Company settings, access denied' }));
-  }
-
-  const departmentExistInCompany = company.companySettings.departments.find(
+  const departmentExistInCompany = company.departments.find(
     (department) => department._id.toString() === req.params.id,
   );
 
@@ -107,13 +96,10 @@ const updateDepartment = asyncHandler(async (req, res, next) => {
 // @Desc Delete a department by id
 // access PRIVATE - Logged in user
 const deleteDepartment = asyncHandler(async (req, res, next) => {
-  const company = await Company.findById(req.company._id).populate({
-    path: 'companySettings',
-    select: 'departments',
-    populate: {
-      path: 'departments',
-    },
-  });
+  const company = await Company.findById(req.company._id)
+    .populate('departments')
+    .populate('companySettings');
+
   const user = await User.findById(req.user._id);
 
   if (
@@ -124,12 +110,7 @@ const deleteDepartment = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
 
-  if (!company.companySettings) {
-    res.status(401);
-    return next(new ErrorResponse({ message: 'No Company settings, access denied' }));
-  }
-
-  const departmentExistInCompany = company.companySettings.departments.find(
+  const departmentExistInCompany = company.departments.find(
     (department) => department._id.toString() === req.params.id,
   );
 

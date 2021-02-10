@@ -48,4 +48,11 @@ CompanySchema.virtual('companySettings', {
   justOne: true,
 });
 
+// REVERSE POPULATE DEPARTMENT
+CompanySchema.virtual('departments', {
+  ref: 'Department',
+  localField: '_id',
+  foreignField: 'company',
+});
+
 module.exports = mongoose.model('Company', CompanySchema);
