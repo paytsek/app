@@ -5,13 +5,16 @@ const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
 
 // @ROUTE GET /api/v1/departments
-// @Desc Get all departments of the company settings
+// @Desc Get all departments of the company
 // access PRIVATE - Logged in user
 const getDepartments = asyncHandler(async (req, res, next) => {
   const company = await Company.findById(req.company._id);
   const user = await User.findById(req.user._id);
 
-  if (!company || !user || company.user.toString() !== user._id.toString()) {
+  if (
+    user.role !== 'admin' &&
+    (!company || !user || company.user.toString() !== user._id.toString())
+  ) {
     res.status(401);
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
@@ -19,6 +22,32 @@ const getDepartments = asyncHandler(async (req, res, next) => {
   const departments = await Department.find({ company: company._id });
 
   return res.status(200).json({ success: true, departments });
+});
+
+// @ROUTE PUT /api/v1/departments
+// @Desc Create all departments of the company
+// access PRIVATE - Logged in user
+const createDepartment = asyncHandler(async (req, res, next) => {
+  const { name } = req.body;
+  const company = await Company.findById(req.company._id).populate({
+    path: 'companySettings',
+    populate: {
+      path: 'departments',
+    },
+  });
+  const user = await User.findById(req.user._id);
+
+  if (
+    user.role !== 'admin' &&
+    (!company || !user || company.user.toString() !== user._id.toString())
+  ) {
+    res.status(401);
+    return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
+  }
+
+  const department = await Department.create({ name, company: company._id });
+
+  return res.status(201).json({ success: true, department });
 });
 
 // @ROUTE PUT /api/v1/departments/:id
@@ -34,7 +63,10 @@ const updateDepartment = asyncHandler(async (req, res, next) => {
 
   const user = await User.findById(req.user._id);
 
-  if (!company || !user || company.user.toString() !== user._id.toString()) {
+  if (
+    user.role !== 'admin' &&
+    (!company || !user || company.user.toString() !== user._id.toString())
+  ) {
     res.status(401);
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
@@ -84,7 +116,10 @@ const deleteDepartment = asyncHandler(async (req, res, next) => {
   });
   const user = await User.findById(req.user._id);
 
-  if (!company || !user || company.user.toString() !== user._id.toString()) {
+  if (
+    user.role !== 'admin' &&
+    (!company || !user || company.user.toString() !== user._id.toString())
+  ) {
     res.status(401);
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
@@ -118,4 +153,5 @@ module.exports = {
   getDepartments,
   updateDepartment,
   deleteDepartment,
+  createDepartment,
 };
