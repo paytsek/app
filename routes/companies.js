@@ -4,6 +4,7 @@ const router = express.Router();
 
 const auth = require('../middleware/auth');
 const tenant = require('../middleware/tenant');
+const administrator = require('../middleware/administrator');
 
 const {
   createCompany,
@@ -34,12 +35,12 @@ router.route('/').get(auth, getCompanies);
 router.route('/:id').get(auth, getCompany);
 
 // /api/v1/companies/settings
-router.route('/settings').post(auth, tenant, createCompanySettings);
+router.route('/settings').post(auth, tenant, administrator, createCompanySettings);
 
 // api/v1/companies/settings/:id
 router
   .route('/settings/:id')
-  .put(auth, tenant, updateCompanySettings)
-  .delete(auth, tenant, deleteCompanySettings);
+  .put(auth, tenant, administrator, updateCompanySettings)
+  .delete(auth, tenant, administrator, deleteCompanySettings);
 
 module.exports = router;
