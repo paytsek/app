@@ -102,9 +102,9 @@ const EmployeeSchema = new mongoose.Schema({
   sssNumber: String,
   phicNumber: String,
   hdmfNumber: String,
-  sssLoanBalance: String,
-  allowances: String,
-  hdmfLoanBalance: String,
+  sssLoanBalance: Number,
+  allowances: Number,
+  hdmfLoanBalance: Number,
   primaryEmployer: {
     type: Boolean,
     default: true,
@@ -133,3 +133,5 @@ EmployeeSchema.pre('save', function (next) {
 
   next();
 });
+
+module.exports = mongoose.model('Employee', EmployeeSchema);
