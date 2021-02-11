@@ -19,7 +19,7 @@ import TitleBox from '../../../common/TitleBox';
 import DepartmentFormDialog from '../../../Dialog/DepartmentFormDialog';
 
 import { DEPARTMENT_UPDATE_RESET } from '../../../../redux/types';
-import { createDepartment } from '../../../../redux/actions/departmentsActions';
+import { createDepartment, deleteDepartment } from '../../../../redux/actions/departmentsActions';
 import notification from '../../../../utils/notification';
 import useStyles from '../styles';
 
@@ -34,6 +34,7 @@ const Departments = ({ departments = [] }) => {
   const { success, errors: departmentUpdateErrors, loading: departmentUpdateLoading } = useSelector(
     (state) => state.departmentUpdate,
   );
+  const { loading: departmentDeleteLoading } = useSelector((state) => state.departmentDelete);
 
   const { paper, fieldsContainer } = useStyles();
 
@@ -109,7 +110,8 @@ const Departments = ({ departments = [] }) => {
                     <IconButton
                       edge="end"
                       aria-label="delete"
-                      onClick={() => console.log(department)}
+                      disabled={departmentDeleteLoading}
+                      onClick={() => dispatch(deleteDepartment(department._id))}
                     >
                       <DeleteIcon />
                     </IconButton>
