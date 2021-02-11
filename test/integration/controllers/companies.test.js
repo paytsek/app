@@ -491,6 +491,35 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     });
   });
 
+  it('should return 403 if logged in user is not an administrator', async () => {
+    const token = await global.signIn();
+
+    const user = await User.create({
+      username: 'jane doe',
+      email: 'janedoe@gmail.com',
+      password: '123456',
+      firstName: 'Jane',
+      lastName: 'Doe',
+    });
+
+    const company = await Company.create({
+      name: 'test company',
+      user: user._id,
+      administrators: [user._id],
+    });
+
+    const res = await request(app)
+      .post(`${url}`)
+      .set({ 'x-company-tenant': company.slug })
+      .auth(token, { type: 'bearer' });
+
+    expect(res.status).toBe(403);
+    expect(res.body.success).toBeFalsy();
+    expect(res.body.errors).toMatchObject({
+      message: "You don't have permission to access on this route",
+    });
+  });
+
   it('should return error response if enum fields is invalid', async () => {
     const token = await global.signIn();
 
@@ -842,6 +871,35 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
         }),
       );
     });
+
+    it('should return 403 if logged in user is not an administrator', async () => {
+      const token = await global.signIn();
+
+      const user = await User.create({
+        username: 'jane doe',
+        email: 'janedoe@gmail.com',
+        password: '123456',
+        firstName: 'Jane',
+        lastName: 'Doe',
+      });
+
+      const company = await Company.create({
+        name: 'test company',
+        user: user._id,
+        administrators: [user._id],
+      });
+
+      const res = await request(app)
+        .post(`${url}`)
+        .set({ 'x-company-tenant': company.slug })
+        .auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(403);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({
+        message: "You don't have permission to access on this route",
+      });
+    });
   });
 
   describe('Success Response', () => {
@@ -1060,6 +1118,35 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
       expect(res.body.success).toBeFalsy();
       expect(res.body.errors).toMatchObject({
         message: `Resource with an id of ${companySettingsId} not found`,
+      });
+    });
+
+    it('should return 403 if logged in user is not an administrator', async () => {
+      const token = await global.signIn();
+
+      const user = await User.create({
+        username: 'jane doe',
+        email: 'janedoe@gmail.com',
+        password: '123456',
+        firstName: 'Jane',
+        lastName: 'Doe',
+      });
+
+      const company = await Company.create({
+        name: 'test company',
+        user: user._id,
+        administrators: [user._id],
+      });
+
+      const res = await request(app)
+        .post(`${url}`)
+        .set({ 'x-company-tenant': company.slug })
+        .auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(403);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({
+        message: "You don't have permission to access on this route",
       });
     });
   });
