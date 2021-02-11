@@ -16,7 +16,11 @@ const createCompany = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'User must exist' }));
   }
 
-  const company = await Company.create({ name, user: req.user._id });
+  const company = await Company.create({
+    name,
+    user: req.user._id,
+    administrators: [req.user._id],
+  });
 
   return res.status(201).json({ success: true, company });
 });
