@@ -18,6 +18,13 @@ const CompanySchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    administrators: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: [true, 'Administrator must exist'],
+      },
+    ],
   },
   {
     timestamps: true,

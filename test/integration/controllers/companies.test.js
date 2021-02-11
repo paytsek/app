@@ -463,6 +463,8 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   it('should return 401 if logged in user is not equal to company owner', async () => {
     const token = await global.signIn();
 
+    const owner = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
     const user = await User.create({
       username: 'jane doe',
       email: 'janedoe@gmail.com',
@@ -474,6 +476,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     const company = await Company.create({
       name: 'test company',
       user: user._id,
+      administrators: [owner._id],
     });
 
     const res = await request(app)
@@ -485,6 +488,35 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     expect(res.body.success).toBeFalsy();
     expect(res.body.errors).toMatchObject({
       message: 'User is not authorized',
+    });
+  });
+
+  it('should return 403 if logged in user is not an administrator', async () => {
+    const token = await global.signIn();
+
+    const user = await User.create({
+      username: 'jane doe',
+      email: 'janedoe@gmail.com',
+      password: '123456',
+      firstName: 'Jane',
+      lastName: 'Doe',
+    });
+
+    const company = await Company.create({
+      name: 'test company',
+      user: user._id,
+      administrators: [user._id],
+    });
+
+    const res = await request(app)
+      .post(`${url}`)
+      .set({ 'x-company-tenant': company.slug })
+      .auth(token, { type: 'bearer' });
+
+    expect(res.status).toBe(403);
+    expect(res.body.success).toBeFalsy();
+    expect(res.body.errors).toMatchObject({
+      message: "You don't have permission to access on this route",
     });
   });
 
@@ -674,8 +706,15 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
         firstName: 'Rodrigo',
         lastName: 'Carlos',
       });
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
       const token = await global.signIn();
+
+      const owner = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
+      const company = await Company.create({
+        name: 'PayTsek',
+        user: user._id,
+        administrators: [owner._id],
+      });
 
       const res = await request(app)
         .put(`${url}/${mongoose.Types.ObjectId()}`)
@@ -710,6 +749,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
       const company = await Company.create({
         name: 'PayTsek',
         user: loggedInUser._id,
+        administrators: [loggedInUser._id],
       });
 
       const res = await request(app)
@@ -727,7 +767,11 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
     it('should return error response when invalid values are entered', async () => {
       const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
+      const company = await Company.create({
+        name: 'PayTsek',
+        user: user._id,
+        administrators: [user._id],
+      });
       const companySettings = await CompanySetting.create({
         company: company._id,
         firstCutOff: 1,
@@ -771,7 +815,11 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
     it('should return error response when condition fields is invalid', async () => {
       const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
+      const company = await Company.create({
+        name: 'PayTsek',
+        user: user._id,
+        administrators: [user._id],
+      });
       const companySettings = await CompanySetting.create({
         company: company._id,
         firstCutOff: 1,
@@ -823,13 +871,46 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
         }),
       );
     });
+
+    it('should return 403 if logged in user is not an administrator', async () => {
+      const token = await global.signIn();
+
+      const user = await User.create({
+        username: 'jane doe',
+        email: 'janedoe@gmail.com',
+        password: '123456',
+        firstName: 'Jane',
+        lastName: 'Doe',
+      });
+
+      const company = await Company.create({
+        name: 'test company',
+        user: user._id,
+        administrators: [user._id],
+      });
+
+      const res = await request(app)
+        .post(`${url}`)
+        .set({ 'x-company-tenant': company.slug })
+        .auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(403);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({
+        message: "You don't have permission to access on this route",
+      });
+    });
   });
 
   describe('Success Response', () => {
     it('should return success reponse if entered values are valid', async () => {
       const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
+      const company = await Company.create({
+        name: 'PayTsek',
+        user: user._id,
+        administrators: [user._id],
+      });
       const companySettings = await CompanySetting.create({
         company: company._id,
         firstCutOff: 1,
@@ -974,6 +1055,10 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
     });
 
     it('should return error if company not own by the logged in user', async () => {
+      const token = await global.signIn();
+
+      const loggedInUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
+
       const user = await User.create({
         username: 'rodrigocarlos',
         email: 'rodrigo@gmail.com',
@@ -981,8 +1066,11 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
         firstName: 'Rodrigo',
         lastName: 'Carlos',
       });
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
-      const token = await global.signIn();
+      const company = await Company.create({
+        name: 'PayTsek',
+        user: user._id,
+        administrators: [loggedInUser._id],
+      });
 
       const res = await request(app)
         .put(`${url}/${mongoose.Types.ObjectId()}`)
@@ -1018,6 +1106,7 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
       const company = await Company.create({
         name: 'PayTsek',
         user: loggedInUser._id,
+        administrators: [loggedInUser._id],
       });
 
       const res = await request(app)
@@ -1031,13 +1120,46 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
         message: `Resource with an id of ${companySettingsId} not found`,
       });
     });
+
+    it('should return 403 if logged in user is not an administrator', async () => {
+      const token = await global.signIn();
+
+      const user = await User.create({
+        username: 'jane doe',
+        email: 'janedoe@gmail.com',
+        password: '123456',
+        firstName: 'Jane',
+        lastName: 'Doe',
+      });
+
+      const company = await Company.create({
+        name: 'test company',
+        user: user._id,
+        administrators: [user._id],
+      });
+
+      const res = await request(app)
+        .post(`${url}`)
+        .set({ 'x-company-tenant': company.slug })
+        .auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(403);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body.errors).toMatchObject({
+        message: "You don't have permission to access on this route",
+      });
+    });
   });
 
   describe('Success Response', () => {
     it('should return success response if logged in user, comany and settings are valid', async () => {
       const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
+      const company = await Company.create({
+        name: 'PayTsek',
+        user: user._id,
+        administrators: [user._id],
+      });
       const companySettings = await CompanySetting.create({
         frequency: 'monthly',
         firstPayout: 5,
