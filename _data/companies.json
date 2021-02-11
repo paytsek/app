@@ -3,60 +3,70 @@
     "_id": "6010d3dc7951e30d3a584791",
     "user": "5d7a514b5d2c12c7449be051",
     "name": "PayTsek",
-    "slug": "paytsek"
+    "slug": "paytsek",
+    "administrators": ["5d7a514b5d2c12c7449be051"]
   },
   {
     "_id": "6010d3dc7951e30d3a584792",
     "user": "5d7a514b5d2c12c7449be052",
     "name": "Full suite",
-    "slug": "full-suite"
+    "slug": "full-suite",
+    "administrators": ["5d7a514b5d2c12c7449be052"]
   },
   {
     "_id": "6010d3dc7951e30d3a584793",
     "user": "5d7a514b5d2c12c7449be053",
     "name": "TsekPay",
-    "slug": "tsekpay"
+    "slug": "tsekpay",
+    "administrators": ["5d7a514b5d2c12c7449be053"]
   },
   {
     "_id": "6010d3dc7951e30d3a584794",
     "user": "5d7a514b5d2c12c7449be054",
     "name": "Asia Tsek",
-    "slug": "asia-tsek"
+    "slug": "asia-tsek",
+    "administrators": ["5d7a514b5d2c12c7449be054"]
   },
   {
     "_id": "6010d3dc7951e30d3a584795",
     "user": "5d7a514b5d2c12c7449be054",
     "name": "Rodrigo Disco Club",
-    "slug": "rodrigo-disco-club"
+    "slug": "rodrigo-disco-club",
+    "administrators": ["5d7a514b5d2c12c7449be054"]
   },
   {
     "_id": "6010d3dc7951e30d3a584796",
     "user": "5d7a514b5d2c12c7449be055",
     "name": "Bankrupt Company",
-    "slug": "bankrupt-company"
+    "slug": "bankrupt-company",
+    "administrators": ["5d7a514b5d2c12c7449be055"]
   },
   {
     "_id": "6010d3dc7951e30d3a584797",
     "user": "5d7a514b5d2c12c7449be052",
     "name": "Salon de Baguio",
-    "slug": "salon-de-baguio"
+    "slug": "salon-de-baguio",
+    "administrators": "5d7a514b5d2c12c7449be052"
   },
   {
     "_id": "6010d3dc7951e30d3a584798",
     "user": "5d7a514b5d2c12c7449be052",
     "name": "Inuman Session",
-    "slug": "inuman-session"
+    "slug": "inuman-session",
+    "administrators": ["5d7a514b5d2c12c7449be052"]
   },
   {
     "_id": "6010d3dc7951e30d3a584799",
     "user": "5d7a514b5d2c12c7449be054",
     "name": "Hangover resort",
-    "slug": "hangover-resort"
+    "slug": "hangover-resort",
+    "administrators": ["5d7a514b5d2c12c7449be054"]
   },
   {
     "_id": "6010d3dc7951e30d3a584801",
     "user": "5d7a514b5d2c12c7449be052",
     "name": "Hangover spa",
-    "slug": "hangover-spa"
+    "slug": "hangover-spa",
+    "administrators": ["5d7a514b5d2c12c7449be052"]
   }
 ]
