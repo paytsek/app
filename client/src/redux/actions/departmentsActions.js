@@ -5,6 +5,8 @@ import {
   DEPARTMENT_CREATE_FAIL,
   DEPARTMENT_CREATE_REQUEST,
   DEPARTMENT_CREATE_SUCCESS,
+  DEPARTMENT_DELETE_REQUEST,
+  DEPARTMENT_DELETE_SUCCESS,
   DEPARTMENT_UPDATE_FAIL,
   DEPARTMENT_UPDATE_REQUEST,
   DEPARTMENT_UPDATE_SUCCESS,
@@ -48,5 +50,21 @@ export const updateDepartment = (id, department) => async (dispatch) => {
   } catch (error) {
     const { errors } = error.response.data;
     dispatch({ type: DEPARTMENT_UPDATE_FAIL, payload: errors });
+  }
+};
+
+export const deleteDepartment = (id) => async (dispatch) => {
+  dispatch({ type: DEPARTMENT_DELETE_REQUEST });
+
+  try {
+    const { data } = await axios.delete(`/departments/${id}`);
+
+    dispatch({ type: DEPARTMENT_DELETE_SUCCESS, payload: id });
+    dispatch(notification('success', data.message || 'Successfully deleted', dispatch));
+  } catch (error) {
+    const { errors } = error.response.data;
+    const message = errors && errors.message;
+
+    dispatch(notification('error', message || 'Server Error', dispatch));
   }
 };
