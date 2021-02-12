@@ -145,14 +145,14 @@ EmployeeSchema.virtual('compensation', {
   ref: 'Compensation',
   localField: '_id',
   foreignField: 'employee',
-  justOne: true,
+  justOne: false,
 });
 
 EmployeeSchema.virtual('status', {
   ref: 'Status',
   localField: '_id',
   foreignField: 'employee',
-  justOne: true,
+  justOne: false,
 });
 
 module.exports = mongoose.model('Employee', EmployeeSchema);
