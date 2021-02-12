@@ -4,8 +4,6 @@ const ErrorResponse = require('../utils/errorResponse');
 const Company = require('../models/Company');
 const User = require('../models/User');
 const Employee = require('../models/Employee');
-const Compensation = require('../models/Compensation');
-const Status = require('../models/Status');
 
 const getEmployee = asyncHandler(async (req, res, next) => {
   const company = await Company.findById(req.company._id);
@@ -19,15 +17,7 @@ const getEmployee = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
 
-  const employees = await Employee.find({ company: company._id })
-    .populate({
-      path: 'compensation',
-      model: Compensation,
-    })
-    .populate({
-      path: 'status',
-      model: Status,
-    });
+  const employees = await Employee.find({ company: company._id }).populate('department', 'name');
 
   return res.status(200).json({ success: true, employees });
 });
