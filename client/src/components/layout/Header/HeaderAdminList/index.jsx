@@ -37,6 +37,14 @@ const HeaderAdminList = () => {
           <ListItemText primary="Company Settings" />
         </ListItem>
       </Link>
+      <Link to={`/${slug}/employees`}>
+        <ListItem button>
+          <ListItemIcon>
+            <BusinessCenterIcon />
+          </ListItemIcon>
+          <ListItemText primary="Employees" />
+        </ListItem>
+      </Link>
     </List>
   );
 };
