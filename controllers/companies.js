@@ -197,6 +197,15 @@ const updateCompanySettings = asyncHandler(async (req, res, next) => {
 
   companySettings = await CompanySetting.findById(id);
 
+  if (!companySettings) {
+    res.status(404);
+    return next(
+      new ErrorResponse({
+        message: `Resource with an id of ${id} not found`,
+      }),
+    );
+  }
+
   const fields = Object.keys(req.body);
   fields.forEach((field) => {
     companySettings[field] = req.body[field];
