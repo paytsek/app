@@ -29,7 +29,9 @@ const createCompany = asyncHandler(async (req, res, next) => {
 // @Desc Get a company slug
 // access PRIVATE - Logged in user
 const getTenant = asyncHandler(async (req, res, next) => {
-  const company = await Company.findOne({ slug: req.params.slug }).select('slug user');
+  const company = await Company.findOne({ slug: req.params.slug }).select(
+    'slug user administrators',
+  );
 
   if (!company) {
     res.status(401);
@@ -44,6 +46,7 @@ const getTenant = asyncHandler(async (req, res, next) => {
   const tenant = {
     slug: company.slug,
     id: company._id,
+    administrators: company.administrators,
   };
 
   return res.status(200).json({ success: true, tenant });
