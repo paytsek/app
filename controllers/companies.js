@@ -4,6 +4,7 @@ const CompanySetting = require('../models/CompanySetting');
 
 const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
+const Employee = require('../models/Employee');
 
 // @ROUTE POST /api/v1/companies/name
 // @Desc Create a company name
@@ -82,14 +83,24 @@ const setTenant = asyncHandler(async (req, res, next) => {
 // @Desc Get all companies
 // access PRIVATE - Logged in user
 const getCompanies = asyncHandler(async (req, res) => {
-  let companies = await Company.find({ user: req.user._id }).populate({
-    path: 'companySettings',
-  });
+  let companies = await Company.find({ user: req.user._id })
+    .populate({
+      path: 'companySettings',
+    })
+    .populate({
+      path: 'employees',
+      model: Employee,
+    });
 
   if (req.user.role === 'admin') {
-    companies = await Company.find({}).populate({
-      path: 'companySettings',
-    });
+    companies = await Company.find({})
+      .populate({
+        path: 'companySettings',
+      })
+      .populate({
+        path: 'employees',
+        model: Employee,
+      });
 
     return res.status(200).json({ success: true, companies });
   }

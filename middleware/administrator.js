@@ -6,7 +6,7 @@ const administrator = asyncHandler(async (req, res, next) => {
     (admin) => admin.toString() === req.user._id.toString(),
   );
 
-  if (!isAdministrator) {
+  if (!isAdministrator && req.user.role !== 'admin') {
     res.status(403);
     return next(
       new ErrorResponse({
