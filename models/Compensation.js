@@ -17,6 +17,7 @@ const CompensationSchema = new mongoose.Schema(
     effectivityDate: {
       type: Date,
       default: Date.now,
+      required: [true, 'Effectivity Date is required'],
     },
     employee: {
       type: mongoose.Schema.Types.ObjectId,
@@ -33,15 +34,20 @@ const CompensationSchema = new mongoose.Schema(
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
+    autoCreate: true,
   },
 );
 
 CompensationSchema.post('save', async (doc, next) => {
   const compensations = await mongoose.model('Compensation').find({ employee: doc.employee });
 
-  const compensation = compensations.reduce((acc, val) => acc.basicPay > val.basicPay);
+  if (compensations.length <= 0) {
+    await Employee.findByIdAndUpdate(doc.employee, { compensation: doc });
+  } else {
+    const compensation = compensations.reduce((acc, val) => acc.basicPay > val.basicPay);
 
-  await Employee.findByIdAndUpdate(doc.employee, { compensation });
+    await Employee.findByIdAndUpdate(doc.employee, { compensation });
+  }
 
   next();
 });

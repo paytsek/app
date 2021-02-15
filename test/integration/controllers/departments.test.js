@@ -7,7 +7,7 @@ const Company = require('../../../models/Company');
 const Department = require('../../../models/Department');
 const CompanySetting = require('../../../models/CompanySetting');
 
-describe('GET /api/v1/departments', () => {
+describe('GET /api/v1/departments - getDepartments', () => {
   const url = '/api/v1/departments';
 
   describe('Error response', () => {
@@ -98,7 +98,7 @@ describe('GET /api/v1/departments', () => {
   });
 });
 
-describe('POST /api/v1/departments', () => {
+describe('POST /api/v1/departments - createDepartment', () => {
   const url = '/api/v1/departments';
 
   describe('Error Response', () => {
@@ -222,7 +222,7 @@ describe('POST /api/v1/departments', () => {
   });
 });
 
-describe('PUT /api/v1/departments/:id', () => {
+describe('PUT /api/v1/departments/:id - updateDepartment', () => {
   const url = '/api/v1/departments';
 
   describe('Error response', () => {
@@ -326,7 +326,7 @@ describe('PUT /api/v1/departments/:id', () => {
   });
 });
 
-describe('DELETE /api/v1/departments/:id', () => {
+describe('DELETE /api/v1/departments/:id - deleteDepartment', () => {
   const url = '/api/v1/departments';
 
   describe('Error Response', () => {
