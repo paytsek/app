@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { DataGrid } from '@material-ui/data-grid';
 import { Button } from '@material-ui/core';
 import { Search, Edit, Delete } from '@material-ui/icons';
+import moment from 'moment';
 
+import { getEmployeesList } from '../../../redux/actions/employeesActions';
 import useStyles from './styles';
 
 const EmployeesListTable = () => {
+  const dispatch = useDispatch();
+
+  const { employees, loading } = useSelector((state) => state.employeesList);
+
   const { dataGrid } = useStyles();
+
+  useEffect(() => {
+    dispatch(getEmployeesList());
+  }, []);
 
   const columns = [
     { field: 'employeeNumber', headerName: 'Employee No.', width: 200 },
@@ -14,10 +25,10 @@ const EmployeesListTable = () => {
     { field: 'lastName', headerName: 'Last Name', width: 200 },
     { field: 'hireDate', headerName: 'Hire Date', width: 200 },
     { field: 'resignationDate', headerName: 'Resignation Date', width: 200 },
-    { field: 'status.active', headerName: 'Status', width: 200 },
-    { field: 'department.name', headerName: 'Department', width: 200 },
+    { field: 'status', headerName: 'Status', width: 200 },
+    { field: 'department', headerName: 'Department', width: 200 },
     { field: 'position', headerName: 'Position', width: 200 },
-    { field: 'compensation.basicPay', headerName: 'Gross Pay', width: 200 },
+    { field: 'compensation', headerName: 'Gross Pay', width: 200 },
     {
       field: '',
       headerName: '',
@@ -32,16 +43,26 @@ const EmployeesListTable = () => {
       ),
     },
   ];
+  const rows = employees.map((employee) => ({
+    ...employee,
+    hireDate: moment(employee.hireDate).format('MMM DD, YYYY'),
+    resignationDate:
+      employee.resignationDate && moment(employee.resignationDate).format('MMM DD, YYYY'),
+    status: employee.status.active ? 'Active' : 'Inactive',
+    department: employee.department.name,
+    compensation: employee.compensation.basicPay,
+  }));
 
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
         className={dataGrid}
         columns={columns}
-        rows={[]}
+        rows={rows}
         checkboxSelection
         disableSelectionOnClick
         autoHeight
+        loading={loading}
       />
     </div>
   );
