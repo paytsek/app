@@ -29,6 +29,13 @@ const getEmployees = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ success: true, employees });
 });
 
+// @ROUTE GET /api/v1/employees/:id
+// @Desc Get single employee for a specific company
+// access PRIVATE - Logged in user
+const getEmployee = asyncHandler(async (req, res, next) => {
+  res.send('Get employee');
+});
+
 // @ROUTE POST /api/v1/employees
 // @Desc Createa an employee
 // access PRIVATE - Logged in user
@@ -92,5 +99,6 @@ const createEmployee = asyncHandler(async (req, res, next) => {
 
 module.exports = {
   getEmployees,
+  getEmployee,
   createEmployee,
 };
