@@ -9,7 +9,11 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import CompanyCreateFormDialog from '../../components/Dialog/CompanyCreateFormDialog';
 import MuiSkeleton from '../../components/MuiSkeleton';
 
-import { getCompaniesList, setCompanyTenant, getCompanyTenant } from '../../redux/actions/companiesActions';
+import {
+  getCompaniesList,
+  setCompanyTenant,
+  getCompanyTenant,
+} from '../../redux/actions/companiesActions';
 import { LOGOUT, COMPANY_TENANT_REMOVE } from '../../redux/types';
 import useStyles from './styles';
 
@@ -81,7 +85,7 @@ const SelectCompanyPage = ({ history }) => {
                     }}
                   >
                     <ListItemText primary={comp.name} />
-                    <ListItemText secondary="42 members" />
+                    <ListItemText secondary={`${comp.employees.length} members`} />
                     <ArrowForwardIcon />
                   </ListItem>
                   <Divider variant="inset" component="li" />

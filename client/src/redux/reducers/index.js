@@ -27,6 +27,7 @@ import {
   departmentUpdateReducers,
   departmentDeleteReducers,
 } from './departmentsReducers';
+import { employeesListReducers } from './employeesReducers';
 
 import snackbarReducer from './snackbarReducers';
 
@@ -56,6 +57,8 @@ const reducers = combineReducers({
   departmentCreate: departmentCreateReducers,
   departmentUpdate: departmentUpdateReducers,
   departmentDelete: departmentDeleteReducers,
+  // EMPLOYEES
+  employeesList: employeesListReducers,
 });
 
 export default reducers;

@@ -195,7 +195,7 @@ export const updateCompanySettings = (id, companySettings) => async (dispatch) =
   }
 };
 
-export const getCompanyTenant = () => async (dispatch) => {
+export const getCompanyTenant = () => async (dispatch, getState) => {
   const slug = localStorage.getItem('tenant');
 
   setTenant(slug);
@@ -205,7 +205,11 @@ export const getCompanyTenant = () => async (dispatch) => {
   try {
     const { data } = await axios.get(`/companies/tenant/${slug}`);
 
-    dispatch({ type: COMPANY_TENANT_SUCCESS, payload: data });
+    const { user } = getState().authUser;
+
+    const isAdministrator = data.tenant.administrators.includes(user.id);
+
+    dispatch({ type: COMPANY_TENANT_SUCCESS, payload: data, isAdministrator });
   } catch (error) {
     const { errors } = error.response.data;
 

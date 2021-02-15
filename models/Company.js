@@ -62,4 +62,11 @@ CompanySchema.virtual('departments', {
   foreignField: 'company',
 });
 
+// REVERSE POPULATE EMPLOYEES
+CompanySchema.virtual('employees', {
+  ref: 'Empoyee',
+  localField: '_id',
+  foreignField: 'company',
+});
+
 module.exports = mongoose.model('Company', CompanySchema);

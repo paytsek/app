@@ -164,7 +164,7 @@ export const companySettingsCreateReducers = (state = { errors: {} }, action) =>
 };
 
 export const companyTenantReducers = (state = { authSlug: false }, action) => {
-  const { type, payload } = action;
+  const { type, payload, isAdministrator } = action;
 
   switch (type) {
     case COMPANY_TENANT_REQUEST:
@@ -176,6 +176,8 @@ export const companyTenantReducers = (state = { authSlug: false }, action) => {
         slug: payload.tenant.slug,
         authSlug: true,
         id: payload.tenant.id,
+        administrators: payload.tenant.administrators,
+        isAdministrator,
       };
     case COMPANY_TENANT_FAIL:
       return { loading: false, authSlug: false };

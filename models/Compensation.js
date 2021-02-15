@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const Employee = require('./Employee');
+
 const CompensationSchema = new mongoose.Schema(
   {
     basicPay: {
@@ -33,5 +35,15 @@ const CompensationSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   },
 );
+
+CompensationSchema.post('save', async (doc, next) => {
+  const compensations = await mongoose.model('Compensation').find({ employee: doc.employee });
+
+  const compensation = compensations.reduce((acc, val) => acc.basicPay > val.basicPay);
+
+  await Employee.findByIdAndUpdate(doc.employee, { compensation });
+
+  next();
+});
 
 module.exports = mongoose.model('Compensation', CompensationSchema);

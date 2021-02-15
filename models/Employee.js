@@ -15,6 +15,9 @@ const EmployeeSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please provide last name'],
     },
+    employeeNumber: {
+      type: String,
+    },
     fullName: String,
     birthDate: {
       type: Date,
@@ -110,6 +113,14 @@ const EmployeeSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    compensation: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
+    },
+    status: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
+    },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Company',
@@ -132,6 +143,9 @@ EmployeeSchema.plugin(uniqueValidator, {
 });
 
 EmployeeSchema.pre('save', function (next) {
+  if (!this.employeeNumber) {
+    this.employeeNumber = this._id;
+  }
   this.fullName = `${this.firstName} ${this.lastName}`;
 
   this.formattedRegisteredAddress = `${this.registeredAddress.street}, ${this.registeredAddress.city}, ${this.registeredAddress.country}, ${this.registeredAddress.zipCode}`;
@@ -141,14 +155,22 @@ EmployeeSchema.pre('save', function (next) {
   next();
 });
 
-EmployeeSchema.virtual('compensation', {
+EmployeeSchema.post('save', function (doc, next) {
+  if (!doc.employeeNumber) {
+    this.employeeNumber = doc._id;
+  }
+
+  next();
+});
+
+EmployeeSchema.virtual('compensations', {
   ref: 'Compensation',
   localField: '_id',
   foreignField: 'employee',
   justOne: false,
 });
 
-EmployeeSchema.virtual('status', {
+EmployeeSchema.virtual('statuses', {
   ref: 'Status',
   localField: '_id',
   foreignField: 'employee',
