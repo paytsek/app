@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { DataGrid } from '@material-ui/data-grid';
 import { Button } from '@material-ui/core';
 import { Search, Edit, Delete } from '@material-ui/icons';
@@ -8,7 +9,7 @@ import moment from 'moment';
 import { getEmployeesList } from '../../../redux/actions/employeesActions';
 import useStyles from './styles';
 
-const EmployeesListTable = () => {
+const EmployeesListTable = ({ history }) => {
   const dispatch = useDispatch();
 
   const { employees, loading } = useSelector((state) => state.employeesList);
@@ -34,9 +35,13 @@ const EmployeesListTable = () => {
       headerName: '',
       sortable: false,
       width: 290,
-      renderCell: () => (
+      renderCell: ({ row }) => (
         <>
-          <Button color="primary" startIcon={<Search />} />
+          <Button
+            color="primary"
+            onClick={() => history.push(`employees/${row._id}`)}
+            startIcon={<Search />}
+          />
           <Button color="primary" startIcon={<Edit />} />
           <Button color="primary" startIcon={<Delete />} />
         </>
@@ -68,4 +73,4 @@ const EmployeesListTable = () => {
   );
 };
 
-export default EmployeesListTable;
+export default withRouter(EmployeesListTable);
