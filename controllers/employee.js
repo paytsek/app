@@ -44,10 +44,10 @@ const getEmployee = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
 
-  const employee = await Employee.findOne({ _id: req.params.id, company: company._id }).populate(
-    'department',
-    'name',
-  );
+  const employee = await Employee.findOne({ _id: req.params.id, company: company._id })
+    .populate('department', 'name')
+    .populate({ path: 'statuses' })
+    .populate({ path: 'compensations' });
 
   if (!employee) {
     res.status(404);

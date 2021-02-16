@@ -15,6 +15,7 @@ import CompanySettingsCreatePage from '../pages/CompanySettingsCreatePage';
 import CompanySettingsEditPage from '../pages/CompanySettingsEditPage';
 import Dashboard from '../pages/Dashboard';
 import EmployeesListPage from '../pages/EmployeesListPage';
+import EmployeeDetailsPage from '../pages/EmployeeDetailsPage';
 import PrivateRoute from '../components/routes/PrivateRoute';
 import CompanyAdministratorRoute from '../components/routes/CompanyAdministratorRoute';
 
@@ -46,6 +47,11 @@ const LayoutRouter = () => (
           <Route path="/:slug/companies/:id/edit" component={CompanyUpdatePage} exact />
           <Route path="/:slug/dashboard" component={Dashboard} />
           <CompanyAdministratorRoute path="/:slug/employees" component={EmployeesListPage} exact />
+          <CompanyAdministratorRoute
+            path="/:slug/employees/:id"
+            component={EmployeeDetailsPage}
+            exact
+          />
           <Route path="/" component={() => <h1 style={{ fontSize: 50 }}>Page not found</h1>} />
         </Switch>
       )}
