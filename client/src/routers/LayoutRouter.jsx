@@ -18,6 +18,7 @@ import EmployeesListPage from '../pages/EmployeesListPage';
 import EmployeeDetailsPage from '../pages/EmployeeDetailsPage';
 import PrivateRoute from '../components/routes/PrivateRoute';
 import CompanyAdministratorRoute from '../components/routes/CompanyAdministratorRoute';
+import DepartmentPage from '../pages/DepartmentPage';
 
 const LayoutRouter = () => (
   <Switch>
@@ -52,6 +53,7 @@ const LayoutRouter = () => (
             component={EmployeeDetailsPage}
             exact
           />
+          <CompanyAdministratorRoute path="/:slug/departments" component={DepartmentPage} exact />
           <Route path="/" component={() => <h1 style={{ fontSize: 50 }}>Page not found</h1>} />
         </Switch>
       )}
