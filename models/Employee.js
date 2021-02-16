@@ -9,7 +9,9 @@ const EmployeeSchema = new mongoose.Schema(
         if (!validator.isEmail(val)) {
           throw new Error('Email is invalid');
         }
-        const employee = await mongoose.model('Employee').findOne({ company: this.company, email: val });
+        const employee = await mongoose
+          .model('Employee')
+          .findOne({ company: this.company, email: val });
         if (employee) {
           throw new Error('Email already exist');
         }
@@ -111,6 +113,7 @@ const EmployeeSchema = new mongoose.Schema(
       type: Number,
       default: 8,
     },
+    tin: String,
     sssNumber: String,
     phicNumber: String,
     hdmfNumber: String,
