@@ -145,14 +145,6 @@ const EmployeeSchema = new mongoose.Schema(
   },
 );
 
-// EmployeeSchema.plugin(uniqueValidator, {
-//   message: (val) => {
-//     const field = val.path;
-//     const fieldCapitalized = field.charAt(0).toUpperCase() + field.slice(1);
-//     return `${fieldCapitalized} already exist`;
-//   },
-// });
-
 EmployeeSchema.pre('save', function (next) {
   if (!this.employeeNumber) {
     this.employeeNumber = this._id;
