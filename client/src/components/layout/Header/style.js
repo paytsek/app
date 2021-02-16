@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
   drawerHeader: {
     minHeight: 64,
   },
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
 }));
 
 export default useStyles;
