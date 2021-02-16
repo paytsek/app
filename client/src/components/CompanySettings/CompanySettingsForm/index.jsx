@@ -272,7 +272,6 @@ const CompanySettingsForm = () => {
         ...prevState.registeredAddress,
         ...company.companySettings.registeredAddress,
       },
-      departments: company.companySettings.departments,
       taxablePays: company.companySettings.taxablePays,
       nonTaxablePays: company.companySettings.nonTaxablePays,
       sssCalculation: company.companySettings.sssCalculation,

@@ -41,7 +41,6 @@ const BasicSettings = ({ onChange, settings, errors }) => {
     holiday,
     regularHolidayPay,
     specialHolidayPay,
-    workingDays,
     taxReliefInternationTaxTreaty,
     deminimis,
     emailNotification,
@@ -380,20 +379,7 @@ const BasicSettings = ({ onChange, settings, errors }) => {
           </Grid>
         </Grid>
         <Grid container spacing={6}>
-          <Grid item xs={6} md={4} lg={3}>
-            <FormControl fullWidth size="small" error={!!errors.workingDays}>
-              <InputLabel htmlFor="workingDays">Working Days</InputLabel>
-              <Input
-                type="number"
-                id="workingDays"
-                name="workingDays"
-                value={workingDays}
-                onChange={onChange}
-              />
-              {errors.workingDays && <FormHelperText error>{errors.workingDays}</FormHelperText>}
-            </FormControl>
-          </Grid>
-          <Grid item xs={6} md={4} lg={3}>
+          <Grid item xs={6} md={4}>
             <FormControlLabel
               control={<Switch color="primary" />}
               label="Tax Relief under Special Law of International Tax Treaty"
@@ -406,24 +392,24 @@ const BasicSettings = ({ onChange, settings, errors }) => {
               <FormHelperText error>{errors.taxReliefInternationTaxTreaty}</FormHelperText>
             )}
           </Grid>
-          <Grid item xs={6} md={4} lg={3}>
+          <Grid item xs={6} md={4}>
             <FormControlLabel
               control={<Switch color="primary" />}
-              label="Deminis Pay"
+              label="De minimis Pay"
               labelPlacement="start"
               name="deminimis"
-              value={deminimis}
+              checked={deminimis}
               onChange={onChange}
             />
             {errors.deminimis && <FormHelperText error>{errors.deminimis}</FormHelperText>}
           </Grid>
-          <Grid item xs={6} md={4} lg={3}>
+          <Grid item xs={6} md={4}>
             <FormControlLabel
               control={<Switch color="primary" />}
               label="Email Notification"
               labelPlacement="start"
               name="emailNotification"
-              value={emailNotification}
+              checked={emailNotification}
               onChange={onChange}
             />
           </Grid>
