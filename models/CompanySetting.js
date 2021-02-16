@@ -108,11 +108,6 @@ const CompanySettingSchema = new mongoose.Schema(
         'Second Payout is required',
       ],
     },
-    workingDays: {
-      type: Number,
-      default: 22,
-      required: [true, 'Working days is required'],
-    },
     nightDifferential: {
       type: String,
       enum: ['disabled', 'percentage', 'fixed'],
