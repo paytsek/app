@@ -13,9 +13,7 @@ const DepartmentForm = ({ department, errors, loading }) => {
 
   const dispatch = useDispatch();
 
-  const {
-    company: { departments },
-  } = useSelector((state) => state.companyDetails);
+  const { departments } = useSelector((state) => state.departmentsList);
 
   const { formButton } = useStyles();
 
