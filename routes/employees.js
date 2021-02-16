@@ -1,6 +1,11 @@
 const express = require('express');
 
-const { getEmployees, getEmployee, createEmployee } = require('../controllers/employee');
+const {
+  getEmployees,
+  getEmployee,
+  createEmployee,
+  deleteEmployee,
+} = require('../controllers/employee');
 const administrator = require('../middleware/administrator');
 const auth = require('../middleware/auth');
 const tenant = require('../middleware/tenant');
@@ -13,6 +18,9 @@ router
   .get(auth, tenant, administrator, getEmployees)
   .post(auth, tenant, administrator, createEmployee);
 // api/v1/employees/:id
-router.route('/:id').get(auth, tenant, administrator, getEmployee);
+router
+  .route('/:id')
+  .get(auth, tenant, administrator, getEmployee)
+  .delete(auth, tenant, administrator, deleteEmployee);
 
 module.exports = router;

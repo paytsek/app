@@ -166,6 +166,13 @@ EmployeeSchema.post('save', function (doc, next) {
   next();
 });
 
+EmployeeSchema.pre('remove', async function (next) {
+  await mongoose.model('Status').deleteMany({ employee: this._id });
+  await mongoose.model('Compensation').deleteMany({ employee: this._id });
+
+  next();
+});
+
 EmployeeSchema.virtual('compensations', {
   ref: 'Compensation',
   localField: '_id',
