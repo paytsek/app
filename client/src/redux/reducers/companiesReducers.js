@@ -29,9 +29,6 @@ import {
   COMPANY_TENANT_REQUEST,
   COMPANY_TENANT_SUCCESS,
   COMPANY_TENANT_FAIL,
-  DEPARTMENT_CREATE_SUCCESS,
-  DEPARTMENT_UPDATE_SUCCESS,
-  DEPARTMENT_DELETE_SUCCESS,
 } from '../types';
 
 export const companiesListReducers = (state = { companies: [] }, action) => {
@@ -65,31 +62,6 @@ export const companyDetailsReducers = (state = { company: { department: [] } }, 
       return { loading: false, company: {} };
     case COMPANY_DETAILS_RESET:
       return { company: {} };
-    case DEPARTMENT_CREATE_SUCCESS:
-      return {
-        ...state,
-        company: {
-          ...state.company,
-          departments: [...state.company.departments, payload.department],
-        },
-      };
-    case DEPARTMENT_UPDATE_SUCCESS:
-      return {
-        ...state,
-        company: {
-          ...state.company,
-          departments: state.company.departments.map((department) =>
-            (department._id === payload.department._id ? payload.department : department)),
-        },
-      };
-    case DEPARTMENT_DELETE_SUCCESS:
-      return {
-        ...state,
-        company: {
-          ...state.company,
-          departments: state.company.departments.filter((department) => department._id !== payload),
-        },
-      };
     default:
       return state;
   }

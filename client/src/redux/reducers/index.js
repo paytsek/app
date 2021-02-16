@@ -26,6 +26,7 @@ import {
   departmentCreateReducers,
   departmentUpdateReducers,
   departmentDeleteReducers,
+  departmentsListReducers,
 } from './departmentsReducers';
 import { employeesListReducers, employeeDetailsReducers } from './employeesReducers';
 
@@ -57,6 +58,7 @@ const reducers = combineReducers({
   departmentCreate: departmentCreateReducers,
   departmentUpdate: departmentUpdateReducers,
   departmentDelete: departmentDeleteReducers,
+  departmentsList: departmentsListReducers,
   // EMPLOYEES
   employeesList: employeesListReducers,
   employeeDetails: employeeDetailsReducers,
