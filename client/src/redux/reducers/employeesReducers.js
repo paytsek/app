@@ -23,7 +23,18 @@ export const employeesListReducers = (state = { employees: [] }, action) => {
   }
 };
 
-export const employeeDetailsReducers = (state = { employee: {} }, action) => {
+export const employeeDetailsReducers = (
+  state = {
+    employee: {
+      status: {},
+      compensation: {},
+      department: {},
+      statuses: [],
+      compensations: [],
+    },
+  },
+  action,
+) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -34,7 +45,15 @@ export const employeeDetailsReducers = (state = { employee: {} }, action) => {
     case EMPLOYEE_DETAILS_FAIL:
       return { ...state, loading: false };
     case EMPLOYEE_DETAILS_RESET:
-      return { employee: {} };
+      return {
+        employee: {
+          status: {},
+          compensation: {},
+          department: {},
+          statuses: [],
+          compensations: [],
+        },
+      };
     default:
       return state;
   }
