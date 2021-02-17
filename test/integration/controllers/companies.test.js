@@ -639,7 +639,6 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
         overtimeRestDayPay: 'Overtime Rest Day Pay is required',
         regularHolidayPay: 'Regular Holiday Pay is required',
         specialHolidayPay: 'Special Holiday Pay is required',
-        // departments: 'Please add department',
         'registeredAddress.zipCode': 'Zip code is required',
         'registeredAddress.country': 'Country is required',
         'registeredAddress.city': 'City is required',
@@ -675,7 +674,6 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
           country: 'Philippines',
           zipCode: '2600',
         },
-        departments: ['Staff'],
       });
 
     expect(res.status).toBe(201);
@@ -926,6 +924,8 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
         departments: [mongoose.Types.ObjectId()],
       });
 
+      const taxablePayId = mongoose.Types.ObjectId();
+
       const res = await request(app)
         .put(`${url}/${companySettings._id}`)
         .auth(token, { type: 'bearer' })
@@ -961,11 +961,14 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
           deminimis: false,
           emailNotification: false,
           hideEmployeeList: false,
-          taxablePays: ['Allowance'],
           nonTaxablePays: ['Food'],
-          sssCalculation: { deminimis: false },
-          phicCalculation: { deminimis: false },
-          thirteenthMonthPayCalculation: { deminimis: false, absences: false },
+          sssCalculation: { deminimis: false, taxablePays: [taxablePayId.toString()] },
+          phicCalculation: { deminimis: false, taxablePays: [taxablePayId.toString()] },
+          thirteenthMonthPayCalculation: {
+            deminimis: false,
+            absences: false,
+            taxablePays: [taxablePayId.toString()],
+          },
           departments: [mongoose.Types.ObjectId(), mongoose.Types.ObjectId()],
           firstCutOff: 1,
           firstPayout: 5,
@@ -1021,11 +1024,14 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
           deminimis: false,
           emailNotification: false,
           hideEmployeeList: false,
-          taxablePays: ['Allowance'],
           nonTaxablePays: ['Food'],
-          sssCalculation: { deminimis: false },
-          phicCalculation: { deminimis: false },
-          thirteenthMonthPayCalculation: { deminimis: false, absences: false },
+          sssCalculation: { deminimis: false, taxablePays: [taxablePayId.toString()] },
+          phicCalculation: { deminimis: false, taxablePays: [taxablePayId.toString()] },
+          thirteenthMonthPayCalculation: {
+            deminimis: false,
+            absences: false,
+            taxablePays: [taxablePayId.toString()],
+          },
           firstCutOff: 1,
           firstPayout: 5,
           secondCutOff: 15,

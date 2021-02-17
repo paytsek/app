@@ -18,6 +18,7 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const departmentRoutes = require('./routes/departments');
 const employeeRoutes = require('./routes/employees');
+const taxablePayRoutes = require('./routes/taxablePays');
 
 const envPath = process.env.NODE_ENV === 'test' ? './config/test.env' : './config/config.env';
 
@@ -83,6 +84,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/departments', departmentRoutes);
 app.use('/api/v1/employees', employeeRoutes);
+app.use('/api/v1/taxablePays', taxablePayRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/client/build')));

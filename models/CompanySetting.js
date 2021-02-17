@@ -222,55 +222,45 @@ const CompanySettingSchema = new mongoose.Schema(
     sssRegistrationNumber: String,
     phicNumber: String,
     hdmfNumber: String,
-    taxablePays: {
-      type: [String],
-      default: [],
-    },
     nonTaxablePays: {
       type: [String],
       default: [],
     },
     sssCalculation: {
-      type: Object,
-      default: {
-        deminimis: false,
-        taxablePays: {
-          type: Object,
-          default: {},
-        },
-        nonTaxablePays: {
-          type: Object,
-          default: {},
-        },
+      deminimis: {
+        type: Boolean,
+        default: false,
+      },
+      taxablePays: [{ type: mongoose.Schema.Types.ObjectId, ref: 'TaxablePay' }],
+      nonTaxablePays: {
+        type: Object,
+        default: {},
       },
     },
     phicCalculation: {
-      type: Object,
-      default: {
-        deminimis: false,
-        taxablePays: {
-          type: Object,
-          default: {},
-        },
-        nonTaxablePays: {
-          type: Object,
-          default: {},
-        },
+      deminimis: {
+        type: Boolean,
+        default: false,
+      },
+      taxablePays: [{ type: mongoose.Schema.Types.ObjectId, ref: 'TaxablePay' }],
+      nonTaxablePays: {
+        type: Object,
+        default: {},
       },
     },
     thirteenthMonthPayCalculation: {
-      type: Object,
-      default: {
-        deminimis: false,
-        absences: false,
-        taxablePays: {
-          type: Object,
-          default: {},
-        },
-        nonTaxablePays: {
-          type: Object,
-          default: {},
-        },
+      deminimis: {
+        type: Boolean,
+        default: false,
+      },
+      absences: {
+        type: Boolean,
+        default: false,
+      },
+      taxablePays: [{ type: mongoose.Schema.Types.ObjectId, ref: 'TaxablePay' }],
+      nonTaxablePays: {
+        type: Object,
+        default: {},
       },
     },
     accountingJournal: {

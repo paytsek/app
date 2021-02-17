@@ -69,4 +69,11 @@ CompanySchema.virtual('employees', {
   foreignField: 'company',
 });
 
+// REVERSE POPULATE TAXABELPAYS
+CompanySchema.virtual('taxablePays', {
+  ref: 'TaxablePay',
+  localField: '_id',
+  foreignField: 'company',
+});
+
 module.exports = mongoose.model('Company', CompanySchema);
