@@ -10,7 +10,6 @@ const TaxablePaySchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Company',
       required: [true, 'Company must exist'],
-      unique: true,
     },
   },
   {

@@ -5,10 +5,13 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const tenant = require('../middleware/tenant');
 const administrator = require('../middleware/administrator');
-const { getTaxablePays, getTaxablePay } = require('../controllers/taxablePays');
+const { getTaxablePays, getTaxablePay, createTaxablePay } = require('../controllers/taxablePays');
 
 // api/v1/taxablePays
-router.route('/').get(auth, tenant, administrator, getTaxablePays);
+router
+  .route('/')
+  .get(auth, tenant, administrator, getTaxablePays)
+  .post(auth, tenant, administrator, createTaxablePay);
 
 // api/v1/taxablePays/:id
 router.route('/:id').get(auth, tenant, administrator, getTaxablePay);

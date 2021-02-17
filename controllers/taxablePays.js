@@ -51,7 +51,30 @@ const getTaxablePay = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ success: true, taxablePays });
 });
 
+// @ROUTE POST /api/v1/taxablePays
+// @Desc Create a taxablePay for a specific company
+// access PRIVATE - Logged in user
+const createTaxablePay = asyncHandler(async (req, res, next) => {
+  const { name } = req.body;
+
+  const company = await Company.findById(req.company._id);
+  const user = await User.findById(req.user._id);
+
+  if (
+    user.role !== 'admin' &&
+    (!company || !user || company.user.toString() !== user._id.toString())
+  ) {
+    res.status(401);
+    return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
+  }
+
+  const taxablePay = await TaxablePay.create({ name, company: company._id });
+
+  return res.status(201).json({ success: true, taxablePay });
+});
+
 module.exports = {
   getTaxablePays,
   getTaxablePay,
+  createTaxablePay,
 };
