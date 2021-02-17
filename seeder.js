@@ -12,6 +12,7 @@ const Department = require('./models/Department');
 const Employee = require('./models/Employee');
 const Compensation = require('./models/Compensation');
 const Status = require('./models/Status');
+const TaxablePay = require('./models/TaxablePay');
 
 const db = process.env.MONGO_URI_DEV;
 
@@ -32,6 +33,7 @@ const departments = JSON.parse(fs.readFileSync(`${__dirname}/_data/departments.j
 const employees = JSON.parse(fs.readFileSync(`${__dirname}/_data/employees.json`, 'utf-8'));
 const compensations = JSON.parse(fs.readFileSync(`${__dirname}/_data/compensations.json`, 'utf-8'));
 const statuses = JSON.parse(fs.readFileSync(`${__dirname}/_data/statuses.json`, 'utf-8'));
+const taxablePays = JSON.parse(fs.readFileSync(`${__dirname}/_data/taxablePays.json`, 'utf-8'));
 
 const importData = async () => {
   try {
@@ -42,6 +44,7 @@ const importData = async () => {
     await Employee.create(employees);
     await Compensation.create(compensations);
     await Status.create(statuses);
+    await TaxablePay.create(taxablePays);
 
     console.log('Data imported...'.green.inverse);
     process.exit(1);
@@ -60,6 +63,7 @@ const deleteData = async () => {
     await Employee.deleteMany({});
     await Compensation.deleteMany({});
     await Status.deleteMany({});
+    await TaxablePay.deleteMany({});
 
     console.log('Data deleted...'.red.inverse);
     process.exit(1);
