@@ -17,13 +17,18 @@ import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@materia
 
 import TitleBox from '../../../common/TitleBox';
 import DepartmentFormDialog from '../../../Dialog/DepartmentFormDialog';
+import MuiSkeleton from '../../../MuiSkeleton';
 
 import { DEPARTMENT_UPDATE_RESET } from '../../../../redux/types';
-import { createDepartment, deleteDepartment } from '../../../../redux/actions/departmentsActions';
+import {
+  createDepartment,
+  deleteDepartment,
+  getDepartments,
+} from '../../../../redux/actions/departmentsActions';
 import notification from '../../../../utils/notification';
 import useStyles from '../styles';
 
-const Departments = ({ departments = [] }) => {
+const Departments = () => {
   const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState({});
@@ -31,6 +36,9 @@ const Departments = ({ departments = [] }) => {
   const dispatch = useDispatch();
 
   const { errors, loading } = useSelector((state) => state.departmentCreate);
+  const { departments, loading: departmentsListLoading } = useSelector(
+    (state) => state.departmentsList,
+  );
   const { success, errors: departmentUpdateErrors, loading: departmentUpdateLoading } = useSelector(
     (state) => state.departmentUpdate,
   );
@@ -66,10 +74,16 @@ const Departments = ({ departments = [] }) => {
   };
 
   useEffect(() => {
+    dispatch(getDepartments());
+  }, []);
+
+  useEffect(() => {
     if (success) {
       handleOnClose();
     }
   }, [success]);
+
+  if (departmentsListLoading) return <MuiSkeleton />;
 
   return (
     <>

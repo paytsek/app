@@ -7,7 +7,6 @@ import { Undo } from '@material-ui/icons';
 import TitleBox from '../../common/TitleBox';
 import BasicSettings from './BasicSettings';
 import RegisteredAddress from './RegisteredAddress';
-import Departments from './Departments';
 import TaxablePays from './TaxablePays';
 import NonTaxablePays from './NonTaxablePays';
 import SSSCalculations from './SSSCalculations';
@@ -206,12 +205,6 @@ const CompanySettingsForm = () => {
       };
     });
 
-  // const handleOnDeleteDepartment = (key, val) =>
-  //   setSettings((prevState) => ({
-  //     ...prevState,
-  //     [key]: prevState[key].filter((department) => department !== val),
-  //   }));
-
   const handleOnChangeAccountingJournal = (e) =>
     setSettings((prevState) => ({
       ...prevState,
@@ -279,7 +272,6 @@ const CompanySettingsForm = () => {
         ...prevState.registeredAddress,
         ...company.companySettings.registeredAddress,
       },
-      departments: company.companySettings.departments,
       taxablePays: company.companySettings.taxablePays,
       nonTaxablePays: company.companySettings.nonTaxablePays,
       sssCalculation: company.companySettings.sssCalculation,
@@ -321,20 +313,12 @@ const CompanySettingsForm = () => {
         />
       </Grid>
       {/* REGISTER ADDRESS */}
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12}>
         <RegisteredAddress
           settings={registeredAddress}
           onChange={handleOnChangeRegisteredAddress}
           errors={errors}
         />
-      </Grid>
-      {/* DEPARTMENTS */}
-      <Grid item xs={12} md={6}>
-        {companyDetailsLoading ? (
-          <MuiSkeleton />
-        ) : (
-          <Departments departments={company.departments} />
-        )}
       </Grid>
       {/* GOVERNMENT REMITTANCES & 13th MONTH PAY CALCULATION */}
       <Grid item xs={12}>

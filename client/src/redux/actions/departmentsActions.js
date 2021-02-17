@@ -7,10 +7,26 @@ import {
   DEPARTMENT_CREATE_SUCCESS,
   DEPARTMENT_DELETE_REQUEST,
   DEPARTMENT_DELETE_SUCCESS,
+  DEPARTMENT_LIST_REQUEST,
+  DEPARTMENT_LIST_SUCCESS,
   DEPARTMENT_UPDATE_FAIL,
   DEPARTMENT_UPDATE_REQUEST,
   DEPARTMENT_UPDATE_SUCCESS,
 } from '../types';
+
+export const getDepartments = () => async (dispatch) => {
+  dispatch({ type: DEPARTMENT_LIST_REQUEST });
+
+  try {
+    const { data } = await axios.get('/departments');
+
+    dispatch({ type: DEPARTMENT_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    const { errors } = error.response.data;
+    const message = errors && errors.message;
+    dispatch(notification('error', message || 'Server Error', dispatch));
+  }
+};
 
 export const createDepartment = (department) => async (dispatch) => {
   dispatch({ type: DEPARTMENT_CREATE_REQUEST });
