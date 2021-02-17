@@ -136,7 +136,7 @@ const deleteTaxablePay = asyncHandler(async (req, res, next) => {
 
   return res.status(200).json({
     success: true,
-    department: {},
+    taxablePay: {},
     message: `Taxable pay - ID:${req.params.id} successfully deleted`,
   });
 });
