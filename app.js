@@ -19,6 +19,7 @@ const userRoutes = require('./routes/users');
 const departmentRoutes = require('./routes/departments');
 const employeeRoutes = require('./routes/employees');
 const taxablePayRoutes = require('./routes/taxablePays');
+const nonTaxablePayRoutes = require('./routes/nonTaxablePays');
 
 const envPath = process.env.NODE_ENV === 'test' ? './config/test.env' : './config/config.env';
 
@@ -85,6 +86,7 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/departments', departmentRoutes);
 app.use('/api/v1/employees', employeeRoutes);
 app.use('/api/v1/taxablePays', taxablePayRoutes);
+app.use('/api/v1/nonTaxablePays', nonTaxablePayRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/client/build')));

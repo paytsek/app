@@ -32,31 +32,21 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
         "taxablePays": ["602c96b4572b7214b11b3281"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3281"]
     },
     "phicCalculation": {
         "deminimis": false,
         "taxablePays": ["602c96b4572b7214b11b3281"],
-        "nonTaxablePays": {
-            "food": true,
-            "snacks":true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3281"]
     },
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
         "taxablePays": ["602c96b4572b7214b11b3281"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": false
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3281"]
     },
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
@@ -107,31 +97,21 @@
     "sssRegistrationNumber": "66511446890",
     "phicNumber": "1314568754",
     "hdmfNumber": "445783211",
-    "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
         "taxablePays": ["602c96b4572b7214b11b3282"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3282"]
     },
     "phicCalculation": {
         "deminimis": false,
         "taxablePays": ["602c96b4572b7214b11b3282"],
-        "nonTaxablePays": {
-            "food": true,
-            "snacks":true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3282"]
     },
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
         "taxablePays": ["602c96b4572b7214b11b3282"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": false
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3282"]
     },
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
@@ -182,31 +162,21 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
         "taxablePays": ["602c96b4572b7214b11b3283"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3283"]
     },
     "phicCalculation": {
         "deminimis": false,
         "taxablePays": ["602c96b4572b7214b11b3283"],
-        "nonTaxablePays": {
-            "food": true,
-            "snacks":true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3283"]
     },
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
         "taxablePays": ["602c96b4572b7214b11b3283"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": false
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3283"]
     },
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
@@ -257,31 +227,21 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
         "taxablePays": ["602c96b4572b7214b11b3284"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3284"]
     },
     "phicCalculation": {
         "deminimis": false,
         "taxablePays": ["602c96b4572b7214b11b3284"],
-        "nonTaxablePays": {
-            "food": true,
-            "snacks":true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3284"]
     },
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
         "taxablePays": ["602c96b4572b7214b11b3284"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": false
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3284"]
     },
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
@@ -332,31 +292,21 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
         "taxablePays": ["602c96b4572b7214b11b3285"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3285"]
     },
     "phicCalculation": {
         "deminimis": false,
         "taxablePays": ["602c96b4572b7214b11b3285"],
-        "nonTaxablePays": {
-            "food": true,
-            "snacks":true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3285"]
     },
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
         "taxablePays": ["602c96b4572b7214b11b3285"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": false
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3285"]
     },
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
@@ -407,31 +357,21 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
         "taxablePays": ["602c96b4572b7214b11b3286"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3286"]
     },
     "phicCalculation": {
         "deminimis": false,
         "taxablePays": ["602c96b4572b7214b11b3286"],
-        "nonTaxablePays": {
-            "food": true,
-            "snacks":true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3286"]
     },
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
         "taxablePays": ["602c96b4572b7214b11b3286"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": false
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3286"]
     },
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
@@ -482,31 +422,21 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
         "taxablePays": ["602c96b4572b7214b11b3287"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3287"]
     },
     "phicCalculation": {
         "deminimis": false,
         "taxablePays": ["602c96b4572b7214b11b3287"],
-        "nonTaxablePays": {
-            "food": true,
-            "snacks":true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3287"]
     },
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
         "taxablePays": ["602c96b4572b7214b11b3287"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": false
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3287"]
     },
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
@@ -557,31 +487,21 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
         "taxablePays": ["602c96b4572b7214b11b3288"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3288"]
     },
     "phicCalculation": {
         "deminimis": false,
         "taxablePays": ["602c96b4572b7214b11b3288"],
-        "nonTaxablePays": {
-            "food": true,
-            "snacks":true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3288"]
     },
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
         "taxablePays": ["602c96b4572b7214b11b3288"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": false
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3288"]
     },
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
@@ -632,31 +552,21 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
         "taxablePays": ["602c96b4572b7214b11b3289"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3289"]
     },
     "phicCalculation": {
         "deminimis": false,
         "taxablePays": ["602c96b4572b7214b11b3289"],
-        "nonTaxablePays": {
-            "food": true,
-            "snacks":true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3289"]
     },
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
         "taxablePays": ["602c96b4572b7214b11b3289"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": false
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3289"]
     },
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
@@ -707,31 +617,21 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
         "taxablePays": ["602c96b4572b7214b11b3290"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3290"]
     },
     "phicCalculation": {
         "deminimis": false,
         "taxablePays": ["602c96b4572b7214b11b3290"],
-        "nonTaxablePays": {
-            "food": true,
-            "snacks":true
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3290"]
     },
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
         "taxablePays": ["602c96b4572b7214b11b3290"],
-        "nonTaxablePays": {
-            "food": false,
-            "snacks": false
-        }
+        "nonTaxablePays": ["602c96b4572b7286b11b3290"]
     },
     "accountingJournal": {
         "deminimisBenefits": "wagesAndSalaries",
