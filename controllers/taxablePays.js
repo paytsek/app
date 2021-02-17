@@ -39,16 +39,16 @@ const getTaxablePay = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
 
-  const taxablePays = await TaxablePay.findOne({ company: company._id, _id: req.params.id });
+  const taxablePay = await TaxablePay.findOne({ company: company._id, _id: req.params.id });
 
-  if (!taxablePays) {
+  if (!taxablePay) {
     res.status(404);
     return next(
       new ErrorResponse({ message: `Resource with an id of ${req.params.id} not found` }),
     );
   }
 
-  return res.status(200).json({ success: true, taxablePays });
+  return res.status(200).json({ success: true, taxablePay });
 });
 
 // @ROUTE POST /api/v1/taxablePays
@@ -73,8 +73,44 @@ const createTaxablePay = asyncHandler(async (req, res, next) => {
   return res.status(201).json({ success: true, taxablePay });
 });
 
+// @ROUTE PUT /api/v1/taxablePays/:id
+// @Desc Update a taxablePay by its id for a specific company
+// access PRIVATE - Logged in user
+const updateTaxablePay = asyncHandler(async (req, res, next) => {
+  const company = await Company.findById(req.company._id);
+  const user = await User.findById(req.user._id);
+
+  if (
+    user.role !== 'admin' &&
+    (!company || !user || company.user.toString() !== user._id.toString())
+  ) {
+    res.status(401);
+    return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
+  }
+
+  let taxablePay = await TaxablePay.findOne({ company: company._id, _id: req.params.id });
+
+  if (!taxablePay) {
+    res.status(404);
+    return next(
+      new ErrorResponse({ message: `Resource with an id of ${req.params.id} not found` }),
+    );
+  }
+
+  const { name } = req.body;
+
+  taxablePay = await TaxablePay.findByIdAndUpdate(
+    req.params.id,
+    { name },
+    { new: true, runValidators: true },
+  );
+
+  return res.status(200).json({ success: true, taxablePay });
+});
+
 module.exports = {
   getTaxablePays,
   getTaxablePay,
   createTaxablePay,
+  updateTaxablePay,
 };
