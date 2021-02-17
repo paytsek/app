@@ -10,6 +10,7 @@ const {
   getTaxablePay,
   createTaxablePay,
   updateTaxablePay,
+  deleteTaxablePay,
 } = require('../controllers/taxablePays');
 
 // api/v1/taxablePays
@@ -22,6 +23,7 @@ router
 router
   .route('/:id')
   .get(auth, tenant, administrator, getTaxablePay)
-  .put(auth, tenant, administrator, updateTaxablePay);
+  .put(auth, tenant, administrator, updateTaxablePay)
+  .delete(auth, tenant, administrator, deleteTaxablePay);
 
 module.exports = router;
