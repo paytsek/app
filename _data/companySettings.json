@@ -32,14 +32,10 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "taxablePays": ["beer", "yosi"],
     "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": false
-        },
+        "taxablePays": ["602c96b4572b7214b11b3281"],
         "nonTaxablePays": {
             "food": false,
             "snacks": true
@@ -47,10 +43,7 @@
     },
     "phicCalculation": {
         "deminimis": false,
-        "taxablePays": {
-            "beer": false,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3281"],
         "nonTaxablePays": {
             "food": true,
             "snacks":true
@@ -59,10 +52,7 @@
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3281"],
         "nonTaxablePays": {
             "food": false,
             "snacks": false
@@ -117,14 +107,10 @@
     "sssRegistrationNumber": "66511446890",
     "phicNumber": "1314568754",
     "hdmfNumber": "445783211",
-    "taxablePays": ["beer", "yosi"],
     "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3282"],
         "nonTaxablePays": {
             "food": false,
             "snacks": true
@@ -132,10 +118,7 @@
     },
     "phicCalculation": {
         "deminimis": false,
-        "taxablePays": {
-            "beer": false,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3282"],
         "nonTaxablePays": {
             "food": true,
             "snacks":true
@@ -144,10 +127,7 @@
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3282"],
         "nonTaxablePays": {
             "food": false,
             "snacks": false
@@ -202,14 +182,10 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "taxablePays": ["beer", "yosi"],
     "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": false
-        },
+        "taxablePays": ["602c96b4572b7214b11b3283"],
         "nonTaxablePays": {
             "food": false,
             "snacks": true
@@ -217,10 +193,7 @@
     },
     "phicCalculation": {
         "deminimis": false,
-        "taxablePays": {
-            "beer": false,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3283"],
         "nonTaxablePays": {
             "food": true,
             "snacks":true
@@ -229,10 +202,7 @@
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3283"],
         "nonTaxablePays": {
             "food": false,
             "snacks": false
@@ -287,14 +257,10 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "taxablePays": ["beer", "yosi"],
     "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": false
-        },
+        "taxablePays": ["602c96b4572b7214b11b3284"],
         "nonTaxablePays": {
             "food": false,
             "snacks": true
@@ -302,10 +268,7 @@
     },
     "phicCalculation": {
         "deminimis": false,
-        "taxablePays": {
-            "beer": false,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3284"],
         "nonTaxablePays": {
             "food": true,
             "snacks":true
@@ -314,10 +277,7 @@
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3284"],
         "nonTaxablePays": {
             "food": false,
             "snacks": false
@@ -372,14 +332,10 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "taxablePays": ["beer", "yosi"],
     "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": false
-        },
+        "taxablePays": ["602c96b4572b7214b11b3285"],
         "nonTaxablePays": {
             "food": false,
             "snacks": true
@@ -387,10 +343,7 @@
     },
     "phicCalculation": {
         "deminimis": false,
-        "taxablePays": {
-            "beer": false,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3285"],
         "nonTaxablePays": {
             "food": true,
             "snacks":true
@@ -399,10 +352,7 @@
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3285"],
         "nonTaxablePays": {
             "food": false,
             "snacks": false
@@ -457,14 +407,10 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "taxablePays": ["beer", "yosi"],
     "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": false
-        },
+        "taxablePays": ["602c96b4572b7214b11b3286"],
         "nonTaxablePays": {
             "food": false,
             "snacks": true
@@ -472,10 +418,7 @@
     },
     "phicCalculation": {
         "deminimis": false,
-        "taxablePays": {
-            "beer": false,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3286"],
         "nonTaxablePays": {
             "food": true,
             "snacks":true
@@ -484,10 +427,7 @@
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3286"],
         "nonTaxablePays": {
             "food": false,
             "snacks": false
@@ -542,14 +482,10 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "taxablePays": ["beer", "yosi"],
     "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": false
-        },
+        "taxablePays": ["602c96b4572b7214b11b3287"],
         "nonTaxablePays": {
             "food": false,
             "snacks": true
@@ -557,10 +493,7 @@
     },
     "phicCalculation": {
         "deminimis": false,
-        "taxablePays": {
-            "beer": false,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3287"],
         "nonTaxablePays": {
             "food": true,
             "snacks":true
@@ -569,10 +502,7 @@
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3287"],
         "nonTaxablePays": {
             "food": false,
             "snacks": false
@@ -627,14 +557,10 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "taxablePays": ["beer", "yosi"],
     "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": false
-        },
+        "taxablePays": ["602c96b4572b7214b11b3288"],
         "nonTaxablePays": {
             "food": false,
             "snacks": true
@@ -642,10 +568,7 @@
     },
     "phicCalculation": {
         "deminimis": false,
-        "taxablePays": {
-            "beer": false,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3288"],
         "nonTaxablePays": {
             "food": true,
             "snacks":true
@@ -654,10 +577,7 @@
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3288"],
         "nonTaxablePays": {
             "food": false,
             "snacks": false
@@ -712,14 +632,10 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "taxablePays": ["beer", "yosi"],
     "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": false
-        },
+        "taxablePays": ["602c96b4572b7214b11b3289"],
         "nonTaxablePays": {
             "food": false,
             "snacks": true
@@ -727,10 +643,7 @@
     },
     "phicCalculation": {
         "deminimis": false,
-        "taxablePays": {
-            "beer": false,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3289"],
         "nonTaxablePays": {
             "food": true,
             "snacks":true
@@ -739,10 +652,7 @@
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3289"],
         "nonTaxablePays": {
             "food": false,
             "snacks": false
@@ -797,14 +707,10 @@
     "sssRegistrationNumber": "837401053",
     "phicNumber": "583859105748",
     "hdmfNumber": "5783010574",
-    "taxablePays": ["beer", "yosi"],
     "nonTaxablePays": ["food", "snacks"],
     "sssCalculation": {
         "deminimis": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": false
-        },
+        "taxablePays": ["602c96b4572b7214b11b3290"],
         "nonTaxablePays": {
             "food": false,
             "snacks": true
@@ -812,10 +718,7 @@
     },
     "phicCalculation": {
         "deminimis": false,
-        "taxablePays": {
-            "beer": false,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3290"],
         "nonTaxablePays": {
             "food": true,
             "snacks":true
@@ -824,10 +727,7 @@
     "thirteenthMonthPayCalculation": {
         "deminimis": true,
         "absences": true,
-        "taxablePays": {
-            "beer": true,
-            "yosi": true
-        },
+        "taxablePays": ["602c96b4572b7214b11b3290"],
         "nonTaxablePays": {
             "food": false,
             "snacks": false
