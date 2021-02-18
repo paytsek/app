@@ -17,25 +17,39 @@ import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@materia
 
 import TitleBox from '../common/TitleBox';
 import MuiSkeleton from '../MuiSkeleton';
+import TaxablePayFormDialog from '../Dialog/TaxablePayFormDialog';
 
 import {
   getTaxablePays,
   createTaxablePay,
   deleteTaxablePay,
 } from '../../redux/actions/taxablePaysActions';
+import { TAXABLE_PAYS_UPDATE_RESET } from '../../redux/types';
 import notification from '../../utils/notification';
 import useStyles from './styles';
 
 const Departments = () => {
   const [name, setName] = useState('');
+  const [open, setOpen] = useState(false);
+  const [selectedTaxablePay, setSelectedTaxablePay] = useState({});
 
   const dispatch = useDispatch();
 
   const { taxablePays, loading } = useSelector((state) => state.taxablePaysList);
-  const { loading: taxablePaysCreateLoading } = useSelector((state) => state.taxablePaysCreate);
+  const { loading: taxablePaysCreateLoading, errors: taxablePaysCreateError } = useSelector(
+    (state) => state.taxablePaysCreate,
+  );
   const { loading: taxablePaysDeleteLoading } = useSelector((state) => state.taxablePaysDelete);
+  const { success, errors, loading: taxablePaysUpdateLoading } = useSelector(
+    (state) => state.taxablePaysUpdate,
+  );
 
   const { paper, fieldsContainer } = useStyles();
+
+  const handleOnOpen = (taxablePay) => {
+    setSelectedTaxablePay(taxablePay);
+    setOpen(true);
+  };
 
   const handleOnAdd = (val) => {
     const existTaxablePay = taxablePays
@@ -53,9 +67,21 @@ const Departments = () => {
     return setName('');
   };
 
+  const handleOnClose = () => {
+    setSelectedTaxablePay({});
+    setOpen(false);
+    dispatch({ type: TAXABLE_PAYS_UPDATE_RESET });
+  };
+
   useEffect(() => {
     dispatch(getTaxablePays());
   }, []);
+
+  useEffect(() => {
+    if (success) {
+      handleOnClose();
+    }
+  }, [success]);
 
   if (loading) return <MuiSkeleton />;
 
@@ -83,7 +109,11 @@ const Departments = () => {
                 </InputAdornment>
               )}
             />
-            <FormHelperText error>Error</FormHelperText>
+            {taxablePaysCreateError && (
+              <FormHelperText error={!!taxablePaysCreateError.name}>
+                {taxablePaysCreateError.name}
+              </FormHelperText>
+            )}
           </FormControl>
           {/* List of Taxable pays */}
           {taxablePays.length > 0 ? (
@@ -92,7 +122,11 @@ const Departments = () => {
                 <ListItem key={taxablePay._id}>
                   <ListItemText primary={taxablePay.name} />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="edit">
+                    <IconButton
+                      edge="end"
+                      aria-label="edit"
+                      onClick={() => handleOnOpen(taxablePay)}
+                    >
                       <EditIcon />
                     </IconButton>
                     <IconButton
@@ -110,6 +144,14 @@ const Departments = () => {
           ) : null}
         </div>
       </Paper>
+      <TaxablePayFormDialog
+        open={open}
+        handleClose={handleOnClose}
+        taxablePay={selectedTaxablePay}
+        title="Edit Taxable Pay"
+        errors={errors}
+        loading={taxablePaysUpdateLoading}
+      />
     </>
   );
 };
