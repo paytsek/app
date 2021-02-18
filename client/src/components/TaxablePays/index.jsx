@@ -1,47 +1,107 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  Typography,
+  Paper,
   FormControl,
-  InputAdornment,
-  Input,
   InputLabel,
+  Input,
+  InputAdornment,
   IconButton,
   List,
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
+  FormHelperText,
 } from '@material-ui/core';
-import { Add as AddIcon, Delete as DeleteIcon } from '@material-ui/icons';
+import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
 
-const TaxablePays = () => (
-  <>
-    <Typography variant="h6">Taxable Pays</Typography>
-    <FormControl fullWidth size="small" margin="normal">
-      <InputLabel htmlFor="taxablePays">Taxable Pays</InputLabel>
-      <Input
-        id="taxablePays"
-        name="taxablePayName"
-        endAdornment={(
-          <InputAdornment position="end">
-            <IconButton color="primary">
-              <AddIcon />
-            </IconButton>
-          </InputAdornment>
-        )}
-      />
-    </FormControl>
-    {/* List of taxable pays */}
-    <List>
-      <ListItem>
-        <ListItemText primary="Sample" />
-        <ListItemSecondaryAction>
-          <IconButton edge="end" aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
-    </List>
-  </>
-);
+import TitleBox from '../common/TitleBox';
+import MuiSkeleton from '../MuiSkeleton';
 
-export default TaxablePays;
+import { getTaxablePays, createTaxablePay } from '../../redux/actions/taxablePaysActions';
+import notification from '../../utils/notification';
+import useStyles from './styles';
+
+const Departments = () => {
+  const [name, setName] = useState('');
+
+  const dispatch = useDispatch();
+
+  const { taxablePays, loading } = useSelector((state) => state.taxablePaysList);
+  const { loading: taxablePaysCreateLoading } = useSelector((state) => state.taxablePaysCreate);
+
+  const { paper, fieldsContainer } = useStyles();
+
+  const handleOnAdd = (val) => {
+    const existTaxablePay = taxablePays
+      .map((taxablePay) => taxablePay.name.toLowerCase())
+      .includes(val.toLowerCase());
+
+    if (!val) {
+      return dispatch(notification('warning', 'Please add a taxable pay name', dispatch));
+    }
+
+    if (existTaxablePay) {
+      return dispatch(notification('warning', `${val} already exist`, dispatch));
+    }
+    dispatch(createTaxablePay({ name }));
+    return setName('');
+  };
+
+  useEffect(() => {
+    dispatch(getTaxablePays());
+  }, []);
+
+  if (loading) return <MuiSkeleton />;
+
+  return (
+    <>
+      <Paper className={paper} elevation={6}>
+        <TitleBox title="Taxable Pays" />
+        <div className={fieldsContainer}>
+          <FormControl fullWidth size="small" margin="normal">
+            <InputLabel htmlFor="taxablePay">Enter a taxable pay</InputLabel>
+            <Input
+              id="taxablePay"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              endAdornment={(
+                <InputAdornment position="end">
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleOnAdd(name)}
+                    disabled={taxablePaysCreateLoading}
+                  >
+                    <AddIcon />
+                  </IconButton>
+                </InputAdornment>
+              )}
+            />
+            <FormHelperText error>Error</FormHelperText>
+          </FormControl>
+          {/* List of Taxable pays */}
+          {taxablePays.length > 0 ? (
+            <List>
+              {taxablePays.map((taxablePay) => (
+                <ListItem key={taxablePay._id}>
+                  <ListItemText primary={taxablePay.name} />
+                  <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="edit">
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton edge="end" aria-label="delete">
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+            </List>
+          ) : null}
+        </div>
+      </Paper>
+    </>
+  );
+};
+
+export default Departments;
