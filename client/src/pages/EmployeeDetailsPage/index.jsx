@@ -27,8 +27,6 @@ const EmployeeDetailsPage = ({ match }) => {
 
   const { employee, loading } = useSelector((state) => state.employeeDetails);
 
-  console.log(employee);
-
   const { active, paper, title, actions, details } = useStyles();
 
   useEffect(() => {

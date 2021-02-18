@@ -10,6 +10,7 @@ import {
   Settings,
   GroupWork,
   People,
+  AttachMoney,
 } from '@material-ui/icons';
 
 import useStyles from '../style';
@@ -56,6 +57,14 @@ const HeaderAdminList = () => {
                 <GroupWork />
               </ListItemIcon>
               <ListItemText primary="Departments" />
+            </ListItem>
+          </Link>
+          <Link to={`/${slug}/taxablePays`}>
+            <ListItem button className={nested}>
+              <ListItemIcon>
+                <AttachMoney />
+              </ListItemIcon>
+              <ListItemText primary="Taxable Pays" />
             </ListItem>
           </Link>
         </List>

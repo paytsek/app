@@ -15,18 +15,18 @@ import {
 } from '@material-ui/core';
 import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
 
-import TitleBox from '../../../common/TitleBox';
-import DepartmentFormDialog from '../../../Dialog/DepartmentFormDialog';
-import MuiSkeleton from '../../../MuiSkeleton';
+import TitleBox from '../common/TitleBox';
+import DepartmentFormDialog from '../Dialog/DepartmentFormDialog';
+import MuiSkeleton from '../MuiSkeleton';
 
-import { DEPARTMENT_UPDATE_RESET } from '../../../../redux/types';
+import { DEPARTMENT_UPDATE_RESET } from '../../redux/types';
 import {
   createDepartment,
   deleteDepartment,
   getDepartments,
-} from '../../../../redux/actions/departmentsActions';
-import notification from '../../../../utils/notification';
-import useStyles from '../styles';
+} from '../../redux/actions/departmentsActions';
+import notification from '../../utils/notification';
+import useStyles from '../CompanySettings/CompanySettingsForm/styles';
 
 const Departments = () => {
   const [name, setName] = useState('');

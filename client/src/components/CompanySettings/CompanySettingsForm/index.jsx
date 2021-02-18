@@ -7,8 +7,8 @@ import { Undo } from '@material-ui/icons';
 import TitleBox from '../../common/TitleBox';
 import BasicSettings from './BasicSettings';
 import RegisteredAddress from './RegisteredAddress';
-import TaxablePays from './TaxablePays';
-import NonTaxablePays from './NonTaxablePays';
+// import TaxablePays from './TaxablePays';
+// import NonTaxablePays from './NonTaxablePays';
 import SSSCalculations from './SSSCalculations';
 import PhicCalculations from './PhicCalculations';
 import ThirteenthMonthPayCalculations from './ThirteenthMonthPayCalculations';
@@ -159,51 +159,51 @@ const CompanySettingsForm = () => {
       },
     }));
 
-  const handleOnAdd = (key, val) =>
-    setSettings((prevState) => ({
-      ...prevState,
-      [key]: [...prevState[key], val],
-      sssCalculation: {
-        ...prevState.sssCalculation,
-        [key]: { ...prevState.sssCalculation[key], [val]: false },
-      },
-      phicCalculation: {
-        ...prevState.phicCalculation,
-        [key]: { ...prevState.phicCalculation[key], [val]: false },
-      },
-      thirteenthMonthPayCalculation: {
-        ...prevState.thirteenthMonthPayCalculation,
-        [key]: { ...prevState.thirteenthMonthPayCalculation[key], [val]: false },
-      },
-    }));
+  // const handleOnAdd = (key, val) =>
+  //   setSettings((prevState) => ({
+  //     ...prevState,
+  //     [key]: [...prevState[key], val],
+  //     sssCalculation: {
+  //       ...prevState.sssCalculation,
+  //       [key]: { ...prevState.sssCalculation[key], [val]: false },
+  //     },
+  //     phicCalculation: {
+  //       ...prevState.phicCalculation,
+  //       [key]: { ...prevState.phicCalculation[key], [val]: false },
+  //     },
+  //     thirteenthMonthPayCalculation: {
+  //       ...prevState.thirteenthMonthPayCalculation,
+  //       [key]: { ...prevState.thirteenthMonthPayCalculation[key], [val]: false },
+  //     },
+  //   }));
 
-  const handleOnDelete = (key, val) =>
-    setSettings((prevState) => {
-      const newSssCalculation = prevState.sssCalculation;
-      const newPhicCalculation = prevState.phicCalculation;
-      const newThirteenthMonthPayCalculation = prevState.thirteenthMonthPayCalculation;
+  // const handleOnDelete = (key, val) =>
+  //   setSettings((prevState) => {
+  //     const newSssCalculation = prevState.sssCalculation;
+  //     const newPhicCalculation = prevState.phicCalculation;
+  //     const newThirteenthMonthPayCalculation = prevState.thirteenthMonthPayCalculation;
 
-      delete newSssCalculation[key][val];
-      delete newPhicCalculation[key][val];
-      delete newThirteenthMonthPayCalculation[key][val];
+  //     delete newSssCalculation[key][val];
+  //     delete newPhicCalculation[key][val];
+  //     delete newThirteenthMonthPayCalculation[key][val];
 
-      return {
-        ...prevState,
-        [key]: prevState[key].filter((prevVal) => prevVal !== val),
-        sssCalculation: {
-          ...prevState.sssCalculation,
-          ...newSssCalculation,
-        },
-        phicCalculation: {
-          ...prevState.phicCalculation,
-          ...newPhicCalculation,
-        },
-        thirteenthMonthPayCalculation: {
-          ...prevState.newThirteenthMonthPayCalculation,
-          ...newThirteenthMonthPayCalculation,
-        },
-      };
-    });
+  //     return {
+  //       ...prevState,
+  //       [key]: prevState[key].filter((prevVal) => prevVal !== val),
+  //       sssCalculation: {
+  //         ...prevState.sssCalculation,
+  //         ...newSssCalculation,
+  //       },
+  //       phicCalculation: {
+  //         ...prevState.phicCalculation,
+  //         ...newPhicCalculation,
+  //       },
+  //       thirteenthMonthPayCalculation: {
+  //         ...prevState.newThirteenthMonthPayCalculation,
+  //         ...newThirteenthMonthPayCalculation,
+  //       },
+  //     };
+  //   });
 
   const handleOnChangeAccountingJournal = (e) =>
     setSettings((prevState) => ({
@@ -327,21 +327,21 @@ const CompanySettingsForm = () => {
           <div className={fieldsContainer}>
             <Grid container spacing={6}>
               {/* Taxable pays */}
-              <Grid item xs={12} md={6}>
+              {/* <Grid item xs={12} md={6}>
                 <TaxablePays
                   taxablePays={taxablePays}
                   onAdd={handleOnAdd}
                   onDelete={handleOnDelete}
                 />
-              </Grid>
+              </Grid> */}
               {/* Non-taxable pays */}
-              <Grid item xs={12} md={6}>
+              {/* <Grid item xs={12} md={6}>
                 <NonTaxablePays
                   nonTaxablePays={nonTaxablePays}
                   onAdd={handleOnAdd}
                   onDelete={handleOnDelete}
                 />
-              </Grid>
+              </Grid> */}
               {/* SSS calculation */}
               <Grid item xs={12} md={4} className={calculationsContainer}>
                 <Paper elevation={2}>
