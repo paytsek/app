@@ -6,11 +6,9 @@ import TaxablePays from '../../components/TaxablePays';
 
 import useStyles from './styles';
 
-const TaxablePagePage = ({ match }) => {
+const TaxablePayPage = ({ match }) => {
   const { slug } = match.params;
-
   const { paper, active, title, gridContainer } = useStyles();
-
   return (
     <Container>
       <Breadcrumbs>
@@ -35,4 +33,4 @@ const TaxablePagePage = ({ match }) => {
   );
 };
 
-export default TaxablePagePage;
+export default TaxablePayPage;
