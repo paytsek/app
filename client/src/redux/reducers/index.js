@@ -34,7 +34,7 @@ import {
   taxablePaysCreateReducers,
   taxablePaysDeleteReducers,
   taxablePaysUpdateReducers,
-} from './taxablesReducers';
+} from './taxablePaysReducers';
 
 import snackbarReducer from './snackbarReducers';
 
