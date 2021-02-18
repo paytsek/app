@@ -8,6 +8,10 @@ import {
   TAXABLE_PAYS_DELETE_REQUEST,
   TAXABLE_PAYS_DELETE_SUCCESS,
   TAXABLE_PAYS_DELETE_FAIL,
+  TAXABLE_PAYS_UPDATE_REQUEST,
+  TAXABLE_PAYS_UPDATE_RESET,
+  TAXABLE_PAYS_UPDATE_FAIL,
+  TAXABLE_PAYS_UPDATE_SUCCESS,
 } from '../types';
 
 export const taxablePaysListReducers = (state = { taxablePays: [] }, action) => {
@@ -26,6 +30,12 @@ export const taxablePaysListReducers = (state = { taxablePays: [] }, action) => 
       return {
         ...state,
         taxablePays: state.taxablePays.filter((taxablePay) => taxablePay._id !== payload),
+      };
+    case TAXABLE_PAYS_UPDATE_SUCCESS:
+      return {
+        ...state,
+        taxablePays: state.taxablePays.map((taxablePay) =>
+          (taxablePay._id === payload.taxablePay._id ? payload.taxablePay : taxablePay)),
       };
     default:
       return state;
@@ -57,6 +67,23 @@ export const taxablePaysDeleteReducers = (state = {}, action) => {
       return { ...state, loading: false, success: true };
     case TAXABLE_PAYS_DELETE_FAIL:
       return { ...state, loading: false };
+    default:
+      return state;
+  }
+};
+
+export const taxablePaysUpdateReducers = (state = { errors: {} }, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case TAXABLE_PAYS_UPDATE_REQUEST:
+      return { ...state, loading: true };
+    case TAXABLE_PAYS_UPDATE_SUCCESS:
+      return { ...state, loading: false, success: true };
+    case TAXABLE_PAYS_UPDATE_FAIL:
+      return { ...state, loading: false, errors: payload };
+    case TAXABLE_PAYS_UPDATE_RESET:
+      return { errors: {} };
     default:
       return state;
   }

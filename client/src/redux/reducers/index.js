@@ -33,6 +33,7 @@ import {
   taxablePaysListReducers,
   taxablePaysCreateReducers,
   taxablePaysDeleteReducers,
+  taxablePaysUpdateReducers,
 } from './taxablesReducers';
 
 import snackbarReducer from './snackbarReducers';
@@ -71,6 +72,7 @@ const reducers = combineReducers({
   taxablePaysList: taxablePaysListReducers,
   taxablePaysCreate: taxablePaysCreateReducers,
   taxablePaysDelete: taxablePaysDeleteReducers,
+  taxablePaysUpdate: taxablePaysUpdateReducers,
 });
 
 export default reducers;

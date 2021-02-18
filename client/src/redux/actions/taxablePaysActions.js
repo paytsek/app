@@ -9,6 +9,9 @@ import {
   TAXABLE_PAYS_CREATE_FAIL,
   TAXABLE_PAYS_DELETE_REQUEST,
   TAXABLE_PAYS_DELETE_SUCCESS,
+  TAXABLE_PAYS_UPDATE_REQUEST,
+  TAXABLE_PAYS_UPDATE_SUCCESS,
+  TAXABLE_PAYS_UPDATE_FAIL,
 } from '../types';
 
 import notification from '../../utils/notification';
@@ -63,5 +66,24 @@ export const deleteTaxablePay = (id) => async (dispatch) => {
     const message = errors && errors.message;
 
     dispatch(notification('error', message || 'Server Error', dispatch));
+  }
+};
+
+export const updateTaxablePay = (id, taxablePay) => async (dispatch) => {
+  dispatch({ type: TAXABLE_PAYS_UPDATE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const { data } = await axios.put(`/taxablePays/${id}`, taxablePay, config);
+    dispatch({ type: TAXABLE_PAYS_UPDATE_SUCCESS, payload: data });
+    dispatch(notification('success', data.message || 'Successfully updated', dispatch));
+  } catch (error) {
+    const { errors } = error.response.data;
+    dispatch({ type: TAXABLE_PAYS_UPDATE_FAIL, payload: errors });
   }
 };
