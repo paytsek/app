@@ -14,7 +14,7 @@ import {
   NON_TAXABLE_PAYS_UPDATE_SUCCESS,
 } from '../types';
 
-export const taxablePaysListReducers = (state = { nonTaxablePays: [] }, action) => {
+export const nonTaxablePaysListReducers = (state = { nonTaxablePays: [] }, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -25,7 +25,10 @@ export const taxablePaysListReducers = (state = { nonTaxablePays: [] }, action) 
     case NON_TAXABLE_PAYS_LIST_FAIL:
       return { ...state, loading: false };
     case NON_TAXABLE_PAYS_CREATE_SUCCESS:
-      return { ...state, nonTaxablePays: [...state.nonTaxablePays, payload.nonTaxablePay] };
+      return {
+        ...state,
+        nonTaxablePays: [...state.nonTaxablePays, payload.nonTaxablePay],
+      };
     case NON_TAXABLE_PAYS_DELETE_SUCCESS:
       return {
         ...state,
@@ -37,15 +40,16 @@ export const taxablePaysListReducers = (state = { nonTaxablePays: [] }, action) 
       return {
         ...state,
         nonTaxablePays: state.nonTaxablePays.map((nonTaxablePay) =>
-          nonTaxablePay._id === payload.nonTaxablePay._id ? payload.nonTaxablePay : nonTaxablePay,
-        ),
+          (nonTaxablePay._id === payload.nonTaxablePay._id
+            ? payload.nonTaxablePay
+            : nonTaxablePay)),
       };
     default:
       return state;
   }
 };
 
-export const taxablePaysCreateReducers = (state = { error: {} }, action) => {
+export const nonTaxablePaysCreateReducers = (state = { error: {} }, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -60,7 +64,7 @@ export const taxablePaysCreateReducers = (state = { error: {} }, action) => {
   }
 };
 
-export const taxablePaysDeleteReducers = (state = {}, action) => {
+export const nonTaxablePaysDeleteReducers = (state = {}, action) => {
   const { type } = action;
 
   switch (type) {
@@ -75,7 +79,7 @@ export const taxablePaysDeleteReducers = (state = {}, action) => {
   }
 };
 
-export const taxablePaysUpdateReducers = (state = { errors: {} }, action) => {
+export const nonTaxablePaysUpdateReducers = (state = { errors: {} }, action) => {
   const { type, payload } = action;
 
   switch (type) {
