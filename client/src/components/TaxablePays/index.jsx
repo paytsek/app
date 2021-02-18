@@ -18,7 +18,11 @@ import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@materia
 import TitleBox from '../common/TitleBox';
 import MuiSkeleton from '../MuiSkeleton';
 
-import { getTaxablePays, createTaxablePay } from '../../redux/actions/taxablePaysActions';
+import {
+  getTaxablePays,
+  createTaxablePay,
+  deleteTaxablePay,
+} from '../../redux/actions/taxablePaysActions';
 import notification from '../../utils/notification';
 import useStyles from './styles';
 
@@ -29,6 +33,7 @@ const Departments = () => {
 
   const { taxablePays, loading } = useSelector((state) => state.taxablePaysList);
   const { loading: taxablePaysCreateLoading } = useSelector((state) => state.taxablePaysCreate);
+  const { loading: taxablePaysDeleteLoading } = useSelector((state) => state.taxablePaysDelete);
 
   const { paper, fieldsContainer } = useStyles();
 
@@ -90,7 +95,12 @@ const Departments = () => {
                     <IconButton edge="end" aria-label="edit">
                       <EditIcon />
                     </IconButton>
-                    <IconButton edge="end" aria-label="delete">
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => dispatch(deleteTaxablePay(taxablePay._id))}
+                      disabled={taxablePaysDeleteLoading}
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
