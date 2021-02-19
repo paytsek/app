@@ -74,6 +74,12 @@ const BasicInformation = () => {
               />
             </FormControl>
           </Grid>
+          <Grid item md={6} xs={12}>
+            <FormControl fullWidth size="small">
+              <InputLabel htmlFor="rdoCode">RDO code</InputLabel>
+              <Input autoComplete="off" type="text" id="rdoCode" name="rdoCode" />
+            </FormControl>
+          </Grid>
           <Grid item xs={6} md={4}>
             <FormControlLabel
               control={<Switch color="primary" />}
