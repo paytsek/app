@@ -344,6 +344,8 @@ const CompanySettingsForm = () => {
                     onChangeCalculation={handleOnChangeCalculation}
                     onChangeTaxablePay={handleOnChangeTaxablePay}
                     onChangeNonTaxablePay={handleOnChangeNonTaxablePay}
+                    taxablePaysOptions={taxablePays}
+                    nonTaxablePaysOptions={nonTaxablePays}
                   />
                 </Paper>
               </Grid>

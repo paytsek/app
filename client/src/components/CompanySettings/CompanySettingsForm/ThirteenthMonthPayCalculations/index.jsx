@@ -1,5 +1,11 @@
 import React from 'react';
-import { Typography, FormGroup, FormControl, FormControlLabel, Checkbox } from '@material-ui/core';
+import {
+  Typography,
+  FormGroup,
+  FormControl,
+  FormControlLabel,
+  Checkbox,
+} from '@material-ui/core';
 
 const thirteenthMonthPayCalculation = 'thirteenthMonthPayCalculation';
 
@@ -8,6 +14,8 @@ const ThirteenthMonthPayCalculations = ({
   onChangeCalculation,
   onChangeTaxablePay,
   onChangeNonTaxablePay,
+  taxablePaysOptions,
+  nonTaxablePaysOptions,
 }) => {
   const { deminimis, absences, taxablePays, nonTaxablePays } = settings;
 
@@ -36,15 +44,16 @@ const ThirteenthMonthPayCalculations = ({
       </FormGroup>
       {/* taxable pays */}
       <Typography variant="subtitle1">Taxable Pays</Typography>
-      {taxablePays && Object.keys(taxablePays).length > 0 ? (
-        Object.keys(taxablePays).map((taxablePay) => (
-          <FormControl fullWidth size="small" key={taxablePay}>
+      {taxablePaysOptions && taxablePaysOptions.length > 0 ? (
+        taxablePaysOptions.map((taxablePay) => (
+          <FormControl fullWidth size="small" key={taxablePay._id}>
             <FormControlLabel
-              label={taxablePay}
-              name={taxablePay}
-              checked={taxablePays[taxablePay]}
-              onChange={(e) => onChangeTaxablePay(thirteenthMonthPayCalculation, e)}
+              label={taxablePay.name}
+              name={taxablePay.name}
               control={<Checkbox color="primary" />}
+              checked={taxablePays.includes(taxablePay._id)}
+              value={taxablePay._id}
+              onChange={(e) => onChangeTaxablePay(thirteenthMonthPayCalculation, e)}
             />
           </FormControl>
         ))
@@ -55,14 +64,15 @@ const ThirteenthMonthPayCalculations = ({
       )}
       {/* non taxable pays */}
       <Typography variant="subtitle1">Non-Taxable Pays</Typography>
-      {nonTaxablePays && Object.keys(nonTaxablePays).length > 0 ? (
-        Object.keys(nonTaxablePays).map((nonTaxablePay) => (
-          <FormControl fullWidth size="small" key={nonTaxablePay}>
+      {nonTaxablePaysOptions && nonTaxablePaysOptions.length > 0 ? (
+        nonTaxablePaysOptions.map((nonTaxablePay) => (
+          <FormControl fullWidth size="small" key={nonTaxablePay._id}>
             <FormControlLabel
-              label={nonTaxablePay}
-              name={nonTaxablePay}
+              label={nonTaxablePay.name}
+              name={nonTaxablePay.name}
               control={<Checkbox color="primary" />}
-              checked={nonTaxablePays[nonTaxablePay]}
+              checked={nonTaxablePays.includes(nonTaxablePay._id)}
+              value={nonTaxablePay._id}
               onChange={(e) => onChangeNonTaxablePay(thirteenthMonthPayCalculation, e)}
             />
           </FormControl>
