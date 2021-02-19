@@ -21,6 +21,7 @@ import CompanyAdministratorRoute from '../components/routes/CompanyAdministrator
 import DepartmentPage from '../pages/DepartmentPage';
 import TaxablePaysPage from '../pages/TaxablePaysPage';
 import NonTaxablePaysPage from '../pages/NonTaxablePaysPage';
+import EmployeeCreatePage from '../pages/EmployeeCreatePage';
 
 const LayoutRouter = () => (
   <Switch>
@@ -49,20 +50,40 @@ const LayoutRouter = () => (
           <Route path="/:slug/companies/:id" component={CompanyDetailsPage} exact />
           <Route path="/:slug/companies/:id/edit" component={CompanyUpdatePage} exact />
           <Route path="/:slug/dashboard" component={Dashboard} />
-          <CompanyAdministratorRoute path="/:slug/employees" component={EmployeesListPage} exact />
+          <CompanyAdministratorRoute
+            path="/:slug/employees"
+            component={EmployeesListPage}
+            exact
+          />
+          <CompanyAdministratorRoute
+            path="/:slug/employees/create"
+            component={EmployeeCreatePage}
+            exact
+          />
           <CompanyAdministratorRoute
             path="/:slug/employees/:id"
             component={EmployeeDetailsPage}
             exact
           />
-          <CompanyAdministratorRoute path="/:slug/departments" component={DepartmentPage} exact />
-          <CompanyAdministratorRoute path="/:slug/taxablePays" component={TaxablePaysPage} exact />
+          <CompanyAdministratorRoute
+            path="/:slug/departments"
+            component={DepartmentPage}
+            exact
+          />
+          <CompanyAdministratorRoute
+            path="/:slug/taxablePays"
+            component={TaxablePaysPage}
+            exact
+          />
           <CompanyAdministratorRoute
             path="/:slug/nonTaxablePays"
             component={NonTaxablePaysPage}
             exact
           />
-          <Route path="/" component={() => <h1 style={{ fontSize: 50 }}>Page not found</h1>} />
+          <Route
+            path="/"
+            component={() => <h1 style={{ fontSize: 50 }}>Page not found</h1>}
+          />
         </Switch>
       )}
     />

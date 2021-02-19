@@ -7,7 +7,7 @@ import EmployeesListTable from '../../components/Employees/EmployeesListTable';
 
 import useStyles from './styles';
 
-const EmployeeListpage = ({ match }) => {
+const EmployeeListpage = ({ match, history }) => {
   const { slug } = match.params;
 
   const { active, title, paper, actions, tableContainer } = useStyles();
@@ -40,6 +40,7 @@ const EmployeeListpage = ({ match }) => {
               color="primary"
               size="small"
               startIcon={<Add />}
+              onClick={() => history.push('employees/create')}
             >
               Create
             </Button>
