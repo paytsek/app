@@ -222,20 +222,13 @@ const CompanySettingSchema = new mongoose.Schema(
     sssRegistrationNumber: String,
     phicNumber: String,
     hdmfNumber: String,
-    nonTaxablePays: {
-      type: [String],
-      default: [],
-    },
     sssCalculation: {
       deminimis: {
         type: Boolean,
         default: false,
       },
       taxablePays: [{ type: mongoose.Schema.Types.ObjectId, ref: 'TaxablePay' }],
-      nonTaxablePays: {
-        type: Object,
-        default: {},
-      },
+      nonTaxablePays: [{ type: mongoose.Schema.Types.ObjectId, ref: 'NonTaxablePay' }],
     },
     phicCalculation: {
       deminimis: {
@@ -243,10 +236,7 @@ const CompanySettingSchema = new mongoose.Schema(
         default: false,
       },
       taxablePays: [{ type: mongoose.Schema.Types.ObjectId, ref: 'TaxablePay' }],
-      nonTaxablePays: {
-        type: Object,
-        default: {},
-      },
+      nonTaxablePays: [{ type: mongoose.Schema.Types.ObjectId, ref: 'NonTaxablePay' }],
     },
     thirteenthMonthPayCalculation: {
       deminimis: {
@@ -258,10 +248,7 @@ const CompanySettingSchema = new mongoose.Schema(
         default: false,
       },
       taxablePays: [{ type: mongoose.Schema.Types.ObjectId, ref: 'TaxablePay' }],
-      nonTaxablePays: {
-        type: Object,
-        default: {},
-      },
+      nonTaxablePays: [{ type: mongoose.Schema.Types.ObjectId, ref: 'NonTaxablePay' }],
     },
     accountingJournal: {
       deminimisBenefits: {
@@ -347,9 +334,11 @@ CompanySettingSchema.plugin(uniqueValidator, {
 });
 
 CompanySettingSchema.pre('save', function (next) {
-  const street = (this.registeredAddress.street && `${this.registeredAddress.street}, `) || '';
+  const street =
+    (this.registeredAddress.street && `${this.registeredAddress.street}, `) || '';
   const city = (this.registeredAddress.city && `${this.registeredAddress.city}, `) || '';
-  const country = (this.registeredAddress.country && `${this.registeredAddress.country}`) || '';
+  const country =
+    (this.registeredAddress.country && `${this.registeredAddress.country}`) || '';
   const zipCode = this.registeredAddress.zipCode && this.registeredAddress.zipCode;
 
   const formattedAddress = `${street}${city}${country}`;

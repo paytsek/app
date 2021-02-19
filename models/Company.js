@@ -69,9 +69,16 @@ CompanySchema.virtual('employees', {
   foreignField: 'company',
 });
 
-// REVERSE POPULATE TAXABELPAYS
+// REVERSE POPULATE TAXABLE PAYS
 CompanySchema.virtual('taxablePays', {
   ref: 'TaxablePay',
+  localField: '_id',
+  foreignField: 'company',
+});
+
+// REVERSE POPULATE NON TAXABLE PAYS
+CompanySchema.virtual('nonTaxablePays', {
+  ref: 'NonTaxablePay',
   localField: '_id',
   foreignField: 'company',
 });
