@@ -28,6 +28,10 @@ const EmployeeSchema = new mongoose.Schema(
     employeeNumber: {
       type: String,
     },
+    payRemittances: {
+      type: Boolean,
+      default: true,
+    },
     fullName: String,
     birthDate: {
       type: Date,
