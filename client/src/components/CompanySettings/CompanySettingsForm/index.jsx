@@ -7,8 +7,6 @@ import { Undo } from '@material-ui/icons';
 import TitleBox from '../../common/TitleBox';
 import BasicSettings from './BasicSettings';
 import RegisteredAddress from './RegisteredAddress';
-// import TaxablePays from './TaxablePays';
-// import NonTaxablePays from './NonTaxablePays';
 import SSSCalculations from './SSSCalculations';
 import PhicCalculations from './PhicCalculations';
 import ThirteenthMonthPayCalculations from './ThirteenthMonthPayCalculations';
@@ -20,7 +18,10 @@ import {
   getCompanyDetails,
   updateCompanySettings,
 } from '../../../redux/actions/companiesActions';
-import { COMPANY_DETAILS_RESET, COMPANY_SETTINGS_CREATE_RESET } from '../../../redux/types';
+import {
+  COMPANY_DETAILS_RESET,
+  COMPANY_SETTINGS_CREATE_RESET,
+} from '../../../redux/types';
 import useStyles from './styles';
 
 const CompanySettingsForm = () => {
@@ -58,23 +59,21 @@ const CompanySettingsForm = () => {
       country: '',
       zipCode: '',
     },
-    taxablePays: [],
-    nonTaxablePays: [],
     sssCalculation: {
       deminimis: false,
-      taxablePays: {},
-      nonTaxablePays: {},
+      taxablePays: [],
+      nonTaxablePays: [],
     },
     phicCalculation: {
       deminimis: false,
-      taxablePays: {},
-      nonTaxablePays: {},
+      taxablePays: [],
+      nonTaxablePays: [],
     },
     thirteenthMonthPayCalculation: {
       deminimis: false,
       absences: false,
-      taxablePays: {},
-      nonTaxablePays: {},
+      taxablePays: [],
+      nonTaxablePays: [],
     },
     accountingJournal: {
       taxableCompensation: 'wagesAndSalaries',
@@ -95,15 +94,18 @@ const CompanySettingsForm = () => {
 
   const dispatch = useDispatch();
 
-  const { errors, companySettings, loading } = useSelector((state) => state.companySettingsCreate);
-  const { company, loading: companyDetailsLoading } = useSelector((state) => state.companyDetails);
+  const { errors, companySettings, loading } = useSelector(
+    (state) => state.companySettingsCreate,
+  );
+  const { company, loading: companyDetailsLoading } = useSelector(
+    (state) => state.companyDetails,
+  );
+  const { taxablePays, nonTaxablePays } = company;
   const { id } = useSelector((state) => state.companyTenant);
 
   const {
     basicSettings,
     registeredAddress,
-    taxablePays,
-    nonTaxablePays,
     sssCalculation,
     phicCalculation,
     thirteenthMonthPayCalculation,
@@ -123,7 +125,10 @@ const CompanySettingsForm = () => {
   const handleOnChangeRegisteredAddress = (e) =>
     setSettings((prevState) => ({
       ...prevState,
-      registeredAddress: { ...prevState.registeredAddress, [e.target.name]: e.target.value },
+      registeredAddress: {
+        ...prevState.registeredAddress,
+        [e.target.name]: e.target.value,
+      },
     }));
 
   const handleOnChangeCalculation = (calculation, e) =>
@@ -135,75 +140,49 @@ const CompanySettingsForm = () => {
       },
     }));
 
-  const handleOnChangeTaxablePay = (calculation, e) =>
-    setSettings((prevState) => ({
-      ...prevState,
-      [calculation]: {
-        ...prevState[calculation],
-        taxablePays: {
-          ...prevState[calculation].taxablePays,
-          [e.target.name]: e.target.checked,
+  const handleOnChangeTaxablePay = (calculation, e) => {
+    if (e.target.checked) {
+      setSettings((prevState) => ({
+        ...prevState,
+        [calculation]: {
+          ...prevState[calculation],
+          taxablePays: [...prevState[calculation].taxablePays, e.target.value],
         },
-      },
-    }));
-
-  const handleOnChangeNonTaxablePay = (calculation, e) =>
-    setSettings((prevState) => ({
-      ...prevState,
-      [calculation]: {
-        ...prevState[calculation],
-        nonTaxablePays: {
-          ...prevState[calculation].nonTaxablePays,
-          [e.target.name]: e.target.checked,
+      }));
+    } else {
+      setSettings((prevState) => ({
+        ...prevState,
+        [calculation]: {
+          ...prevState[calculation],
+          taxablePays: prevState[calculation].taxablePays.filter(
+            (taxablePay) => taxablePay !== e.target.value,
+          ),
         },
-      },
-    }));
+      }));
+    }
+  };
 
-  // const handleOnAdd = (key, val) =>
-  //   setSettings((prevState) => ({
-  //     ...prevState,
-  //     [key]: [...prevState[key], val],
-  //     sssCalculation: {
-  //       ...prevState.sssCalculation,
-  //       [key]: { ...prevState.sssCalculation[key], [val]: false },
-  //     },
-  //     phicCalculation: {
-  //       ...prevState.phicCalculation,
-  //       [key]: { ...prevState.phicCalculation[key], [val]: false },
-  //     },
-  //     thirteenthMonthPayCalculation: {
-  //       ...prevState.thirteenthMonthPayCalculation,
-  //       [key]: { ...prevState.thirteenthMonthPayCalculation[key], [val]: false },
-  //     },
-  //   }));
-
-  // const handleOnDelete = (key, val) =>
-  //   setSettings((prevState) => {
-  //     const newSssCalculation = prevState.sssCalculation;
-  //     const newPhicCalculation = prevState.phicCalculation;
-  //     const newThirteenthMonthPayCalculation = prevState.thirteenthMonthPayCalculation;
-
-  //     delete newSssCalculation[key][val];
-  //     delete newPhicCalculation[key][val];
-  //     delete newThirteenthMonthPayCalculation[key][val];
-
-  //     return {
-  //       ...prevState,
-  //       [key]: prevState[key].filter((prevVal) => prevVal !== val),
-  //       sssCalculation: {
-  //         ...prevState.sssCalculation,
-  //         ...newSssCalculation,
-  //       },
-  //       phicCalculation: {
-  //         ...prevState.phicCalculation,
-  //         ...newPhicCalculation,
-  //       },
-  //       thirteenthMonthPayCalculation: {
-  //         ...prevState.newThirteenthMonthPayCalculation,
-  //         ...newThirteenthMonthPayCalculation,
-  //       },
-  //     };
-  //   });
+  const handleOnChangeNonTaxablePay = (calculation, e) => {
+    if (e.target.checked) {
+      setSettings((prevState) => ({
+        ...prevState,
+        [calculation]: {
+          ...prevState[calculation],
+          nonTaxablePays: [...prevState[calculation].nonTaxablePays, e.target.value],
+        },
+      }));
+    } else {
+      setSettings((prevState) => ({
+        ...prevState,
+        [calculation]: {
+          ...prevState[calculation],
+          nonTaxablePays: prevState[calculation].nonTaxablePays.filter(
+            (nonTaxablePay) => nonTaxablePay !== e.target.value,
+          ),
+        },
+      }));
+    }
+  };
 
   const handleOnChangeAccountingJournal = (e) =>
     setSettings((prevState) => ({
@@ -218,8 +197,6 @@ const CompanySettingsForm = () => {
     const data = {
       ...basicSettings,
       registeredAddress,
-      taxablePays,
-      nonTaxablePays,
       sssCalculation,
       phicCalculation,
       thirteenthMonthPayCalculation,
@@ -264,7 +241,8 @@ const CompanySettingsForm = () => {
         regularHolidayPay: company.companySettings.regularHolidayPay,
         specialHolidayPay: company.companySettings.specialHolidayPay,
         workingDays: company.companySettings.workingDays,
-        taxReliefInternationTaxTreaty: company.companySettings.taxReliefInternationTaxTreaty,
+        taxReliefInternationTaxTreaty:
+          company.companySettings.taxReliefInternationTaxTreaty,
         deminimis: company.companySettings.deminimis,
         emailNotification: company.companySettings.emailNotification,
       },
@@ -276,12 +254,19 @@ const CompanySettingsForm = () => {
       nonTaxablePays: company.companySettings.nonTaxablePays,
       sssCalculation: company.companySettings.sssCalculation,
       phicCalculation: company.companySettings.phicCalculation,
-      thirteenthMonthPayCalculation: company.companySettings.thirteenthMonthPayCalculation,
+      thirteenthMonthPayCalculation:
+        company.companySettings.thirteenthMonthPayCalculation,
       accountingJournal: company.companySettings.accountingJournal,
     }));
   };
 
-  const { paper, gridContainer, fieldsContainer, calculationsContainer, formButton } = useStyles();
+  const {
+    paper,
+    gridContainer,
+    fieldsContainer,
+    calculationsContainer,
+    formButton,
+  } = useStyles();
 
   useEffect(() => {
     if (company && company.companySettings) {
@@ -326,23 +311,6 @@ const CompanySettingsForm = () => {
           <TitleBox title="Government Remittances and 13th month pay Calculations" />
           <div className={fieldsContainer}>
             <Grid container spacing={6}>
-              {/* Taxable pays */}
-              {/* <Grid item xs={12} md={6}>
-                <TaxablePays
-                  taxablePays={taxablePays}
-                  onAdd={handleOnAdd}
-                  onDelete={handleOnDelete}
-                />
-              </Grid> */}
-              {/* Non-taxable pays */}
-              {/* <Grid item xs={12} md={6}>
-                <NonTaxablePays
-                  nonTaxablePays={nonTaxablePays}
-                  onAdd={handleOnAdd}
-                  onDelete={handleOnDelete}
-                />
-              </Grid> */}
-              {/* SSS calculation */}
               <Grid item xs={12} md={4} className={calculationsContainer}>
                 <Paper elevation={2}>
                   <SSSCalculations
@@ -350,6 +318,8 @@ const CompanySettingsForm = () => {
                     onChangeCalculation={handleOnChangeCalculation}
                     onChangeTaxablePay={handleOnChangeTaxablePay}
                     onChangeNonTaxablePay={handleOnChangeNonTaxablePay}
+                    taxablePaysOptions={taxablePays}
+                    nonTaxablePaysOptions={nonTaxablePays}
                   />
                 </Paper>
               </Grid>
@@ -389,7 +359,12 @@ const CompanySettingsForm = () => {
       </Grid>
       <Grid item>
         <div className={formButton}>
-          <Button color="primary" variant="contained" disabled={loading} onClick={handleOnSubmit}>
+          <Button
+            color="primary"
+            variant="contained"
+            disabled={loading}
+            onClick={handleOnSubmit}
+          >
             Save Company Settings
           </Button>
           {company.companySettings && (
