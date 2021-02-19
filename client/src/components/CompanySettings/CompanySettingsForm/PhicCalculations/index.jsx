@@ -8,6 +8,8 @@ const PhicCalculations = ({
   onChangeCalculation,
   onChangeTaxablePay,
   onChangeNonTaxablePay,
+  taxablePaysOptions,
+  nonTaxablePaysOptions,
 }) => {
   const { deminimis, taxablePays, nonTaxablePays } = settings;
 
@@ -25,15 +27,16 @@ const PhicCalculations = ({
       </FormControl>
       {/* taxable pays */}
       <Typography variant="subtitle1">Taxable Pays</Typography>
-      {taxablePays && Object.keys(taxablePays).length > 0 ? (
-        Object.keys(taxablePays).map((taxablePay) => (
-          <FormControl fullWidth size="small" key={taxablePay}>
+      {taxablePaysOptions && taxablePaysOptions.length > 0 ? (
+        taxablePaysOptions.map((taxablePay) => (
+          <FormControl fullWidth size="small" key={taxablePay._id}>
             <FormControlLabel
-              label={taxablePay}
-              name={taxablePay}
-              checked={taxablePays[taxablePay]}
-              onChange={(e) => onChangeTaxablePay(phicCalculation, e)}
+              label={taxablePay.name}
+              name={taxablePay.name}
               control={<Checkbox color="primary" />}
+              checked={taxablePays.includes(taxablePay._id)}
+              value={taxablePay._id}
+              onChange={(e) => onChangeTaxablePay(phicCalculation, e)}
             />
           </FormControl>
         ))
@@ -44,14 +47,15 @@ const PhicCalculations = ({
       )}
       {/* non taxable pays */}
       <Typography variant="subtitle1">Non-Taxable Pays</Typography>
-      {nonTaxablePays && Object.keys(nonTaxablePays).length > 0 ? (
-        Object.keys(nonTaxablePays).map((nonTaxablePay) => (
-          <FormControl fullWidth size="small" key={nonTaxablePay}>
+      {nonTaxablePaysOptions && nonTaxablePaysOptions.length > 0 ? (
+        nonTaxablePaysOptions.map((nonTaxablePay) => (
+          <FormControl fullWidth size="small" key={nonTaxablePay._id}>
             <FormControlLabel
-              label={nonTaxablePay}
-              name={nonTaxablePay}
+              label={nonTaxablePay.name}
+              name={nonTaxablePay.name}
               control={<Checkbox color="primary" />}
-              checked={nonTaxablePays[nonTaxablePay]}
+              checked={nonTaxablePays.includes(nonTaxablePay._id)}
+              value={nonTaxablePay._id}
               onChange={(e) => onChangeNonTaxablePay(phicCalculation, e)}
             />
           </FormControl>
