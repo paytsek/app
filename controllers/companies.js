@@ -62,7 +62,9 @@ const setTenant = asyncHandler(async (req, res, next) => {
   if (!company) {
     res.status(404);
     return next(
-      new ErrorResponse({ message: `Resource with an id of ${req.params.slug} not found` }),
+      new ErrorResponse({
+        message: `Resource with an id of ${req.params.slug} not found`,
+      }),
     );
   }
 
@@ -114,9 +116,12 @@ const getCompanies = asyncHandler(async (req, res) => {
 const getCompany = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
 
-  const company = await Company.findById(id).populate({
-    path: 'companySettings',
-  });
+  const company = await Company.findById(id)
+    .populate({
+      path: 'companySettings',
+    })
+    .populate('nonTaxablePays')
+    .populate('taxablePays');
 
   if (!company) {
     res.status(404);
@@ -154,7 +159,10 @@ const createCompanySettings = asyncHandler(async (req, res, next) => {
     const opts = { session };
     const body = { ...req.body };
 
-    let [companySettings] = await CompanySetting.create([{ company: company._id, ...body }], opts);
+    let [companySettings] = await CompanySetting.create(
+      [{ company: company._id, ...body }],
+      opts,
+    );
 
     await session.commitTransaction();
     session.endSession();

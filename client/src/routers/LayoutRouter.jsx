@@ -19,7 +19,8 @@ import EmployeeDetailsPage from '../pages/EmployeeDetailsPage';
 import PrivateRoute from '../components/routes/PrivateRoute';
 import CompanyAdministratorRoute from '../components/routes/CompanyAdministratorRoute';
 import DepartmentPage from '../pages/DepartmentPage';
-import TaxablePayPage from '../pages/TaxablePayPage';
+import TaxablePaysPage from '../pages/TaxablePaysPage';
+import NonTaxablePaysPage from '../pages/NonTaxablePaysPage';
 
 const LayoutRouter = () => (
   <Switch>
@@ -55,7 +56,12 @@ const LayoutRouter = () => (
             exact
           />
           <CompanyAdministratorRoute path="/:slug/departments" component={DepartmentPage} exact />
-          <CompanyAdministratorRoute path="/:slug/taxablePays" component={TaxablePayPage} exact />
+          <CompanyAdministratorRoute path="/:slug/taxablePays" component={TaxablePaysPage} exact />
+          <CompanyAdministratorRoute
+            path="/:slug/nonTaxablePays"
+            component={NonTaxablePaysPage}
+            exact
+          />
           <Route path="/" component={() => <h1 style={{ fontSize: 50 }}>Page not found</h1>} />
         </Switch>
       )}

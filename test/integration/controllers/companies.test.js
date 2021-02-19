@@ -30,7 +30,12 @@ describe('POST /api/v1/companies/name - createCompany', () => {
 
     expect(res.status).toBe(201);
     expect(res.body.success).toBeTruthy();
-    expect(res.body.company).toHaveProperty('_id', res.body.company._id, 'name', 'PayTsek');
+    expect(res.body.company).toHaveProperty(
+      '_id',
+      res.body.company._id,
+      'name',
+      'PayTsek',
+    );
   });
 
   it('should generate a slug when saving a company name', async () => {
@@ -112,7 +117,9 @@ describe('PUT /api/v1/companies/name/:id - updateCompanyName', () => {
         user: user._id,
       });
       const token = await global.signIn();
-      const res = await request(app).put(`${url}/${company._id}`).auth(token, { type: 'bearer' });
+      const res = await request(app)
+        .put(`${url}/${company._id}`)
+        .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
@@ -189,7 +196,9 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
       const id = mongoose.Types.ObjectId();
       const token = await global.signIn();
 
-      const res = await request(app).delete(`${url}/${id}`).auth(token, { type: 'bearer' });
+      const res = await request(app)
+        .delete(`${url}/${id}`)
+        .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
       expect(res.body.success).toBeFalsy();
@@ -322,7 +331,9 @@ describe('GET api/v1/companies - getCompanies', () => {
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toMatchObject({ message: 'Not authorize to access this route' });
+      expect(res.body.errors).toMatchObject({
+        message: 'Not authorize to access this route',
+      });
     });
   });
 
@@ -372,11 +383,15 @@ describe('GET /api/v1/companies/:id - getCompany', () => {
       const company = await Company.create({ user: user._id, name: 'PayTsek' });
       const token = await global.signIn();
 
-      const res = await request(app).get(`${url}/${company._id}`).auth(token, { type: 'bearer' });
+      const res = await request(app)
+        .get(`${url}/${company._id}`)
+        .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toMatchObject({ message: 'Not authorize to access this route' });
+      expect(res.body.errors).toMatchObject({
+        message: 'Not authorize to access this route',
+      });
     });
   });
 
@@ -406,7 +421,9 @@ describe('GET /api/v1/companies/:id - getCompany', () => {
       const company = await Company.create({ name: 'PayTsek', user: user._id });
       let token = await global.signIn({ _id: user._id });
 
-      let res = await request(app).get(`${url}/${company._id}`).auth(token, { type: 'bearer' });
+      let res = await request(app)
+        .get(`${url}/${company._id}`)
+        .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
@@ -420,7 +437,9 @@ describe('GET /api/v1/companies/:id - getCompany', () => {
 
       token = await global.signInAdmin(payload);
 
-      res = await request(app).get(`${url}/${company._id}`).auth(token, { type: 'bearer' });
+      res = await request(app)
+        .get(`${url}/${company._id}`)
+        .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
@@ -568,7 +587,8 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
         category: '`sample` is not a valid enum value for path `category`.',
         frequency: '`sample` is not a valid enum value for path `frequency`.',
         reportingBase: '`sample` is not a valid enum value for path `reportingBase`.',
-        nightDifferential: '`sample` is not a valid enum value for path `nightDifferential`.',
+        nightDifferential:
+          '`sample` is not a valid enum value for path `nightDifferential`.',
         overtime: '`sample` is not a valid enum value for path `overtime`.',
         'accountingJournal.deminimisBenefits':
           '`sample` is not a valid enum value for path `accountingJournal.deminimisBenefits`.',
@@ -678,7 +698,9 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 
     expect(res.status).toBe(201);
     expect(res.body.success).toBeTruthy();
-    expect(Object.keys(res.body.companySettings)).toEqual(expect.arrayContaining(['_id']));
+    expect(Object.keys(res.body.companySettings)).toEqual(
+      expect.arrayContaining(['_id']),
+    );
   });
 });
 
@@ -924,7 +946,8 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
         departments: [mongoose.Types.ObjectId()],
       });
 
-      const taxablePayId = mongoose.Types.ObjectId();
+      const taxablePayId = mongoose.Types.ObjectId().toHexString();
+      const nonTaxablePayId = mongoose.Types.ObjectId().toHexString();
 
       const res = await request(app)
         .put(`${url}/${companySettings._id}`)
@@ -961,13 +984,21 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
           deminimis: false,
           emailNotification: false,
           hideEmployeeList: false,
-          nonTaxablePays: ['Food'],
-          sssCalculation: { deminimis: false, taxablePays: [taxablePayId.toString()] },
-          phicCalculation: { deminimis: false, taxablePays: [taxablePayId.toString()] },
+          sssCalculation: {
+            deminimis: false,
+            taxablePays: [taxablePayId],
+            nonTaxablePays: [nonTaxablePayId],
+          },
+          phicCalculation: {
+            deminimis: false,
+            taxablePays: [taxablePayId],
+            nonTaxablePays: [nonTaxablePayId],
+          },
           thirteenthMonthPayCalculation: {
             deminimis: false,
             absences: false,
-            taxablePays: [taxablePayId.toString()],
+            taxablePays: [taxablePayId],
+            nonTaxablePays: [nonTaxablePayId],
           },
           departments: [mongoose.Types.ObjectId(), mongoose.Types.ObjectId()],
           firstCutOff: 1,
@@ -1024,13 +1055,21 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
           deminimis: false,
           emailNotification: false,
           hideEmployeeList: false,
-          nonTaxablePays: ['Food'],
-          sssCalculation: { deminimis: false, taxablePays: [taxablePayId.toString()] },
-          phicCalculation: { deminimis: false, taxablePays: [taxablePayId.toString()] },
+          sssCalculation: {
+            deminimis: false,
+            taxablePays: [taxablePayId],
+            nonTaxablePays: [nonTaxablePayId],
+          },
+          phicCalculation: {
+            deminimis: false,
+            taxablePays: [taxablePayId],
+            nonTaxablePays: [nonTaxablePayId],
+          },
           thirteenthMonthPayCalculation: {
             deminimis: false,
             absences: false,
-            taxablePays: [taxablePayId.toString()],
+            taxablePays: [taxablePayId],
+            nonTaxablePays: [nonTaxablePayId],
           },
           firstCutOff: 1,
           firstPayout: 5,
@@ -1209,7 +1248,10 @@ describe('POST /api/v1/companies/tenant/:slug - setcompanyTenant', () => {
 
     it('should return error response if invalid slug params', async () => {
       const token = await global.signIn();
-      const company = await Company.create({ name: 'PayTsek', user: mongoose.Types.ObjectId() });
+      const company = await Company.create({
+        name: 'PayTsek',
+        user: mongoose.Types.ObjectId(),
+      });
 
       let res = await request(app).post(`${url}/invalid`).auth(token, { type: 'bearer' });
 
@@ -1219,11 +1261,15 @@ describe('POST /api/v1/companies/tenant/:slug - setcompanyTenant', () => {
         message: 'Resource with an id of invalid not found',
       });
 
-      res = await request(app).post(`${url}/${company.slug}`).auth(token, { type: 'bearer' });
+      res = await request(app)
+        .post(`${url}/${company.slug}`)
+        .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toMatchObject({ message: 'Not authorize to access this route' });
+      expect(res.body.errors).toMatchObject({
+        message: 'Not authorize to access this route',
+      });
     });
   });
 
@@ -1233,22 +1279,35 @@ describe('POST /api/v1/companies/tenant/:slug - setcompanyTenant', () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const company = await Company.create({ name: 'payTsek', user: user._id });
 
-      const res = await request(app).post(`${url}/${company.slug}`).auth(token, { type: 'bearer' });
+      const res = await request(app)
+        .post(`${url}/${company.slug}`)
+        .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
-      expect(res.body.tenant).toMatchObject({ slug: 'paytsek', id: company._id.toString() });
+      expect(res.body.tenant).toMatchObject({
+        slug: 'paytsek',
+        id: company._id.toString(),
+      });
     });
 
     it('should return success response if user is an admin', async () => {
       const token = await global.signInAdmin();
-      const company = await Company.create({ name: 'payTsek', user: mongoose.Types.ObjectId() });
+      const company = await Company.create({
+        name: 'payTsek',
+        user: mongoose.Types.ObjectId(),
+      });
 
-      const res = await request(app).post(`${url}/paytsek`).auth(token, { type: 'bearer' });
+      const res = await request(app)
+        .post(`${url}/paytsek`)
+        .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
-      expect(res.body.tenant).toMatchObject({ slug: 'paytsek', id: company._id.toString() });
+      expect(res.body.tenant).toMatchObject({
+        slug: 'paytsek',
+        id: company._id.toString(),
+      });
     });
   });
 });
@@ -1268,7 +1327,9 @@ describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
     it('should return error response if no x-company-tenant set', async () => {
       const token = await global.signIn();
 
-      const res = await request(app).get(`${url}/test-company`).auth(token, { type: 'bearer' });
+      const res = await request(app)
+        .get(`${url}/test-company`)
+        .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
@@ -1277,7 +1338,10 @@ describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
 
     it('should return error response if invalid slug params', async () => {
       const token = await global.signIn();
-      const company = await Company.create({ name: 'PayTsek', user: mongoose.Types.ObjectId() });
+      const company = await Company.create({
+        name: 'PayTsek',
+        user: mongoose.Types.ObjectId(),
+      });
 
       let res = await await request(app)
         .get(`${url}/invalid`)
@@ -1297,7 +1361,9 @@ describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toMatchObject({ message: 'Not authorize to access this route' });
+      expect(res.body.errors).toMatchObject({
+        message: 'Not authorize to access this route',
+      });
     });
   });
 
@@ -1314,12 +1380,18 @@ describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
-      expect(res.body.tenant).toMatchObject({ slug: company.slug, id: company._id.toString() });
+      expect(res.body.tenant).toMatchObject({
+        slug: company.slug,
+        id: company._id.toString(),
+      });
     });
 
     it('should return success response if user is an admin', async () => {
       const token = await global.signInAdmin();
-      const company = await Company.create({ name: 'payTsek', user: mongoose.Types.ObjectId() });
+      const company = await Company.create({
+        name: 'payTsek',
+        user: mongoose.Types.ObjectId(),
+      });
 
       const res = await request(app)
         .get(`${url}/paytsek`)
@@ -1328,7 +1400,10 @@ describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
-      expect(res.body.tenant).toMatchObject({ slug: 'paytsek', id: company._id.toString() });
+      expect(res.body.tenant).toMatchObject({
+        slug: 'paytsek',
+        id: company._id.toString(),
+      });
     });
   });
 });

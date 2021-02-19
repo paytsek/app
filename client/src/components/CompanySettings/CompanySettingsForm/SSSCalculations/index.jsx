@@ -8,8 +8,10 @@ const SSSCalculations = ({
   onChangeCalculation,
   onChangeTaxablePay,
   onChangeNonTaxablePay,
+  taxablePaysOptions,
+  nonTaxablePaysOptions,
 }) => {
-  const { deminimis, taxablePays, nonTaxablePays } = settings;
+  const { deminimis, nonTaxablePays, taxablePays } = settings;
 
   return (
     <>
@@ -25,14 +27,15 @@ const SSSCalculations = ({
       </FormControl>
       {/* taxable pays */}
       <Typography variant="subtitle1">Taxable Pays</Typography>
-      {taxablePays && Object.keys(taxablePays).length > 0 ? (
-        Object.keys(taxablePays).map((taxablePay) => (
-          <FormControl fullWidth size="small" key={taxablePay}>
+      {taxablePaysOptions && taxablePaysOptions.length > 0 ? (
+        taxablePaysOptions.map((taxablePay) => (
+          <FormControl fullWidth size="small" key={taxablePay._id}>
             <FormControlLabel
-              label={taxablePay}
-              name={taxablePay}
+              label={taxablePay.name}
+              name={taxablePay.name}
               control={<Checkbox color="primary" />}
-              checked={taxablePays[taxablePay]}
+              checked={taxablePays.includes(taxablePay._id)}
+              value={taxablePay._id}
               onChange={(e) => onChangeTaxablePay(sssCalculation, e)}
             />
           </FormControl>
@@ -44,14 +47,15 @@ const SSSCalculations = ({
       )}
       {/* non taxable pays */}
       <Typography variant="subtitle1">Non-Taxable Pays</Typography>
-      {nonTaxablePays && Object.keys(nonTaxablePays).length > 0 ? (
-        Object.keys(nonTaxablePays).map((nonTaxablePay) => (
-          <FormControl fullWidth size="small" key={nonTaxablePay}>
+      {nonTaxablePaysOptions && nonTaxablePaysOptions.length > 0 ? (
+        nonTaxablePaysOptions.map((nonTaxablePay) => (
+          <FormControl fullWidth size="small" key={nonTaxablePay._id}>
             <FormControlLabel
-              label={nonTaxablePay}
-              name={nonTaxablePay}
+              label={nonTaxablePay.name}
+              name={nonTaxablePay.name}
               control={<Checkbox color="primary" />}
-              checked={nonTaxablePays[nonTaxablePay]}
+              checked={nonTaxablePays.includes(nonTaxablePay._id)}
+              value={nonTaxablePay._id}
               onChange={(e) => onChangeNonTaxablePay(sssCalculation, e)}
             />
           </FormControl>

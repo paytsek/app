@@ -17,64 +17,66 @@ import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@materia
 
 import TitleBox from '../common/TitleBox';
 import MuiSkeleton from '../MuiSkeleton';
-import TaxablePayFormDialog from '../Dialog/TaxablePayFormDialog';
+import NonTaxablePaysFormDialog from '../Dialog/NonTaxablePaysFormDialog';
 
 import {
-  getTaxablePays,
-  createTaxablePay,
-  deleteTaxablePay,
-} from '../../redux/actions/taxablePaysActions';
-import { TAXABLE_PAYS_UPDATE_RESET } from '../../redux/types';
+  getNonTaxablePays,
+  createNonTaxablePay,
+  deleteNonTaxablePay,
+} from '../../redux/actions/nonTaxablePaysActions';
+import { NON_TAXABLE_PAYS_UPDATE_RESET } from '../../redux/types';
 import notification from '../../utils/notification';
 import useStyles from './styles';
 
-const TaxablePays = () => {
+const NonTaxablePays = () => {
   const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
-  const [selectedTaxablePay, setSelectedTaxablePay] = useState({});
+  const [selectedNonTaxablePay, setSelectedNonTaxablePay] = useState({});
 
   const dispatch = useDispatch();
 
-  const { taxablePays, loading } = useSelector((state) => state.taxablePaysList);
-  const { loading: taxablePaysCreateLoading, errors: taxablePaysCreateError } = useSelector(
-    (state) => state.taxablePaysCreate,
+  const { nonTaxablePays, loading } = useSelector((state) => state.nonTaxablePaysList);
+  const { loading: nonTaxablePaysCreateLoading, errors: nonTaxablePaysCreateError } = useSelector(
+    (state) => state.nonTaxablePaysCreate,
   );
-  const { loading: taxablePaysDeleteLoading } = useSelector((state) => state.taxablePaysDelete);
-  const { success, errors, loading: taxablePaysUpdateLoading } = useSelector(
-    (state) => state.taxablePaysUpdate,
+  const { loading: nonTaxablePaysDeleteLoading } = useSelector(
+    (state) => state.nonTaxablePaysDelete,
+  );
+  const { success, errors, loading: nonTaxablePaysUpdateLoading } = useSelector(
+    (state) => state.nonTaxablePaysUpdate,
   );
 
   const { paper, fieldsContainer } = useStyles();
 
-  const handleOnOpen = (taxablePay) => {
-    setSelectedTaxablePay(taxablePay);
+  const handleOnOpen = (nonTaxablePay) => {
+    setSelectedNonTaxablePay(nonTaxablePay);
     setOpen(true);
   };
 
   const handleOnAdd = (val) => {
-    const existTaxablePay = taxablePays
-      .map((taxablePay) => taxablePay.name.toLowerCase())
+    const existNonTaxablePay = nonTaxablePays
+      .map((nonTaxablePay) => nonTaxablePay.name.toLowerCase())
       .includes(val.toLowerCase());
 
     if (!val) {
-      return dispatch(notification('warning', 'Please add a taxable pay name', dispatch));
+      return dispatch(notification('warning', 'Please add a non taxable pay name', dispatch));
     }
 
-    if (existTaxablePay) {
+    if (existNonTaxablePay) {
       return dispatch(notification('warning', `${val} already exist`, dispatch));
     }
-    dispatch(createTaxablePay({ name }));
+    dispatch(createNonTaxablePay({ name }));
     return setName('');
   };
 
   const handleOnClose = () => {
-    setSelectedTaxablePay({});
+    setSelectedNonTaxablePay({});
     setOpen(false);
-    dispatch({ type: TAXABLE_PAYS_UPDATE_RESET });
+    dispatch({ type: NON_TAXABLE_PAYS_UPDATE_RESET });
   };
 
   useEffect(() => {
-    dispatch(getTaxablePays());
+    dispatch(getNonTaxablePays());
   }, []);
 
   useEffect(() => {
@@ -88,12 +90,12 @@ const TaxablePays = () => {
   return (
     <>
       <Paper className={paper} elevation={6}>
-        <TitleBox title="Taxable Pays" />
+        <TitleBox title="Non Taxable Pays" />
         <div className={fieldsContainer}>
           <FormControl fullWidth size="small" margin="normal">
-            <InputLabel htmlFor="taxablePay">Enter a taxable pay</InputLabel>
+            <InputLabel htmlFor="nonTaxablePay">Enter a non taxable pay</InputLabel>
             <Input
-              id="taxablePay"
+              id="nonTaxablePay"
               name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -102,38 +104,38 @@ const TaxablePays = () => {
                   <IconButton
                     color="primary"
                     onClick={() => handleOnAdd(name)}
-                    disabled={taxablePaysCreateLoading}
+                    disabled={nonTaxablePaysCreateLoading}
                   >
                     <AddIcon />
                   </IconButton>
                 </InputAdornment>
               )}
             />
-            {taxablePaysCreateError && (
-              <FormHelperText error={!!taxablePaysCreateError.name}>
-                {taxablePaysCreateError.name}
+            {nonTaxablePaysCreateError && (
+              <FormHelperText error={!!nonTaxablePaysCreateError.name}>
+                {nonTaxablePaysCreateError.name}
               </FormHelperText>
             )}
           </FormControl>
-          {/* List of Taxable pays */}
-          {taxablePays.length > 0 ? (
+          {/* List of Non Taxable pays */}
+          {nonTaxablePays.length > 0 ? (
             <List>
-              {taxablePays.map((taxablePay) => (
-                <ListItem key={taxablePay._id}>
-                  <ListItemText primary={taxablePay.name} />
+              {nonTaxablePays.map((nonTaxablePay) => (
+                <ListItem key={nonTaxablePay._id}>
+                  <ListItemText primary={nonTaxablePay.name} />
                   <ListItemSecondaryAction>
                     <IconButton
                       edge="end"
                       aria-label="edit"
-                      onClick={() => handleOnOpen(taxablePay)}
+                      onClick={() => handleOnOpen(nonTaxablePay)}
                     >
                       <EditIcon />
                     </IconButton>
                     <IconButton
                       edge="end"
                       aria-label="delete"
-                      onClick={() => dispatch(deleteTaxablePay(taxablePay._id))}
-                      disabled={taxablePaysDeleteLoading}
+                      onClick={() => dispatch(deleteNonTaxablePay(nonTaxablePay._id))}
+                      disabled={nonTaxablePaysDeleteLoading}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -144,16 +146,16 @@ const TaxablePays = () => {
           ) : null}
         </div>
       </Paper>
-      <TaxablePayFormDialog
+      <NonTaxablePaysFormDialog
         open={open}
         handleClose={handleOnClose}
-        taxablePay={selectedTaxablePay}
+        nonTaxablePay={selectedNonTaxablePay}
         title="Edit Taxable Pay"
         errors={errors}
-        loading={taxablePaysUpdateLoading}
+        loading={nonTaxablePaysUpdateLoading}
       />
     </>
   );
 };
 
-export default TaxablePays;
+export default NonTaxablePays;

@@ -44,13 +44,19 @@ export const companiesListReducers = (state = { companies: [] }, action) => {
     case COMPANY_LIST_FAIL:
       return { loading: false, companies: [] };
     case COMPANY_DELETE_SUCCESS:
-      return { ...state, companies: state.companies.filter((company) => company._id !== payload) };
+      return {
+        ...state,
+        companies: state.companies.filter((company) => company._id !== payload),
+      };
     default:
       return state;
   }
 };
 
-export const companyDetailsReducers = (state = { company: { department: [] } }, action) => {
+export const companyDetailsReducers = (
+  state = { company: { department: [], taxablePays: [], nonTaxablePays: [] } },
+  action,
+) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -125,7 +131,12 @@ export const companySettingsCreateReducers = (state = { errors: {} }, action) =>
     case COMPANY_SETTINGS_CREATE_REQUEST:
       return { ...state, loading: true };
     case COMPANY_SETTINGS_CREATE_SUCCESS:
-      return { ...state, loading: false, companySettings: payload.companySettings, errors: {} };
+      return {
+        ...state,
+        loading: false,
+        companySettings: payload.companySettings,
+        errors: {},
+      };
     case COMPANY_SETTINGS_CREATE_FAIL:
       return { ...state, loading: false, errors: payload };
     case COMPANY_SETTINGS_CREATE_RESET:
