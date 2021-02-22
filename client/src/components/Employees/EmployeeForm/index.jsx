@@ -26,9 +26,9 @@ const EmployeeForm = () => {
       payRemittances: true,
     },
     personalInformation: {
-      gender: 'male',
+      gender: '',
       nationality: '',
-      civilStatus: 'single',
+      civilStatus: '',
       numberOfQualifiedDependents: 0,
       validId: '',
       validIdNumber: '',
@@ -76,7 +76,7 @@ const EmployeeForm = () => {
     },
   });
 
-  const { basicInformation } = information;
+  const { basicInformation, personalInformation } = information;
   console.log(information);
 
   const handleOnChangeBasicInformation = (e) =>
@@ -89,6 +89,16 @@ const EmployeeForm = () => {
       },
     }));
 
+  const handleOnChangePersonalInformation = (e) => {
+    setInformation((prevState) => ({
+      ...prevState,
+      personalInformation: {
+        ...prevState.personalInformation,
+        [e.target.name]: e.target.value,
+      },
+    }));
+  };
+
   const { gridContainer, formButton } = useStyles();
 
   return (
@@ -100,7 +110,10 @@ const EmployeeForm = () => {
         />
       </Grid>
       <Grid item xs={12}>
-        <PersonalInformation />
+        <PersonalInformation
+          personalInformation={personalInformation}
+          onChange={handleOnChangePersonalInformation}
+        />
       </Grid>
       <Grid item md={6} xs={12}>
         <AddressInformation title="Registered Address" />

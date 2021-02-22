@@ -15,7 +15,18 @@ import TitleBox from '../../../common/TitleBox';
 import useStyles from '../styles';
 import { CIVIL_STATUS } from '../../../../utils/globals';
 
-const PersonalInformation = () => {
+const PersonalInformation = ({ personalInformation, onChange }) => {
+  const {
+    gender,
+    nationality,
+    civilStatus,
+    numberOfQualifiedDependents,
+    validId,
+    validIdNumber,
+    placeOfIssue,
+    birthDate,
+  } = personalInformation;
+
   const { paper, fieldsContainer } = useStyles();
   return (
     <Paper className={paper} elevation={6}>
@@ -25,7 +36,7 @@ const PersonalInformation = () => {
           <Grid item md={6} xs={12}>
             <FormControl fullWidth size="small">
               <InputLabel htmlFor="gender">Gender</InputLabel>
-              <Select id="gender" name="gender" value="">
+              <Select id="gender" name="gender" value={gender} onChange={onChange}>
                 <MenuItem value="female">Female</MenuItem>
                 <MenuItem value="male">Male</MenuItem>
               </Select>
@@ -34,13 +45,25 @@ const PersonalInformation = () => {
           <Grid item md={6} xs={12}>
             <FormControl fullWidth size="small">
               <InputLabel htmlFor="nationality">Nationality</InputLabel>
-              <Input autoComplete="off" type="text" id="nationality" name="nationality" />
+              <Input
+                autoComplete="off"
+                type="text"
+                id="nationality"
+                name="nationality"
+                value={nationality}
+                onChange={onChange}
+              />
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
             <FormControl fullWidth size="small">
               <InputLabel htmlFor="civilStatus">Civil Status</InputLabel>
-              <Select id="civilStatus" name="civilStatus" value="">
+              <Select
+                id="civilStatus"
+                name="civilStatus"
+                value={civilStatus}
+                onChange={onChange}
+              >
                 {CIVIL_STATUS.map(({ name, value }) => (
                   <MenuItem value={value} key={value}>
                     {name}
@@ -59,13 +82,22 @@ const PersonalInformation = () => {
                 type="number"
                 id="numberOfQualifiedDependents"
                 name="numberOfQualifiedDependents"
+                value={numberOfQualifiedDependents}
+                onChange={onChange}
               />
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
             <FormControl fullWidth size="small">
               <InputLabel htmlFor="validId">Valid ID</InputLabel>
-              <Input autoComplete="off" type="text" id="validId" name="validId" />
+              <Input
+                autoComplete="off"
+                type="text"
+                id="validId"
+                name="validId"
+                value={validId}
+                onChange={onChange}
+              />
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -76,6 +108,8 @@ const PersonalInformation = () => {
                 type="text"
                 id="validIdNumber"
                 name="validIdNumber"
+                value={validIdNumber}
+                onChange={onChange}
               />
             </FormControl>
           </Grid>
@@ -87,6 +121,8 @@ const PersonalInformation = () => {
                 type="number"
                 id="placeOfIssue"
                 name="placeOfIssue"
+                value={placeOfIssue}
+                onChange={onChange}
               />
             </FormControl>
           </Grid>
@@ -96,6 +132,9 @@ const PersonalInformation = () => {
                 id="birthDate"
                 label="Birth Date"
                 type="date"
+                name="birthDate"
+                value={birthDate}
+                onChange={onChange}
                 InputLabelProps={{
                   shrink: true,
                 }}
