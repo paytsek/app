@@ -5,7 +5,9 @@ import TitleBox from '../../../common/TitleBox';
 
 import useStyles from '../styles';
 
-const BasicAdjustment = () => {
+const BasicAdjustment = ({ basicAdjustment, onChange }) => {
+  const { sssLoanBalance, hdmfLoanBalance, allowances } = basicAdjustment;
+
   const { paper, fieldsContainer } = useStyles();
   return (
     <Paper className={paper} elevation={6}>
@@ -15,19 +17,37 @@ const BasicAdjustment = () => {
           <Grid item md={4} xs={12}>
             <FormControl fullWidth size="small">
               <InputLabel>SSS Loan Balanace</InputLabel>
-              <Input autoComplete="off" type="number" name="sssLoanBalance" />
+              <Input
+                autoComplete="off"
+                type="number"
+                name="sssLoanBalance"
+                value={sssLoanBalance}
+                onChange={onChange}
+              />
             </FormControl>
           </Grid>
           <Grid item md={4} xs={12}>
             <FormControl fullWidth size="small">
               <InputLabel>HDMF Loan Balance</InputLabel>
-              <Input autoComplete="off" type="number" name="hdmfLoanBalance" />
+              <Input
+                autoComplete="off"
+                type="number"
+                name="hdmfLoanBalance"
+                value={hdmfLoanBalance}
+                onChange={onChange}
+              />
             </FormControl>
           </Grid>
           <Grid item md={4} xs={12}>
             <FormControl fullWidth size="small">
               <InputLabel>Allowances</InputLabel>
-              <Input autoComplete="off" type="number" name="allowances" />
+              <Input
+                autoComplete="off"
+                type="number"
+                name="allowances"
+                value={allowances}
+                onChange={onChange}
+              />
             </FormControl>
           </Grid>
         </Grid>

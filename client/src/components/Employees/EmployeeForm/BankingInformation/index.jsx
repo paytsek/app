@@ -5,7 +5,7 @@ import TitleBox from '../../../common/TitleBox';
 
 import useStyles from '../styles';
 
-const BankingInformation = () => {
+const BankingInformation = ({ bankingInformation, onChange }) => {
   const { paper, fieldsContainer } = useStyles();
   return (
     <Paper className={paper} elevation={6}>
@@ -15,7 +15,13 @@ const BankingInformation = () => {
           <Grid item md={9} xs={12}>
             <FormControl fullWidth size="small">
               <InputLabel>Banking Information</InputLabel>
-              <Input autoComplete="off" type="number" name="bankingInformation" />
+              <Input
+                autoComplete="off"
+                type="text"
+                name="bankingInformation"
+                value={bankingInformation}
+                onChange={onChange}
+              />
             </FormControl>
           </Grid>
         </Grid>
