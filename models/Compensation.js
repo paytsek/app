@@ -29,6 +29,15 @@ const CompensationSchema = new mongoose.Schema(
       ref: 'Company',
       required: [true, 'Company must exist'],
     },
+    taxablePays: {
+      others: mongoose.Schema.Types.Mixed,
+    },
+    nonTaxablePays: {
+      deminimis: {
+        type: Number,
+      },
+      others: mongoose.Schema.Types.Mixed,
+    },
   },
   {
     timestamps: true,
@@ -39,7 +48,9 @@ const CompensationSchema = new mongoose.Schema(
 );
 
 CompensationSchema.post('save', async (doc, next) => {
-  const compensations = await mongoose.model('Compensation').find({ employee: doc.employee });
+  const compensations = await mongoose
+    .model('Compensation')
+    .find({ employee: doc.employee });
 
   if (compensations.length <= 0) {
     await Employee.findByIdAndUpdate(doc.employee, { compensation: doc });
