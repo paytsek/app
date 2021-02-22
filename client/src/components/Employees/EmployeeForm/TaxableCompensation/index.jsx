@@ -1,18 +1,23 @@
-import React from 'react';
-import {
-  Paper,
-  Grid,
-  FormControl,
-  TextField,
-  InputAdornment,
-} from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Paper, Grid, FormControl, TextField, InputAdornment } from '@material-ui/core';
 
 import TitleBox from '../../../common/TitleBox';
+import CompensationsList from '../../../CompensationsList';
 
+import { getTaxablePays } from '../../../../redux/actions/taxablePaysActions';
 import useStyles from '../styles';
 
 const TaxableCompensation = () => {
+  const dispatch = useDispatch();
+
+  const { taxablePays, loading } = useSelector((state) => state.taxablePaysList);
+
   const { paper, fieldsContainer } = useStyles();
+
+  useEffect(() => {
+    dispatch(getTaxablePays());
+  }, []);
   return (
     <Paper className={paper} elevation={6}>
       <TitleBox title="Taxable Compensation" />
@@ -30,30 +35,7 @@ const TaxableCompensation = () => {
               />
             </FormControl>
           </Grid>
-          <Grid item xs={12}>
-            <FormControl fullWidth size="small">
-              <TextField
-                type="number"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">Transportation</InputAdornment>
-                  ),
-                }}
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <FormControl fullWidth size="small">
-              <TextField
-                type="number"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">Rice</InputAdornment>
-                  ),
-                }}
-              />
-            </FormControl>
-          </Grid>
+          <CompensationsList loading={loading} compensations={taxablePays} />
         </Grid>
       </div>
     </Paper>
