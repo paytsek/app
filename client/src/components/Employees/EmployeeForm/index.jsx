@@ -84,6 +84,7 @@ const EmployeeForm = () => {
     basicAdjustment,
     bankingInformation,
     governmentIds,
+    employeeFunction,
   } = information;
   console.log(information);
 
@@ -126,6 +127,16 @@ const EmployeeForm = () => {
     setInformation((prevState) => ({
       ...prevState,
       governmentIds: { ...prevState.governmentIds, [e.target.name]: e.target.value },
+    }));
+
+  const handleOnChangeEmployeeFunction = (e) =>
+    setInformation((prevState) => ({
+      ...prevState,
+      employeeFunction: {
+        ...prevState.employeeFunction,
+        [e.target.name]:
+          e.target.name === 'primaryEmployer' ? e.target.checked : e.target.value,
+      },
     }));
 
   const { gridContainer, formButton } = useStyles();
@@ -179,7 +190,10 @@ const EmployeeForm = () => {
         />
       </Grid>
       <Grid item xs={12}>
-        <EmployeeFuntion />
+        <EmployeeFuntion
+          employeeFunction={employeeFunction}
+          onChange={handleOnChangeEmployeeFunction}
+        />
       </Grid>
       <Grid item md={6} xs={12}>
         <TaxableCompensation />

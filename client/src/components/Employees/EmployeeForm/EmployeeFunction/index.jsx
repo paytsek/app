@@ -18,7 +18,15 @@ import MuiSkeleton from '../../../MuiSkeleton';
 import { getDepartments } from '../../../../redux/actions/departmentsActions';
 import useStyles from '../styles';
 
-const EmployeeFunction = () => {
+const EmployeeFunction = ({ employeeFunction, onChange }) => {
+  const {
+    department,
+    position,
+    workingHours,
+    workingDays,
+    primaryEmployer,
+  } = employeeFunction;
+
   const dispatch = useDispatch();
 
   const { loading, departments } = useSelector((state) => state.departmentsList);
@@ -40,10 +48,15 @@ const EmployeeFunction = () => {
             <Grid item md={6} xs={12}>
               <FormControl fullWidth size="small">
                 <InputLabel htmlFor="department">Department</InputLabel>
-                <Select id="department" name="department" value="">
-                  {departments.map((department) => (
-                    <MenuItem key={department._id} value={department._id}>
-                      {department.name}
+                <Select
+                  id="department"
+                  name="department"
+                  value={department}
+                  onChange={onChange}
+                >
+                  {departments.map((dep) => (
+                    <MenuItem key={dep._id} value={dep._id}>
+                      {dep.name}
                     </MenuItem>
                   ))}
                 </Select>
@@ -52,7 +65,14 @@ const EmployeeFunction = () => {
             <Grid item md={6} xs={12}>
               <FormControl fullWidth size="small">
                 <InputLabel htmlFor="position">Position</InputLabel>
-                <Input autoComplete="off" type="text" id="position" name="position" />
+                <Input
+                  autoComplete="off"
+                  type="text"
+                  id="position"
+                  name="position"
+                  value={position}
+                  onChange={onChange}
+                />
               </FormControl>
             </Grid>
             <Grid item md={6} xs={12}>
@@ -63,6 +83,8 @@ const EmployeeFunction = () => {
                   type="number"
                   id="workingDays"
                   name="workingDays"
+                  value={workingDays}
+                  onChange={onChange}
                 />
               </FormControl>
             </Grid>
@@ -74,6 +96,8 @@ const EmployeeFunction = () => {
                   type="number"
                   id="workingHours"
                   name="workingHours"
+                  value={workingHours}
+                  onChange={onChange}
                 />
               </FormControl>
             </Grid>
@@ -83,6 +107,8 @@ const EmployeeFunction = () => {
                 label="Primary Employer"
                 labelPlacement="start"
                 name="primaryEmployer"
+                checked={primaryEmployer}
+                onChange={onChange}
               />
             </Grid>
           </Grid>
