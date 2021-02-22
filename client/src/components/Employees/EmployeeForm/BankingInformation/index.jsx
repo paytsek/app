@@ -15,7 +15,7 @@ const BankingInformation = () => {
           <Grid item md={9} xs={12}>
             <FormControl fullWidth size="small">
               <InputLabel>Banking Information</InputLabel>
-              <Input autoComplete="off" type="number" name="bankinInformation" />
+              <Input autoComplete="off" type="number" name="bankingInformation" />
             </FormControl>
           </Grid>
         </Grid>
