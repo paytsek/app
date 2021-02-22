@@ -83,6 +83,7 @@ const EmployeeForm = () => {
     permanentAddress,
     basicAdjustment,
     bankingInformation,
+    governmentIds,
   } = information;
   console.log(information);
 
@@ -120,6 +121,12 @@ const EmployeeForm = () => {
 
   const handleOnChangeBankingInformation = (e) =>
     setInformation((prevState) => ({ ...prevState, [e.target.name]: e.target.value }));
+
+  const handleOnChangeGovernmentIds = (e) =>
+    setInformation((prevState) => ({
+      ...prevState,
+      governmentIds: { ...prevState.governmentIds, [e.target.name]: e.target.value },
+    }));
 
   const { gridContainer, formButton } = useStyles();
 
@@ -166,7 +173,10 @@ const EmployeeForm = () => {
         />
       </Grid>
       <Grid item xs={12}>
-        <GovernmentIds />
+        <GovernmentIds
+          governmentIds={governmentIds}
+          onChange={handleOnChangeGovernmentIds}
+        />
       </Grid>
       <Grid item xs={12}>
         <EmployeeFuntion />
