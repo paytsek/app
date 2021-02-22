@@ -8,7 +8,9 @@ import CompensationsList from '../../../CompensationsList';
 import { getTaxablePays } from '../../../../redux/actions/taxablePaysActions';
 import useStyles from '../styles';
 
-const TaxableCompensation = () => {
+const TaxableCompensation = ({ taxableCompensation, onChange }) => {
+  const { basicPay } = taxableCompensation;
+
   const dispatch = useDispatch();
 
   const { taxablePays, loading } = useSelector((state) => state.taxablePaysList);
@@ -27,6 +29,9 @@ const TaxableCompensation = () => {
             <FormControl fullWidth size="small">
               <TextField
                 type="number"
+                name="basicPay"
+                value={basicPay}
+                onChange={onChange}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">Basic Pay</InputAdornment>
@@ -35,7 +40,11 @@ const TaxableCompensation = () => {
               />
             </FormControl>
           </Grid>
-          <CompensationsList loading={loading} compensations={taxablePays} />
+          <CompensationsList
+            loading={loading}
+            compensations={taxablePays}
+            onChange={onChange}
+          />
         </Grid>
       </div>
     </Paper>

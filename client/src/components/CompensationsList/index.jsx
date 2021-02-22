@@ -3,7 +3,7 @@ import { Grid, FormControl, TextField, InputAdornment } from '@material-ui/core'
 
 import MuiSkeleton from '../MuiSkeleton';
 
-const CompensationList = ({ compensations, loading }) =>
+const CompensationList = ({ compensations, loading, onChange }) =>
   (loading ? (
     <Grid item xs={12}>
       <MuiSkeleton />
@@ -14,6 +14,7 @@ const CompensationList = ({ compensations, loading }) =>
         <FormControl fullWidth size="small">
           <TextField
             type="number"
+            onChange={(e) => onChange(e, compensation._id)}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">{compensation.name}</InputAdornment>

@@ -67,11 +67,11 @@ const EmployeeForm = () => {
       primaryEmployer: true,
     },
     taxableCompensation: {
-      basicPay: 0,
+      basicPay: '',
       others: {},
     },
     nonTaxableCompensation: {
-      deminimis: 0,
+      deminimis: '',
       others: {},
     },
   });
@@ -85,6 +85,7 @@ const EmployeeForm = () => {
     bankingInformation,
     governmentIds,
     employeeFunction,
+    taxableCompensation,
   } = information;
   console.log(information);
 
@@ -138,6 +139,26 @@ const EmployeeForm = () => {
           e.target.name === 'primaryEmployer' ? e.target.checked : e.target.value,
       },
     }));
+
+  const handleOnChangeTaxableCompensation = (e, other) => {
+    if (other) {
+      setInformation((prevState) => ({
+        ...prevState,
+        taxableCompensation: {
+          ...prevState.taxableCompensation,
+          others: { ...prevState.taxableCompensation.others, [other]: e.target.value },
+        },
+      }));
+    } else {
+      setInformation((prevState) => ({
+        ...prevState,
+        taxableCompensation: {
+          ...prevState.taxableCompensation,
+          [e.target.name]: e.target.value,
+        },
+      }));
+    }
+  };
 
   const { gridContainer, formButton } = useStyles();
 
@@ -196,7 +217,10 @@ const EmployeeForm = () => {
         />
       </Grid>
       <Grid item md={6} xs={12}>
-        <TaxableCompensation />
+        <TaxableCompensation
+          taxableCompensation={taxableCompensation}
+          onChange={handleOnChangeTaxableCompensation}
+        />
       </Grid>
       <Grid item md={6} xs={12}>
         <NonTaxableCompensation />
