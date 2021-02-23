@@ -11,6 +11,7 @@ import EmployeeFuntion from './EmployeeFunction';
 import TaxableCompensation from './TaxableCompensation';
 import NonTaxableCompensation from './NonTaxableCompensation';
 
+// import { createEmployee } from '../../../redux/actions/employeesActions';
 import useStyles from './styles';
 
 const EmployeeForm = () => {
@@ -68,11 +69,11 @@ const EmployeeForm = () => {
     },
     taxableCompensation: {
       basicPay: '',
-      others: {},
+      others: [],
     },
     nonTaxableCompensation: {
       deminimis: '',
-      others: {},
+      others: [],
     },
   });
 
@@ -88,7 +89,6 @@ const EmployeeForm = () => {
     taxableCompensation,
     nonTaxableCompensation,
   } = information;
-  console.log(information);
 
   const handleOnChangeBasicInformation = (e) =>
     setInformation((prevState) => ({
@@ -147,7 +147,10 @@ const EmployeeForm = () => {
         ...prevState,
         taxableCompensation: {
           ...prevState.taxableCompensation,
-          others: { ...prevState.taxableCompensation.others, [other]: e.target.value },
+          others: prevState.taxableCompensation.others.map((otherTaxablePay) =>
+            (otherTaxablePay.taxablePay === other
+              ? { value: e.target.value, taxablePay: other }
+              : otherTaxablePay)),
         },
       }));
     } else {
@@ -167,7 +170,10 @@ const EmployeeForm = () => {
         ...prevState,
         nonTaxableCompensation: {
           ...prevState.nonTaxableCompensation,
-          others: { ...prevState.nonTaxableCompensation.others, [other]: e.target.value },
+          others: prevState.nonTaxableCompensation.others.map((otherNonTaxable) =>
+            (otherNonTaxable.nonTaxablePay === other
+              ? { value: e.target.value, nonTaxablePay: other }
+              : otherNonTaxable)),
         },
       }));
     } else {
@@ -179,6 +185,50 @@ const EmployeeForm = () => {
         },
       }));
     }
+  };
+
+  const setOtherTaxableDefault = (others) =>
+    setInformation((prevState) => ({
+      ...prevState,
+      taxableCompensation: {
+        ...prevState.taxableCompensation,
+        others: others.map((other) => ({ taxablePay: other._id, value: '' })),
+      },
+    }));
+
+  const setOtherNonTaxableDefault = (others) =>
+    setInformation((prevState) => ({
+      ...prevState,
+      nonTaxableCompensation: {
+        ...prevState.nonTaxableCompensation,
+        others: others.map((other) => ({ nonTaxablePay: other._id, value: '' })),
+      },
+    }));
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    const employeeData = {
+      ...basicInformation,
+      ...personalInformation,
+      ...basicAdjustment,
+      ...governmentIds,
+      ...employeeFunction,
+      status: {
+        active: true,
+        effectivitydate: basicInformation.hireDate,
+      },
+      bankingInformation,
+      registeredAddress,
+      permanentAddress,
+      compensation: {
+        basicPay: taxableCompensation.basicPay,
+        deminims: nonTaxableCompensation.deminimis,
+        otherTaxablePays: taxableCompensation.others,
+        otherNonTaxablePays: nonTaxableCompensation.others,
+      },
+    };
+
+    console.log(employeeData);
   };
 
   const { gridContainer, formButton } = useStyles();
@@ -241,17 +291,19 @@ const EmployeeForm = () => {
         <TaxableCompensation
           taxableCompensation={taxableCompensation}
           onChange={handleOnChangeTaxableCompensation}
+          setDefault={setOtherTaxableDefault}
         />
       </Grid>
       <Grid item md={6} xs={12}>
         <NonTaxableCompensation
           nonTaxableCompensation={nonTaxableCompensation}
           onChange={handleOnChangeNonTaxableCompensation}
+          setDefault={setOtherNonTaxableDefault}
         />
       </Grid>
       <Grid item>
         <div className={formButton}>
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained" onClick={handleOnSubmit}>
             Save Employee
           </Button>
         </div>

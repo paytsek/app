@@ -8,16 +8,24 @@ import CompensationsList from '../../../CompensationsList';
 import { getNonTaxablePays } from '../../../../redux/actions/nonTaxablePaysActions';
 import useStyles from '../styles';
 
-const NonTaxableCompensation = ({ nonTaxableCompensation, onChange }) => {
+const NonTaxableCompensation = ({ nonTaxableCompensation, onChange, setDefault }) => {
   const { deminimis } = nonTaxableCompensation;
 
   const dispatch = useDispatch();
 
-  const { nonTaxablePays, loading } = useSelector((state) => state.nonTaxablePaysList);
+  const { nonTaxablePays, loading, success } = useSelector(
+    (state) => state.nonTaxablePaysList,
+  );
 
   useEffect(() => {
     dispatch(getNonTaxablePays());
   }, []);
+
+  useEffect(() => {
+    if (success) {
+      setDefault(nonTaxablePays);
+    }
+  }, [success]);
 
   const { paper, fieldsContainer } = useStyles();
   return (

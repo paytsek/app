@@ -1,6 +1,7 @@
 import axios from '../../axios';
 
 import {
+  EMPLOYEE_CREATE_REQUEST,
   EMPLOYEE_DETAILS_REQUEST,
   EMPLOYEE_DETAILS_SUCCESS,
   EMPLOYEE_LIST_REQUEST,
@@ -32,5 +33,23 @@ export const getEmployeeDetails = (id) => async (dispatch) => {
     const { errors } = error.response.data;
     const message = errors && errors.message;
     dispatch(notification('error', message || 'Server Error', dispatch));
+  }
+};
+
+export const createEmployee = (employeeData) => async (dispatch) => {
+  dispatch({ type: EMPLOYEE_CREATE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const { data } = await axios.post('/employees', employeeData, config);
+
+    console.log(data);
+  } catch (error) {
+    console.log(error.response);
   }
 };

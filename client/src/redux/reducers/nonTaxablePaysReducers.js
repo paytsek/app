@@ -21,7 +21,12 @@ export const nonTaxablePaysListReducers = (state = { nonTaxablePays: [] }, actio
     case NON_TAXABLE_PAYS_LIST_REQUEST:
       return { ...state, loading: true };
     case NON_TAXABLE_PAYS_LIST_SUCCESS:
-      return { ...state, loading: false, nonTaxablePays: payload.nonTaxablePays };
+      return {
+        ...state,
+        loading: false,
+        nonTaxablePays: payload.nonTaxablePays,
+        success: true,
+      };
     case NON_TAXABLE_PAYS_LIST_FAIL:
       return { ...state, loading: false };
     case NON_TAXABLE_PAYS_CREATE_SUCCESS:

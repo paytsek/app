@@ -1,4 +1,7 @@
 import {
+  EMPLOYEE_CREATE_FAIL,
+  EMPLOYEE_CREATE_REQUEST,
+  EMPLOYEE_CREATE_SUCCESS,
   EMPLOYEE_DETAILS_FAIL,
   EMPLOYEE_DETAILS_REQUEST,
   EMPLOYEE_DETAILS_RESET,
@@ -54,6 +57,21 @@ export const employeeDetailsReducers = (
           compensations: [],
         },
       };
+    default:
+      return state;
+  }
+};
+
+export const employeeCreateReducers = (state = {}, action) => {
+  const { type } = action;
+
+  switch (type) {
+    case EMPLOYEE_CREATE_REQUEST:
+      return { loading: true };
+    case EMPLOYEE_CREATE_SUCCESS:
+      return { loading: false, success: true };
+    case EMPLOYEE_CREATE_FAIL:
+      return { loading: false, success: false };
     default:
       return state;
   }

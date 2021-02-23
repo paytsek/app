@@ -8,18 +8,25 @@ import CompensationsList from '../../../CompensationsList';
 import { getTaxablePays } from '../../../../redux/actions/taxablePaysActions';
 import useStyles from '../styles';
 
-const TaxableCompensation = ({ taxableCompensation, onChange }) => {
+const TaxableCompensation = ({ taxableCompensation, onChange, setDefault }) => {
   const { basicPay } = taxableCompensation;
 
   const dispatch = useDispatch();
 
-  const { taxablePays, loading } = useSelector((state) => state.taxablePaysList);
+  const { taxablePays, loading, success } = useSelector((state) => state.taxablePaysList);
 
   const { paper, fieldsContainer } = useStyles();
 
   useEffect(() => {
     dispatch(getTaxablePays());
   }, []);
+
+  useEffect(() => {
+    if (success) {
+      setDefault(taxablePays);
+    }
+  }, [success]);
+
   return (
     <Paper className={paper} elevation={6}>
       <TitleBox title="Taxable Compensation" />
