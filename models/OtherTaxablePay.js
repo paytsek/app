@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const OtherTaxablePaySchema = new mongoose.Schema(
   {
-    value: Number,
+    value: {
+      type: Number,
+      default: 0,
+    },
     employee: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Employee',

@@ -3,6 +3,7 @@ import axios from '../../axios';
 import {
   EMPLOYEE_CREATE_FAIL,
   EMPLOYEE_CREATE_REQUEST,
+  EMPLOYEE_CREATE_SUCCESS,
   EMPLOYEE_DETAILS_REQUEST,
   EMPLOYEE_DETAILS_SUCCESS,
   EMPLOYEE_LIST_REQUEST,
@@ -49,7 +50,10 @@ export const createEmployee = (employeeData) => async (dispatch) => {
   try {
     const { data } = await axios.post('/employees', employeeData, config);
 
-    console.log(data);
+    const message = 'Employee successfully created';
+
+    dispatch({ type: EMPLOYEE_CREATE_SUCCESS, payload: data });
+    dispatch(notification('success', message, dispatch));
   } catch (error) {
     const { errors } = error.response.data;
     dispatch({ type: EMPLOYEE_CREATE_FAIL, payload: errors });

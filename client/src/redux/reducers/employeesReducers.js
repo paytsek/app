@@ -1,6 +1,7 @@
 import {
   EMPLOYEE_CREATE_FAIL,
   EMPLOYEE_CREATE_REQUEST,
+  EMPLOYEE_CREATE_RESET,
   EMPLOYEE_CREATE_SUCCESS,
   EMPLOYEE_DETAILS_FAIL,
   EMPLOYEE_DETAILS_REQUEST,
@@ -9,7 +10,7 @@ import {
   EMPLOYEE_LIST_FAIL,
   EMPLOYEE_LIST_REQUEST,
   EMPLOYEE_LIST_SUCCESS,
-} from '../types/employeeTypes';
+} from '../types';
 
 export const employeesListReducers = (state = { employees: [] }, action) => {
   const { type, payload } = action;
@@ -62,16 +63,18 @@ export const employeeDetailsReducers = (
   }
 };
 
-export const employeeCreateReducers = (state = { errors: {} }, action) => {
+export const employeeCreateReducers = (state = { errors: {}, employee: {} }, action) => {
   const { type, payload } = action;
 
   switch (type) {
     case EMPLOYEE_CREATE_REQUEST:
       return { ...state, loading: true };
     case EMPLOYEE_CREATE_SUCCESS:
-      return { ...state, loading: false, success: true };
+      return { ...state, loading: false, employee: payload.employee, success: true };
     case EMPLOYEE_CREATE_FAIL:
       return { ...state, loading: false, success: false, errors: payload };
+    case EMPLOYEE_CREATE_RESET:
+      return { errors: {}, employee: {} };
     default:
       return state;
   }

@@ -39,7 +39,12 @@ const EmployeeSchema = new mongoose.Schema(
     },
     hireDate: {
       type: Date,
-      default: Date.now,
+      requried: [true, 'Hire Date is required'],
+      validate(val) {
+        if (!val) {
+          throw new Error('Hire Date is required');
+        }
+      },
     },
     resignationDate: {
       type: Date,

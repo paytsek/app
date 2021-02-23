@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Button } from '@material-ui/core';
 
@@ -13,9 +14,10 @@ import TaxableCompensation from './TaxableCompensation';
 import NonTaxableCompensation from './NonTaxableCompensation';
 
 import { createEmployee } from '../../../redux/actions/employeesActions';
+import { EMPLOYEE_CREATE_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
-const EmployeeForm = () => {
+const EmployeeForm = ({ history, match }) => {
   const dispatch = useDispatch();
 
   const [information, setInformation] = useState({
@@ -93,7 +95,8 @@ const EmployeeForm = () => {
     nonTaxableCompensation,
   } = information;
 
-  const { errors } = useSelector((state) => state.employeeCreate);
+  const { errors, success, employee, loading } = useSelector((state) => state.employeeCreate);
+
   const registeredAddressErrors = {
     street: errors['registeredAddress.street'],
     city: errors['registeredAddress.city'],
@@ -250,6 +253,19 @@ const EmployeeForm = () => {
     dispatch(createEmployee(employeeData));
   };
 
+  useEffect(
+    () => () => {
+      dispatch({ type: EMPLOYEE_CREATE_RESET });
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (success) {
+      history.push(`/${match.params.slug}/employees/${employee._id}`);
+    }
+  }, [success]);
+
   const { gridContainer, formButton } = useStyles();
 
   return (
@@ -331,7 +347,7 @@ const EmployeeForm = () => {
       </Grid>
       <Grid item>
         <div className={formButton}>
-          <Button color="primary" variant="contained" onClick={handleOnSubmit}>
+          <Button color="primary" variant="contained" onClick={handleOnSubmit} disabled={loading}>
             Save Employee
           </Button>
         </div>
@@ -340,4 +356,4 @@ const EmployeeForm = () => {
   );
 };
 
-export default EmployeeForm;
+export default withRouter(EmployeeForm);
