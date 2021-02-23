@@ -13,4 +13,10 @@ export const ACCOUNTING_JOURNAL_ENTRIES = [
   },
 ];
 
-export const X = [];
+export const CIVIL_STATUS = [
+  { name: 'Single', value: 'single' },
+  { name: 'Married', value: 'married' },
+  { name: 'Divorced', value: 'Divorced' },
+  { name: 'Separated', value: 'separated' },
+  { name: 'Widowed', value: 'widowed' },
+];

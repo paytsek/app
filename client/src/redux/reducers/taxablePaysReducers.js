@@ -21,7 +21,7 @@ export const taxablePaysListReducers = (state = { taxablePays: [] }, action) => 
     case TAXABLE_PAYS_LIST_REQUEST:
       return { ...state, loading: true };
     case TAXABLE_PAYS_LIST_SUCCESS:
-      return { ...state, loading: false, taxablePays: payload.taxablePays };
+      return { ...state, loading: false, taxablePays: payload.taxablePays, success: true };
     case TAXABLE_PAYS_LIST_FAIL:
       return { ...state, loading: false };
     case TAXABLE_PAYS_CREATE_SUCCESS:

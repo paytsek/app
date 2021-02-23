@@ -8,6 +8,8 @@ const User = require('../models/User');
 const Employee = require('../models/Employee');
 const Status = require('../models/Status');
 const Compensation = require('../models/Compensation');
+const OtherTaxablePay = require('../models/OtherTaxablePay');
+const OtherNonTaxablePay = require('../models/OtherNonTaxablePay');
 
 // @ROUTE GET /api/v1/employees
 // @Desc Get a employees for a specific company
@@ -24,7 +26,10 @@ const getEmployees = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
 
-  const employees = await Employee.find({ company: company._id }).populate('department', 'name');
+  const employees = await Employee.find({ company: company._id }).populate(
+    'department',
+    'name',
+  );
 
   return res.status(200).json({ success: true, employees });
 });
@@ -47,7 +52,10 @@ const getEmployee = asyncHandler(async (req, res, next) => {
   const employee = await Employee.findOne({ _id: req.params.id, company: company._id })
     .populate('department', 'name')
     .populate({ path: 'statuses' })
-    .populate({ path: 'compensations' });
+    .populate({
+      path: 'compensations',
+      populate: { path: 'otherTaxablePays', populate: { path: 'taxablePay' } },
+    });
 
   if (!employee) {
     res.status(404);
@@ -79,7 +87,10 @@ const createEmployee = asyncHandler(async (req, res, next) => {
   try {
     session.startTransaction();
     const opts = { session };
-    const [employee] = await Employee.create([{ ...req.body, company: company._id }], opts);
+    const [employee] = await Employee.create(
+      [{ ...req.body, company: company._id }],
+      opts,
+    );
 
     let { status } = req.body;
     let { compensation } = req.body;
@@ -95,7 +106,7 @@ const createEmployee = asyncHandler(async (req, res, next) => {
     }
 
     const { active, effectivityDate } = status;
-    const { basicPay } = compensation;
+    const { basicPay, otherTaxablePays, otherNonTaxablePays } = compensation;
     const dailyRate = Number(basicPay) / Number(employee.workingDays);
     const hourlyRate = Number(dailyRate) / Number(employee.workingHours);
 
@@ -104,8 +115,30 @@ const createEmployee = asyncHandler(async (req, res, next) => {
       opts,
     );
 
-    compensation = await Compensation.create(
+    [compensation] = await Compensation.create(
       [{ basicPay, dailyRate, hourlyRate, company: company._id, employee: employee._id }],
+      opts,
+    );
+
+    await OtherTaxablePay.create(
+      otherTaxablePays.map((otherTaxablePay) => ({
+        company: company._id,
+        employee: employee._id,
+        compensation: compensation._id,
+        taxablePay: otherTaxablePay.taxablePay,
+        value: otherTaxablePay.value,
+      })),
+      opts,
+    );
+
+    await OtherNonTaxablePay.create(
+      otherNonTaxablePays.map((otherNonTaxablePay) => ({
+        company: company._id,
+        employee: employee._id,
+        compensation: compensation._id,
+        nonTaxablePay: otherNonTaxablePay.nonTaxablePay,
+        value: otherNonTaxablePay.value,
+      })),
       opts,
     );
 

@@ -28,7 +28,7 @@ import {
   departmentDeleteReducers,
   departmentsListReducers,
 } from './departmentsReducers';
-import { employeesListReducers, employeeDetailsReducers } from './employeesReducers';
+import { employeesListReducers, employeeDetailsReducers, employeeCreateReducers } from './employeesReducers';
 import {
   taxablePaysListReducers,
   taxablePaysCreateReducers,
@@ -74,6 +74,7 @@ const reducers = combineReducers({
   // EMPLOYEES
   employeesList: employeesListReducers,
   employeeDetails: employeeDetailsReducers,
+  employeeCreate: employeeCreateReducers,
   // TAXABLEPAYS
   taxablePaysList: taxablePaysListReducers,
   taxablePaysCreate: taxablePaysCreateReducers,

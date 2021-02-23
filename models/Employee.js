@@ -28,6 +28,10 @@ const EmployeeSchema = new mongoose.Schema(
     employeeNumber: {
       type: String,
     },
+    payRemittances: {
+      type: Boolean,
+      default: true,
+    },
     fullName: String,
     birthDate: {
       type: Date,
@@ -35,7 +39,12 @@ const EmployeeSchema = new mongoose.Schema(
     },
     hireDate: {
       type: Date,
-      default: Date.now,
+      requried: [true, 'Hire Date is required'],
+      validate(val) {
+        if (!val) {
+          throw new Error('Hire Date is required');
+        }
+      },
     },
     resignationDate: {
       type: Date,
@@ -100,6 +109,7 @@ const EmployeeSchema = new mongoose.Schema(
     department: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Department',
+      required: [true, 'Department is required'],
     },
     position: {
       type: String,
@@ -185,6 +195,12 @@ EmployeeSchema.virtual('statuses', {
   localField: '_id',
   foreignField: 'employee',
   justOne: false,
+});
+
+EmployeeSchema.virtual('otherTaxablePays', {
+  ref: 'OtherTaxablePay',
+  localField: '_id',
+  foreignField: 'employee',
 });
 
 module.exports = mongoose.model('Employee', EmployeeSchema);

@@ -19,6 +19,7 @@ const CompensationSchema = new mongoose.Schema(
       default: Date.now,
       required: [true, 'Effectivity Date is required'],
     },
+    deminimis: Number,
     employee: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Employee',
@@ -39,7 +40,9 @@ const CompensationSchema = new mongoose.Schema(
 );
 
 CompensationSchema.post('save', async (doc, next) => {
-  const compensations = await mongoose.model('Compensation').find({ employee: doc.employee });
+  const compensations = await mongoose
+    .model('Compensation')
+    .find({ employee: doc.employee });
 
   if (compensations.length <= 0) {
     await Employee.findByIdAndUpdate(doc.employee, { compensation: doc });
@@ -51,6 +54,12 @@ CompensationSchema.post('save', async (doc, next) => {
   }
 
   next();
+});
+
+CompensationSchema.virtual('otherTaxablePays', {
+  ref: 'OtherTaxablePay',
+  localField: '_id',
+  foreignField: 'compensation',
 });
 
 module.exports = mongoose.model('Compensation', CompensationSchema);

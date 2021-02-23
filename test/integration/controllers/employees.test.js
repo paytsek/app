@@ -480,8 +480,12 @@ describe('POST /api/v1/employees - createEmployee', () => {
 
   describe('Success Response', () => {
     it('should return success response if values entered are valid', async () => {
+      await mongoose.connection.createCollection('othertaxablepays');
+      await mongoose.connection.createCollection('othernontaxablepays');
       await mongoose.connection.createCollection('status');
       await mongoose.connection.createCollection('compensations');
+      await mongoose.connection.createCollection('taxablepays');
+      await mongoose.connection.createCollection('nontaxablepays');
 
       const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
@@ -539,6 +543,11 @@ describe('POST /api/v1/employees - createEmployee', () => {
           },
           compensation: {
             basicPay: 40000,
+            deminimis: 2000,
+            otherTaxablePays: [{ taxablePay: mongoose.Types.ObjectId(), value: 1200 }],
+            otherNonTaxablePays: [
+              { nonTaxablePay: mongoose.Types.ObjectId(), value: 1200 },
+            ],
           },
         });
 
