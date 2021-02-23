@@ -6,18 +6,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a881",
-    "company": "6010d3dc7951e30d3a584791",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3281": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3281": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584791"
   },
   {
     "_id": "6025fd533e1b4f138a30d142",
@@ -26,18 +15,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a882",
-    "company": "6010d3dc7951e30d3a584791",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3281": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3281": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584791"
   },
   {
     "_id": "6025fd533e1b4f138a30d143",
@@ -46,18 +24,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a883",
-    "company": "6010d3dc7951e30d3a584792",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3282": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3282": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584792"
   },
   {
     "_id": "6025fd533e1b4f138a30d144",
@@ -66,18 +33,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a884",
-    "company": "6010d3dc7951e30d3a584792",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3282": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3282": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584792"
   },
   {
     "_id": "6025fd533e1b4f138a30d145",
@@ -86,18 +42,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a885",
-    "company": "6010d3dc7951e30d3a584793",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3283": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3283": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584793"
   },
   {
     "_id": "6025fd533e1b4f138a30d146",
@@ -106,18 +51,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a886",
-    "company": "6010d3dc7951e30d3a584793",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3283": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3283": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584793"
   },
   {
     "_id": "6025fd533e1b4f138a30d147",
@@ -126,18 +60,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a887",
-    "company": "6010d3dc7951e30d3a584794",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3284": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3284": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584794"
   },
   {
     "_id": "6025fd533e1b4f138a30d148",
@@ -146,18 +69,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a888",
-    "company": "6010d3dc7951e30d3a584794",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3284": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3284": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584794"
   },
   {
     "_id": "6025fd533e1b4f138a30d149",
@@ -166,18 +78,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a889",
-    "company": "6010d3dc7951e30d3a584795",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3285": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3285": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584795"
   },
   {
     "_id": "6025fd533e1b4f138a30d150",
@@ -186,18 +87,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a889",
-    "company": "6010d3dc7951e30d3a584795",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3285": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3285": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584795"
   },
   {
     "_id": "6025fd533e1b4f138a30d151",
@@ -206,18 +96,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a890",
-    "company": "6010d3dc7951e30d3a584795",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3285": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3285": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584795"
   },
   {
     "_id": "6025fd533e1b4f138a30d152",
@@ -226,18 +105,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a891",
-    "company": "6010d3dc7951e30d3a584796",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3286": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3286": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584796"
   },
   {
     "_id": "6025fd533e1b4f138a30d153",
@@ -246,18 +114,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a892",
-    "company": "6010d3dc7951e30d3a584796",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3286": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3286": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584796"
   },
   {
     "_id": "6025fd533e1b4f138a30d154",
@@ -266,18 +123,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a893",
-    "company": "6010d3dc7951e30d3a584797",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3287": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3287": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584797"
   },
   {
     "_id": "6025fd533e1b4f138a30d155",
@@ -286,18 +132,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a894",
-    "company": "6010d3dc7951e30d3a584797",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3287": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3287": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584797"
   },
   {
     "_id": "6025fd533e1b4f138a30d156",
@@ -306,18 +141,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a895",
-    "company": "6010d3dc7951e30d3a584798",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3288": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3288": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584798"
   },
   {
     "_id": "6025fd533e1b4f138a30d157",
@@ -326,18 +150,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a896",
-    "company": "6010d3dc7951e30d3a584798",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3288": 1200
-      }
-    },
-    "taxablePays": {
-      "others":{
-        "602c96b4572b7214b11b3288": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584798"
   },
   {
     "_id": "6025fd533e1b4f138a30d158",
@@ -346,18 +159,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a897",
-    "company": "6010d3dc7951e30d3a584799",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3289": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3289": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584799"
   },
   {
     "_id": "6025fd533e1b4f138a30d159",
@@ -366,18 +168,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a898",
-    "company": "6010d3dc7951e30d3a584799",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3289": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3289": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584799"
   },
   {
     "_id": "6025fd533e1b4f138a30d160",
@@ -386,18 +177,7 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a899",
-    "company": "6010d3dc7951e30d3a584800",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3290": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3290": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584800"
   },
   {
     "_id": "6025fd533e1b4f138a30d161",
@@ -406,17 +186,6 @@
     "hourlyRate": 113.6363636364,
     "effectivityDate": "2020-03-09",
     "employee": "6024c4d798d913139963a900",
-    "company": "6010d3dc7951e30d3a584800",
-    "nonTaxablePays": {
-      "deminimis": 2100,
-      "others": {
-        "602c96b4572b7286b11b3290": 1200
-      }
-    },
-    "taxablePays": {
-      "others": {
-        "602c96b4572b7214b11b3290": 2000
-      }
-    }
+    "company": "6010d3dc7951e30d3a584800"
   }
 ]

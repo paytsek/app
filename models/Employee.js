@@ -191,4 +191,10 @@ EmployeeSchema.virtual('statuses', {
   justOne: false,
 });
 
+EmployeeSchema.virtual('otherTaxablePays', {
+  ref: 'OtherTaxablePay',
+  localField: '_id',
+  foreignField: 'employee',
+});
+
 module.exports = mongoose.model('Employee', EmployeeSchema);

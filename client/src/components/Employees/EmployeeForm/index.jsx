@@ -86,6 +86,7 @@ const EmployeeForm = () => {
     governmentIds,
     employeeFunction,
     taxableCompensation,
+    nonTaxableCompensation,
   } = information;
   console.log(information);
 
@@ -160,6 +161,26 @@ const EmployeeForm = () => {
     }
   };
 
+  const handleOnChangeNonTaxableCompensation = (e, other) => {
+    if (other) {
+      setInformation((prevState) => ({
+        ...prevState,
+        nonTaxableCompensation: {
+          ...prevState.nonTaxableCompensation,
+          others: { ...prevState.nonTaxableCompensation.others, [other]: e.target.value },
+        },
+      }));
+    } else {
+      setInformation((prevState) => ({
+        ...prevState,
+        nonTaxableCompensation: {
+          ...prevState.nonTaxableCompensation,
+          [e.target.name]: e.target.value,
+        },
+      }));
+    }
+  };
+
   const { gridContainer, formButton } = useStyles();
 
   return (
@@ -223,7 +244,10 @@ const EmployeeForm = () => {
         />
       </Grid>
       <Grid item md={6} xs={12}>
-        <NonTaxableCompensation />
+        <NonTaxableCompensation
+          nonTaxableCompensation={nonTaxableCompensation}
+          onChange={handleOnChangeNonTaxableCompensation}
+        />
       </Grid>
       <Grid item>
         <div className={formButton}>

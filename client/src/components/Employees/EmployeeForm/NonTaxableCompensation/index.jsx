@@ -8,7 +8,9 @@ import CompensationsList from '../../../CompensationsList';
 import { getNonTaxablePays } from '../../../../redux/actions/nonTaxablePaysActions';
 import useStyles from '../styles';
 
-const NonTaxableCompensation = () => {
+const NonTaxableCompensation = ({ nonTaxableCompensation, onChange }) => {
+  const { deminimis } = nonTaxableCompensation;
+
   const dispatch = useDispatch();
 
   const { nonTaxablePays, loading } = useSelector((state) => state.nonTaxablePaysList);
@@ -20,13 +22,16 @@ const NonTaxableCompensation = () => {
   const { paper, fieldsContainer } = useStyles();
   return (
     <Paper className={paper} elevation={6}>
-      <TitleBox title="Taxable Compensation" />
+      <TitleBox title="Non Taxable Compensation" />
       <div className={fieldsContainer}>
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <FormControl fullWidth size="small">
               <TextField
                 type="number"
+                name="deminimis"
+                value={deminimis}
+                onChange={onChange}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">De minimis</InputAdornment>
@@ -35,7 +40,11 @@ const NonTaxableCompensation = () => {
               />
             </FormControl>
           </Grid>
-          <CompensationsList loading={loading} compensations={nonTaxablePays} />
+          <CompensationsList
+            loading={loading}
+            compensations={nonTaxablePays}
+            onChange={onChange}
+          />
         </Grid>
       </div>
     </Paper>
