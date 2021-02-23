@@ -4,6 +4,8 @@ import {
   EMPLOYEE_CREATE_FAIL,
   EMPLOYEE_CREATE_REQUEST,
   EMPLOYEE_CREATE_SUCCESS,
+  EMPLOYEE_DELETE_REQUEST,
+  EMPLOYEE_DELETE_SUCCESS,
   EMPLOYEE_DETAILS_REQUEST,
   EMPLOYEE_DETAILS_SUCCESS,
   EMPLOYEE_LIST_REQUEST,
@@ -58,5 +60,20 @@ export const createEmployee = (employeeData) => async (dispatch) => {
     const { errors } = error.response.data;
     dispatch({ type: EMPLOYEE_CREATE_FAIL, payload: errors });
     dispatch(notification('error', 'Validation Error', dispatch));
+  }
+};
+
+export const deleteEmployee = (id) => async (dispatch) => {
+  dispatch({ type: EMPLOYEE_DELETE_REQUEST });
+
+  try {
+    const { data } = await axios.delete(`/employees/${id}`);
+
+    dispatch({ type: EMPLOYEE_DELETE_SUCCESS, payload: id });
+    dispatch(notification('success', data.message, dispatch));
+  } catch (error) {
+    const { errors } = error.response.data;
+    dispatch(notification('error', errors.message, dispatch));
+    dispatch({ type: EMPLOYEE_CREATE_FAIL, payload: errors });
   }
 };
