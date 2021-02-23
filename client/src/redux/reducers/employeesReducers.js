@@ -3,6 +3,9 @@ import {
   EMPLOYEE_CREATE_REQUEST,
   EMPLOYEE_CREATE_RESET,
   EMPLOYEE_CREATE_SUCCESS,
+  EMPLOYEE_DELETE_FAIL,
+  EMPLOYEE_DELETE_REQUEST,
+  EMPLOYEE_DELETE_SUCCESS,
   EMPLOYEE_DETAILS_FAIL,
   EMPLOYEE_DETAILS_REQUEST,
   EMPLOYEE_DETAILS_RESET,
@@ -22,6 +25,11 @@ export const employeesListReducers = (state = { employees: [] }, action) => {
       return { ...state, loading: false, employees: payload.employees };
     case EMPLOYEE_LIST_FAIL:
       return { ...state, loading: false };
+    case EMPLOYEE_DELETE_SUCCESS:
+      return {
+        ...state,
+        employees: state.employees.filter((employee) => employee._id !== payload),
+      };
     default:
       return state;
   }
@@ -75,6 +83,21 @@ export const employeeCreateReducers = (state = { errors: {}, employee: {} }, act
       return { ...state, loading: false, success: false, errors: payload };
     case EMPLOYEE_CREATE_RESET:
       return { errors: {}, employee: {} };
+    default:
+      return state;
+  }
+};
+
+export const employeeDeleteReducers = (state = {}, action) => {
+  const { type } = action;
+
+  switch (type) {
+    case EMPLOYEE_DELETE_REQUEST:
+      return { loading: true };
+    case EMPLOYEE_DELETE_SUCCESS:
+      return { loading: false };
+    case EMPLOYEE_DELETE_FAIL:
+      return { loading: false };
     default:
       return state;
   }
