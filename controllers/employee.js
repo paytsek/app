@@ -186,9 +186,17 @@ const deleteEmployee = asyncHandler(async (req, res, next) => {
   });
 });
 
+// @ROUTE PUT /api/v1/employees/:id
+// @Desc Update an employee
+// access PRIVATE - Logged in user
+const updateEmployee = asyncHandler(async (req, res, next) => {
+  res.send('Update Employee');
+});
+
 module.exports = {
   getEmployees,
   getEmployee,
   createEmployee,
   deleteEmployee,
+  updateEmployee,
 };

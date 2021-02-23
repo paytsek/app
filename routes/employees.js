@@ -5,6 +5,7 @@ const {
   getEmployee,
   createEmployee,
   deleteEmployee,
+  updateEmployee,
 } = require('../controllers/employee');
 const administrator = require('../middleware/administrator');
 const auth = require('../middleware/auth');
@@ -21,6 +22,7 @@ router
 router
   .route('/:id')
   .get(auth, tenant, administrator, getEmployee)
-  .delete(auth, tenant, administrator, deleteEmployee);
+  .delete(auth, tenant, administrator, deleteEmployee)
+  .put(auth, tenant, administrator, updateEmployee);
 
 module.exports = router;
