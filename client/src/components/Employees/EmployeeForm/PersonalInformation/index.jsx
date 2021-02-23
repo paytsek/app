@@ -8,6 +8,7 @@ import {
   TextField,
   Select,
   MenuItem,
+  FormHelperText,
 } from '@material-ui/core';
 
 import TitleBox from '../../../common/TitleBox';
@@ -15,7 +16,7 @@ import TitleBox from '../../../common/TitleBox';
 import useStyles from '../styles';
 import { CIVIL_STATUS } from '../../../../utils/globals';
 
-const PersonalInformation = ({ personalInformation, onChange }) => {
+const PersonalInformation = ({ personalInformation, onChange, errors }) => {
   const {
     gender,
     nationality,
@@ -36,10 +37,17 @@ const PersonalInformation = ({ personalInformation, onChange }) => {
           <Grid item md={6} xs={12}>
             <FormControl fullWidth size="small">
               <InputLabel htmlFor="gender">Gender</InputLabel>
-              <Select id="gender" name="gender" value={gender} onChange={onChange}>
+              <Select
+                id="gender"
+                name="gender"
+                value={gender}
+                onChange={onChange}
+                error={!!errors.gender}
+              >
                 <MenuItem value="female">Female</MenuItem>
                 <MenuItem value="male">Male</MenuItem>
               </Select>
+              {errors.gender && <FormHelperText error>{errors.gender}</FormHelperText>}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -52,7 +60,11 @@ const PersonalInformation = ({ personalInformation, onChange }) => {
                 name="nationality"
                 value={nationality}
                 onChange={onChange}
+                error={!!errors.nationality}
               />
+              {errors.nationality && (
+                <FormHelperText error>{errors.nationality}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -63,6 +75,7 @@ const PersonalInformation = ({ personalInformation, onChange }) => {
                 name="civilStatus"
                 value={civilStatus}
                 onChange={onChange}
+                error={!!errors.civilStatus}
               >
                 {CIVIL_STATUS.map(({ name, value }) => (
                   <MenuItem value={value} key={value}>
@@ -70,6 +83,9 @@ const PersonalInformation = ({ personalInformation, onChange }) => {
                   </MenuItem>
                 ))}
               </Select>
+              {errors.civilStatus && (
+                <FormHelperText error>{errors.civilStatus}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -84,7 +100,13 @@ const PersonalInformation = ({ personalInformation, onChange }) => {
                 name="numberOfQualifiedDependents"
                 value={numberOfQualifiedDependents}
                 onChange={onChange}
+                error={!!errors.numberOfQualifiedDependents}
               />
+              {errors.numberOfQualifiedDependents && (
+                <FormHelperText error>
+                  {errors.numberOfQualifiedDependents}
+                </FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -97,7 +119,9 @@ const PersonalInformation = ({ personalInformation, onChange }) => {
                 name="validId"
                 value={validId}
                 onChange={onChange}
+                error={!!errors.validId}
               />
+              {errors.validId && <FormHelperText error>{errors.validId}</FormHelperText>}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -110,7 +134,11 @@ const PersonalInformation = ({ personalInformation, onChange }) => {
                 name="validIdNumber"
                 value={validIdNumber}
                 onChange={onChange}
+                error={!!errors.validIdNumber}
               />
+              {errors.validIdNumber && (
+                <FormHelperText error>{errors.validIdNumber}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item xs={12}>
@@ -123,7 +151,11 @@ const PersonalInformation = ({ personalInformation, onChange }) => {
                 name="placeOfIssue"
                 value={placeOfIssue}
                 onChange={onChange}
+                error={!!errors.placeOfIssue}
               />
+              {errors.placeOfIssue && (
+                <FormHelperText error>{errors.placeOfIssue}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -135,10 +167,14 @@ const PersonalInformation = ({ personalInformation, onChange }) => {
                 name="birthDate"
                 value={birthDate}
                 onChange={onChange}
+                error={!!errors.birthDate}
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
+              {errors.birthDate && (
+                <FormHelperText error>{errors.birthDate}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
         </Grid>

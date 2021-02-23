@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Button } from '@material-ui/core';
 
 import BasicInformation from './BasicInformation';
@@ -11,10 +12,12 @@ import EmployeeFuntion from './EmployeeFunction';
 import TaxableCompensation from './TaxableCompensation';
 import NonTaxableCompensation from './NonTaxableCompensation';
 
-// import { createEmployee } from '../../../redux/actions/employeesActions';
+import { createEmployee } from '../../../redux/actions/employeesActions';
 import useStyles from './styles';
 
 const EmployeeForm = () => {
+  const dispatch = useDispatch();
+
   const [information, setInformation] = useState({
     basicInformation: {
       email: '',
@@ -27,9 +30,9 @@ const EmployeeForm = () => {
       payRemittances: true,
     },
     personalInformation: {
-      gender: '',
+      gender: 'female',
       nationality: '',
-      civilStatus: '',
+      civilStatus: 'single',
       numberOfQualifiedDependents: 0,
       validId: '',
       validIdNumber: '',
@@ -89,6 +92,21 @@ const EmployeeForm = () => {
     taxableCompensation,
     nonTaxableCompensation,
   } = information;
+
+  const { errors } = useSelector((state) => state.employeeCreate);
+  const registeredAddressErrors = {
+    street: errors['registeredAddress.street'],
+    city: errors['registeredAddress.city'],
+    country: errors['registeredAddress.country'],
+    zipCode: errors['registeredAddress.zipCode'],
+  };
+
+  const permanentAddressErrors = {
+    street: errors['permanentAddress.street'],
+    city: errors['permanentAddress.city'],
+    country: errors['permanentAddress.country'],
+    zipCode: errors['permanentAddress.zipCode'],
+  };
 
   const handleOnChangeBasicInformation = (e) =>
     setInformation((prevState) => ({
@@ -213,6 +231,7 @@ const EmployeeForm = () => {
       ...basicAdjustment,
       ...governmentIds,
       ...employeeFunction,
+      department: (employeeFunction.department && employeeFunction.department) || null,
       status: {
         active: true,
         effectivitydate: basicInformation.hireDate,
@@ -228,7 +247,7 @@ const EmployeeForm = () => {
       },
     };
 
-    console.log(employeeData);
+    dispatch(createEmployee(employeeData));
   };
 
   const { gridContainer, formButton } = useStyles();
@@ -239,12 +258,14 @@ const EmployeeForm = () => {
         <BasicInformation
           basicInformation={basicInformation}
           onChange={handleOnChangeBasicInformation}
+          errors={errors}
         />
       </Grid>
       <Grid item xs={12}>
         <PersonalInformation
           personalInformation={personalInformation}
           onChange={handleOnChangePersonalInformation}
+          errors={errors}
         />
       </Grid>
       <Grid item md={6} xs={12}>
@@ -253,6 +274,7 @@ const EmployeeForm = () => {
           address={registeredAddress}
           onChange={handleOnChangeAddress}
           addressType="registeredAddress"
+          errors={registeredAddressErrors}
         />
       </Grid>
       <Grid item md={6} xs={12}>
@@ -261,30 +283,35 @@ const EmployeeForm = () => {
           address={permanentAddress}
           onChange={handleOnChangeAddress}
           addressType="permanentAddress"
+          errors={permanentAddressErrors}
         />
       </Grid>
       <Grid item xs={12}>
         <BasicAdjustment
           basicAdjustment={basicAdjustment}
           onChange={handleOnChangeBasicAdjustment}
+          errors={errors}
         />
       </Grid>
       <Grid item xs={12}>
         <BankingInformation
           bankingInformation={bankingInformation}
           onChange={handleOnChangeBankingInformation}
+          errors={errors}
         />
       </Grid>
       <Grid item xs={12}>
         <GovernmentIds
           governmentIds={governmentIds}
           onChange={handleOnChangeGovernmentIds}
+          errors={errors}
         />
       </Grid>
       <Grid item xs={12}>
         <EmployeeFuntion
           employeeFunction={employeeFunction}
           onChange={handleOnChangeEmployeeFunction}
+          errors={errors}
         />
       </Grid>
       <Grid item md={6} xs={12}>
@@ -292,6 +319,7 @@ const EmployeeForm = () => {
           taxableCompensation={taxableCompensation}
           onChange={handleOnChangeTaxableCompensation}
           setDefault={setOtherTaxableDefault}
+          errors={errors}
         />
       </Grid>
       <Grid item md={6} xs={12}>

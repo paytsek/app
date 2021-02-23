@@ -10,6 +10,7 @@ import {
   Switch,
   Select,
   MenuItem,
+  FormHelperText,
 } from '@material-ui/core';
 
 import TitleBox from '../../../common/TitleBox';
@@ -18,7 +19,7 @@ import MuiSkeleton from '../../../MuiSkeleton';
 import { getDepartments } from '../../../../redux/actions/departmentsActions';
 import useStyles from '../styles';
 
-const EmployeeFunction = ({ employeeFunction, onChange }) => {
+const EmployeeFunction = ({ employeeFunction, onChange, errors }) => {
   const {
     department,
     position,
@@ -53,6 +54,7 @@ const EmployeeFunction = ({ employeeFunction, onChange }) => {
                   name="department"
                   value={department}
                   onChange={onChange}
+                  error={!!errors.department}
                 >
                   {departments.map((dep) => (
                     <MenuItem key={dep._id} value={dep._id}>
@@ -60,6 +62,9 @@ const EmployeeFunction = ({ employeeFunction, onChange }) => {
                     </MenuItem>
                   ))}
                 </Select>
+                {errors.department && (
+                  <FormHelperText error>{errors.department}</FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid item md={6} xs={12}>
@@ -72,7 +77,11 @@ const EmployeeFunction = ({ employeeFunction, onChange }) => {
                   name="position"
                   value={position}
                   onChange={onChange}
+                  error={!!errors.position}
                 />
+                {errors.position && (
+                  <FormHelperText error>{errors.position}</FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid item md={6} xs={12}>
@@ -85,7 +94,11 @@ const EmployeeFunction = ({ employeeFunction, onChange }) => {
                   name="workingDays"
                   value={workingDays}
                   onChange={onChange}
+                  error={!!errors.workingDays}
                 />
+                {errors.workingDays && (
+                  <FormHelperText error>{errors.workingDays}</FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid item md={6} xs={12}>
@@ -98,7 +111,11 @@ const EmployeeFunction = ({ employeeFunction, onChange }) => {
                   name="workingHours"
                   value={workingHours}
                   onChange={onChange}
+                  error={!!errors.workingHours}
                 />
+                {errors.workingHours && (
+                  <FormHelperText error>{errors.workingHours}</FormHelperText>
+                )}
               </FormControl>
             </Grid>
             <Grid item xs={6} md={4}>

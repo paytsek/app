@@ -1,6 +1,7 @@
 import axios from '../../axios';
 
 import {
+  EMPLOYEE_CREATE_FAIL,
   EMPLOYEE_CREATE_REQUEST,
   EMPLOYEE_DETAILS_REQUEST,
   EMPLOYEE_DETAILS_SUCCESS,
@@ -50,6 +51,8 @@ export const createEmployee = (employeeData) => async (dispatch) => {
 
     console.log(data);
   } catch (error) {
-    console.log(error.response);
+    const { errors } = error.response.data;
+    dispatch({ type: EMPLOYEE_CREATE_FAIL, payload: errors });
+    dispatch(notification('error', 'Validation Error', dispatch));
   }
 };

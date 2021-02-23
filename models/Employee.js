@@ -104,6 +104,7 @@ const EmployeeSchema = new mongoose.Schema(
     department: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Department',
+      required: [true, 'Department is required'],
     },
     position: {
       type: String,

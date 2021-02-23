@@ -62,16 +62,16 @@ export const employeeDetailsReducers = (
   }
 };
 
-export const employeeCreateReducers = (state = {}, action) => {
-  const { type } = action;
+export const employeeCreateReducers = (state = { errors: {} }, action) => {
+  const { type, payload } = action;
 
   switch (type) {
     case EMPLOYEE_CREATE_REQUEST:
-      return { loading: true };
+      return { ...state, loading: true };
     case EMPLOYEE_CREATE_SUCCESS:
-      return { loading: false, success: true };
+      return { ...state, loading: false, success: true };
     case EMPLOYEE_CREATE_FAIL:
-      return { loading: false, success: false };
+      return { ...state, loading: false, success: false, errors: payload };
     default:
       return state;
   }

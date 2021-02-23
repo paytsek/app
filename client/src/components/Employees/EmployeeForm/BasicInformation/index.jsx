@@ -8,13 +8,14 @@ import {
   TextField,
   FormControlLabel,
   Switch,
+  FormHelperText,
 } from '@material-ui/core';
 
 import TitleBox from '../../../common/TitleBox';
 
 import useStyles from '../styles';
 
-const BasicInformation = ({ basicInformation, onChange }) => {
+const BasicInformation = ({ basicInformation, onChange, errors }) => {
   const {
     email,
     employeeNumber,
@@ -42,7 +43,9 @@ const BasicInformation = ({ basicInformation, onChange }) => {
                 name="email"
                 value={email}
                 onChange={onChange}
+                error={!!errors.email}
               />
+              {errors.email && <FormHelperText error>{errors.email}</FormHelperText>}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -55,7 +58,11 @@ const BasicInformation = ({ basicInformation, onChange }) => {
                 name="employeeNumber"
                 value={employeeNumber}
                 onChange={onChange}
+                error={!!errors.employeeNumber}
               />
+              {errors.employeeNumber && (
+                <FormHelperText error>{errors.employeeNumber}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -68,7 +75,11 @@ const BasicInformation = ({ basicInformation, onChange }) => {
                 name="firstName"
                 value={firstName}
                 onChange={onChange}
+                error={!!errors.firstName}
               />
+              {errors.firstName && (
+                <FormHelperText error>{errors.firstName}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -81,7 +92,11 @@ const BasicInformation = ({ basicInformation, onChange }) => {
                 name="lastName"
                 value={lastName}
                 onChange={onChange}
+                error={!!errors.lastName}
               />
+              {errors.lastName && (
+                <FormHelperText error>{errors.lastName}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -96,7 +111,11 @@ const BasicInformation = ({ basicInformation, onChange }) => {
                 InputLabelProps={{
                   shrink: true,
                 }}
+                error={!!errors.hireDate}
               />
+              {errors.hireDate && (
+                <FormHelperText error>{errors.hireDate}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -108,10 +127,14 @@ const BasicInformation = ({ basicInformation, onChange }) => {
                 value={resignationDate}
                 name="resignationDate"
                 onChange={onChange}
+                error={!!errors.resignationDate}
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
+              {errors.resignationDate && (
+                <FormHelperText error>{errors.resignationDate}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <Grid item md={6} xs={12}>
@@ -124,7 +147,9 @@ const BasicInformation = ({ basicInformation, onChange }) => {
                 name="rdoCode"
                 value={rdoCode}
                 onChange={onChange}
+                error={!!errors.rdoCode}
               />
+              {errors.rdoCode && <FormHelperText error>{errors.rdoCode}</FormHelperText>}
             </FormControl>
           </Grid>
           <Grid item xs={6} md={4}>

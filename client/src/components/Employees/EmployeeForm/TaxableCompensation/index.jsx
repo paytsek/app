@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Paper, Grid, FormControl, TextField, InputAdornment } from '@material-ui/core';
+import {
+  Paper,
+  Grid,
+  FormControl,
+  TextField,
+  InputAdornment,
+  FormHelperText,
+} from '@material-ui/core';
 
 import TitleBox from '../../../common/TitleBox';
 import CompensationsList from '../../../CompensationsList';
@@ -8,7 +15,7 @@ import CompensationsList from '../../../CompensationsList';
 import { getTaxablePays } from '../../../../redux/actions/taxablePaysActions';
 import useStyles from '../styles';
 
-const TaxableCompensation = ({ taxableCompensation, onChange, setDefault }) => {
+const TaxableCompensation = ({ taxableCompensation, onChange, setDefault, errors }) => {
   const { basicPay } = taxableCompensation;
 
   const dispatch = useDispatch();
@@ -39,12 +46,16 @@ const TaxableCompensation = ({ taxableCompensation, onChange, setDefault }) => {
                 name="basicPay"
                 value={basicPay}
                 onChange={onChange}
+                error={!!errors.basicPay}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">Basic Pay</InputAdornment>
                   ),
                 }}
               />
+              {errors.basicPay && (
+                <FormHelperText error>{errors.basicPay}</FormHelperText>
+              )}
             </FormControl>
           </Grid>
           <CompensationsList
