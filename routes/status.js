@@ -7,6 +7,7 @@ const {
   getStatus,
   createStatus,
   updateStatus,
+  deleteStatus,
 } = require('../controllers/status');
 
 const administrator = require('../middleware/administrator');
@@ -23,6 +24,7 @@ router
 router
   .route('/:id')
   .get(auth, tenant, administrator, getStatus)
-  .put(auth, tenant, administrator, updateStatus);
+  .put(auth, tenant, administrator, updateStatus)
+  .delete(auth, tenant, administrator, deleteStatus);
 
 module.exports = router;

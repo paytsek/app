@@ -173,9 +173,17 @@ const updateStatus = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ success: true, status: updatedStatus });
 });
 
+// @ROUTE DELETE /api/v1/employees/:employeeId/status/:id
+// @Desc Delete status of an specific employee
+// @access PRIVATE - Logged in user
+const deleteStatus = asyncHandler(async (req, res, next) => {
+  res.send('deletet status');
+});
+
 module.exports = {
   getStatuses,
   getStatus,
   createStatus,
   updateStatus,
+  deleteStatus,
 };
