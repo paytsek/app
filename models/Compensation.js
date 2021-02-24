@@ -47,8 +47,7 @@ CompensationSchema.post('save', async (doc, next) => {
   if (compensations.length <= 0) {
     await Employee.findByIdAndUpdate(doc.employee, { compensation: doc });
   } else {
-    const compensation = compensations.reduce((acc, val) =>
-      (acc.basicPay > val.basicPay ? acc : val));
+    const [compensation] = compensations.sort((a, b) => (a.basicPay > b.basicPay ? -1 : 1));
 
     await Employee.findByIdAndUpdate(doc.employee, { compensation });
   }
