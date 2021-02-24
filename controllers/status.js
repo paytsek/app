@@ -40,7 +40,7 @@ const getStatuses = asyncHandler(async (req, res, next) => {
 });
 
 // @ROUTE GET /api/v1/employees/:employeeId/status/:id
-// @Desc Get all status of an specific employee
+// @Desc Get status of an specific employee
 // @access PRIVATE - Logged in user
 const getStatus = asyncHandler(async (req, res, next) => {
   const company = await Company.findById(req.company._id);
@@ -82,7 +82,49 @@ const getStatus = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ success: true, status });
 });
 
+// @ROUTE POST /api/v1/employees/:employeeId/status
+// @Desc Create status of an specific employee
+// @access PRIVATE - Logged in user
+const createStatus = asyncHandler(async (req, res, next) => {
+  const { effectivityDate, active } = req.body;
+
+  const company = await Company.findById(req.company._id);
+  const user = await User.findById(req.user._id);
+
+  if (
+    user.role !== 'admin' &&
+    (!company || !user || company.user.toString() !== user._id.toString())
+  ) {
+    res.status(401);
+    return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
+  }
+
+  const employee = await Employee.findOne({
+    _id: req.params.employeeId,
+    company: company._id,
+  });
+
+  if (!employee) {
+    res.status(404);
+    return next(
+      new ErrorResponse({
+        message: `Resource with an id of ${req.params.employeeId} not found`,
+      }),
+    );
+  }
+
+  const status = await Status.create({
+    active,
+    effectivityDate,
+    employee: employee._id,
+    company: company._id,
+  });
+
+  return res.status(201).json({ success: true, status });
+});
+
 module.exports = {
   getStatuses,
   getStatus,
+  createStatus,
 };
