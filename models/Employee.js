@@ -12,7 +12,7 @@ const EmployeeSchema = new mongoose.Schema(
         const employee = await mongoose
           .model('Employee')
           .findOne({ company: this.company, email: val });
-        if (employee) {
+        if (employee && this.isModified('email')) {
           throw new Error('Email already exist');
         }
       },
@@ -27,6 +27,15 @@ const EmployeeSchema = new mongoose.Schema(
     },
     employeeNumber: {
       type: String,
+      async validate(val) {
+        const employee = await mongoose
+          .model('Employee')
+          .findOne({ company: this.company, employeeNumber: val });
+
+        if (employee && this.isModified('employeeNumber')) {
+          throw new Error('Employee Number already exist');
+        }
+      },
     },
     payRemittances: {
       type: Boolean,

@@ -190,7 +190,39 @@ const deleteEmployee = asyncHandler(async (req, res, next) => {
 // @Desc Update an employee
 // access PRIVATE - Logged in user
 const updateEmployee = asyncHandler(async (req, res, next) => {
-  res.send('Update Employee');
+  const company = await Company.findById(req.company._id);
+  const user = await User.findById(req.user._id);
+
+  if (
+    user.role !== 'admin' &&
+    (!company || !user || company.user.toString() !== user._id.toString())
+  ) {
+    res.status(401);
+    return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
+  }
+
+  const employee = await Employee.findOne({ _id: req.params.id, company: company._id });
+
+  if (!employee) {
+    res.status(404);
+    return next(
+      new ErrorResponse({ message: `Resource with an id of ${req.params.id} not found` }),
+    );
+  }
+
+  // employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
+  //   new: true,
+  //   runValidators: true,
+  // });
+
+  const fields = Object.keys(req.body);
+  fields.forEach((field) => {
+    employee[field] = req.body[field];
+  });
+
+  const updatedEmployee = await employee.save();
+
+  return res.status(200).json({ success: true, employee: updatedEmployee });
 });
 
 module.exports = {
