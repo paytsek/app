@@ -7,11 +7,15 @@ const {
   deleteEmployee,
   updateEmployee,
 } = require('../controllers/employee');
+const statusRoutes = require('./status');
 const administrator = require('../middleware/administrator');
 const auth = require('../middleware/auth');
 const tenant = require('../middleware/tenant');
 
 const router = express.Router();
+
+// Re routes
+router.use('/:employeeId/status', statusRoutes);
 
 // api/v1/employees
 router
