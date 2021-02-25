@@ -237,7 +237,6 @@ const EmployeeForm = ({ history, match }) => {
       department: (employeeFunction.department && employeeFunction.department) || null,
       status: {
         active: true,
-        effectivitydate: basicInformation.hireDate,
       },
       bankingInformation,
       registeredAddress,

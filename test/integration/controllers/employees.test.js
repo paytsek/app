@@ -544,6 +544,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
           compensation: {
             basicPay: 40000,
             deminimis: 2000,
+            effectivityDate: '2020-09-09',
             otherTaxablePays: [{ taxablePay: mongoose.Types.ObjectId(), value: 1200 }],
             otherNonTaxablePays: [
               { nonTaxablePay: mongoose.Types.ObjectId(), value: 1200 },

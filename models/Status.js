@@ -11,7 +11,6 @@ const StatusSchema = new mongoose.Schema(
     },
     effectivityDate: {
       type: Date,
-      default: Date.now,
       required: [true, 'Effectivity Date is required'],
     },
     employee: {

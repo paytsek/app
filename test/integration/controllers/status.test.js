@@ -949,7 +949,6 @@ describe('PUT /api/v1/employees/:employeeId/status/:id', () => {
           effectivityDate: '2020-01-01T00:00:00.000Z',
         }),
       );
-      expect(res.body.status).toHaveProperty('_id');
     });
   });
 });
