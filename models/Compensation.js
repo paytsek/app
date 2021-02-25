@@ -66,8 +66,21 @@ CompensationSchema.post('save', async (doc, next) => {
   next();
 });
 
+CompensationSchema.pre('remove', async function (next) {
+  await mongoose.model('OtherTaxablePay').deleteMany({ compensation: this._id });
+  await mongoose.model('OtherNonTaxablePay').deleteMany({ compensation: this._id });
+
+  next();
+});
+
 CompensationSchema.virtual('otherTaxablePays', {
   ref: 'OtherTaxablePay',
+  localField: '_id',
+  foreignField: 'compensation',
+});
+
+CompensationSchema.virtual('otherNonTaxablePays', {
+  ref: 'OtherNonTaxablePay',
   localField: '_id',
   foreignField: 'compensation',
 });

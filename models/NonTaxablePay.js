@@ -18,4 +18,10 @@ const NonTaxablePaySchema = new mongoose.Schema(
   },
 );
 
+NonTaxablePaySchema.pre('remove', async function (next) {
+  await mongoose.model('OtherNonTaxablePay').deleteMany({ nonTaxablePay: this._id });
+
+  next();
+});
+
 module.exports = mongoose.model('NonTaxablePay', NonTaxablePaySchema);

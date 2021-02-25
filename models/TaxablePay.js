@@ -18,4 +18,10 @@ const TaxablePaySchema = new mongoose.Schema(
   },
 );
 
+TaxablePaySchema.pre('remove', async function (next) {
+  await mongoose.model('OtherTaxablePay').deleteMany({ taxablePay: this._id });
+
+  next();
+});
+
 module.exports = mongoose.model('TaxablePay', TaxablePaySchema);

@@ -677,11 +677,24 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
 
   describe('Success Response', () => {
     it('should return success response if values are valid', async () => {
+      await mongoose.connection.createCollection('taxablepays');
+      await mongoose.connection.createCollection('nontaxablepays');
+      await mongoose.connection.createCollection('Compensation');
+      await mongoose.connection.createCollection('othertaxablepays');
+      await mongoose.connection.createCollection('othernontaxablepays');
+
       const res = await request(app)
         .post(`${url}/${employee._id}/compensations`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
-        .send({ basicPay: 35000, effectivityDate: '2020-09-09' });
+        .send({
+          basicPay: 35000,
+          effectivityDate: '2020-09-09',
+          otherTaxablePays: [{ taxablePay: mongoose.Types.ObjectId(), value: 1000 }],
+          otherNonTaxablePays: [
+            { nonTaxablePay: mongoose.Types.ObjectId(), value: 1000 },
+          ],
+        });
 
       expect(res.status).toBe(201);
       expect(res.body.success).toBeTruthy();

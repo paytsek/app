@@ -190,7 +190,6 @@ EmployeeSchema.pre('remove', async function (next) {
   await mongoose.model('Compensation').deleteMany({ employee: this._id });
   await mongoose.model('OtherTaxablePay').deleteMany({ employee: this._id });
   await mongoose.model('OtherNonTaxablePay').deleteMany({ employee: this._id });
-  await mongoose.model('Compensation').deleteMany({ employee: this._id });
 
   next();
 });

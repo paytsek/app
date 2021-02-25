@@ -39,7 +39,10 @@ const getTaxablePay = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
 
-  const taxablePay = await TaxablePay.findOne({ company: company._id, _id: req.params.id });
+  const taxablePay = await TaxablePay.findOne({
+    company: company._id,
+    _id: req.params.id,
+  });
 
   if (!taxablePay) {
     res.status(404);
@@ -123,7 +126,10 @@ const deleteTaxablePay = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
 
-  const taxablePay = await TaxablePay.findOne({ company: company._id, _id: req.params.id });
+  const taxablePay = await TaxablePay.findOne({
+    company: company._id,
+    _id: req.params.id,
+  });
 
   if (!taxablePay) {
     res.status(404);
@@ -132,7 +138,7 @@ const deleteTaxablePay = asyncHandler(async (req, res, next) => {
     );
   }
 
-  await TaxablePay.findByIdAndDelete(req.params.id);
+  await taxablePay.remove();
 
   return res.status(200).json({
     success: true,
