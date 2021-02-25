@@ -4,6 +4,7 @@ const {
   getCompensations,
   getCompensation,
   createCompensation,
+  updateCompensation,
 } = require('../controllers/compensations');
 
 const administrator = require('../middleware/administrator');
@@ -19,6 +20,9 @@ router
   .post(auth, tenant, administrator, createCompensation);
 
 // api/v1/employees/:employeeId/compensations/:id
-router.route('/:id').get(auth, tenant, administrator, getCompensation);
+router
+  .route('/:id')
+  .get(auth, tenant, administrator, getCompensation)
+  .put(auth, tenant, administrator, updateCompensation);
 
 module.exports = router;
