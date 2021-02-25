@@ -66,7 +66,11 @@ const EmployeesListTable = ({ history }) => {
             onClick={() => history.push(`employees/${row._id}`)}
             startIcon={<Search />}
           />
-          <Button color="primary" startIcon={<Edit />} />
+          <Button
+            color="primary"
+            onClick={() => history.push(`employees/${row._id}/edit`)}
+            startIcon={<Edit />}
+          />
           <Button
             color="primary"
             onClick={() => handleOpen(row)}
