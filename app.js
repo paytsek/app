@@ -21,7 +21,8 @@ const employeeRoutes = require('./routes/employees');
 const taxablePayRoutes = require('./routes/taxablePays');
 const nonTaxablePayRoutes = require('./routes/nonTaxablePays');
 
-const envPath = process.env.NODE_ENV === 'test' ? './config/test.env' : './config/config.env';
+const envPath =
+  process.env.NODE_ENV === 'test' ? './config/test.env' : './config/config.env';
 
 dotenv.config({ path: envPath });
 

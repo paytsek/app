@@ -16,7 +16,6 @@ const CompensationSchema = new mongoose.Schema(
     },
     effectivityDate: {
       type: Date,
-      default: Date.now,
       required: [true, 'Effectivity Date is required'],
     },
     deminimis: Number,
@@ -39,6 +38,17 @@ const CompensationSchema = new mongoose.Schema(
   },
 );
 
+CompensationSchema.pre('save', async function (next) {
+  const employee = await mongoose.model('Employee').findOne({ _id: this.employee });
+
+  if (employee) {
+    this.dailyRate = Number(this.basicPay) / Number(employee.workingDays);
+    this.hourlyRate = Number(this.dailyRate) / Number(employee.workingHours);
+  }
+
+  next();
+});
+
 CompensationSchema.post('save', async (doc, next) => {
   const compensations = await mongoose
     .model('Compensation')
@@ -47,8 +57,8 @@ CompensationSchema.post('save', async (doc, next) => {
   if (compensations.length <= 0) {
     await Employee.findByIdAndUpdate(doc.employee, { compensation: doc });
   } else {
-    const compensation = compensations.reduce((acc, val) =>
-      (acc.basicPay > val.basicPay ? acc : val));
+    const [compensation] = compensations.sort((a, b) =>
+      (a.basicPay > b.basicPay ? -1 : 1));
 
     await Employee.findByIdAndUpdate(doc.employee, { compensation });
   }
@@ -56,8 +66,21 @@ CompensationSchema.post('save', async (doc, next) => {
   next();
 });
 
+CompensationSchema.pre('remove', async function (next) {
+  await mongoose.model('OtherTaxablePay').deleteMany({ compensation: this._id });
+  await mongoose.model('OtherNonTaxablePay').deleteMany({ compensation: this._id });
+
+  next();
+});
+
 CompensationSchema.virtual('otherTaxablePays', {
   ref: 'OtherTaxablePay',
+  localField: '_id',
+  foreignField: 'compensation',
+});
+
+CompensationSchema.virtual('otherNonTaxablePays', {
+  ref: 'OtherNonTaxablePay',
   localField: '_id',
   foreignField: 'compensation',
 });
