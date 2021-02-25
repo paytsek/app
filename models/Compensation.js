@@ -39,6 +39,17 @@ const CompensationSchema = new mongoose.Schema(
   },
 );
 
+CompensationSchema.pre('save', async function (next) {
+  const employee = await mongoose.model('Employee').findOne({ _id: this.employee });
+
+  if (employee) {
+    this.dailyRate = Number(this.basicPay) / Number(employee.workingDays);
+    this.hourlyRate = Number(this.dailyRate) / Number(employee.workingHours);
+  }
+
+  next();
+});
+
 CompensationSchema.post('save', async (doc, next) => {
   const compensations = await mongoose
     .model('Compensation')
@@ -47,7 +58,8 @@ CompensationSchema.post('save', async (doc, next) => {
   if (compensations.length <= 0) {
     await Employee.findByIdAndUpdate(doc.employee, { compensation: doc });
   } else {
-    const [compensation] = compensations.sort((a, b) => (a.basicPay > b.basicPay ? -1 : 1));
+    const [compensation] = compensations.sort((a, b) =>
+      (a.basicPay > b.basicPay ? -1 : 1));
 
     await Employee.findByIdAndUpdate(doc.employee, { compensation });
   }
