@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Button } from '@material-ui/core';
+import moment from 'moment';
 
 import BasicInformation from './BasicInformation';
 import PersonalInformation from './PersonalInformation';
@@ -13,11 +14,16 @@ import EmployeeFuntion from './EmployeeFunction';
 import TaxableCompensation from './TaxableCompensation';
 import NonTaxableCompensation from './NonTaxableCompensation';
 
-import { createEmployee } from '../../../redux/actions/employeesActions';
-import { EMPLOYEE_CREATE_RESET } from '../../../redux/types';
+import {
+  createEmployee,
+  getEmployeeDetails,
+} from '../../../redux/actions/employeesActions';
+import { EMPLOYEE_CREATE_RESET, EMPLOYEE_DETAILS_RESET } from '../../../redux/types';
 import useStyles from './styles';
 
 const EmployeeForm = ({ history, match }) => {
+  const { id } = match.params;
+
   const dispatch = useDispatch();
 
   const [information, setInformation] = useState({
@@ -95,7 +101,12 @@ const EmployeeForm = ({ history, match }) => {
     nonTaxableCompensation,
   } = information;
 
-  const { errors, success, employee, loading } = useSelector((state) => state.employeeCreate);
+  const { errors, success, employee: employeeCreateEmployee, loading } = useSelector(
+    (state) => state.employeeCreate,
+  );
+  const { employee, success: employeeDetailsSuccess } = useSelector(
+    (state) => state.employeeDetails,
+  );
 
   const registeredAddressErrors = {
     street: errors['registeredAddress.street'],
@@ -110,6 +121,70 @@ const EmployeeForm = ({ history, match }) => {
     country: errors['permanentAddress.country'],
     zipCode: errors['permanentAddress.zipCode'],
   };
+
+  const setEmployeeInformation = () => {
+    setInformation((prevState) => ({
+      ...prevState,
+      basicInformation: {
+        email: employee.email || '',
+        employeeNumber: employee.employeeNumber || '',
+        firstName: employee.firstName || '',
+        lastName: employee.lastName || '',
+        hireDate:
+          (employee.hireDate && moment(employee.hireDate).format('yyyy-MM-DD')) || '',
+        resignationDate:
+          (employee.resignationDate &&
+            moment(employee.resignationDate).format('yyyy-MM-DD')) ||
+          '',
+        rdoCode: employee.rdoCode || '',
+        payRemittances: employee.payRemittances || '',
+      },
+      personalInformation: {
+        gender: employee.gender || '',
+        nationality: employee.nationality || '',
+        civilStatus: employee.civilStatus || '',
+        numberOfQualifiedDependents: employee.numberOfQualifiedDependents || '',
+        validId: employee.validId || '',
+        validIdNumber: employee.validIdNumber || '',
+        placeOfIssue: employee.placeOfIssue || '',
+        birthDate:
+          (employee.birthDate && moment(employee.birthDate).format('yyyy-MM-DD')) || '',
+      },
+      registeredAddress: {
+        street: employee.registeredAddress.street || '',
+        city: employee.registeredAddress.city || '',
+        country: employee.registeredAddress.country || '',
+        zipCode: employee.registeredAddress.zipCode || '',
+      },
+      permanentAddress: {
+        street: employee.permanentAddress.street || '',
+        city: employee.permanentAddress.city || '',
+        country: employee.permanentAddress.country || '',
+        zipCode: employee.permanentAddress.zipCode || '',
+      },
+      basicAdjustment: {
+        sssLoanBalance: employee.sssLoanBalance || 0,
+        hdmfLoanBalance: employee.hdmfLoanBalance || 0,
+        allowances: employee.allowances || 0,
+      },
+      bankingInformation: employee.bankingInformation || '',
+      governmentIds: {
+        sssNumber: employee.sssNumber || '',
+        phicNumber: employee.phicNumber || '',
+        hdmfNumber: employee.hdmfNumber || '',
+        tin: employee.tin || '',
+      },
+      employeeFunction: {
+        department: employee.department._id || '',
+        position: employee.position || '',
+        workingDays: employee.workingHours || 22,
+        workingHours: employee.workingHours || 8,
+        primaryEmployer: employee.primaryEmployer,
+      },
+    }));
+  };
+
+  console.log(information);
 
   const handleOnChangeBasicInformation = (e) =>
     setInformation((prevState) => ({
@@ -252,18 +327,24 @@ const EmployeeForm = ({ history, match }) => {
     dispatch(createEmployee(employeeData));
   };
 
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    if (id) {
+      dispatch(getEmployeeDetails(id));
+    }
+    return () => {
       dispatch({ type: EMPLOYEE_CREATE_RESET });
-    },
-    [],
-  );
+      dispatch({ type: EMPLOYEE_DETAILS_RESET });
+    };
+  }, []);
 
   useEffect(() => {
     if (success) {
-      history.push(`/${match.params.slug}/employees/${employee._id}`);
+      history.push(`/${match.params.slug}/employees/${employeeCreateEmployee._id}`);
     }
-  }, [success]);
+    if (employeeDetailsSuccess) {
+      setEmployeeInformation();
+    }
+  }, [success, employeeDetailsSuccess]);
 
   const { gridContainer, formButton } = useStyles();
 
@@ -330,23 +411,32 @@ const EmployeeForm = ({ history, match }) => {
         />
       </Grid>
       <Grid item md={6} xs={12}>
-        <TaxableCompensation
-          taxableCompensation={taxableCompensation}
-          onChange={handleOnChangeTaxableCompensation}
-          setDefault={setOtherTaxableDefault}
-          errors={errors}
-        />
+        {!id ? (
+          <TaxableCompensation
+            taxableCompensation={taxableCompensation}
+            onChange={handleOnChangeTaxableCompensation}
+            setDefault={setOtherTaxableDefault}
+            errors={errors}
+          />
+        ) : null}
       </Grid>
       <Grid item md={6} xs={12}>
-        <NonTaxableCompensation
-          nonTaxableCompensation={nonTaxableCompensation}
-          onChange={handleOnChangeNonTaxableCompensation}
-          setDefault={setOtherNonTaxableDefault}
-        />
+        {!id ? (
+          <NonTaxableCompensation
+            nonTaxableCompensation={nonTaxableCompensation}
+            onChange={handleOnChangeNonTaxableCompensation}
+            setDefault={setOtherNonTaxableDefault}
+          />
+        ) : null}
       </Grid>
       <Grid item>
         <div className={formButton}>
-          <Button color="primary" variant="contained" onClick={handleOnSubmit} disabled={loading}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handleOnSubmit}
+            disabled={loading}
+          >
             Save Employee
           </Button>
         </div>

@@ -53,7 +53,7 @@ export const employeeDetailsReducers = (
     case EMPLOYEE_DETAILS_REQUEST:
       return { ...state, loading: true };
     case EMPLOYEE_DETAILS_SUCCESS:
-      return { ...state, loading: false, employee: payload.employee };
+      return { ...state, loading: false, employee: payload.employee, success: true };
     case EMPLOYEE_DETAILS_FAIL:
       return { ...state, loading: false };
     case EMPLOYEE_DETAILS_RESET:

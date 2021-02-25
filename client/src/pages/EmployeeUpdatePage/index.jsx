@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Paper, Container, Breadcrumbs, Typography } from '@material-ui/core';
 
+import EmployeeForm from '../../components/Employees/EmployeeForm';
+
 import useStyles from './styles';
 
 const EmployeeUpdatePage = ({ match }) => {
@@ -27,6 +29,7 @@ const EmployeeUpdatePage = ({ match }) => {
         <Typography variant="h5" className={title} gutterBottom>
           Edit Employee
         </Typography>
+        <EmployeeForm />
       </Paper>
     </Container>
   );
