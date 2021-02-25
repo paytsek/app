@@ -5,6 +5,7 @@ const {
   getCompensation,
   createCompensation,
   updateCompensation,
+  deleteCompensation,
 } = require('../controllers/compensations');
 
 const administrator = require('../middleware/administrator');
@@ -23,6 +24,7 @@ router
 router
   .route('/:id')
   .get(auth, tenant, administrator, getCompensation)
-  .put(auth, tenant, administrator, updateCompensation);
+  .put(auth, tenant, administrator, updateCompensation)
+  .delete(auth, tenant, administrator, deleteCompensation);
 
 module.exports = router;
