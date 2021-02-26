@@ -15,6 +15,7 @@ import {
   EMPLOYEE_LIST_SUCCESS,
   EMPLOYEE_UPDATE_FAIL,
   EMPLOYEE_UPDATE_REQUEST,
+  EMPLOYEE_UPDATE_RESET,
   EMPLOYEE_UPDATE_SUCCESS,
 } from '../types';
 
@@ -106,16 +107,18 @@ export const employeeDeleteReducers = (state = {}, action) => {
   }
 };
 
-export const employeeUpdateReducers = (state = {}, action) => {
-  const { type } = action;
+export const employeeUpdateReducers = (state = { errors: {} }, action) => {
+  const { type, payload } = action;
 
   switch (type) {
     case EMPLOYEE_UPDATE_REQUEST:
-      return { loading: true };
+      return { ...state, loading: true };
     case EMPLOYEE_UPDATE_SUCCESS:
-      return { success: true, loading: false };
+      return { ...state, success: true, loading: false };
     case EMPLOYEE_UPDATE_FAIL:
-      return { success: false, loading: false };
+      return { ...state, success: false, loading: false, errors: payload };
+    case EMPLOYEE_UPDATE_RESET:
+      return { errors: {} };
     default:
       return state;
   }

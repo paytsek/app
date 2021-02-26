@@ -19,7 +19,11 @@ import {
   getEmployeeDetails,
   updateEmployee,
 } from '../../../redux/actions/employeesActions';
-import { EMPLOYEE_CREATE_RESET, EMPLOYEE_DETAILS_RESET } from '../../../redux/types';
+import {
+  EMPLOYEE_CREATE_RESET,
+  EMPLOYEE_DETAILS_RESET,
+  EMPLOYEE_UPDATE_RESET,
+} from '../../../redux/types';
 import useStyles from './styles';
 
 const EmployeeForm = ({ history, match }) => {
@@ -102,12 +106,23 @@ const EmployeeForm = ({ history, match }) => {
     nonTaxableCompensation,
   } = information;
 
-  const { errors, success, employee: employeeCreateEmployee, loading } = useSelector(
-    (state) => state.employeeCreate,
-  );
+  const {
+    errors: employeeCreateErrors,
+    success,
+    employee: employeeCreateEmployee,
+    loading,
+  } = useSelector((state) => state.employeeCreate);
   const { employee, success: employeeDetailsSuccess } = useSelector(
     (state) => state.employeeDetails,
   );
+
+  const {
+    loading: employeeUpdateLoading,
+    errors: employeeUpdateErrors,
+    success: employeeUpdateSuccess,
+  } = useSelector((state) => state.employeeUpdate);
+
+  const errors = id ? employeeUpdateErrors : employeeCreateErrors;
 
   const registeredAddressErrors = {
     street: errors['registeredAddress.street'],
@@ -184,8 +199,6 @@ const EmployeeForm = ({ history, match }) => {
       },
     }));
   };
-
-  console.log(information);
 
   const handleOnChangeBasicInformation = (e) =>
     setInformation((prevState) => ({
@@ -336,6 +349,7 @@ const EmployeeForm = ({ history, match }) => {
     return () => {
       dispatch({ type: EMPLOYEE_CREATE_RESET });
       dispatch({ type: EMPLOYEE_DETAILS_RESET });
+      dispatch({ type: EMPLOYEE_UPDATE_RESET });
     };
   }, []);
 
@@ -345,8 +359,13 @@ const EmployeeForm = ({ history, match }) => {
     }
     if (employeeDetailsSuccess) {
       setEmployeeInformation();
+      dispatch({ type: EMPLOYEE_DETAILS_RESET });
     }
-  }, [success, employeeDetailsSuccess]);
+
+    if (employeeUpdateSuccess) {
+      dispatch({ type: EMPLOYEE_UPDATE_RESET });
+    }
+  }, [success, employeeDetailsSuccess, employeeUpdateSuccess]);
 
   const { gridContainer, formButton } = useStyles();
 
@@ -437,7 +456,7 @@ const EmployeeForm = ({ history, match }) => {
             color="primary"
             variant="contained"
             onClick={handleOnSubmit}
-            disabled={loading}
+            disabled={loading || employeeUpdateLoading}
           >
             Save Employee
           </Button>
