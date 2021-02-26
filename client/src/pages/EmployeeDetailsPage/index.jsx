@@ -20,6 +20,7 @@ import MuiSkeleton from '../../components/MuiSkeleton';
 import { getEmployeeDetails } from '../../redux/actions/employeesActions';
 import useStyles from './styles';
 import { EMPLOYEE_DETAILS_RESET } from '../../redux/types/employeeTypes';
+import { EMPLOYMENTS_STATUS } from '../../utils/globals';
 
 const EmployeeDetailsPage = ({ match, history }) => {
   const { id, slug } = match.params;
@@ -78,15 +79,6 @@ const EmployeeDetailsPage = ({ match, history }) => {
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Status</Typography>
-                  <Typography variant="subtitle1">
-                    {employee.status.active
-                      ? `Active since ${moment(employee.status.effectivityDate).format(
-                        'MMM DD, YYYY',
-                      )}`
-                      : `Inactive since${moment(employee.status.effectivityDate).format(
-                        'MMM DD, YYYY',
-                      )}`}
-                  </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Employee Number</Typography>
@@ -269,7 +261,13 @@ const EmployeeDetailsPage = ({ match, history }) => {
                                 variant="body2"
                                 color="textPrimary"
                               >
-                                {status.active ? 'Active' : 'Inactive'}
+                                {(EMPLOYMENTS_STATUS.find(
+                                  (x) => x.value === status.employmentStatus,
+                                ) &&
+                                  EMPLOYMENTS_STATUS.find(
+                                    (x) => x.value === status.employmentStatus,
+                                  ).name) ||
+                                  '--'}
                               </Typography>
                               {` - ${moment(status.effectivityDate).format(
                                 'MMM DD, YYYY',

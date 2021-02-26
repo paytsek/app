@@ -13,6 +13,9 @@ import {
   EMPLOYEE_LIST_FAIL,
   EMPLOYEE_LIST_REQUEST,
   EMPLOYEE_LIST_SUCCESS,
+  EMPLOYEE_UPDATE_FAIL,
+  EMPLOYEE_UPDATE_REQUEST,
+  EMPLOYEE_UPDATE_SUCCESS,
 } from '../types';
 
 export const employeesListReducers = (state = { employees: [] }, action) => {
@@ -98,6 +101,21 @@ export const employeeDeleteReducers = (state = {}, action) => {
       return { loading: false };
     case EMPLOYEE_DELETE_FAIL:
       return { loading: false };
+    default:
+      return state;
+  }
+};
+
+export const employeeUpdateReducers = (state = {}, action) => {
+  const { type } = action;
+
+  switch (type) {
+    case EMPLOYEE_UPDATE_REQUEST:
+      return { loading: true };
+    case EMPLOYEE_UPDATE_SUCCESS:
+      return { success: true, loading: false };
+    case EMPLOYEE_UPDATE_FAIL:
+      return { success: false, loading: false };
     default:
       return state;
   }

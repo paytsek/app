@@ -92,12 +92,10 @@ const createEmployee = asyncHandler(async (req, res, next) => {
       opts,
     );
 
-    let { status } = req.body;
     let { compensation } = req.body;
 
-    if (!status || !compensation) {
+    if (!compensation) {
       const errors = {};
-      errors.status = !status ? 'Status is required' : undefined;
       errors.compensation = !compensation ? 'Compensation is required' : undefined;
       await session.abortTransaction();
       session.endSession();
@@ -109,7 +107,7 @@ const createEmployee = asyncHandler(async (req, res, next) => {
     const dailyRate = Number(basicPay) / Number(employee.workingDays);
     const hourlyRate = Number(dailyRate) / Number(employee.workingHours);
 
-    status = await Status.create(
+    await Status.create(
       [
         {
           effectivityDate: employee.hireDate,

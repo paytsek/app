@@ -17,6 +17,7 @@ import NonTaxableCompensation from './NonTaxableCompensation';
 import {
   createEmployee,
   getEmployeeDetails,
+  updateEmployee,
 } from '../../../redux/actions/employeesActions';
 import { EMPLOYEE_CREATE_RESET, EMPLOYEE_DETAILS_RESET } from '../../../redux/types';
 import useStyles from './styles';
@@ -310,9 +311,6 @@ const EmployeeForm = ({ history, match }) => {
       ...governmentIds,
       ...employeeFunction,
       department: (employeeFunction.department && employeeFunction.department) || null,
-      status: {
-        active: true,
-      },
       bankingInformation,
       registeredAddress,
       permanentAddress,
@@ -324,7 +322,11 @@ const EmployeeForm = ({ history, match }) => {
       },
     };
 
-    dispatch(createEmployee(employeeData));
+    if (id) {
+      dispatch(updateEmployee(id, employeeData));
+    } else {
+      dispatch(createEmployee(employeeData));
+    }
   };
 
   useEffect(() => {

@@ -10,6 +10,7 @@ import {
   EMPLOYEE_DETAILS_SUCCESS,
   EMPLOYEE_LIST_REQUEST,
   EMPLOYEE_LIST_SUCCESS,
+  EMPLOYEE_UPDATE_REQUEST,
 } from '../types/employeeTypes';
 
 import notification from '../../utils/notification';
@@ -75,5 +76,22 @@ export const deleteEmployee = (id) => async (dispatch) => {
     const { errors } = error.response.data;
     dispatch(notification('error', errors.message, dispatch));
     dispatch({ type: EMPLOYEE_CREATE_FAIL, payload: errors });
+  }
+};
+
+export const updateEmployee = (id, employeeData) => async (dispatch) => {
+  dispatch({ type: EMPLOYEE_UPDATE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-type': 'application/json',
+    },
+  };
+
+  try {
+    const { data } = await axios.put(`/employees/${id}`, employeeData, config);
+    console.log(data);
+  } catch (error) {
+    console.log(error.response);
   }
 };
