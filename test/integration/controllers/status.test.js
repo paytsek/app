@@ -208,7 +208,7 @@ describe('GET /api/v1/employees/:employeeId/status', () => {
   describe('Success Response', () => {
     it('should return success response if values are valid', async () => {
       const status = await Status.create({
-        active: true,
+        employmentStatus: 'inactive',
         effectivityDate: employee.hireDate,
         employee: employee._id,
         company: company._id,
@@ -225,7 +225,7 @@ describe('GET /api/v1/employees/:employeeId/status', () => {
       expect(res.body.statuses).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            active: true,
+            employmentStatus: 'inactive',
             _id: status._id.toString(),
           }),
         ]),
@@ -468,7 +468,7 @@ describe('GET /api/v1/employees/:employeeId/status/:id', () => {
       expect(res.body.success).toBeTruthy();
       expect(res.body.status).toEqual(
         expect.objectContaining({
-          active: true,
+          employmentStatus: 'active',
           _id: status._id.toString(),
         }),
       );
@@ -679,14 +679,14 @@ describe('POST /api/v1/employees/:employeeId/status', () => {
         .post(`${url}/${employee._id}/status`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
-        .send({ active: false, effectivityDate: '2021-09-09' });
+        .send({ employmentStatus: 'medicalLeave', effectivityDate: '2021-09-09' });
 
       expect(res.status).toBe(201);
       expect(res.body.success).toBeTruthy();
       expect(res.body).toEqual(
         expect.objectContaining({
           status: expect.objectContaining({
-            active: false,
+            employmentStatus: 'medicalLeave',
             effectivityDate: '2021-09-09T00:00:00.000Z',
           }),
         }),
@@ -922,12 +922,13 @@ describe('PUT /api/v1/employees/:employeeId/status/:id', () => {
       const res = await request(app)
         .put(`${url}/${employee._id}/status/${status._id}`)
         .set({ 'x-company-tenant': company.slug })
-        .auth(token, { type: 'bearer' });
+        .auth(token, { type: 'bearer' })
+        .send({ employmentStatus: 'test' });
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBeFalsy();
       expect(res.body.errors).toMatchObject({
-        active: 'Active is required',
+        employmentStatus: '`test` is not a valid enum value for path `employmentStatus`.',
         effectivityDate: 'Effectivity Date is required',
       });
     });
@@ -939,13 +940,13 @@ describe('PUT /api/v1/employees/:employeeId/status/:id', () => {
         .put(`${url}/${employee._id}/status/${status._id}`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
-        .send({ active: false, effectivityDate: '2020-01-01' });
+        .send({ employmentStatus: 'paternityLeave', effectivityDate: '2020-01-01' });
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
       expect(res.body.status).toEqual(
         expect.objectContaining({
-          active: false,
+          employmentStatus: 'paternityLeave',
           effectivityDate: '2020-01-01T00:00:00.000Z',
         }),
       );

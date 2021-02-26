@@ -105,7 +105,6 @@ const createEmployee = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse(errors));
     }
 
-    const { active } = status;
     const { basicPay, otherTaxablePays, otherNonTaxablePays } = compensation;
     const dailyRate = Number(basicPay) / Number(employee.workingDays);
     const hourlyRate = Number(dailyRate) / Number(employee.workingHours);
@@ -113,7 +112,6 @@ const createEmployee = asyncHandler(async (req, res, next) => {
     status = await Status.create(
       [
         {
-          active,
           effectivityDate: employee.hireDate,
           company: company._id,
           employee: employee._id,

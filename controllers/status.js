@@ -86,7 +86,7 @@ const getStatus = asyncHandler(async (req, res, next) => {
 // @Desc Create status of an specific employee
 // @access PRIVATE - Logged in user
 const createStatus = asyncHandler(async (req, res, next) => {
-  const { effectivityDate, active } = req.body;
+  const { effectivityDate, employmentStatus } = req.body;
 
   const company = await Company.findById(req.company._id);
   const user = await User.findById(req.user._id);
@@ -114,7 +114,7 @@ const createStatus = asyncHandler(async (req, res, next) => {
   }
 
   const status = await Status.create({
-    active,
+    employmentStatus,
     effectivityDate,
     employee: employee._id,
     company: company._id,
@@ -127,7 +127,7 @@ const createStatus = asyncHandler(async (req, res, next) => {
 // @Desc Create status of an specific employee
 // @access PRIVATE - Logged in user
 const updateStatus = asyncHandler(async (req, res, next) => {
-  const { active, effectivityDate } = req.body;
+  const { employmentStatus, effectivityDate } = req.body;
 
   const company = await Company.findById(req.company._id);
   const user = await User.findById(req.user._id);
@@ -165,7 +165,7 @@ const updateStatus = asyncHandler(async (req, res, next) => {
     );
   }
 
-  status.active = active;
+  status.employmentStatus = employmentStatus;
   status.effectivityDate = effectivityDate;
 
   const updatedStatus = await status.save();
