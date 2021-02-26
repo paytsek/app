@@ -21,30 +21,45 @@ import {
   createStatus,
   getStatuses,
   deleteStatus,
+  updateStatus,
 } from '../../../../redux/actions/statusesActions';
-import { STATUS_CREATE_RESET } from '../../../../redux/types';
+import { STATUS_CREATE_RESET, STATUS_UPDATE_RESET } from '../../../../redux/types';
 import useStyles from '../styles';
 
 const EmployeeStatusTable = ({ match }) => {
   const [open, setOpen] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState({});
 
   const { id } = match.params;
 
   const dispatch = useDispatch();
 
   const { statuses } = useSelector((state) => state.statusesList);
-  const { errors, success, loading } = useSelector((state) => state.statusesCreate);
+  const { errors: statusesCreateErrors, success, loading } = useSelector(
+    (state) => state.statusesCreate,
+  );
   const { loading: statusesDeleteLoading } = useSelector((state) => state.statusesDelete);
+  const { errors: statusesUpdateErrors, success: statusesUpdateSuccess } = useSelector(
+    (state) => state.statusesUpdate,
+  );
 
   const { paper, fieldsContainer } = useStyles();
 
+  const errors = { ...statusesCreateErrors, ...statusesUpdateErrors };
+
   const handleClose = () => {
     setOpen(false);
+    setSelectedStatus({});
     dispatch({ type: STATUS_CREATE_RESET });
+    dispatch({ type: STATUS_UPDATE_RESET });
   };
 
   const handleOnSubmit = (statusData) => {
-    dispatch(createStatus(id, statusData));
+    if (selectedStatus._id) {
+      dispatch(updateStatus(id, selectedStatus._id, statusData));
+    } else {
+      dispatch(createStatus(id, statusData));
+    }
   };
 
   const handleOnDeleteStatus = (statusId) => dispatch(deleteStatus(id, statusId));
@@ -54,10 +69,10 @@ const EmployeeStatusTable = ({ match }) => {
   }, []);
 
   useEffect(() => {
-    if (success) {
+    if (success || statusesUpdateSuccess) {
       handleClose();
     }
-  }, [success]);
+  }, [success, statusesUpdateSuccess]);
 
   return (
     <Paper className={paper} elevation={6}>
@@ -83,7 +98,14 @@ const EmployeeStatusTable = ({ match }) => {
                   secondary={moment(status.effectivityDate).format('MMMM DD, YYYY')}
                 />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="edit">
+                  <IconButton
+                    edge="end"
+                    aria-label="edit"
+                    onClick={() => {
+                      setOpen(true);
+                      setSelectedStatus(status);
+                    }}
+                  >
                     <Edit />
                   </IconButton>
                   <IconButton
@@ -106,6 +128,7 @@ const EmployeeStatusTable = ({ match }) => {
         onSubmit={handleOnSubmit}
         errors={errors}
         loading={loading}
+        status={selectedStatus}
       />
     </Paper>
   );

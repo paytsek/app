@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Close as CloseIcon, Save } from '@material-ui/icons';
 import {
   Grid,
@@ -14,13 +14,14 @@ import {
   MenuItem,
   FormHelperText,
 } from '@material-ui/core';
+import moment from 'moment';
 
 import { EMPLOYMENTS_STATUS } from '../../../utils/globals';
 import useStyles from './styles';
 
-const DialogStatusForm = ({ open, handleClose, onSubmit, errors, loading }) => {
+const DialogStatusForm = ({ open, handleClose, onSubmit, errors, loading, status }) => {
   const [employmentStatus, setEmploymentStatus] = useState('active');
-  const [effectivityDate, setEffectivityDate] = useState('');
+  const [effectivityDate, setEffectivityDate] = useState(status.effectivityDate);
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
@@ -35,6 +36,16 @@ const DialogStatusForm = ({ open, handleClose, onSubmit, errors, loading }) => {
   };
 
   const { closeButton, formButton } = useStyles();
+
+  useEffect(() => {
+    if (!open) handleOnClose();
+
+    if (open && Object.keys(status).length) {
+      setEmploymentStatus(status.employmentStatus);
+      setEffectivityDate(moment(status.effectivityDate).format('YYYY-MM-DD'));
+    }
+  }, [open]);
+
   return (
     <Dialog
       open={open}
@@ -60,9 +71,9 @@ const DialogStatusForm = ({ open, handleClose, onSubmit, errors, loading }) => {
                     onChange={(e) => setEmploymentStatus(e.target.value)}
                     error={!!errors.employmentStatus}
                   >
-                    {EMPLOYMENTS_STATUS.map((status) => (
-                      <MenuItem key={status.value} value={status.value}>
-                        {status.name}
+                    {EMPLOYMENTS_STATUS.map((employmentStat) => (
+                      <MenuItem key={employmentStat.value} value={employmentStat.value}>
+                        {employmentStat.name}
                       </MenuItem>
                     ))}
                   </Select>

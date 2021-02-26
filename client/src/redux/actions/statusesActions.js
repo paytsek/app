@@ -8,6 +8,9 @@ import {
   STATUS_DELETE_SUCCESS,
   STATUS_LIST_REQUEST,
   STATUS_LIST_SUCCESS,
+  STATUS_UPDATE_FAIL,
+  STATUS_UPDATE_REQUEST,
+  STATUS_UPDATE_SUCCESS,
 } from '../types';
 
 export const getStatuses = (employeeId) => async (dispatch) => {
@@ -62,5 +65,31 @@ export const deleteStatus = (employeeId, id) => async (dispatch) => {
     const { errors } = error.response.data;
     const message = errors && errors.message;
     dispatch(notification('error', message || 'Server Error', dispatch));
+  }
+};
+
+export const updateStatus = (employeeId, id, statusData) => async (dispatch) => {
+  dispatch({ type: STATUS_UPDATE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-type': 'application/json',
+    },
+  };
+
+  try {
+    const { data } = await axios.put(
+      `/employees/${employeeId}/status/${id}`,
+      statusData,
+      config,
+    );
+    const message = 'Status successfully updated';
+
+    dispatch({ type: STATUS_UPDATE_SUCCESS, payload: data });
+    dispatch(notification('success', message, dispatch));
+  } catch (error) {
+    const { errors } = error.response.data;
+    dispatch({ type: STATUS_UPDATE_FAIL, payload: errors });
+    dispatch(notification('error', 'Status Validation Error', dispatch));
   }
 };
