@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
@@ -15,11 +15,14 @@ import {
 import { Add, Delete, Edit } from '@material-ui/icons';
 
 import TitleBox from '../../../common/TitleBox';
+import DialogStatusForm from '../../../Dialog/DialogStatusForm';
 
 import { getStatuses } from '../../../../redux/actions/statusesActions';
 import useStyles from '../styles';
 
 const EmployeeStatusTable = ({ match }) => {
+  const [open, setOpen] = useState(false);
+
   const { id } = match.params;
 
   const dispatch = useDispatch();
@@ -27,6 +30,10 @@ const EmployeeStatusTable = ({ match }) => {
   const { statuses } = useSelector((state) => state.statusesList);
 
   const { paper, fieldsContainer } = useStyles();
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     dispatch(getStatuses(id));
@@ -36,7 +43,13 @@ const EmployeeStatusTable = ({ match }) => {
     <Paper className={paper} elevation={6}>
       <TitleBox title="Status" />
       <div className={fieldsContainer}>
-        <Button variant="contained" color="primary" size="small" startIcon={<Add />}>
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          onClick={() => setOpen(true)}
+          startIcon={<Add />}
+        >
           Add
         </Button>
       </div>
@@ -62,6 +75,7 @@ const EmployeeStatusTable = ({ match }) => {
           </List>
         ) : null}
       </Container>
+      <DialogStatusForm open={open} handleClose={handleClose} />
     </Paper>
   );
 };
