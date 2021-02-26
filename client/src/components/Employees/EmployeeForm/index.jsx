@@ -13,6 +13,8 @@ import GovernmentIds from './GovernmentIds';
 import EmployeeFuntion from './EmployeeFunction';
 import TaxableCompensation from './TaxableCompensation';
 import NonTaxableCompensation from './NonTaxableCompensation';
+import EmployeeCompensationsTable from './EmployeeCompensationsTable';
+import EmployeeStatusTable from './EmployeeStatusTable';
 
 import {
   createEmployee,
@@ -439,7 +441,9 @@ const EmployeeForm = ({ history, match }) => {
             setDefault={setOtherTaxableDefault}
             errors={errors}
           />
-        ) : null}
+        ) : (
+          <EmployeeStatusTable />
+        )}
       </Grid>
       <Grid item md={6} xs={12}>
         {!id ? (
@@ -448,7 +452,9 @@ const EmployeeForm = ({ history, match }) => {
             onChange={handleOnChangeNonTaxableCompensation}
             setDefault={setOtherNonTaxableDefault}
           />
-        ) : null}
+        ) : (
+          <EmployeeCompensationsTable />
+        )}
       </Grid>
       <Grid item>
         <div className={formButton}>
