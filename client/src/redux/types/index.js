@@ -5,3 +5,4 @@ export * from './departmentTypes.js';
 export * from './taxablePayTypes';
 export * from './nonTaxablePaysTypes';
 export * from './employeeTypes';
+export * from './statusTypes';

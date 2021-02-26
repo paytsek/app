@@ -1,0 +1,19 @@
+import axios from '../../axios';
+import notification from '../../utils/notification';
+import { STATUS_LIST_REQUEST, STATUS_LIST_SUCCESS } from '../types';
+
+export const getStatuses = (employeeId) => async (dispatch) => {
+  dispatch({ type: STATUS_LIST_REQUEST });
+
+  try {
+    const { data } = await axios.get(`/employees/${employeeId}/status`);
+    dispatch({ type: STATUS_LIST_SUCCESS, payload: data });
+  } catch (error) {
+    const { errors } = error.response.data;
+    const message = errors && errors.message;
+
+    dispatch(notification('error', message || 'Server Error', dispatch));
+  }
+};
+
+export const x = () => {};
