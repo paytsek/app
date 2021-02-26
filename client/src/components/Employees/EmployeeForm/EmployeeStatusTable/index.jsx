@@ -17,7 +17,11 @@ import { Add, Delete, Edit } from '@material-ui/icons';
 import TitleBox from '../../../common/TitleBox';
 import DialogStatusForm from '../../../Dialog/DialogStatusForm';
 
-import { createStatus, getStatuses } from '../../../../redux/actions/statusesActions';
+import {
+  createStatus,
+  getStatuses,
+  deleteStatus,
+} from '../../../../redux/actions/statusesActions';
 import { STATUS_CREATE_RESET } from '../../../../redux/types';
 import useStyles from '../styles';
 
@@ -30,6 +34,7 @@ const EmployeeStatusTable = ({ match }) => {
 
   const { statuses } = useSelector((state) => state.statusesList);
   const { errors, success, loading } = useSelector((state) => state.statusesCreate);
+  const { loading: statusesDeleteLoading } = useSelector((state) => state.statusesDelete);
 
   const { paper, fieldsContainer } = useStyles();
 
@@ -41,6 +46,8 @@ const EmployeeStatusTable = ({ match }) => {
   const handleOnSubmit = (statusData) => {
     dispatch(createStatus(id, statusData));
   };
+
+  const handleOnDeleteStatus = (statusId) => dispatch(deleteStatus(id, statusId));
 
   useEffect(() => {
     dispatch(getStatuses(id));
@@ -79,7 +86,12 @@ const EmployeeStatusTable = ({ match }) => {
                   <IconButton edge="end" aria-label="edit">
                     <Edit />
                   </IconButton>
-                  <IconButton edge="end" aria-label="delete">
+                  <IconButton
+                    edge="end"
+                    aria-label="delete"
+                    disabled={statusesDeleteLoading}
+                    onClick={() => handleOnDeleteStatus(status._id)}
+                  >
                     <Delete />
                   </IconButton>
                 </ListItemSecondaryAction>

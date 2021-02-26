@@ -4,6 +4,8 @@ import {
   STATUS_CREATE_FAIL,
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
+  STATUS_DELETE_REQUEST,
+  STATUS_DELETE_SUCCESS,
   STATUS_LIST_REQUEST,
   STATUS_LIST_SUCCESS,
 } from '../types';
@@ -46,5 +48,19 @@ export const createStatus = (employeeId, statusData) => async (dispatch) => {
     const { errors } = error.response.data;
     dispatch({ type: STATUS_CREATE_FAIL, payload: errors });
     dispatch(notification('error', 'Status Validation Error', dispatch));
+  }
+};
+
+export const deleteStatus = (employeeId, id) => async (dispatch) => {
+  dispatch({ type: STATUS_DELETE_REQUEST });
+
+  try {
+    const { data } = await axios.delete(`/employees/${employeeId}/status/${id}`);
+    dispatch({ type: STATUS_DELETE_SUCCESS, payload: id });
+    dispatch(notification('success', data.message || 'Successfully deleted', dispatch));
+  } catch (error) {
+    const { errors } = error.response.data;
+    const message = errors && errors.message;
+    dispatch(notification('error', message || 'Server Error', dispatch));
   }
 };

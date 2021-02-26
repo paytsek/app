@@ -6,6 +6,9 @@ import {
   STATUS_CREATE_SUCCESS,
   STATUS_CREATE_FAIL,
   STATUS_CREATE_RESET,
+  STATUS_DELETE_REQUEST,
+  STATUS_DELETE_SUCCESS,
+  STATUS_DELETE_FAIL,
 } from '../types';
 
 export const statusesListReducers = (state = { statuses: [] }, action) => {
@@ -20,6 +23,11 @@ export const statusesListReducers = (state = { statuses: [] }, action) => {
       return { ...state, loading: false };
     case STATUS_CREATE_SUCCESS:
       return { ...state, statuses: [...state.statuses, payload.status] };
+    case STATUS_DELETE_SUCCESS:
+      return {
+        ...state,
+        statuses: state.statuses.filter((status) => status._id !== payload),
+      };
     default:
       return state;
   }
@@ -37,6 +45,21 @@ export const statusesCreateReducers = (state = { errors: {} }, action) => {
       return { ...state, loading: false, errors: payload };
     case STATUS_CREATE_RESET:
       return { errors: {} };
+    default:
+      return state;
+  }
+};
+
+export const statusesDeleteReducers = (state = {}, action) => {
+  const { type } = action;
+
+  switch (type) {
+    case STATUS_DELETE_REQUEST:
+      return { loading: true };
+    case STATUS_DELETE_SUCCESS:
+      return { loading: false };
+    case STATUS_DELETE_FAIL:
+      return { loading: false };
     default:
       return state;
   }
