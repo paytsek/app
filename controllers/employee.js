@@ -222,15 +222,13 @@ const updateEmployee = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
-  //   new: true,
-  //   runValidators: true,
-  // });
+  const compensation = await employee.getEmployeeCompensation();
 
   const fields = Object.keys(req.body);
   fields.forEach((field) => {
     employee[field] = req.body[field];
   });
+  employee.compensation = compensation;
 
   const updatedEmployee = await employee.save();
 
