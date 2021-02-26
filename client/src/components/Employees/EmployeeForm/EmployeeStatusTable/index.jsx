@@ -17,7 +17,8 @@ import { Add, Delete, Edit } from '@material-ui/icons';
 import TitleBox from '../../../common/TitleBox';
 import DialogStatusForm from '../../../Dialog/DialogStatusForm';
 
-import { getStatuses } from '../../../../redux/actions/statusesActions';
+import { createStatus, getStatuses } from '../../../../redux/actions/statusesActions';
+import { STATUS_CREATE_RESET } from '../../../../redux/types';
 import useStyles from '../styles';
 
 const EmployeeStatusTable = ({ match }) => {
@@ -28,16 +29,28 @@ const EmployeeStatusTable = ({ match }) => {
   const dispatch = useDispatch();
 
   const { statuses } = useSelector((state) => state.statusesList);
+  const { errors, success, loading } = useSelector((state) => state.statusesCreate);
 
   const { paper, fieldsContainer } = useStyles();
 
   const handleClose = () => {
     setOpen(false);
+    dispatch({ type: STATUS_CREATE_RESET });
+  };
+
+  const handleOnSubmit = (statusData) => {
+    dispatch(createStatus(id, statusData));
   };
 
   useEffect(() => {
     dispatch(getStatuses(id));
   }, []);
+
+  useEffect(() => {
+    if (success) {
+      handleClose();
+    }
+  }, [success]);
 
   return (
     <Paper className={paper} elevation={6}>
@@ -54,9 +67,9 @@ const EmployeeStatusTable = ({ match }) => {
         </Button>
       </div>
       <Container>
-        {statuses.length > 0 ? (
-          <List>
-            {statuses.map((status) => (
+        <List>
+          {statuses.length > 0
+            ? statuses.map((status) => (
               <ListItem key={status._id}>
                 <ListItemText
                   primary={status.employmentStatus}
@@ -71,11 +84,17 @@ const EmployeeStatusTable = ({ match }) => {
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>
-            ))}
-          </List>
-        ) : null}
+            ))
+            : null}
+        </List>
       </Container>
-      <DialogStatusForm open={open} handleClose={handleClose} />
+      <DialogStatusForm
+        open={open}
+        handleClose={handleClose}
+        onSubmit={handleOnSubmit}
+        errors={errors}
+        loading={loading}
+      />
     </Paper>
   );
 };

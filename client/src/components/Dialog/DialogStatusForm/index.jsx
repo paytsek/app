@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Close as CloseIcon, Save } from '@material-ui/icons';
 import {
   Grid,
@@ -12,33 +12,54 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormHelperText,
 } from '@material-ui/core';
 
 import { EMPLOYMENTS_STATUS } from '../../../utils/globals';
 import useStyles from './styles';
 
-const DialogStatusForm = ({ open, handleClose }) => {
+const DialogStatusForm = ({ open, handleClose, onSubmit, errors, loading }) => {
+  const [employmentStatus, setEmploymentStatus] = useState('active');
+  const [effectivityDate, setEffectivityDate] = useState('');
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    const statusData = { employmentStatus, effectivityDate };
+    onSubmit(statusData);
+  };
+
+  const handleOnClose = () => {
+    handleClose();
+    setEmploymentStatus('active');
+    setEffectivityDate('');
+  };
+
   const { closeButton, formButton } = useStyles();
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={handleOnClose}
       aria-labelledby="form-dialog-title"
       fullWidth
       maxWidth="sm"
     >
       <>
         <DialogTitle>Add Status</DialogTitle>
-        <IconButton aria-label="close" className={closeButton} onClick={handleClose}>
+        <IconButton aria-label="close" className={closeButton} onClick={handleOnClose}>
           <CloseIcon />
         </IconButton>
         <DialogContent>
-          <form>
+          <form onSubmit={handleOnSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={7} lg={8}>
                 <FormControl fullWidth size="small">
                   <InputLabel htmlFor="employmentStatus">Employment Status</InputLabel>
-                  <Select name="employmentStatus" value="">
+                  <Select
+                    name="employmentStatus"
+                    value={employmentStatus}
+                    onChange={(e) => setEmploymentStatus(e.target.value)}
+                    error={!!errors.employmentStatus}
+                  >
                     {EMPLOYMENTS_STATUS.map((status) => (
                       <MenuItem key={status.value} value={status.value}>
                         {status.name}
@@ -53,10 +74,16 @@ const DialogStatusForm = ({ open, handleClose }) => {
                     label="Effectivity Date"
                     type="date"
                     name="effectivityDate"
+                    value={effectivityDate}
+                    onChange={(e) => setEffectivityDate(e.target.value)}
+                    error={!!errors.effectivityDate}
                     InputLabelProps={{
                       shrink: true,
                     }}
                   />
+                  {errors.effectivityDate && (
+                    <FormHelperText error>{errors.effectivityDate}</FormHelperText>
+                  )}
                 </FormControl>
               </Grid>
             </Grid>
@@ -66,6 +93,7 @@ const DialogStatusForm = ({ open, handleClose }) => {
                 color="primary"
                 variant="contained"
                 size="small"
+                disabled={loading}
                 startIcon={<Save />}
               >
                 Save

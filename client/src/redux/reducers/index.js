@@ -47,7 +47,7 @@ import {
   nonTaxablePaysDeleteReducers,
   nonTaxablePaysUpdateReducers,
 } from './nonTaxablePaysReducers';
-import { statusesListReducers } from './statusesReducers';
+import { statusesListReducers, statusesCreateReducers } from './statusesReducers';
 
 import snackbarReducer from './snackbarReducers';
 
@@ -96,6 +96,7 @@ const reducers = combineReducers({
   nonTaxablePaysUpdate: nonTaxablePaysUpdateReducers,
   // STATUSES
   statusesList: statusesListReducers,
+  statusesCreate: statusesCreateReducers,
 });
 
 export default reducers;
