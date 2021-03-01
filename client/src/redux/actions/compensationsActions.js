@@ -3,6 +3,9 @@ import {
   COMPENSATIONS_CREATE_FAIL,
   COMPENSATIONS_CREATE_REQUEST,
   COMPENSATIONS_CREATE_SUCCESS,
+  COMPENSATIONS_DELETE_FAIL,
+  COMPENSATIONS_DELETE_REQUEST,
+  COMPENSATIONS_DELETE_SUCCESS,
   COMPENSATIONS_LIST_FAIL,
   COMPENSATIONS_LIST_REQUEST,
   COMPENSATIONS_LIST_SUCCESS,
@@ -48,5 +51,23 @@ export const createCompensation = (employeeId, compensationData) => async (dispa
     const { errors } = error.response.data;
     dispatch({ type: COMPENSATIONS_CREATE_FAIL, payload: errors });
     dispatch(notification('error', 'Validation Error', dispatch));
+  }
+};
+
+export const deleteCompensation = (employeeId, id) => async (dispatch) => {
+  dispatch({ type: COMPENSATIONS_DELETE_REQUEST });
+
+  try {
+    const { data } = await axios.delete(`/employees/${employeeId}/compensations/${id}`);
+    const { message } = data;
+
+    dispatch({ type: COMPENSATIONS_DELETE_SUCCESS, payload: id });
+    dispatch(notification('success', message || 'Successfully delete', dispatch));
+  } catch (error) {
+    const { errors } = error.response.data;
+    const message = errors && errors.message;
+
+    dispatch({ type: COMPENSATIONS_DELETE_FAIL });
+    dispatch(notification('error', message || 'Server Error', dispatch));
   }
 };

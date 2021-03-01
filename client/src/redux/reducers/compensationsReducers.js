@@ -6,6 +6,9 @@ import {
   COMPENSATIONS_LIST_FAIL,
   COMPENSATIONS_LIST_REQUEST,
   COMPENSATIONS_LIST_SUCCESS,
+  COMPENSATIONS_DELETE_FAIL,
+  COMPENSATIONS_DELETE_REQUEST,
+  COMPENSATIONS_DELETE_SUCCESS,
 } from '../types';
 
 export const compensationsListReducers = (state = { compensations: [] }, action) => {
@@ -24,6 +27,13 @@ export const compensationsListReducers = (state = { compensations: [] }, action)
       return { ...state, loading: false };
     case COMPENSATIONS_CREATE_SUCCESS:
       return { ...state, compensations: [...state.compensations, payload.compensation] };
+    case COMPENSATIONS_DELETE_SUCCESS:
+      return {
+        ...state,
+        compensations: state.compensations.filter(
+          (compensation) => compensation._id !== payload,
+        ),
+      };
     default:
       return state;
   }
@@ -46,6 +56,21 @@ export const compensationCreateReducers = (state = { errors: {} }, action) => {
       return { ...state, loading: false, errors: payload };
     case COMPENSATIONS_CREATE_RESET:
       return { errors: {} };
+    default:
+      return state;
+  }
+};
+
+export const compensationDeleteReducers = (state = {}, action) => {
+  const { type } = action;
+
+  switch (type) {
+    case COMPENSATIONS_DELETE_REQUEST:
+      return { loading: true };
+    case COMPENSATIONS_DELETE_SUCCESS:
+      return { loading: false };
+    case COMPENSATIONS_DELETE_FAIL:
+      return { loading: false };
     default:
       return state;
   }
