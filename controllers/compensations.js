@@ -95,7 +95,7 @@ const getCompensation = asyncHandler(async (req, res, next) => {
 // @Desc Create compensation of an specific employee
 // @access PRIVATE - Logged in user
 const createCompensation = asyncHandler(async (req, res, next) => {
-  const { basicPay, effectivityDate } = req.body;
+  const { basicPay, effectivityDate, deminimis } = req.body;
 
   const company = await Company.findById(req.company._id);
   const user = await User.findById(req.user._id);
@@ -132,6 +132,7 @@ const createCompensation = asyncHandler(async (req, res, next) => {
       [
         {
           basicPay,
+          deminimis,
           effectivityDate,
           employee: employee._id,
           company: company._id,
