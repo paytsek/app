@@ -13,7 +13,7 @@ const OtherNonTaxablePaySchema = new mongoose.Schema(
     },
     nonTaxablePay: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'TaxablePay',
+      ref: 'NonTaxablePay',
       required: [true, 'Non Taxable pay must exist'],
     },
     compensation: {

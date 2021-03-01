@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Close as CloseIcon, Save } from '@material-ui/icons';
+import moment from 'moment';
 import {
   Grid,
   Dialog,
@@ -21,7 +22,14 @@ import { getTaxablePays } from '../../../redux/actions/taxablePaysActions';
 import { getNonTaxablePays } from '../../../redux/actions/nonTaxablePaysActions';
 import useStyles from './styles';
 
-const DialogBasicCompensation = ({ open, handleClose, onSubmit, errors, loading }) => {
+const DialogBasicCompensation = ({
+  open,
+  handleClose,
+  onSubmit,
+  errors,
+  loading,
+  compensation,
+}) => {
   const dispatch = useDispatch();
 
   const [basicCompensation, setBasicCompensation] = useState({
@@ -71,10 +79,33 @@ const DialogBasicCompensation = ({ open, handleClose, onSubmit, errors, loading 
     onSubmit(basicCompensation);
   };
 
+  const generateCompensation = (others) => {
+    if (others) {
+      return others.map((other) => ({
+        ...other,
+        other: other.taxablePay || other.nonTaxablePay,
+      }));
+    }
+    return undefined;
+  };
+
   useEffect(() => {
     if (open) {
       dispatch(getTaxablePays());
       dispatch(getNonTaxablePays());
+    }
+
+    if (open && Object.keys(compensation).length) {
+      setBasicCompensation((prevState) => ({
+        ...prevState,
+        basicPay: compensation.basicPay,
+        deminimis: compensation.deminimis,
+        effectivityDate: moment(compensation.effectivityDate).format('YYYY-MM-DD'),
+        otherTaxablePays: compensation.otherTaxablePays.map((otherTaxablePay) => ({
+          taxablePay: otherTaxablePay.taxablePay._id,
+          value: otherTaxablePay.value,
+        })),
+      }));
     }
 
     if (!open) {
@@ -148,6 +179,10 @@ const DialogBasicCompensation = ({ open, handleClose, onSubmit, errors, loading 
                 compensations={taxablePays}
                 loading={taxablePaysListLoading}
                 onChange={handleOnChangeOtherTaxablePays}
+                values={
+                  compensation.otherTaxablePays &&
+                  generateCompensation(compensation.otherTaxablePays)
+                }
               />
               <Grid item xs={12}>
                 <Typography>Non Taxable</Typography>
@@ -173,6 +208,10 @@ const DialogBasicCompensation = ({ open, handleClose, onSubmit, errors, loading 
                 compensations={nonTaxablePays}
                 loading={nonTaxablePaysListLoading}
                 onChange={handleOnChangeOtherNonTaxablePays}
+                values={
+                  compensation.otherNonTaxablePays &&
+                  generateCompensation(compensation.otherNonTaxablePays)
+                }
               />
               <Grid item xs={12}>
                 <Divider />

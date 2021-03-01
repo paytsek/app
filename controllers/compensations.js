@@ -38,7 +38,19 @@ const getCompensations = asyncHandler(async (req, res, next) => {
     );
   }
 
-  const compensations = await Compensation.find({ employee: employee._id });
+  const compensations = await Compensation.find({ employee: employee._id })
+    .populate({
+      path: 'otherTaxablePays',
+      populate: {
+        path: 'taxablePay',
+      },
+    })
+    .populate({
+      path: 'otherNonTaxablePays',
+      populate: {
+        path: 'nonTaxablePay',
+      },
+    });
 
   return res.status(200).json({ success: true, compensations });
 });
@@ -177,8 +189,18 @@ const createCompensation = asyncHandler(async (req, res, next) => {
     session.endSession();
 
     compensation = await Compensation.findById(compensation._id)
-      .populate('otherTaxablePays')
-      .populate('otherNonTaxablePays');
+      .populate({
+        path: 'otherTaxablePays',
+        populate: {
+          path: 'taxablePay',
+        },
+      })
+      .populate({
+        path: 'otherNonTaxablePays',
+        populate: {
+          path: 'nonTaxablePay',
+        },
+      });
 
     return res.status(201).json({ success: true, compensation });
   } catch (err) {

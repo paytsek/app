@@ -31,6 +31,7 @@ const EmployeeCompensationsTable = ({ match }) => {
   const { id } = match.params;
 
   const [open, setOpen] = useState(false);
+  const [selectedCompensation, setSelectedCompensation] = useState({});
 
   const { compensations } = useSelector((state) => state.compensationsList);
   const { errors, loading, success } = useSelector((state) => state.compensationCreate);
@@ -43,6 +44,7 @@ const EmployeeCompensationsTable = ({ match }) => {
   const handleClose = () => {
     setOpen(false);
     dispatch({ type: COMPENSATIONS_CREATE_RESET });
+    setSelectedCompensation({});
   };
 
   const handleOnSubmit = (compensationData) => {
@@ -91,7 +93,14 @@ const EmployeeCompensationsTable = ({ match }) => {
                 )}
               />
               <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="edit">
+                <IconButton
+                  edge="end"
+                  aria-label="edit"
+                  onClick={() => {
+                    setSelectedCompensation(compensation);
+                    setOpen(true);
+                  }}
+                >
                   <Edit />
                 </IconButton>
                 <IconButton
@@ -113,6 +122,7 @@ const EmployeeCompensationsTable = ({ match }) => {
         onSubmit={handleOnSubmit}
         errors={errors}
         loading={loading}
+        compensation={selectedCompensation}
       />
     </Paper>
   );
