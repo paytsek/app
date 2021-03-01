@@ -6,3 +6,4 @@ export * from './taxablePayTypes';
 export * from './nonTaxablePaysTypes';
 export * from './employeeTypes';
 export * from './statusTypes';
+export * from './compensationTypes';
