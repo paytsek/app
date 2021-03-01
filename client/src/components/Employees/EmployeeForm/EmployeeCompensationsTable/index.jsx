@@ -20,6 +20,7 @@ import DialogBasicCompensation from '../../../Dialog/DialogBasicCompensation';
 import {
   getCompensations,
   createCompensation,
+  deleteCompensation,
 } from '../../../../redux/actions/compensationsActions';
 import useStyles from '../styles';
 import { COMPENSATIONS_CREATE_RESET } from '../../../../redux/types';
@@ -33,6 +34,9 @@ const EmployeeCompensationsTable = ({ match }) => {
 
   const { compensations } = useSelector((state) => state.compensationsList);
   const { errors, loading, success } = useSelector((state) => state.compensationCreate);
+  const { loading: compensationDeleteLoading } = useSelector(
+    (state) => state.compensationDelete,
+  );
 
   const { paper, fieldsContainer } = useStyles();
 
@@ -90,7 +94,12 @@ const EmployeeCompensationsTable = ({ match }) => {
                 <IconButton edge="end" aria-label="edit">
                   <Edit />
                 </IconButton>
-                <IconButton edge="end" aria-label="delete">
+                <IconButton
+                  edge="end"
+                  aria-label="delete"
+                  disabled={compensationDeleteLoading}
+                  onClick={() => dispatch(deleteCompensation(id, compensation._id))}
+                >
                   <Delete />
                 </IconButton>
               </ListItemSecondaryAction>
