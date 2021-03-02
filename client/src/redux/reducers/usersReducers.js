@@ -35,9 +35,13 @@ import {
   USER_LIST_DELETE_SUCCESS,
   USER_LIST_DELETE_FAIL,
   USER_LIST_DELETE_RESET,
+  CURRENT_USER_DELETE_RESET,
 } from '../types';
 
-export const authUserReducers = (state = { auth: false, loading: true, user: {} }, action) => {
+export const authUserReducers = (
+  state = { auth: false, loading: true, user: {} },
+  action,
+) => {
   const { type, payload } = action;
   switch (type) {
     case AUTH_REQUEST:
@@ -128,7 +132,10 @@ export const userDetailsReducers = (state = { user: {} }, action) => {
   }
 };
 
-export const updateUserDetailsReducers = (state = { errors: {}, loading: false }, action) => {
+export const updateUserDetailsReducers = (
+  state = { errors: {}, loading: false },
+  action,
+) => {
   const { type, payload } = action;
   switch (type) {
     case USER_UPDATE_DETAILS_REQUEST:
@@ -207,9 +214,11 @@ export const currentUserDeleteReducers = (state = {}, action) => {
     case CURRENT_USER_DELETE_REQUEST:
       return { loading: true };
     case CURRENT_USER_DELETE_SUCCESS:
-      return { loading: false };
+      return { loading: false, success: true };
     case CURRENT_USER_DELETE_FAIL:
       return { loading: false };
+    case CURRENT_USER_DELETE_RESET:
+      return {};
     default:
       return state;
   }
