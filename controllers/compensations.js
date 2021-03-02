@@ -214,7 +214,13 @@ const createCompensation = asyncHandler(async (req, res, next) => {
 // @Desc Create compensation of an specific employee
 // @access PRIVATE - Logged in user
 const updateCompensation = asyncHandler(async (req, res, next) => {
-  const { basicPay, effectivityDate, otherTaxablePays, otherNonTaxablePays } = req.body;
+  const {
+    basicPay,
+    effectivityDate,
+    otherTaxablePays,
+    otherNonTaxablePays,
+    deminimis,
+  } = req.body;
 
   const company = await Company.findById(req.company._id);
   const user = await User.findById(req.user._id);
@@ -262,12 +268,13 @@ const updateCompensation = asyncHandler(async (req, res, next) => {
     }
 
     compensation.basicPay = basicPay;
+    compensation.deminimis = deminimis;
     compensation.effectivityDate = effectivityDate;
 
     if (otherTaxablePays && otherTaxablePays.length > 0) {
       otherTaxablePays.forEach(async (otherTaxablePay) => {
         await OtherTaxablePay.findOneAndUpdate(
-          { _id: otherTaxablePay.id },
+          { _id: otherTaxablePay.taxablePay },
           {
             value: otherTaxablePay.value,
           },
@@ -278,8 +285,8 @@ const updateCompensation = asyncHandler(async (req, res, next) => {
 
     if (otherNonTaxablePays && otherNonTaxablePays.length > 0) {
       otherNonTaxablePays.forEach(async (otherNonTaxablePay) => {
-        await OtherNonTaxablePay.findByIdAndUpdate(
-          otherNonTaxablePay.id,
+        await OtherNonTaxablePay.findOneAndUpdate(
+          { _id: otherNonTaxablePay.nonTaxablePay },
           {
             value: otherNonTaxablePay.value,
           },
@@ -294,8 +301,18 @@ const updateCompensation = asyncHandler(async (req, res, next) => {
     session.endSession();
 
     const updatedCompensation = await Compensation.findById(compensation._id)
-      .populate('otherTaxablePays')
-      .populate('otherNonTaxablePays');
+      .populate({
+        path: 'otherTaxablePays',
+        populate: {
+          path: 'taxablePay',
+        },
+      })
+      .populate({
+        path: 'otherNonTaxablePays',
+        populate: {
+          path: 'nonTaxablePay',
+        },
+      });
 
     return res.status(200).json({ success: true, compensation: updatedCompensation });
   } catch (err) {
