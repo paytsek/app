@@ -5,6 +5,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(2),
     backgroundColor: '#fff',
+
+    '& .MuiDataGrid-colCell:last-child': {
+      display: 'none',
+    },
   },
 }));
 

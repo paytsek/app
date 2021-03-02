@@ -56,7 +56,7 @@ const EmployeesListTable = ({ history }) => {
       field: '',
       headerName: '',
       sortable: false,
-      width: 290,
+      width: 215,
       renderCell: ({ row }) => (
         <>
           <Button
