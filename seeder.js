@@ -17,7 +17,19 @@ const NonTaxablePay = require('./models/NonTaxablePay');
 const OtherTaxablePay = require('./models/OtherTaxablePay');
 const OtherNonTaxablePay = require('./models/OtherNonTaxablePay');
 
-const db = process.env.NODE_ENV === 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_LOCAL;
+const getDb = () => {
+  if (process.env.NODE_ENV === 'development') {
+    return process.env.MONGO_URI_DEV;
+  }
+
+  if (process.env.NODE_ENV === 'staging') {
+    return process.env.MONGO_URI_STAGING;
+  }
+
+  return process.env.MONGO_URI_LOCAL;
+};
+
+const db = getDb();
 
 mongoose.connect(db, {
   useNewUrlParser: true,
@@ -101,8 +113,14 @@ const deleteData = async () => {
   }
 };
 
-if (process.argv[2] === '-i') {
+if (process.argv[2] === '-i' && process.env.NODE_ENV !== 'production') {
   importData();
-} else if (process.argv[2] === '-d') {
+} else if (process.argv[2] === '-d' && process.env.NODE_ENV !== 'production') {
   deleteData();
+} else {
+  console.log(
+    'NODE_ENV is in production mode, please set it into staging, local or development'
+      .red,
+  );
+  process.exit(1);
 }

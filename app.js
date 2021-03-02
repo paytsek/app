@@ -60,7 +60,7 @@ app.use(hpp());
 app.use(cors());
 
 // Dev logging middleware
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'));
 }
 
@@ -89,7 +89,7 @@ app.use('/api/v1/employees', employeeRoutes);
 app.use('/api/v1/taxablePays', taxablePayRoutes);
 app.use('/api/v1/nonTaxablePays', nonTaxablePayRoutes);
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
   app.use(express.static(path.join(__dirname, '/client/build')));
 
   app.get('*', (req, res) => {
