@@ -42,7 +42,19 @@ CompanySchema.pre('save', async function (next) {
 });
 
 CompanySchema.pre('remove', async function (next) {
-  await this.model('CompanySetting').deleteOne({ company: this._id });
+  const employees = await mongoose.model('Employee').find({ company: this._id });
+  employees.forEach(async (employee) => {
+    await mongoose.model('OtherTaxablePay').deleteMany({ employee: employee._id });
+    await mongoose.model('OtherNonTaxablePay').deleteMany({ employee: employee._id });
+  });
+
+  await this.model('CompanySetting').deleteMany({ company: this._id });
+  await mongoose.model('Compensation').deleteMany({ company: this._id });
+  await mongoose.model('Department').deleteMany({ company: this._id });
+  await mongoose.model('Employee').deleteMany({ company: this._id });
+  await mongoose.model('NonTaxablePay').deleteMany({ company: this._id });
+  await mongoose.model('TaxablePay').deleteMany({ company: this._id });
+  await mongoose.model('Status').deleteMany({ company: this._id });
 
   next();
 });
