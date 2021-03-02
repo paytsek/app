@@ -9,6 +9,9 @@ import {
   COMPENSATIONS_LIST_FAIL,
   COMPENSATIONS_LIST_REQUEST,
   COMPENSATIONS_LIST_SUCCESS,
+  COMPENSATIONS_UPDATE_FAIL,
+  COMPENSATIONS_UPDATE_REQUEST,
+  COMPENSATIONS_UPDATE_SUCCESS,
 } from '../types';
 
 import notification from '../../utils/notification';
@@ -69,5 +72,34 @@ export const deleteCompensation = (employeeId, id) => async (dispatch) => {
 
     dispatch({ type: COMPENSATIONS_DELETE_FAIL });
     dispatch(notification('error', message || 'Server Error', dispatch));
+  }
+};
+
+export const updateCompensation = (employeeId, id, compensationData) => async (
+  dispatch,
+) => {
+  dispatch({ type: COMPENSATIONS_UPDATE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const { data } = await axios.put(
+      `/employees/${employeeId}/compensations/${id}`,
+      compensationData,
+      config,
+    );
+    const message = 'Compensation successfully updated';
+
+    dispatch(notification('success', message, dispatch));
+    dispatch({ type: COMPENSATIONS_UPDATE_SUCCESS, payload: data });
+  } catch (error) {
+    const { errors } = error.response.data;
+
+    dispatch(notification('error', 'Validation Error', dispatch));
+    dispatch({ type: COMPENSATIONS_UPDATE_FAIL, payload: errors });
   }
 };

@@ -57,6 +57,7 @@ import {
   compensationsListReducers,
   compensationCreateReducers,
   compensationDeleteReducers,
+  compensationUpdateReducers,
 } from './compensationsReducers';
 
 import snackbarReducer from './snackbarReducers';
@@ -113,6 +114,7 @@ const reducers = combineReducers({
   compensationsList: compensationsListReducers,
   compensationCreate: compensationCreateReducers,
   compensationDelete: compensationDeleteReducers,
+  compensationUpdate: compensationUpdateReducers,
 });
 
 export default reducers;
