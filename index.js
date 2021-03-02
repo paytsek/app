@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 5001;
 
 const start = async () => {
   const db =
+    (process.env.NODE_ENV === 'staging' && process.env.MONGO_URI_STAGING) ||
     (process.env.NODE_ENV === 'development' && process.env.MONGO_URI_DEV) ||
     (process.env.NODE_ENV === 'production' && process.env.MONGO_URI_PROD) ||
     (process.env.NODE_ENV === 'local' && process.env.MONGO_URI_LOCAL);
