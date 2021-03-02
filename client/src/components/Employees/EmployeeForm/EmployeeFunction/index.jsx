@@ -56,11 +56,17 @@ const EmployeeFunction = ({ employeeFunction, onChange, errors }) => {
                   onChange={onChange}
                   error={!!errors.department}
                 >
-                  {departments.map((dep) => (
-                    <MenuItem key={dep._id} value={dep._id}>
-                      {dep.name}
+                  {departments.length <= 0 ? (
+                    <MenuItem value="">
+                      No record to show
                     </MenuItem>
-                  ))}
+                  ) : (
+                    departments.map((dep) => (
+                      <MenuItem key={dep._id} value={dep._id}>
+                        {dep.name}
+                      </MenuItem>
+                    ))
+                  )}
                 </Select>
                 {errors.department && (
                   <FormHelperText error>{errors.department}</FormHelperText>
