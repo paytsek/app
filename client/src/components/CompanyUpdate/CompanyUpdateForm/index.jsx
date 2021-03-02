@@ -65,7 +65,7 @@ const CompanyUpdateForm = ({ history, match }) => {
     }
 
     if (updateCompanyNameSuccess) {
-      history.push(`/${name}/companies`);
+      history.push(`/${name}/companies/${id}`);
     }
   }, [company.name, success, updateCompanyNameSuccess]);
 
