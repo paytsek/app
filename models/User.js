@@ -85,7 +85,11 @@ UserSchema.pre('save', async function (next) {
 });
 
 UserSchema.pre('remove', async function (next) {
-  await this.model('Company').deleteMany({ user: this._id }).exec();
+  const companies = await this.model('Company')
+    .find({ user: this._id });
+  companies.forEach(async (company) => {
+    await company.remove();
+  });
   next();
 });
 

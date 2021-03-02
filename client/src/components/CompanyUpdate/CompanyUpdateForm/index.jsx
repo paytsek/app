@@ -22,10 +22,14 @@ const CompanyUpdateForm = ({ history, match }) => {
 
   const { slug } = useSelector((state) => state.companyTenant);
   const { company, loading } = useSelector((state) => state.companyDetails);
-  const { errors, loading: updateCompanyNameLoading } = useSelector(
-    (state) => state.updateCompanyName,
+  const {
+    errors,
+    loading: updateCompanyNameLoading,
+    success: updateCompanyNameSuccess,
+  } = useSelector((state) => state.updateCompanyName);
+  const { loading: companyDeleteLoading, success } = useSelector(
+    (state) => state.companyDelete,
   );
-  const { loading: companyDeleteLoading, success } = useSelector((state) => state.companyDelete);
 
   const { formButton } = useStyles();
 
@@ -59,7 +63,11 @@ const CompanyUpdateForm = ({ history, match }) => {
     if (success) {
       history.push(`/${slug}/companies`);
     }
-  }, [company.name, success]);
+
+    if (updateCompanyNameSuccess) {
+      history.push(`/${name}/companies/${id}`);
+    }
+  }, [company.name, success, updateCompanyNameSuccess]);
 
   return (
     <form onSubmit={handleOnSubmit}>
@@ -93,7 +101,11 @@ const CompanyUpdateForm = ({ history, match }) => {
             >
               Save
             </Button>
-            <Button size="small" onClick={() => setName(company.name)} startIcon={<Undo />}>
+            <Button
+              size="small"
+              onClick={() => setName(company.name)}
+              startIcon={<Undo />}
+            >
               Reset
             </Button>
             <Button

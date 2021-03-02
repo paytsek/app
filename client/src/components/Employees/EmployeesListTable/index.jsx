@@ -49,7 +49,6 @@ const EmployeesListTable = ({ history }) => {
     { field: 'firstName', headerName: 'First Name', width: 200 },
     { field: 'lastName', headerName: 'Last Name', width: 200 },
     { field: 'hireDate', headerName: 'Hire Date', width: 200 },
-    { field: 'resignationDate', headerName: 'Resignation Date', width: 200 },
     { field: 'department', headerName: 'Department', width: 200 },
     { field: 'position', headerName: 'Position', width: 200 },
     { field: 'compensation', headerName: 'Gross Pay', width: 200 },
@@ -57,7 +56,7 @@ const EmployeesListTable = ({ history }) => {
       field: '',
       headerName: '',
       sortable: false,
-      width: 290,
+      width: 215,
       renderCell: ({ row }) => (
         <>
           <Button
@@ -82,9 +81,7 @@ const EmployeesListTable = ({ history }) => {
   const rows = employees.map((employee) => ({
     ...employee,
     hireDate: moment(employee.hireDate).format('MMM DD, YYYY'),
-    resignationDate:
-      employee.resignationDate && moment(employee.resignationDate).format('MMM DD, YYYY'),
-    department: employee.department.name,
+    department: (employee.department && employee.department.name) || '',
     compensation: employee.compensation.basicPay,
   }));
 

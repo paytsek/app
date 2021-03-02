@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, Typography, Button, ListSubheader, Paper, Divider } from '@material-ui/core';
+import {
+  Container,
+  Typography,
+  Button,
+  ListSubheader,
+  Paper,
+  Divider,
+} from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -73,7 +80,9 @@ const SelectCompanyPage = ({ history }) => {
             {loading ? (
               <MuiSkeleton />
             ) : (
-              (companies.length <= 0 && <Typography>There are no companies to show</Typography>) ||
+              (companies.length <= 0 && (
+                <Typography>There are no companies to show</Typography>
+              )) ||
               companies.map((comp) => (
                 <div key={comp._id}>
                   <ListItem
@@ -85,7 +94,11 @@ const SelectCompanyPage = ({ history }) => {
                     }}
                   >
                     <ListItemText primary={comp.name} />
-                    <ListItemText secondary={`${comp.employees.length} members`} />
+                    <ListItemText
+                      secondary={`${
+                        (comp.employees && comp.employees.length) || 0
+                      } members`}
+                    />
                     <ArrowForwardIcon />
                   </ListItem>
                   <Divider variant="inset" component="li" />
@@ -120,7 +133,11 @@ const SelectCompanyPage = ({ history }) => {
           Sign out
         </Button>
       </div>
-      <CompanyCreateFormDialog open={open} handleClose={handleOnClose} title="Add a company name" />
+      <CompanyCreateFormDialog
+        open={open}
+        handleClose={handleOnClose}
+        title="Add a company name"
+      />
     </Container>
   );
 };

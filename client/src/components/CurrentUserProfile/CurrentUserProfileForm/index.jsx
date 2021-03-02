@@ -12,7 +12,13 @@ import {
   updateCurrentUser,
   deleteCurrentUser,
 } from '../../../redux/actions/usersActions';
-import { COMPANY_TENANT_REMOVE, CURRENT_USER_RESET, CURRENT_USER_UPDATE_RESET, LOGOUT } from '../../../redux/types';
+import {
+  COMPANY_TENANT_REMOVE,
+  CURRENT_USER_DELETE_RESET,
+  CURRENT_USER_RESET,
+  CURRENT_USER_UPDATE_RESET,
+  LOGOUT,
+} from '../../../redux/types';
 import useStyles from './styles';
 
 const CurrentUserProfileForm = ({ history }) => {
@@ -22,7 +28,9 @@ const CurrentUserProfileForm = ({ history }) => {
   const { loading: currentUserUpdateLoading, errors } = useSelector(
     (state) => state.currentUserUpdate,
   );
-  const { loading: currentUserDeleteLoading } = useSelector((state) => state.currentUserDelete);
+  const { loading: currentUserDeleteLoading, success } = useSelector(
+    (state) => state.currentUserDelete,
+  );
   const { slug } = useSelector((state) => state.companyTenant);
 
   const [state, setState] = useState({
@@ -64,9 +72,6 @@ const CurrentUserProfileForm = ({ history }) => {
 
   const handleDeleteCurrentUser = async (userData) => {
     await dispatch(deleteCurrentUser(userData));
-    dispatch({ type: LOGOUT });
-    dispatch({ type: COMPANY_TENANT_REMOVE });
-    history.push('/login');
   };
 
   useEffect(() => {
@@ -77,6 +82,7 @@ const CurrentUserProfileForm = ({ history }) => {
     return () => {
       dispatch({ type: CURRENT_USER_RESET });
       dispatch({ type: CURRENT_USER_UPDATE_RESET });
+      dispatch({ type: CURRENT_USER_DELETE_RESET });
     };
   }, []);
 
@@ -84,7 +90,13 @@ const CurrentUserProfileForm = ({ history }) => {
     if (user) {
       handleReset();
     }
-  }, [user]);
+
+    if (success) {
+      dispatch({ type: LOGOUT });
+      dispatch({ type: COMPANY_TENANT_REMOVE });
+      history.push('/login');
+    }
+  }, [user, success]);
 
   return loading ? (
     <Grid item xs={12} md={7} lg={8}>

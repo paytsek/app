@@ -193,7 +193,7 @@ const EmployeeForm = ({ history, match }) => {
         tin: employee.tin || '',
       },
       employeeFunction: {
-        department: employee.department._id || '',
+        department: (employee.department && employee.department._id) || '',
         position: employee.position || '',
         workingDays: employee.workingHours || 22,
         workingHours: employee.workingHours || 8,

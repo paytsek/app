@@ -28,6 +28,48 @@ import {
 } from '../types';
 import notification from '../../utils/notification';
 
+export const getCompanyTenant = () => async (dispatch, getState) => {
+  const slug = localStorage.getItem('tenant');
+
+  setTenant(slug);
+
+  dispatch({ type: COMPANY_TENANT_REQUEST });
+
+  try {
+    const { data } = await axios.get(`/companies/tenant/${slug}`);
+
+    const { user } = getState().authUser;
+
+    const isAdministrator = data.tenant.administrators.includes(user.id);
+
+    dispatch({ type: COMPANY_TENANT_SUCCESS, payload: data, isAdministrator });
+  } catch (error) {
+    const { errors } = error.response.data;
+
+    dispatch({ type: COMPANY_TENANT_FAIL, payload: errors });
+  }
+};
+
+export const setCompanyTenant = (slug) => async (dispatch) => {
+  dispatch({ type: COMPANY_TENANT_HEADERS_REQUEST });
+
+  try {
+    const { data } = await axios.post(`/companies/tenant/${slug}`);
+
+    dispatch({ type: COMPANY_TENANT_HEADERS_SUCCESS, payload: data });
+    dispatch(getCompanyTenant());
+  } catch (error) {
+    const { errors } = error.response.data;
+    const message = errors && errors.message;
+
+    if (message) {
+      dispatch(notification('error', message, dispatch));
+    }
+
+    dispatch({ type: COMPANY_TENANT_HEADERS_FAIL, payload: errors });
+  }
+};
+
 export const getCompaniesList = () => async (dispatch) => {
   dispatch({ type: COMPANY_LIST_REQUEST });
 
@@ -99,11 +141,12 @@ export const updateCompanyName = (id, companyData) => async (dispatch) => {
   };
 
   try {
-    await axios.put(`/companies/name/${id}`, companyData, config);
+    const { data } = await axios.put(`/companies/name/${id}`, companyData, config);
 
     const message = 'Company name usccessfully updated';
-    dispatch({ type: COMPANY_NAME_UPDATE_SUCCESS });
+    dispatch({ type: COMPANY_NAME_UPDATE_SUCCESS, payload: data });
     dispatch(notification('success', message, dispatch));
+    dispatch(setCompanyTenant(data.company.slug));
   } catch (error) {
     const { errors } = error.response.data;
     const message = errors && errors.message;
@@ -174,7 +217,11 @@ export const updateCompanySettings = (id, companySettings) => async (dispatch) =
   };
 
   try {
-    const { data } = await axios.put(`/companies/settings/${id}`, companySettings, config);
+    const { data } = await axios.put(
+      `/companies/settings/${id}`,
+      companySettings,
+      config,
+    );
 
     const message = 'Company Setting successfully updated';
 
@@ -192,47 +239,5 @@ export const updateCompanySettings = (id, companySettings) => async (dispatch) =
     }
 
     dispatch({ type: COMPANY_SETTINGS_CREATE_FAIL, payload: errors });
-  }
-};
-
-export const getCompanyTenant = () => async (dispatch, getState) => {
-  const slug = localStorage.getItem('tenant');
-
-  setTenant(slug);
-
-  dispatch({ type: COMPANY_TENANT_REQUEST });
-
-  try {
-    const { data } = await axios.get(`/companies/tenant/${slug}`);
-
-    const { user } = getState().authUser;
-
-    const isAdministrator = data.tenant.administrators.includes(user.id);
-
-    dispatch({ type: COMPANY_TENANT_SUCCESS, payload: data, isAdministrator });
-  } catch (error) {
-    const { errors } = error.response.data;
-
-    dispatch({ type: COMPANY_TENANT_FAIL, payload: errors });
-  }
-};
-
-export const setCompanyTenant = (slug) => async (dispatch) => {
-  dispatch({ type: COMPANY_TENANT_HEADERS_REQUEST });
-
-  try {
-    const { data } = await axios.post(`/companies/tenant/${slug}`);
-
-    dispatch({ type: COMPANY_TENANT_HEADERS_SUCCESS, payload: data });
-    dispatch(getCompanyTenant());
-  } catch (error) {
-    const { errors } = error.response.data;
-    const message = errors && errors.message;
-
-    if (message) {
-      dispatch(notification('error', message, dispatch));
-    }
-
-    dispatch({ type: COMPANY_TENANT_HEADERS_FAIL, payload: errors });
   }
 };
