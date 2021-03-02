@@ -97,6 +97,7 @@ export const updateCompanyNameReducers = (state = { errors: {} }, action) => {
     case COMPANY_NAME_UPDATE_REQUEST:
       return { ...state, loading: true };
     case COMPANY_NAME_UPDATE_SUCCESS:
+      localStorage.setItem('tenant', payload.company.slug);
       return { ...state, loading: false, success: true };
     case COMPANY_NAME_UPDATE_FAIL:
       return { loading: false, success: false, errors: payload };
