@@ -186,7 +186,7 @@ export const updateCurrentUser = (userData) => async (dispatch) => {
   try {
     const { data } = await axios.put('/users/current-user', userData, config);
 
-    dispatch({ type: CURRENT_USER_UPDATE_SUCCESS });
+    dispatch({ type: CURRENT_USER_UPDATE_SUCCESS, payload: data });
     dispatch({ type: CURRENT_USER_SUCCESS, payload: data });
 
     const message = 'Successfully updated';

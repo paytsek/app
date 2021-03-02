@@ -63,6 +63,11 @@ export const authUserReducers = (
     case LOGOUT:
       localStorage.removeItem('token');
       return { ...state, auth: false, user: {} };
+    case CURRENT_USER_UPDATE_SUCCESS:
+      return {
+        ...state,
+        user: { ...state.user, ...payload.user },
+      };
     default:
       return state;
   }
