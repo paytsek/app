@@ -9,9 +9,13 @@ const CompanySetting = require('../models/CompanySetting');
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({}).populate('company');
 
-  const filteredUser = users.filter((user) => user._id.toString() !== req.user._id.toString());
+  const filteredUser = users.filter(
+    (user) => user._id.toString() !== req.user._id.toString(),
+  );
 
-  res.status(200).json({ success: true, users: filteredUser, count: filteredUser.length });
+  res
+    .status(200)
+    .json({ success: true, users: filteredUser, count: filteredUser.length });
 });
 
 // @ROUTE GET /api/v1/users/:id
@@ -143,13 +147,17 @@ const deleteCurrentUser = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Invalid password' }));
   }
 
-  const companySettings = user.companies.map((company) => company.companySettings._id);
+  const companySettings = user.companies.map(
+    (company) => company.companySettings && company.companySettings._id,
+  );
 
   await CompanySetting.deleteMany({ _id: { $in: companySettings } });
 
   await user.remove();
 
-  return res.status(200).json({ success: true, user: {}, message: 'User successfully deleted' });
+  return res
+    .status(200)
+    .json({ success: true, user: {}, message: 'User successfully deleted' });
 });
 
 // @ROUTE PUT /api/v1/users/:id
@@ -193,7 +201,9 @@ const deleteUser = asyncHandler(async (req, res, next) => {
 
   if (password !== confirmPassword) {
     res.status(400);
-    return next(new ErrorResponse({ message: 'Password and password confirmation mismatch' }));
+    return next(
+      new ErrorResponse({ message: 'Password and password confirmation mismatch' }),
+    );
   }
 
   const isMatch = await currentUser.isMatch(password);
