@@ -18,7 +18,7 @@ const CompensationList = ({ compensations, loading, onChange, values }) =>
           <FormControl fullWidth size="small">
             <TextField
               type="number"
-              onChange={(e) => onChange(e, compensation._id)}
+              onChange={(e) => onChange(e, compensationValue || compensation._id)}
               defaultValue={(compensationValue && compensationValue.value) || ''}
               InputProps={{
                 startAdornment: (

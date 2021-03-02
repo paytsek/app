@@ -21,9 +21,13 @@ import {
   getCompensations,
   createCompensation,
   deleteCompensation,
+  updateCompensation,
 } from '../../../../redux/actions/compensationsActions';
 import useStyles from '../styles';
-import { COMPENSATIONS_CREATE_RESET } from '../../../../redux/types';
+import {
+  COMPENSATIONS_CREATE_RESET,
+  COMPENSATIONS_UPDATE_RESET,
+} from '../../../../redux/types';
 
 const EmployeeCompensationsTable = ({ match }) => {
   const dispatch = useDispatch();
@@ -34,21 +38,35 @@ const EmployeeCompensationsTable = ({ match }) => {
   const [selectedCompensation, setSelectedCompensation] = useState({});
 
   const { compensations } = useSelector((state) => state.compensationsList);
-  const { errors, loading, success } = useSelector((state) => state.compensationCreate);
+  const { errors: compensationCreateErrors, loading, success } = useSelector(
+    (state) => state.compensationCreate,
+  );
   const { loading: compensationDeleteLoading } = useSelector(
     (state) => state.compensationDelete,
   );
+  const {
+    errors: compensationUpdateErrors,
+    loading: compensationUpdateLoading,
+    success: compensationUpdateSuccess,
+  } = useSelector((state) => state.compensationUpdate);
 
   const { paper, fieldsContainer } = useStyles();
+
+  const errors = { ...compensationCreateErrors, ...compensationUpdateErrors };
 
   const handleClose = () => {
     setOpen(false);
     dispatch({ type: COMPENSATIONS_CREATE_RESET });
+    dispatch({ type: COMPENSATIONS_UPDATE_RESET });
     setSelectedCompensation({});
   };
 
   const handleOnSubmit = (compensationData) => {
-    dispatch(createCompensation(id, compensationData));
+    if (selectedCompensation._id) {
+      dispatch(updateCompensation(id, selectedCompensation._id, compensationData));
+    } else {
+      dispatch(createCompensation(id, compensationData));
+    }
   };
 
   useEffect(() => {
@@ -56,10 +74,10 @@ const EmployeeCompensationsTable = ({ match }) => {
   }, []);
 
   useEffect(() => {
-    if (success) {
+    if (success || compensationUpdateSuccess) {
       handleClose();
     }
-  }, [success]);
+  }, [success, compensationUpdateSuccess]);
 
   return (
     <Paper className={paper} elevation={6}>
@@ -121,7 +139,7 @@ const EmployeeCompensationsTable = ({ match }) => {
         handleClose={handleClose}
         onSubmit={handleOnSubmit}
         errors={errors}
-        loading={loading}
+        loading={loading || compensationUpdateLoading}
         compensation={selectedCompensation}
       />
     </Paper>

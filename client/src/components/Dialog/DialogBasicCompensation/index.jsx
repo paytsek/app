@@ -55,23 +55,43 @@ const DialogBasicCompensation = ({
   const { closeButton, formButton } = useStyles();
 
   const handleOnChangeOtherTaxablePays = (e, other) => {
-    setBasicCompensation((prevState) => ({
-      ...prevState,
-      otherTaxablePays: prevState.otherTaxablePays.map((otherTaxablePay) =>
-        (otherTaxablePay.taxablePay === other
-          ? { value: e.target.value, taxablePay: other }
-          : otherTaxablePay)),
-    }));
+    if (other._id) {
+      setBasicCompensation((prevState) => ({
+        ...prevState,
+        otherTaxablePays: prevState.otherTaxablePays.map((otherTaxablePay) =>
+          (otherTaxablePay.taxablePay === other._id
+            ? { value: e.target.value, taxablePay: other._id }
+            : otherTaxablePay)),
+      }));
+    } else {
+      setBasicCompensation((prevState) => ({
+        ...prevState,
+        otherTaxablePays: prevState.otherTaxablePays.map((otherTaxablePay) =>
+          (otherTaxablePay.taxablePay === other
+            ? { value: e.target.value, taxablePay: other }
+            : otherTaxablePay)),
+      }));
+    }
   };
 
   const handleOnChangeOtherNonTaxablePays = (e, other) => {
-    setBasicCompensation((prevState) => ({
-      ...prevState,
-      otherNonTaxablePays: prevState.otherNonTaxablePays.map((otherNonTaxablePay) =>
-        (otherNonTaxablePay.nonTaxablePay === other
-          ? { value: e.target.value, nonTaxablePay: other }
-          : otherNonTaxablePay)),
-    }));
+    if (other._id) {
+      setBasicCompensation((prevState) => ({
+        ...prevState,
+        otherNonTaxablePays: prevState.otherNonTaxablePays.map((otherNonTaxablePay) =>
+          (otherNonTaxablePay.nonTaxablePay === other._id
+            ? { value: e.target.value, nonTaxablePay: other._id }
+            : otherNonTaxablePay)),
+      }));
+    } else {
+      setBasicCompensation((prevState) => ({
+        ...prevState,
+        otherNonTaxablePays: prevState.otherNonTaxablePays.map((otherNonTaxablePay) =>
+          (otherNonTaxablePay.nonTaxablePay === other
+            ? { value: e.target.value, nonTaxablePay: other }
+            : otherNonTaxablePay)),
+      }));
+    }
   };
 
   const handleOnSubmit = (e) => {
@@ -101,10 +121,6 @@ const DialogBasicCompensation = ({
         basicPay: compensation.basicPay,
         deminimis: compensation.deminimis,
         effectivityDate: moment(compensation.effectivityDate).format('YYYY-MM-DD'),
-        otherTaxablePays: compensation.otherTaxablePays.map((otherTaxablePay) => ({
-          taxablePay: otherTaxablePay.taxablePay._id,
-          value: otherTaxablePay.value,
-        })),
       }));
     }
 
@@ -118,7 +134,7 @@ const DialogBasicCompensation = ({
       });
     }
 
-    if (taxablePaysListSuccess) {
+    if (taxablePaysListSuccess && !compensation.otherTaxablePays) {
       setBasicCompensation((prevState) => ({
         ...prevState,
         otherTaxablePays: taxablePays.map((taxablePay) => ({
@@ -126,9 +142,19 @@ const DialogBasicCompensation = ({
           value: '',
         })),
       }));
+    } else {
+      setBasicCompensation((prevState) => ({
+        ...prevState,
+        otherTaxablePays:
+          compensation.otherTaxablePays &&
+          compensation.otherTaxablePays.map((taxablePay) => ({
+            taxablePay: taxablePay._id,
+            value: taxablePay.value,
+          })),
+      }));
     }
 
-    if (nonTaxablePaysListSuccess) {
+    if (nonTaxablePaysListSuccess && !compensation.otherNonTaxablePays) {
       setBasicCompensation((prevState) => ({
         ...prevState,
         otherNonTaxablePays: nonTaxablePays.map((nonTaxablePay) => ({
@@ -136,8 +162,18 @@ const DialogBasicCompensation = ({
           value: '',
         })),
       }));
+    } else {
+      setBasicCompensation((prevState) => ({
+        ...prevState,
+        otherNonTaxablePays:
+          compensation.otherNonTaxablePays &&
+          compensation.otherNonTaxablePays.map((nonTaxablePay) => ({
+            nonTaxablePay: nonTaxablePay._id,
+            value: nonTaxablePay.value,
+          })),
+      }));
     }
-  }, [open, taxablePaysListSuccess, nonTaxablePaysListSuccess]);
+  }, [open, taxablePaysListSuccess, nonTaxablePaysListSuccess, compensation]);
 
   return (
     <Dialog
