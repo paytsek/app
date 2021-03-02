@@ -15,6 +15,11 @@ const useStyles = makeStyles((theme) => ({
     '& h6': {
       fontWeight: 'bold',
     },
+
+    '& .MuiListItem-root': {
+      flexWrap: 'wrap',
+      flexDirection: 'column',
+    },
   },
   formButton: {
     paddingTop: theme.spacing(2),

@@ -4,10 +4,19 @@ const Employee = require('./Employee');
 
 const StatusSchema = new mongoose.Schema(
   {
-    active: {
-      type: Boolean,
-      default: true,
-      required: [true, 'Active is required'],
+    employmentStatus: {
+      type: String,
+      enum: [
+        'active',
+        'inactive',
+        'indefinite',
+        'maternityLeave',
+        'paternityLeave',
+        'medicalLeave',
+        'sabbatical',
+        'soloParentLeave',
+      ],
+      default: 'active',
     },
     effectivityDate: {
       type: Date,

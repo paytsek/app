@@ -11,12 +11,12 @@ const errorHandler = (err, req, res, next) => {
   }
 
   if (err.code === 11000) {
-    res.status(400);
+    res.status(error.statusCode || 400);
     error = new ErrorResponse({ message: 'Duplicate field value entered' });
   }
 
   if (err.name === 'CastError') {
-    res.status(404);
+    res.status(error.statusCode || 404);
     error = new ErrorResponse({
       message: `Resource with an id of ${error.value} not found`,
     });
@@ -30,11 +30,11 @@ const errorHandler = (err, req, res, next) => {
       validationError.errors[field] = validationError.errors[field].message;
     });
 
-    res.status(400);
+    res.status(error.statusCode || 400);
     error = new ErrorResponse({ ...validationError.errors });
   }
 
-  res.status(res.statusCode === 200 ? 500 : res.statusCode);
+  res.status(error.statusCode ? error.statusCode : res.statusCode || 500);
   res.json({ success: false, ...error });
 };
 

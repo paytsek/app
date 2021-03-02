@@ -1193,10 +1193,34 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
         }),
       );
     });
+
+    it('should return 400 response if only 1 compensation left to be deleted', async () => {
+      const res = await request(app)
+        .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
+        .set({ 'x-company-tenant': company.slug })
+        .auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body).toEqual(
+        expect.objectContaining({
+          errors: {
+            message: "Employee's compensation must have at least 1",
+          },
+        }),
+      );
+    });
   });
 
   describe('Success Response', () => {
     it('should return success response if ids are valid', async () => {
+      await Compensation.create({
+        basicPay: 50000,
+        effectivityDate: employee.hireDate,
+        employee: employee._id,
+        company: company._id,
+      });
+
       const res = await request(app)
         .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
         .set({ 'x-company-tenant': company.slug })

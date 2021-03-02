@@ -17,7 +17,7 @@ const NonTaxablePay = require('./models/NonTaxablePay');
 const OtherTaxablePay = require('./models/OtherTaxablePay');
 const OtherNonTaxablePay = require('./models/OtherNonTaxablePay');
 
-const db = process.env.MONGO_URI_DEV;
+const db = process.env.NODE_ENV === 'development' ? process.env.MONGO_URI_DEV : process.env.MONGO_URI_LOCAL;
 
 mongoose.connect(db, {
   useNewUrlParser: true,

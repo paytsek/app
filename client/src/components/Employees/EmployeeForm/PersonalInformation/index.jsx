@@ -146,7 +146,7 @@ const PersonalInformation = ({ personalInformation, onChange, errors }) => {
               <InputLabel htmlFor="placeOfIssue">Place of Issue</InputLabel>
               <Input
                 autoComplete="off"
-                type="number"
+                type="text"
                 id="placeOfIssue"
                 name="placeOfIssue"
                 value={placeOfIssue}

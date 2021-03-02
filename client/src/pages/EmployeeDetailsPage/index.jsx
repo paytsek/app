@@ -20,8 +20,9 @@ import MuiSkeleton from '../../components/MuiSkeleton';
 import { getEmployeeDetails } from '../../redux/actions/employeesActions';
 import useStyles from './styles';
 import { EMPLOYEE_DETAILS_RESET } from '../../redux/types/employeeTypes';
+import { EMPLOYMENTS_STATUS } from '../../utils/globals';
 
-const EmployeeDetailsPage = ({ match }) => {
+const EmployeeDetailsPage = ({ match, history }) => {
   const { id, slug } = match.params;
   const dispatch = useDispatch();
 
@@ -53,7 +54,13 @@ const EmployeeDetailsPage = ({ match }) => {
           View Employee
         </Typography>
         <div className={actions}>
-          <Button variant="contained" color="primary" startIcon={<Edit />} size="small">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => history.push(`${id}/edit`)}
+            startIcon={<Edit />}
+            size="small"
+          >
             Edit
           </Button>
         </div>
@@ -72,19 +79,12 @@ const EmployeeDetailsPage = ({ match }) => {
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Status</Typography>
-                  <Typography variant="subtitle1">
-                    {employee.status.active
-                      ? `Active since ${moment(employee.status.effectivityDate).format(
-                        'MMM DD, YYYY',
-                      )}`
-                      : `Inactive since${moment(employee.status.effectivityDate).format(
-                        'MMM DD, YYYY',
-                      )}`}
-                  </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Employee Number</Typography>
-                  <Typography variant="subtitle1">{employee.employeeNumber || '--'}</Typography>
+                  <Typography variant="subtitle1">
+                    {employee.employeeNumber || '--'}
+                  </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">First Name</Typography>
@@ -96,7 +96,9 @@ const EmployeeDetailsPage = ({ match }) => {
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Department</Typography>
-                  <Typography variant="subtitle1">{employee.department.name || '--'}</Typography>
+                  <Typography variant="subtitle1">
+                    {employee.department.name || '--'}
+                  </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Position</Typography>
@@ -105,7 +107,8 @@ const EmployeeDetailsPage = ({ match }) => {
                 <div className={details}>
                   <Typography variant="subtitle2">Hire Date</Typography>
                   <Typography variant="subtitle1">
-                    {(employee.hireDate && moment(employee.hireDate).format('MMM DD, YYYY')) ||
+                    {(employee.hireDate &&
+                      moment(employee.hireDate).format('MMM DD, YYYY')) ||
                       '--'}
                   </Typography>
                 </div>
@@ -130,7 +133,9 @@ const EmployeeDetailsPage = ({ match }) => {
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Civil Status</Typography>
-                  <Typography variant="subtitle1">{employee.civilStatus || '--'}</Typography>
+                  <Typography variant="subtitle1">
+                    {employee.civilStatus || '--'}
+                  </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Qualified Dependents</Typography>
@@ -141,21 +146,28 @@ const EmployeeDetailsPage = ({ match }) => {
                 <div className={details}>
                   <Typography variant="subtitle2">Birth Date</Typography>
                   <Typography variant="subtitle1">
-                    {(employee.birthDate && moment(employee.birthDate).format('MMM DD, YYYY')) ||
+                    {(employee.birthDate &&
+                      moment(employee.birthDate).format('MMM DD, YYYY')) ||
                       '--'}
                   </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Nationality</Typography>
-                  <Typography variant="subtitle1">{employee.nationality || '--'}</Typography>
+                  <Typography variant="subtitle1">
+                    {employee.nationality || '--'}
+                  </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Registered Address</Typography>
-                  <Typography variant="subtitle1">{employee.formattedRegisteredAddress}</Typography>
+                  <Typography variant="subtitle1">
+                    {employee.formattedRegisteredAddress}
+                  </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Permanent Address</Typography>
-                  <Typography variant="subtitle1">{employee.formattedPermanentAddress}</Typography>
+                  <Typography variant="subtitle1">
+                    {employee.formattedPermanentAddress}
+                  </Typography>
                 </div>
               </Grid>
             </Grid>
@@ -166,15 +178,21 @@ const EmployeeDetailsPage = ({ match }) => {
                 </Typography>
                 <div className={details}>
                   <Typography variant="subtitle2">SSS</Typography>
-                  <Typography variant="subtitle1">{employee.sssNumber || '--'}</Typography>
+                  <Typography variant="subtitle1">
+                    {employee.sssNumber || '--'}
+                  </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Philhealth</Typography>
-                  <Typography variant="subtitle1">{employee.phicNumber || '--'}</Typography>
+                  <Typography variant="subtitle1">
+                    {employee.phicNumber || '--'}
+                  </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Pag-Ibig</Typography>
-                  <Typography variant="subtitle1">{employee.hdmfNumber || '--'}</Typography>
+                  <Typography variant="subtitle1">
+                    {employee.hdmfNumber || '--'}
+                  </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Tax Identification</Typography>
@@ -210,10 +228,16 @@ const EmployeeDetailsPage = ({ match }) => {
                           primary="Gross Compensation"
                           secondary={(
                             <>
-                              <Typography component="span" variant="body2" color="textPrimary">
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                color="textPrimary"
+                              >
                                 {compensation.basicPay}
                               </Typography>
-                              {` - ${moment(compensation.effectivityDate).format('MMM DD, YYYY')}`}
+                              {` - ${moment(compensation.effectivityDate).format(
+                                'MMM DD, YYYY',
+                              )}`}
                             </>
                           )}
                         />
@@ -232,10 +256,22 @@ const EmployeeDetailsPage = ({ match }) => {
                           primary="Status"
                           secondary={(
                             <>
-                              <Typography component="span" variant="body2" color="textPrimary">
-                                {status.active ? 'Active' : 'Inactive'}
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                {(EMPLOYMENTS_STATUS.find(
+                                  (x) => x.value === status.employmentStatus,
+                                ) &&
+                                  EMPLOYMENTS_STATUS.find(
+                                    (x) => x.value === status.employmentStatus,
+                                  ).name) ||
+                                  '--'}
                               </Typography>
-                              {` - ${moment(status.effectivityDate).format('MMM DD, YYYY')}`}
+                              {` - ${moment(status.effectivityDate).format(
+                                'MMM DD, YYYY',
+                              )}`}
                             </>
                           )}
                         />

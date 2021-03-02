@@ -185,6 +185,16 @@ EmployeeSchema.post('save', function (doc, next) {
   next();
 });
 
+EmployeeSchema.methods.getEmployeeCompensation = async function () {
+  const compensations = await mongoose
+    .model('Compensation')
+    .find({ employee: this._id });
+
+  const [compensation] = compensations.sort((a, b) => (a.basicPay > b.basicPay ? -1 : 1));
+
+  return compensation;
+};
+
 EmployeeSchema.pre('remove', async function (next) {
   await mongoose.model('Status').deleteMany({ employee: this._id });
   await mongoose.model('Compensation').deleteMany({ employee: this._id });

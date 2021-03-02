@@ -33,6 +33,7 @@ import {
   employeeDetailsReducers,
   employeeCreateReducers,
   employeeDeleteReducers,
+  employeeUpdateReducers,
 } from './employeesReducers';
 import {
   taxablePaysListReducers,
@@ -46,6 +47,18 @@ import {
   nonTaxablePaysDeleteReducers,
   nonTaxablePaysUpdateReducers,
 } from './nonTaxablePaysReducers';
+import {
+  statusesListReducers,
+  statusesCreateReducers,
+  statusesDeleteReducers,
+  statusesUpdateReducers,
+} from './statusesReducers';
+import {
+  compensationsListReducers,
+  compensationCreateReducers,
+  compensationDeleteReducers,
+  compensationUpdateReducers,
+} from './compensationsReducers';
 
 import snackbarReducer from './snackbarReducers';
 
@@ -81,6 +94,7 @@ const reducers = combineReducers({
   employeeDetails: employeeDetailsReducers,
   employeeCreate: employeeCreateReducers,
   employeeDelete: employeeDeleteReducers,
+  employeeUpdate: employeeUpdateReducers,
   // TAXABLEPAYS
   taxablePaysList: taxablePaysListReducers,
   taxablePaysCreate: taxablePaysCreateReducers,
@@ -91,6 +105,16 @@ const reducers = combineReducers({
   nonTaxablePaysCreate: nonTaxablePaysCreateReducers,
   nonTaxablePaysDelete: nonTaxablePaysDeleteReducers,
   nonTaxablePaysUpdate: nonTaxablePaysUpdateReducers,
+  // STATUSES
+  statusesList: statusesListReducers,
+  statusesCreate: statusesCreateReducers,
+  statusesDelete: statusesDeleteReducers,
+  statusesUpdate: statusesUpdateReducers,
+  // COMPENSATIONS
+  compensationsList: compensationsListReducers,
+  compensationCreate: compensationCreateReducers,
+  compensationDelete: compensationDeleteReducers,
+  compensationUpdate: compensationUpdateReducers,
 });
 
 export default reducers;

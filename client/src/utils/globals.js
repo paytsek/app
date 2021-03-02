@@ -20,3 +20,14 @@ export const CIVIL_STATUS = [
   { name: 'Separated', value: 'separated' },
   { name: 'Widowed', value: 'widowed' },
 ];
+
+export const EMPLOYMENTS_STATUS = [
+  { name: 'Active', value: 'active' },
+  { name: 'Inactive', value: 'inactive' },
+  { name: 'Indefinite', value: 'indefinite' },
+  { name: 'Maternity Leave', value: 'maternityLeave' },
+  { name: 'Paternity Leave', value: 'paternityLeave' },
+  { name: 'Medical Leave', value: 'medicalLeave' },
+  { name: 'Sabbatical', value: 'sabbatical' },
+  { name: 'Solo Parent Leave', value: 'soloParentLeave' },
+];

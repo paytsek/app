@@ -10,6 +10,9 @@ import {
   EMPLOYEE_DETAILS_SUCCESS,
   EMPLOYEE_LIST_REQUEST,
   EMPLOYEE_LIST_SUCCESS,
+  EMPLOYEE_UPDATE_FAIL,
+  EMPLOYEE_UPDATE_REQUEST,
+  EMPLOYEE_UPDATE_SUCCESS,
 } from '../types/employeeTypes';
 
 import notification from '../../utils/notification';
@@ -75,5 +78,25 @@ export const deleteEmployee = (id) => async (dispatch) => {
     const { errors } = error.response.data;
     dispatch(notification('error', errors.message, dispatch));
     dispatch({ type: EMPLOYEE_CREATE_FAIL, payload: errors });
+  }
+};
+
+export const updateEmployee = (id, employeeData) => async (dispatch) => {
+  dispatch({ type: EMPLOYEE_UPDATE_REQUEST });
+
+  const config = {
+    headers: {
+      'Content-type': 'application/json',
+    },
+  };
+
+  try {
+    await axios.put(`/employees/${id}`, employeeData, config);
+    dispatch({ type: EMPLOYEE_UPDATE_SUCCESS });
+    dispatch(notification('success', 'Employee successfully updated', dispatch));
+  } catch (error) {
+    const { errors } = error.response.data;
+    dispatch(notification('error', errors.message || 'Validation Error', dispatch));
+    dispatch({ type: EMPLOYEE_UPDATE_FAIL, payload: errors });
   }
 };

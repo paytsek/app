@@ -1,6 +1,10 @@
+const mongoose = require('mongoose');
+
 const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../utils/errorResponse');
 const NonTaxablePay = require('../models/NonTaxablePay');
+const Compensation = require('../models/Compensation');
+const OtherNonTaxablePay = require('../models/OtherNonTaxablePay');
 const Company = require('../models/Company');
 const User = require('../models/User');
 
@@ -71,9 +75,40 @@ const createNonTaxablePay = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
 
-  const nonTaxablePay = await NonTaxablePay.create({ name, company: company._id });
+  const session = await mongoose.startSession();
 
-  return res.status(201).json({ success: true, nonTaxablePay });
+  try {
+    session.startTransaction();
+    const opts = { session };
+
+    const [nonTaxablePay] = await NonTaxablePay.create(
+      [{ name, company: company._id }],
+      opts,
+    );
+
+    const compensations = await Compensation.find({ company: company._id }).session(
+      session,
+    );
+
+    await OtherNonTaxablePay.create(
+      compensations.map((compensation) => ({
+        employee: compensation.employee,
+        nonTaxablePay: nonTaxablePay._id,
+        value: '',
+        compensation: compensation._id,
+      })),
+      opts,
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return res.status(201).json({ success: true, nonTaxablePay });
+  } catch (err) {
+    await session.abortTransaction();
+    session.endSession();
+    throw err;
+  }
 });
 
 // @ROUTE PUT /api/v1/nonTaxablePays/:id

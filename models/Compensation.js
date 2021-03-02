@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Employee = require('./Employee');
+const ErrorResponse = require('../utils/errorResponse');
 
 const CompensationSchema = new mongoose.Schema(
   {
@@ -55,22 +55,48 @@ CompensationSchema.post('save', async (doc, next) => {
     .find({ employee: doc.employee });
 
   if (compensations.length <= 0) {
-    await Employee.findByIdAndUpdate(doc.employee, { compensation: doc });
+    await mongoose
+      .model('Employee')
+      .findByIdAndUpdate(doc.employee, { compensation: doc });
   } else {
-    const [compensation] = compensations.sort((a, b) =>
+    const [compensation] = [...compensations, doc].sort((a, b) =>
       (a.basicPay > b.basicPay ? -1 : 1));
 
-    await Employee.findByIdAndUpdate(doc.employee, { compensation });
+    await mongoose
+      .model('Employee')
+      .findByIdAndUpdate(doc.employee, { compensation }, { new: true });
   }
 
   next();
 });
 
 CompensationSchema.pre('remove', async function (next) {
+  const compensations = await mongoose
+    .model('Compensation')
+    .find({ employee: this.employee })
+    .countDocuments();
+
+  if (compensations <= 1) {
+    return next(
+      new ErrorResponse({ message: "Employee's compensation must have at least 1" }, 400),
+    );
+  }
   await mongoose.model('OtherTaxablePay').deleteMany({ compensation: this._id });
   await mongoose.model('OtherNonTaxablePay').deleteMany({ compensation: this._id });
 
-  next();
+  return next();
+});
+
+CompensationSchema.post('remove', async function () {
+  const compensations = await mongoose
+    .model('Compensation')
+    .find({ employee: this.employee });
+
+  const [compensation] = compensations.sort((a, b) => (a.basicPay > b.basicPay ? -1 : 1));
+
+  await mongoose
+    .model('Employee')
+    .findByIdAndUpdate(this.employee, { compensation }, { new: true });
 });
 
 CompensationSchema.virtual('otherTaxablePays', {

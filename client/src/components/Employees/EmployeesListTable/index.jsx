@@ -50,7 +50,6 @@ const EmployeesListTable = ({ history }) => {
     { field: 'lastName', headerName: 'Last Name', width: 200 },
     { field: 'hireDate', headerName: 'Hire Date', width: 200 },
     { field: 'resignationDate', headerName: 'Resignation Date', width: 200 },
-    { field: 'status', headerName: 'Status', width: 200 },
     { field: 'department', headerName: 'Department', width: 200 },
     { field: 'position', headerName: 'Position', width: 200 },
     { field: 'compensation', headerName: 'Gross Pay', width: 200 },
@@ -66,7 +65,11 @@ const EmployeesListTable = ({ history }) => {
             onClick={() => history.push(`employees/${row._id}`)}
             startIcon={<Search />}
           />
-          <Button color="primary" startIcon={<Edit />} />
+          <Button
+            color="primary"
+            onClick={() => history.push(`employees/${row._id}/edit`)}
+            startIcon={<Edit />}
+          />
           <Button
             color="primary"
             onClick={() => handleOpen(row)}
@@ -81,7 +84,6 @@ const EmployeesListTable = ({ history }) => {
     hireDate: moment(employee.hireDate).format('MMM DD, YYYY'),
     resignationDate:
       employee.resignationDate && moment(employee.resignationDate).format('MMM DD, YYYY'),
-    status: employee.status.active ? 'Active' : 'Inactive',
     department: employee.department.name,
     compensation: employee.compensation.basicPay,
   }));

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Button } from '@material-ui/core';
+import moment from 'moment';
 
 import BasicInformation from './BasicInformation';
 import PersonalInformation from './PersonalInformation';
@@ -12,12 +13,24 @@ import GovernmentIds from './GovernmentIds';
 import EmployeeFuntion from './EmployeeFunction';
 import TaxableCompensation from './TaxableCompensation';
 import NonTaxableCompensation from './NonTaxableCompensation';
+import EmployeeCompensationsTable from './EmployeeCompensationsTable';
+import EmployeeStatusTable from './EmployeeStatusTable';
 
-import { createEmployee } from '../../../redux/actions/employeesActions';
-import { EMPLOYEE_CREATE_RESET } from '../../../redux/types';
+import {
+  createEmployee,
+  getEmployeeDetails,
+  updateEmployee,
+} from '../../../redux/actions/employeesActions';
+import {
+  EMPLOYEE_CREATE_RESET,
+  EMPLOYEE_DETAILS_RESET,
+  EMPLOYEE_UPDATE_RESET,
+} from '../../../redux/types';
 import useStyles from './styles';
 
 const EmployeeForm = ({ history, match }) => {
+  const { id } = match.params;
+
   const dispatch = useDispatch();
 
   const [information, setInformation] = useState({
@@ -95,7 +108,23 @@ const EmployeeForm = ({ history, match }) => {
     nonTaxableCompensation,
   } = information;
 
-  const { errors, success, employee, loading } = useSelector((state) => state.employeeCreate);
+  const {
+    errors: employeeCreateErrors,
+    success,
+    employee: employeeCreateEmployee,
+    loading,
+  } = useSelector((state) => state.employeeCreate);
+  const { employee, success: employeeDetailsSuccess } = useSelector(
+    (state) => state.employeeDetails,
+  );
+
+  const {
+    loading: employeeUpdateLoading,
+    errors: employeeUpdateErrors,
+    success: employeeUpdateSuccess,
+  } = useSelector((state) => state.employeeUpdate);
+
+  const errors = id ? employeeUpdateErrors : employeeCreateErrors;
 
   const registeredAddressErrors = {
     street: errors['registeredAddress.street'],
@@ -109,6 +138,68 @@ const EmployeeForm = ({ history, match }) => {
     city: errors['permanentAddress.city'],
     country: errors['permanentAddress.country'],
     zipCode: errors['permanentAddress.zipCode'],
+  };
+
+  const setEmployeeInformation = () => {
+    setInformation((prevState) => ({
+      ...prevState,
+      basicInformation: {
+        email: employee.email || '',
+        employeeNumber: employee.employeeNumber || '',
+        firstName: employee.firstName || '',
+        lastName: employee.lastName || '',
+        hireDate:
+          (employee.hireDate && moment(employee.hireDate).format('yyyy-MM-DD')) || '',
+        resignationDate:
+          (employee.resignationDate &&
+            moment(employee.resignationDate).format('yyyy-MM-DD')) ||
+          '',
+        rdoCode: employee.rdoCode || '',
+        payRemittances: employee.payRemittances || '',
+      },
+      personalInformation: {
+        gender: employee.gender || '',
+        nationality: employee.nationality || '',
+        civilStatus: employee.civilStatus || '',
+        numberOfQualifiedDependents: employee.numberOfQualifiedDependents || '',
+        validId: employee.validId || '',
+        validIdNumber: employee.validIdNumber || '',
+        placeOfIssue: employee.placeOfIssue || '',
+        birthDate:
+          (employee.birthDate && moment(employee.birthDate).format('yyyy-MM-DD')) || '',
+      },
+      registeredAddress: {
+        street: employee.registeredAddress.street || '',
+        city: employee.registeredAddress.city || '',
+        country: employee.registeredAddress.country || '',
+        zipCode: employee.registeredAddress.zipCode || '',
+      },
+      permanentAddress: {
+        street: employee.permanentAddress.street || '',
+        city: employee.permanentAddress.city || '',
+        country: employee.permanentAddress.country || '',
+        zipCode: employee.permanentAddress.zipCode || '',
+      },
+      basicAdjustment: {
+        sssLoanBalance: employee.sssLoanBalance || 0,
+        hdmfLoanBalance: employee.hdmfLoanBalance || 0,
+        allowances: employee.allowances || 0,
+      },
+      bankingInformation: employee.bankingInformation || '',
+      governmentIds: {
+        sssNumber: employee.sssNumber || '',
+        phicNumber: employee.phicNumber || '',
+        hdmfNumber: employee.hdmfNumber || '',
+        tin: employee.tin || '',
+      },
+      employeeFunction: {
+        department: employee.department._id || '',
+        position: employee.position || '',
+        workingDays: employee.workingHours || 22,
+        workingHours: employee.workingHours || 8,
+        primaryEmployer: employee.primaryEmployer,
+      },
+    }));
   };
 
   const handleOnChangeBasicInformation = (e) =>
@@ -235,9 +326,6 @@ const EmployeeForm = ({ history, match }) => {
       ...governmentIds,
       ...employeeFunction,
       department: (employeeFunction.department && employeeFunction.department) || null,
-      status: {
-        active: true,
-      },
       bankingInformation,
       registeredAddress,
       permanentAddress,
@@ -249,21 +337,37 @@ const EmployeeForm = ({ history, match }) => {
       },
     };
 
-    dispatch(createEmployee(employeeData));
+    if (id) {
+      dispatch(updateEmployee(id, employeeData));
+    } else {
+      dispatch(createEmployee(employeeData));
+    }
   };
 
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    if (id) {
+      dispatch(getEmployeeDetails(id));
+    }
+    return () => {
       dispatch({ type: EMPLOYEE_CREATE_RESET });
-    },
-    [],
-  );
+      dispatch({ type: EMPLOYEE_DETAILS_RESET });
+      dispatch({ type: EMPLOYEE_UPDATE_RESET });
+    };
+  }, []);
 
   useEffect(() => {
     if (success) {
-      history.push(`/${match.params.slug}/employees/${employee._id}`);
+      history.push(`/${match.params.slug}/employees/${employeeCreateEmployee._id}`);
     }
-  }, [success]);
+    if (employeeDetailsSuccess) {
+      setEmployeeInformation();
+      dispatch({ type: EMPLOYEE_DETAILS_RESET });
+    }
+
+    if (employeeUpdateSuccess) {
+      dispatch({ type: EMPLOYEE_UPDATE_RESET });
+    }
+  }, [success, employeeDetailsSuccess, employeeUpdateSuccess]);
 
   const { gridContainer, formButton } = useStyles();
 
@@ -330,23 +434,36 @@ const EmployeeForm = ({ history, match }) => {
         />
       </Grid>
       <Grid item md={6} xs={12}>
-        <TaxableCompensation
-          taxableCompensation={taxableCompensation}
-          onChange={handleOnChangeTaxableCompensation}
-          setDefault={setOtherTaxableDefault}
-          errors={errors}
-        />
+        {!id ? (
+          <TaxableCompensation
+            taxableCompensation={taxableCompensation}
+            onChange={handleOnChangeTaxableCompensation}
+            setDefault={setOtherTaxableDefault}
+            errors={errors}
+          />
+        ) : (
+          <EmployeeStatusTable />
+        )}
       </Grid>
       <Grid item md={6} xs={12}>
-        <NonTaxableCompensation
-          nonTaxableCompensation={nonTaxableCompensation}
-          onChange={handleOnChangeNonTaxableCompensation}
-          setDefault={setOtherNonTaxableDefault}
-        />
+        {!id ? (
+          <NonTaxableCompensation
+            nonTaxableCompensation={nonTaxableCompensation}
+            onChange={handleOnChangeNonTaxableCompensation}
+            setDefault={setOtherNonTaxableDefault}
+          />
+        ) : (
+          <EmployeeCompensationsTable />
+        )}
       </Grid>
       <Grid item>
         <div className={formButton}>
-          <Button color="primary" variant="contained" onClick={handleOnSubmit} disabled={loading}>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handleOnSubmit}
+            disabled={loading || employeeUpdateLoading}
+          >
             Save Employee
           </Button>
         </div>

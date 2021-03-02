@@ -92,12 +92,10 @@ const createEmployee = asyncHandler(async (req, res, next) => {
       opts,
     );
 
-    let { status } = req.body;
     let { compensation } = req.body;
 
-    if (!status || !compensation) {
+    if (!compensation) {
       const errors = {};
-      errors.status = !status ? 'Status is required' : undefined;
       errors.compensation = !compensation ? 'Compensation is required' : undefined;
       await session.abortTransaction();
       session.endSession();
@@ -105,15 +103,13 @@ const createEmployee = asyncHandler(async (req, res, next) => {
       return next(new ErrorResponse(errors));
     }
 
-    const { active } = status;
     const { basicPay, otherTaxablePays, otherNonTaxablePays } = compensation;
     const dailyRate = Number(basicPay) / Number(employee.workingDays);
     const hourlyRate = Number(dailyRate) / Number(employee.workingHours);
 
-    status = await Status.create(
+    await Status.create(
       [
         {
-          active,
           effectivityDate: employee.hireDate,
           company: company._id,
           employee: employee._id,
@@ -226,15 +222,13 @@ const updateEmployee = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
-  //   new: true,
-  //   runValidators: true,
-  // });
+  const compensation = await employee.getEmployeeCompensation();
 
   const fields = Object.keys(req.body);
   fields.forEach((field) => {
     employee[field] = req.body[field];
   });
+  employee.compensation = compensation;
 
   const updatedEmployee = await employee.save();
 

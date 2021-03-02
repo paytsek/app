@@ -22,6 +22,7 @@ import DepartmentPage from '../pages/DepartmentPage';
 import TaxablePaysPage from '../pages/TaxablePaysPage';
 import NonTaxablePaysPage from '../pages/NonTaxablePaysPage';
 import EmployeeCreatePage from '../pages/EmployeeCreatePage';
+import EmployeeUpdatepage from '../pages/EmployeeUpdatePage';
 
 const LayoutRouter = () => (
   <Switch>
@@ -63,6 +64,11 @@ const LayoutRouter = () => (
           <CompanyAdministratorRoute
             path="/:slug/employees/:id"
             component={EmployeeDetailsPage}
+            exact
+          />
+          <CompanyAdministratorRoute
+            path="/:slug/employees/:id/edit"
+            component={EmployeeUpdatepage}
             exact
           />
           <CompanyAdministratorRoute
