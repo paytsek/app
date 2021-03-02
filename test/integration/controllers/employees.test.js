@@ -367,7 +367,6 @@ describe('POST /api/v1/employees - createEmployee', () => {
       expect(res.body.success).toBeFalsy();
       expect(res.body.errors).toEqual(
         expect.objectContaining({
-          status: 'Status is required',
           compensation: 'Compensation is required',
         }),
       );
