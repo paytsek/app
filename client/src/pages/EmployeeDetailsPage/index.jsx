@@ -19,8 +19,8 @@ import MuiSkeleton from '../../components/MuiSkeleton';
 
 import { getEmployeeDetails } from '../../redux/actions/employeesActions';
 import useStyles from './styles';
+import { getEmploymentStatusName } from '../../utils/helpers';
 import { EMPLOYEE_DETAILS_RESET } from '../../redux/types/employeeTypes';
-import { EMPLOYMENTS_STATUS } from '../../utils/globals';
 
 const EmployeeDetailsPage = ({ match, history }) => {
   const { id, slug } = match.params;
@@ -78,9 +78,6 @@ const EmployeeDetailsPage = ({ match, history }) => {
                   <Typography variant="subtitle1">{employee.email || '--'}</Typography>
                 </div>
                 <div className={details}>
-                  <Typography variant="subtitle2">Status</Typography>
-                </div>
-                <div className={details}>
                   <Typography variant="subtitle2">Employee Number</Typography>
                   <Typography variant="subtitle1">
                     {employee.employeeNumber || '--'}
@@ -97,7 +94,7 @@ const EmployeeDetailsPage = ({ match, history }) => {
                 <div className={details}>
                   <Typography variant="subtitle2">Department</Typography>
                   <Typography variant="subtitle1">
-                    {employee.department.name || '--'}
+                    {(employee.department && employee.department.name) || '--'}
                   </Typography>
                 </div>
                 <div className={details}>
@@ -250,33 +247,29 @@ const EmployeeDetailsPage = ({ match, history }) => {
                 <div className={details}>
                   <List>
                     <Typography variant="h5">Statuses</Typography>
-                    {employee.statuses.map((status) => (
-                      <ListItem key={status._id}>
-                        <ListItemText
-                          primary="Status"
-                          secondary={(
-                            <>
-                              <Typography
-                                component="span"
-                                variant="body2"
-                                color="textPrimary"
-                              >
-                                {(EMPLOYMENTS_STATUS.find(
-                                  (x) => x.value === status.employmentStatus,
-                                ) &&
-                                  EMPLOYMENTS_STATUS.find(
-                                    (x) => x.value === status.employmentStatus,
-                                  ).name) ||
-                                  '--'}
-                              </Typography>
-                              {` - ${moment(status.effectivityDate).format(
-                                'MMM DD, YYYY',
-                              )}`}
-                            </>
-                          )}
-                        />
-                      </ListItem>
-                    ))}
+                    {employee.statuses.length > 0
+                      ? employee.statuses.map((status) => (
+                        <ListItem key={status._id}>
+                          <ListItemText
+                            primary="Status"
+                            secondary={(
+                              <>
+                                <Typography
+                                  component="span"
+                                  variant="body2"
+                                  color="textPrimary"
+                                >
+                                  {getEmploymentStatusName(status.employmentStatus)}
+                                </Typography>
+                                {` - ${moment(status.effectivityDate).format(
+                                  'MMM DD, YYYY',
+                                )}`}
+                              </>
+                              )}
+                          />
+                        </ListItem>
+                      ))
+                      : 'No record found'}
                   </List>
                 </div>
               </Grid>

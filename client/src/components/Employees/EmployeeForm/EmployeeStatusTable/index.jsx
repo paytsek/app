@@ -24,6 +24,7 @@ import {
   updateStatus,
 } from '../../../../redux/actions/statusesActions';
 import { STATUS_CREATE_RESET, STATUS_UPDATE_RESET } from '../../../../redux/types';
+import { getEmploymentStatusName } from '../../../../utils/helpers';
 import useStyles from '../styles';
 
 const EmployeeStatusTable = ({ match }) => {
@@ -96,7 +97,7 @@ const EmployeeStatusTable = ({ match }) => {
             ? statuses.map((status) => (
               <ListItem key={status._id}>
                 <ListItemText
-                  primary={status.employmentStatus}
+                  primary={getEmploymentStatusName(status.employmentStatus)}
                   secondary={moment(status.effectivityDate).format('MMMM DD, YYYY')}
                 />
                 <ListItemSecondaryAction>
