@@ -31,3 +31,8 @@ export const EMPLOYMENT_STATUS = [
   { name: 'Sabbatical', value: 'sabbatical' },
   { name: 'Solo Parent Leave', value: 'soloParentLeave' },
 ];
+
+export const GENDER = [
+  { name: 'Female', value: 'female' },
+  { name: 'Male', value: 'male' },
+];

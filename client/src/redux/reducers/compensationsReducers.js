@@ -9,6 +9,7 @@ import {
   COMPENSATIONS_DELETE_FAIL,
   COMPENSATIONS_DELETE_REQUEST,
   COMPENSATIONS_DELETE_SUCCESS,
+  COMPENSATIONS_DELETE_RESET,
   COMPENSATIONS_UPDATE_REQUEST,
   COMPENSATIONS_UPDATE_SUCCESS,
   COMPENSATIONS_UPDATE_FAIL,
@@ -80,9 +81,11 @@ export const compensationDeleteReducers = (state = {}, action) => {
     case COMPENSATIONS_DELETE_REQUEST:
       return { loading: true };
     case COMPENSATIONS_DELETE_SUCCESS:
-      return { loading: false };
+      return { loading: false, success: true };
     case COMPENSATIONS_DELETE_FAIL:
       return { loading: false };
+    case COMPENSATIONS_DELETE_RESET:
+      return {};
     default:
       return state;
   }

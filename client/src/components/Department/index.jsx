@@ -13,13 +13,18 @@ import {
   ListItemSecondaryAction,
   FormHelperText,
 } from '@material-ui/core';
-import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
+import {
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+} from '@material-ui/icons';
 
 import TitleBox from '../common/TitleBox';
 import DepartmentFormDialog from '../Dialog/DepartmentFormDialog';
+import DialogAlert from '../Dialog/DialogAlert';
 import MuiSkeleton from '../MuiSkeleton';
 
-import { DEPARTMENT_UPDATE_RESET } from '../../redux/types';
+import { DEPARTMENT_UPDATE_RESET, DEPARTMENT_DELETE_RESET } from '../../redux/types';
 import {
   createDepartment,
   deleteDepartment,
@@ -32,6 +37,7 @@ const Departments = () => {
   const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState({});
+  const [openAlert, setOpenAlert] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -39,10 +45,15 @@ const Departments = () => {
   const { departments, loading: departmentsListLoading } = useSelector(
     (state) => state.departmentsList,
   );
-  const { success, errors: departmentUpdateErrors, loading: departmentUpdateLoading } = useSelector(
-    (state) => state.departmentUpdate,
-  );
-  const { loading: departmentDeleteLoading } = useSelector((state) => state.departmentDelete);
+  const {
+    success,
+    errors: departmentUpdateErrors,
+    loading: departmentUpdateLoading,
+  } = useSelector((state) => state.departmentUpdate);
+  const {
+    loading: departmentDeleteLoading,
+    success: departmentDeleteSuccess,
+  } = useSelector((state) => state.departmentDelete);
 
   const { paper, fieldsContainer } = useStyles();
 
@@ -65,7 +76,9 @@ const Departments = () => {
   const handleOnClose = () => {
     setSelectedDepartment({});
     setOpen(false);
+    setOpenAlert(false);
     dispatch({ type: DEPARTMENT_UPDATE_RESET });
+    dispatch({ type: DEPARTMENT_DELETE_RESET });
   };
 
   const handleOnOpen = (dep) => {
@@ -73,15 +86,22 @@ const Departments = () => {
     setOpen(true);
   };
 
+  const handleDeleteDepartment = () => dispatch(deleteDepartment(selectedDepartment._id));
+
+  const handleOnOpenDeleteDepartment = (dep) => {
+    setSelectedDepartment(dep);
+    setOpenAlert(true);
+  };
+
   useEffect(() => {
     dispatch(getDepartments());
   }, []);
 
   useEffect(() => {
-    if (success) {
+    if (success || departmentDeleteSuccess) {
       handleOnClose();
     }
-  }, [success]);
+  }, [success, departmentDeleteSuccess]);
 
   if (departmentsListLoading) return <MuiSkeleton />;
 
@@ -99,13 +119,19 @@ const Departments = () => {
               onChange={(e) => setName(e.target.value)}
               endAdornment={(
                 <InputAdornment position="end">
-                  <IconButton color="primary" onClick={() => handleOnAdd(name)} disabled={loading}>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleOnAdd(name)}
+                    disabled={loading}
+                  >
                     <AddIcon />
                   </IconButton>
                 </InputAdornment>
               )}
             />
-            {errors.name && <FormHelperText error={!!errors.name}>{errors.name}</FormHelperText>}
+            {errors.name && (
+              <FormHelperText error={!!errors.name}>{errors.name}</FormHelperText>
+            )}
           </FormControl>
           {/* List of departments */}
           {departments.length > 0 ? (
@@ -125,7 +151,7 @@ const Departments = () => {
                       edge="end"
                       aria-label="delete"
                       disabled={departmentDeleteLoading}
-                      onClick={() => dispatch(deleteDepartment(department._id))}
+                      onClick={() => handleOnOpenDeleteDepartment(department)}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -143,6 +169,13 @@ const Departments = () => {
         title="Edit a department"
         errors={departmentUpdateErrors}
         loading={departmentUpdateLoading}
+      />
+      <DialogAlert
+        open={openAlert}
+        handleClose={handleOnClose}
+        title={`Are you sure you want to delete ${selectedDepartment.name || ''}?`}
+        loading={departmentDeleteLoading}
+        onConfirm={handleDeleteDepartment}
       />
     </>
   );

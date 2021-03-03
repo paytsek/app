@@ -13,6 +13,7 @@ import {
   STATUS_UPDATE_SUCCESS,
   STATUS_UPDATE_FAIL,
   STATUS_UPDATE_RESET,
+  STATUS_DELETE_RESET,
 } from '../types';
 
 export const statusesListReducers = (state = { statuses: [] }, action) => {
@@ -67,9 +68,11 @@ export const statusesDeleteReducers = (state = {}, action) => {
     case STATUS_DELETE_REQUEST:
       return { loading: true };
     case STATUS_DELETE_SUCCESS:
-      return { loading: false };
+      return { loading: false, success: true };
     case STATUS_DELETE_FAIL:
       return { loading: false };
+    case STATUS_DELETE_RESET:
+      return {};
     default:
       return state;
   }
