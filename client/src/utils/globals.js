@@ -21,7 +21,7 @@ export const CIVIL_STATUS = [
   { name: 'Widowed', value: 'widowed' },
 ];
 
-export const EMPLOYMENTS_STATUS = [
+export const EMPLOYMENT_STATUS = [
   { name: 'Active', value: 'active' },
   { name: 'Inactive', value: 'inactive' },
   { name: 'Indefinite', value: 'indefinite' },

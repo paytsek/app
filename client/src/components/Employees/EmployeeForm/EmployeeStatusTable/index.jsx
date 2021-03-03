@@ -24,6 +24,7 @@ import {
   updateStatus,
 } from '../../../../redux/actions/statusesActions';
 import { STATUS_CREATE_RESET, STATUS_UPDATE_RESET } from '../../../../redux/types';
+import { getEmploymentStatusName } from '../../../../utils/helpers';
 import useStyles from '../styles';
 
 const EmployeeStatusTable = ({ match }) => {
@@ -39,9 +40,11 @@ const EmployeeStatusTable = ({ match }) => {
     (state) => state.statusesCreate,
   );
   const { loading: statusesDeleteLoading } = useSelector((state) => state.statusesDelete);
-  const { errors: statusesUpdateErrors, success: statusesUpdateSuccess } = useSelector(
-    (state) => state.statusesUpdate,
-  );
+  const {
+    errors: statusesUpdateErrors,
+    success: statusesUpdateSuccess,
+    loading: statusesUpdateLoading,
+  } = useSelector((state) => state.statusesUpdate);
 
   const { paper, fieldsContainer } = useStyles();
 
@@ -94,7 +97,7 @@ const EmployeeStatusTable = ({ match }) => {
             ? statuses.map((status) => (
               <ListItem key={status._id}>
                 <ListItemText
-                  primary={status.employmentStatus}
+                  primary={getEmploymentStatusName(status.employmentStatus)}
                   secondary={moment(status.effectivityDate).format('MMMM DD, YYYY')}
                 />
                 <ListItemSecondaryAction>
@@ -127,7 +130,7 @@ const EmployeeStatusTable = ({ match }) => {
         handleClose={handleClose}
         onSubmit={handleOnSubmit}
         errors={errors}
-        loading={loading}
+        loading={loading || statusesUpdateLoading}
         status={selectedStatus}
       />
     </Paper>
