@@ -16,6 +16,7 @@ import { Add, Delete, Edit } from '@material-ui/icons';
 
 import TitleBox from '../../../common/TitleBox';
 import DialogBasicCompensation from '../../../Dialog/DialogBasicCompensation';
+import DialogAlert from '../../../Dialog/DialogAlert';
 
 import {
   getCompensations,
@@ -26,6 +27,7 @@ import {
 import useStyles from '../styles';
 import {
   COMPENSATIONS_CREATE_RESET,
+  COMPENSATIONS_DELETE_RESET,
   COMPENSATIONS_UPDATE_RESET,
 } from '../../../../redux/types';
 
@@ -35,15 +37,17 @@ const EmployeeCompensationsTable = ({ match }) => {
   const { id } = match.params;
 
   const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const [selectedCompensation, setSelectedCompensation] = useState({});
 
   const { compensations } = useSelector((state) => state.compensationsList);
   const { errors: compensationCreateErrors, loading, success } = useSelector(
     (state) => state.compensationCreate,
   );
-  const { loading: compensationDeleteLoading } = useSelector(
-    (state) => state.compensationDelete,
-  );
+  const {
+    loading: compensationDeleteLoading,
+    success: compensationDeleteSuccess,
+  } = useSelector((state) => state.compensationDelete);
   const {
     errors: compensationUpdateErrors,
     loading: compensationUpdateLoading,
@@ -56,10 +60,20 @@ const EmployeeCompensationsTable = ({ match }) => {
 
   const handleClose = () => {
     setOpen(false);
+    setOpenAlert(false);
     dispatch({ type: COMPENSATIONS_CREATE_RESET });
     dispatch({ type: COMPENSATIONS_UPDATE_RESET });
+    dispatch({ type: COMPENSATIONS_DELETE_RESET });
     setSelectedCompensation({});
   };
+
+  const handleOnOpenDeleteCompensation = (comp) => {
+    setSelectedCompensation(comp);
+    setOpenAlert(true);
+  };
+
+  const handleOnDeleteCompensation = () =>
+    dispatch(deleteCompensation(id, selectedCompensation._id));
 
   const handleOnSubmit = (compensationData) => {
     if (selectedCompensation._id) {
@@ -74,10 +88,10 @@ const EmployeeCompensationsTable = ({ match }) => {
   }, []);
 
   useEffect(() => {
-    if (success || compensationUpdateSuccess) {
+    if (success || compensationUpdateSuccess || compensationDeleteSuccess) {
       handleClose();
     }
-  }, [success, compensationUpdateSuccess]);
+  }, [success, compensationUpdateSuccess, compensationDeleteSuccess]);
 
   return (
     <Paper className={paper} elevation={6}>
@@ -125,7 +139,7 @@ const EmployeeCompensationsTable = ({ match }) => {
                   edge="end"
                   aria-label="delete"
                   disabled={compensationDeleteLoading}
-                  onClick={() => dispatch(deleteCompensation(id, compensation._id))}
+                  onClick={() => handleOnOpenDeleteCompensation(compensation)}
                 >
                   <Delete />
                 </IconButton>
@@ -141,6 +155,13 @@ const EmployeeCompensationsTable = ({ match }) => {
         errors={errors}
         loading={loading || compensationUpdateLoading}
         compensation={selectedCompensation}
+      />
+      <DialogAlert
+        open={openAlert}
+        handleClose={handleClose}
+        title="Are you sure you want to delete this compensation?"
+        onConfirm={handleOnDeleteCompensation}
+        loading={compensationDeleteLoading}
       />
     </Paper>
   );
