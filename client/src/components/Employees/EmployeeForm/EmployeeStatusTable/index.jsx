@@ -16,6 +16,7 @@ import { Add, Delete, Edit } from '@material-ui/icons';
 
 import TitleBox from '../../../common/TitleBox';
 import DialogStatusForm from '../../../Dialog/DialogStatusForm';
+import DialogAlert from '../../../Dialog/DialogAlert';
 
 import {
   createStatus,
@@ -23,12 +24,17 @@ import {
   deleteStatus,
   updateStatus,
 } from '../../../../redux/actions/statusesActions';
-import { STATUS_CREATE_RESET, STATUS_UPDATE_RESET } from '../../../../redux/types';
+import {
+  STATUS_CREATE_RESET,
+  STATUS_DELETE_RESET,
+  STATUS_UPDATE_RESET,
+} from '../../../../redux/types';
 import { getEmploymentStatusName } from '../../../../utils/helpers';
 import useStyles from '../styles';
 
 const EmployeeStatusTable = ({ match }) => {
   const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState({});
 
   const { id } = match.params;
@@ -39,7 +45,9 @@ const EmployeeStatusTable = ({ match }) => {
   const { errors: statusesCreateErrors, success, loading } = useSelector(
     (state) => state.statusesCreate,
   );
-  const { loading: statusesDeleteLoading } = useSelector((state) => state.statusesDelete);
+  const { loading: statusesDeleteLoading, success: statusesDeleteSuccess } = useSelector(
+    (state) => state.statusesDelete,
+  );
   const {
     errors: statusesUpdateErrors,
     success: statusesUpdateSuccess,
@@ -52,9 +60,11 @@ const EmployeeStatusTable = ({ match }) => {
 
   const handleClose = () => {
     setOpen(false);
+    setOpenAlert(false);
     setSelectedStatus({});
     dispatch({ type: STATUS_CREATE_RESET });
     dispatch({ type: STATUS_UPDATE_RESET });
+    dispatch({ type: STATUS_DELETE_RESET });
   };
 
   const handleOnSubmit = (statusData) => {
@@ -65,17 +75,22 @@ const EmployeeStatusTable = ({ match }) => {
     }
   };
 
-  const handleOnDeleteStatus = (statusId) => dispatch(deleteStatus(id, statusId));
+  const handleOnDeleteStatus = () => dispatch(deleteStatus(id, selectedStatus._id));
+
+  const handleOnOpenDeleteStatus = (stat) => {
+    setSelectedStatus(stat);
+    setOpenAlert(true);
+  };
 
   useEffect(() => {
     dispatch(getStatuses(id));
   }, []);
 
   useEffect(() => {
-    if (success || statusesUpdateSuccess) {
+    if (success || statusesUpdateSuccess || statusesDeleteSuccess) {
       handleClose();
     }
-  }, [success, statusesUpdateSuccess]);
+  }, [success, statusesUpdateSuccess, statusesDeleteSuccess]);
 
   return (
     <Paper className={paper} elevation={6}>
@@ -115,7 +130,7 @@ const EmployeeStatusTable = ({ match }) => {
                     edge="end"
                     aria-label="delete"
                     disabled={statusesDeleteLoading}
-                    onClick={() => handleOnDeleteStatus(status._id)}
+                    onClick={() => handleOnOpenDeleteStatus(status)}
                   >
                     <Delete />
                   </IconButton>
@@ -132,6 +147,15 @@ const EmployeeStatusTable = ({ match }) => {
         errors={errors}
         loading={loading || statusesUpdateLoading}
         status={selectedStatus}
+      />
+      <DialogAlert
+        open={openAlert}
+        handleClose={handleClose}
+        title={`Are you sure you want to delete ${
+          getEmploymentStatusName(selectedStatus.employmentStatus) || ''
+        }`}
+        onConfirm={handleOnDeleteStatus}
+        loading={statusesDeleteLoading}
       />
     </Paper>
   );
