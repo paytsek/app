@@ -81,7 +81,7 @@ const EmployeeCompensationsTable = ({ match }) => {
 
   return (
     <Paper className={paper} elevation={6}>
-      <TitleBox title="Status" />
+      <TitleBox title="Compensation" />
       <div className={fieldsContainer}>
         <Button
           variant="contained"
