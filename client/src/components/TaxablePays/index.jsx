@@ -13,18 +13,23 @@ import {
   ListItemSecondaryAction,
   FormHelperText,
 } from '@material-ui/core';
-import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
+import {
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+} from '@material-ui/icons';
 
 import TitleBox from '../common/TitleBox';
 import MuiSkeleton from '../MuiSkeleton';
 import TaxablePayFormDialog from '../Dialog/TaxablePayFormDialog';
+import DialogAlert from '../Dialog/DialogAlert';
 
 import {
   getTaxablePays,
   createTaxablePay,
   deleteTaxablePay,
 } from '../../redux/actions/taxablePaysActions';
-import { TAXABLE_PAYS_UPDATE_RESET } from '../../redux/types';
+import { TAXABLE_PAYS_DELETE_RESET, TAXABLE_PAYS_UPDATE_RESET } from '../../redux/types';
 import notification from '../../utils/notification';
 import useStyles from './styles';
 
@@ -32,14 +37,19 @@ const TaxablePays = () => {
   const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
   const [selectedTaxablePay, setSelectedTaxablePay] = useState({});
+  const [openAlert, setOpenAlert] = useState(false);
 
   const dispatch = useDispatch();
 
   const { taxablePays, loading } = useSelector((state) => state.taxablePaysList);
-  const { loading: taxablePaysCreateLoading, errors: taxablePaysCreateError } = useSelector(
-    (state) => state.taxablePaysCreate,
-  );
-  const { loading: taxablePaysDeleteLoading } = useSelector((state) => state.taxablePaysDelete);
+  const {
+    loading: taxablePaysCreateLoading,
+    errors: taxablePaysCreateError,
+  } = useSelector((state) => state.taxablePaysCreate);
+  const {
+    loading: taxablePaysDeleteLoading,
+    success: taxablePaysDeleteSuccess,
+  } = useSelector((state) => state.taxablePaysDelete);
   const { success, errors, loading: taxablePaysUpdateLoading } = useSelector(
     (state) => state.taxablePaysUpdate,
   );
@@ -70,7 +80,16 @@ const TaxablePays = () => {
   const handleOnClose = () => {
     setSelectedTaxablePay({});
     setOpen(false);
+    setOpenAlert(false);
     dispatch({ type: TAXABLE_PAYS_UPDATE_RESET });
+    dispatch({ type: TAXABLE_PAYS_DELETE_RESET });
+  };
+
+  const handleDeleteTaxablePay = () => dispatch(deleteTaxablePay(selectedTaxablePay._id));
+
+  const handleOnOpenDeleteTaxablePay = (tax) => {
+    setSelectedTaxablePay(tax);
+    setOpenAlert(true);
   };
 
   useEffect(() => {
@@ -78,10 +97,10 @@ const TaxablePays = () => {
   }, []);
 
   useEffect(() => {
-    if (success) {
+    if (success || taxablePaysDeleteSuccess) {
       handleOnClose();
     }
-  }, [success]);
+  }, [success, taxablePaysDeleteSuccess]);
 
   if (loading) return <MuiSkeleton />;
 
@@ -132,7 +151,7 @@ const TaxablePays = () => {
                     <IconButton
                       edge="end"
                       aria-label="delete"
-                      onClick={() => dispatch(deleteTaxablePay(taxablePay._id))}
+                      onClick={() => handleOnOpenDeleteTaxablePay(taxablePay)}
                       disabled={taxablePaysDeleteLoading}
                     >
                       <DeleteIcon />
@@ -151,6 +170,12 @@ const TaxablePays = () => {
         title="Edit Taxable Pay"
         errors={errors}
         loading={taxablePaysUpdateLoading}
+      />
+      <DialogAlert
+        open={openAlert}
+        onConfirm={handleDeleteTaxablePay}
+        handleClose={handleOnClose}
+        title={`Are you sure you want to delete ${selectedTaxablePay.name || ''}?`}
       />
     </>
   );

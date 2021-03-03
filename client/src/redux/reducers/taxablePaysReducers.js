@@ -12,6 +12,7 @@ import {
   TAXABLE_PAYS_UPDATE_RESET,
   TAXABLE_PAYS_UPDATE_FAIL,
   TAXABLE_PAYS_UPDATE_SUCCESS,
+  TAXABLE_PAYS_DELETE_RESET,
 } from '../types';
 
 export const taxablePaysListReducers = (state = { taxablePays: [] }, action) => {
@@ -21,7 +22,12 @@ export const taxablePaysListReducers = (state = { taxablePays: [] }, action) => 
     case TAXABLE_PAYS_LIST_REQUEST:
       return { ...state, loading: true };
     case TAXABLE_PAYS_LIST_SUCCESS:
-      return { ...state, loading: false, taxablePays: payload.taxablePays, success: true };
+      return {
+        ...state,
+        loading: false,
+        taxablePays: payload.taxablePays,
+        success: true,
+      };
     case TAXABLE_PAYS_LIST_FAIL:
       return { ...state, loading: false };
     case TAXABLE_PAYS_CREATE_SUCCESS:
@@ -67,6 +73,8 @@ export const taxablePaysDeleteReducers = (state = {}, action) => {
       return { ...state, loading: false, success: true };
     case TAXABLE_PAYS_DELETE_FAIL:
       return { ...state, loading: false };
+    case TAXABLE_PAYS_DELETE_RESET:
+      return {};
     default:
       return state;
   }
