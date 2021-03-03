@@ -37,36 +37,36 @@
   {
     "_id": "6010d3dc7951e30d3a584796",
     "user": "5d7a514b5d2c12c7449be055",
-    "name": "Bankrupt Company",
-    "slug": "bankrupt-company",
+    "name": "Alphabet Soup",
+    "slug": "alphabet-soup",
     "administrators": ["5d7a514b5d2c12c7449be055"]
   },
   {
     "_id": "6010d3dc7951e30d3a584797",
     "user": "5d7a514b5d2c12c7449be052",
-    "name": "Salon de Baguio",
-    "slug": "salon-de-baguio",
+    "name": "Aumni Inc",
+    "slug": "aumni-inc",
     "administrators": "5d7a514b5d2c12c7449be052"
   },
   {
     "_id": "6010d3dc7951e30d3a584798",
     "user": "5d7a514b5d2c12c7449be052",
-    "name": "Inuman Session",
-    "slug": "inuman-session",
+    "name": "Viscari",
+    "slug": "viscari",
     "administrators": ["5d7a514b5d2c12c7449be052"]
   },
   {
     "_id": "6010d3dc7951e30d3a584799",
     "user": "5d7a514b5d2c12c7449be054",
-    "name": "Hangover resort",
-    "slug": "hangover-resort",
+    "name": "Maria Health",
+    "slug": "maria-health",
     "administrators": ["5d7a514b5d2c12c7449be054"]
   },
   {
     "_id": "6010d3dc7951e30d3a584800",
     "user": "5d7a514b5d2c12c7449be052",
-    "name": "Hangover spa",
-    "slug": "hangover-spa",
+    "name": "TeeTalk PH Inc",
+    "slug": "teetalk-ph-inc",
     "administrators": ["5d7a514b5d2c12c7449be052"]
   }
 ]
