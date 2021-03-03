@@ -19,7 +19,11 @@ import MuiSkeleton from '../../components/MuiSkeleton';
 
 import { getEmployeeDetails } from '../../redux/actions/employeesActions';
 import useStyles from './styles';
-import { getEmploymentStatusName } from '../../utils/helpers';
+import {
+  getEmploymentStatusName,
+  getCivilStatusName,
+  getGenderName,
+} from '../../utils/helpers';
 import { EMPLOYEE_DETAILS_RESET } from '../../redux/types/employeeTypes';
 
 const EmployeeDetailsPage = ({ match, history }) => {
@@ -126,12 +130,14 @@ const EmployeeDetailsPage = ({ match, history }) => {
                 </Typography>
                 <div className={details}>
                   <Typography variant="subtitle2">Gender</Typography>
-                  <Typography variant="subtitle1">{employee.gender || '--'}</Typography>
+                  <Typography variant="subtitle1">
+                    {getGenderName(employee.gender)}
+                  </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Civil Status</Typography>
                   <Typography variant="subtitle1">
-                    {employee.civilStatus || '--'}
+                    {getCivilStatusName(employee.civilStatus)}
                   </Typography>
                 </div>
                 <div className={details}>
@@ -152,18 +158,6 @@ const EmployeeDetailsPage = ({ match, history }) => {
                   <Typography variant="subtitle2">Nationality</Typography>
                   <Typography variant="subtitle1">
                     {employee.nationality || '--'}
-                  </Typography>
-                </div>
-                <div className={details}>
-                  <Typography variant="subtitle2">Registered Address</Typography>
-                  <Typography variant="subtitle1">
-                    {employee.formattedRegisteredAddress}
-                  </Typography>
-                </div>
-                <div className={details}>
-                  <Typography variant="subtitle2">Permanent Address</Typography>
-                  <Typography variant="subtitle1">
-                    {employee.formattedPermanentAddress}
                   </Typography>
                 </div>
               </Grid>
