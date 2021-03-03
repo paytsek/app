@@ -13,35 +13,46 @@ import {
   ListItemSecondaryAction,
   FormHelperText,
 } from '@material-ui/core';
-import { Add as AddIcon, Delete as DeleteIcon, Edit as EditIcon } from '@material-ui/icons';
+import {
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+} from '@material-ui/icons';
 
 import TitleBox from '../common/TitleBox';
 import MuiSkeleton from '../MuiSkeleton';
 import NonTaxablePaysFormDialog from '../Dialog/NonTaxablePaysFormDialog';
+import DialogAlert from '../Dialog/DialogAlert';
 
 import {
   getNonTaxablePays,
   createNonTaxablePay,
   deleteNonTaxablePay,
 } from '../../redux/actions/nonTaxablePaysActions';
-import { NON_TAXABLE_PAYS_UPDATE_RESET } from '../../redux/types';
+import {
+  NON_TAXABLE_PAYS_DELETE_RESET,
+  NON_TAXABLE_PAYS_UPDATE_RESET,
+} from '../../redux/types';
 import notification from '../../utils/notification';
 import useStyles from './styles';
 
 const NonTaxablePays = () => {
   const [name, setName] = useState('');
   const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const [selectedNonTaxablePay, setSelectedNonTaxablePay] = useState({});
 
   const dispatch = useDispatch();
 
   const { nonTaxablePays, loading } = useSelector((state) => state.nonTaxablePaysList);
-  const { loading: nonTaxablePaysCreateLoading, errors: nonTaxablePaysCreateError } = useSelector(
-    (state) => state.nonTaxablePaysCreate,
-  );
-  const { loading: nonTaxablePaysDeleteLoading } = useSelector(
-    (state) => state.nonTaxablePaysDelete,
-  );
+  const {
+    loading: nonTaxablePaysCreateLoading,
+    errors: nonTaxablePaysCreateError,
+  } = useSelector((state) => state.nonTaxablePaysCreate);
+  const {
+    loading: nonTaxablePaysDeleteLoading,
+    success: nonTaxablePaysDeleteSuccess,
+  } = useSelector((state) => state.nonTaxablePaysDelete);
   const { success, errors, loading: nonTaxablePaysUpdateLoading } = useSelector(
     (state) => state.nonTaxablePaysUpdate,
   );
@@ -59,7 +70,9 @@ const NonTaxablePays = () => {
       .includes(val.toLowerCase());
 
     if (!val) {
-      return dispatch(notification('warning', 'Please add a non taxable pay name', dispatch));
+      return dispatch(
+        notification('warning', 'Please add a non taxable pay name', dispatch),
+      );
     }
 
     if (existNonTaxablePay) {
@@ -72,7 +85,17 @@ const NonTaxablePays = () => {
   const handleOnClose = () => {
     setSelectedNonTaxablePay({});
     setOpen(false);
+    setOpenAlert(false);
     dispatch({ type: NON_TAXABLE_PAYS_UPDATE_RESET });
+    dispatch({ type: NON_TAXABLE_PAYS_DELETE_RESET });
+  };
+
+  const handleDeleteNonTaxablePay = () =>
+    dispatch(deleteNonTaxablePay(selectedNonTaxablePay._id));
+
+  const handleOnOpenDeleteNonTaxablePay = (tax) => {
+    setSelectedNonTaxablePay(tax);
+    setOpenAlert(true);
   };
 
   useEffect(() => {
@@ -80,10 +103,10 @@ const NonTaxablePays = () => {
   }, []);
 
   useEffect(() => {
-    if (success) {
+    if (success || nonTaxablePaysDeleteSuccess) {
       handleOnClose();
     }
-  }, [success]);
+  }, [success, nonTaxablePaysDeleteSuccess]);
 
   if (loading) return <MuiSkeleton />;
 
@@ -134,7 +157,7 @@ const NonTaxablePays = () => {
                     <IconButton
                       edge="end"
                       aria-label="delete"
-                      onClick={() => dispatch(deleteNonTaxablePay(nonTaxablePay._id))}
+                      onClick={() => handleOnOpenDeleteNonTaxablePay(nonTaxablePay)}
                       disabled={nonTaxablePaysDeleteLoading}
                     >
                       <DeleteIcon />
@@ -153,6 +176,13 @@ const NonTaxablePays = () => {
         title="Edit Taxable Pay"
         errors={errors}
         loading={nonTaxablePaysUpdateLoading}
+      />
+      <DialogAlert
+        open={openAlert}
+        onConfirm={handleDeleteNonTaxablePay}
+        handleClose={handleOnClose}
+        title={`Are you sure you want to delete ${selectedNonTaxablePay.name || ''}?`}
+        loading={nonTaxablePaysDeleteLoading}
       />
     </>
   );

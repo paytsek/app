@@ -176,6 +176,7 @@ const TaxablePays = () => {
         onConfirm={handleDeleteTaxablePay}
         handleClose={handleOnClose}
         title={`Are you sure you want to delete ${selectedTaxablePay.name || ''}?`}
+        loading={taxablePaysDeleteLoading}
       />
     </>
   );

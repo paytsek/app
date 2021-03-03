@@ -12,6 +12,7 @@ import {
   NON_TAXABLE_PAYS_UPDATE_RESET,
   NON_TAXABLE_PAYS_UPDATE_FAIL,
   NON_TAXABLE_PAYS_UPDATE_SUCCESS,
+  NON_TAXABLE_PAYS_DELETE_RESET,
 } from '../types';
 
 export const nonTaxablePaysListReducers = (state = { nonTaxablePays: [] }, action) => {
@@ -79,6 +80,8 @@ export const nonTaxablePaysDeleteReducers = (state = {}, action) => {
       return { ...state, loading: false, success: true };
     case NON_TAXABLE_PAYS_DELETE_FAIL:
       return { ...state, loading: false };
+    case NON_TAXABLE_PAYS_DELETE_RESET:
+      return {};
     default:
       return state;
   }
