@@ -9,12 +9,16 @@ import {
   DEPARTMENT_DELETE_REQUEST,
   DEPARTMENT_DELETE_SUCCESS,
   DEPARTMENT_DELETE_FAIL,
+  DEPARTMENT_DELETE_RESET,
   DEPARTMENT_LIST_REQUEST,
   DEPARTMENT_LIST_SUCCESS,
   DEPARTMENT_LIST_FAIL,
 } from '../types';
 
-export const departmentsListReducers = (state = { errors: {}, departments: [] }, action) => {
+export const departmentsListReducers = (
+  state = { errors: {}, departments: [] },
+  action,
+) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -84,6 +88,8 @@ export const departmentDeleteReducers = (state = {}, action) => {
       return { ...state, loading: false, success: true };
     case DEPARTMENT_DELETE_FAIL:
       return { ...state, loading: false };
+    case DEPARTMENT_DELETE_RESET:
+      return {};
     default:
       return state;
   }

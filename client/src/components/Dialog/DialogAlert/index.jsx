@@ -17,7 +17,6 @@ const DialogAlert = ({ open, handleClose, title, onConfirm, loading }) => (
       maxWidth="sm"
     >
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
-
       <DialogActions>
         <Button onClick={handleClose} color="primary" disabled={loading}>
           Cancel
