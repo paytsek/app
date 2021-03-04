@@ -336,6 +336,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
           numberOfQualifiedDependents: 0,
           rdoCode: '',
           validId: 'Passport',
+          nightDifferential: true,
           validIdNumber: '12345678',
           placeOfIssue: 'Baguio City',
           registeredAddress: {
@@ -512,6 +513,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
           validId: 'Passport',
           validIdNumber: '12345678',
           placeOfIssue: 'Baguio City',
+          nightDifferential: true,
           registeredAddress: {
             street: '22p Marcoville',
             city: 'Baguio City',
