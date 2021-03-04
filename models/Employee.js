@@ -143,6 +143,10 @@ const EmployeeSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    nightDifferential: {
+      type: Boolean,
+      default: false,
+    },
     compensation: {
       type: mongoose.Schema.Types.Mixed,
       default: {},
@@ -186,9 +190,7 @@ EmployeeSchema.post('save', function (doc, next) {
 });
 
 EmployeeSchema.methods.getEmployeeCompensation = async function () {
-  const compensations = await mongoose
-    .model('Compensation')
-    .find({ employee: this._id });
+  const compensations = await mongoose.model('Compensation').find({ employee: this._id });
 
   const [compensation] = compensations.sort((a, b) => (a.basicPay > b.basicPay ? -1 : 1));
 
