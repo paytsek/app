@@ -106,6 +106,10 @@ const EmployeeDetailsPage = ({ match, history }) => {
                   <Typography variant="subtitle1">{employee.position || ''}</Typography>
                 </div>
                 <div className={details}>
+                  <Typography variant="subtitle2">Night Differential</Typography>
+                  <Typography variant="subtitle1">{employee.nightDifferential ? 'Yes' : 'No'}</Typography>
+                </div>
+                <div className={details}>
                   <Typography variant="subtitle2">Hire Date</Typography>
                   <Typography variant="subtitle1">
                     {(employee.hireDate &&

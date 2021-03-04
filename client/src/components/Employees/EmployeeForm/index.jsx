@@ -43,6 +43,7 @@ const EmployeeForm = ({ history, match }) => {
       resignationDate: '',
       rdoCode: '',
       payRemittances: true,
+      nightDifferential: false,
     },
     personalInformation: {
       gender: 'female',
@@ -148,6 +149,7 @@ const EmployeeForm = ({ history, match }) => {
         employeeNumber: employee.employeeNumber || '',
         firstName: employee.firstName || '',
         lastName: employee.lastName || '',
+        nightDifferential: employee.nightDifferential,
         hireDate:
           (employee.hireDate && moment(employee.hireDate).format('yyyy-MM-DD')) || '',
         resignationDate:
@@ -208,7 +210,9 @@ const EmployeeForm = ({ history, match }) => {
       basicInformation: {
         ...prevState.basicInformation,
         [e.target.name]:
-          e.target.name === 'payRemittances' ? e.target.checked : e.target.value,
+          e.target.name === 'payRemittances' || e.target.name === 'nightDifferential'
+            ? e.target.checked
+            : e.target.value,
       },
     }));
 
