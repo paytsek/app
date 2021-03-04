@@ -27,6 +27,7 @@ import {
   EMPLOYEE_UPDATE_RESET,
 } from '../../../redux/types';
 import useStyles from './styles';
+import MuiSkeleton from '../../MuiSkeleton';
 
 const EmployeeForm = ({ history, match }) => {
   const { id } = match.params;
@@ -115,9 +116,11 @@ const EmployeeForm = ({ history, match }) => {
     employee: employeeCreateEmployee,
     loading,
   } = useSelector((state) => state.employeeCreate);
-  const { employee, success: employeeDetailsSuccess } = useSelector(
-    (state) => state.employeeDetails,
-  );
+  const {
+    employee,
+    success: employeeDetailsSuccess,
+    loading: employeeDetailsLoading,
+  } = useSelector((state) => state.employeeDetails);
 
   const {
     loading: employeeUpdateLoading,
@@ -374,6 +377,8 @@ const EmployeeForm = ({ history, match }) => {
   }, [success, employeeDetailsSuccess, employeeUpdateSuccess]);
 
   const { gridContainer, formButton } = useStyles();
+
+  if (employeeDetailsLoading) return <MuiSkeleton />;
 
   return (
     <Grid container spacing={3} className={gridContainer}>
