@@ -59,8 +59,9 @@ CompensationSchema.post('save', async (doc, next) => {
       .model('Employee')
       .findByIdAndUpdate(doc.employee, { compensation: doc });
   } else {
-    const [compensation] = [...compensations, doc].sort((a, b) =>
-      (a.basicPay > b.basicPay ? -1 : 1));
+    const [compensation] = compensations
+      .map((comp) => (comp._id.toString() === doc._id.toString() ? doc : comp))
+      .sort((a, b) => (a.basicPay > b.basicPay ? -1 : 1));
 
     await mongoose
       .model('Employee')
