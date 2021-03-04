@@ -107,7 +107,9 @@ const EmployeeDetailsPage = ({ match, history }) => {
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Night Differential</Typography>
-                  <Typography variant="subtitle1">{employee.nightDifferential ? 'Yes' : 'No'}</Typography>
+                  <Typography variant="subtitle1">
+                    {employee.nightDifferential ? 'Yes' : 'No'}
+                  </Typography>
                 </div>
                 <div className={details}>
                   <Typography variant="subtitle2">Hire Date</Typography>
@@ -115,6 +117,20 @@ const EmployeeDetailsPage = ({ match, history }) => {
                     {(employee.hireDate &&
                       moment(employee.hireDate).format('MMM DD, YYYY')) ||
                       '--'}
+                  </Typography>
+                </div>
+                <div className={details}>
+                  <Typography variant="subtitle2">Status</Typography>
+                  <Typography variant="subtitle1">
+                    {(employee.status &&
+                      getEmploymentStatusName(employee.status.employmentStatus)) ||
+                      '--'}
+                  </Typography>
+                </div>
+                <div className={details}>
+                  <Typography variant="subtitle2">Basic Pay</Typography>
+                  <Typography variant="subtitle1">
+                    {(employee.compensation && employee.compensation.basicPay) || '--'}
                   </Typography>
                 </div>
                 {employee.resignationDate && (
