@@ -25,6 +25,7 @@ const BasicInformation = ({ basicInformation, onChange, errors }) => {
     resignationDate,
     rdoCode,
     payRemittances,
+    nightDifferential,
   } = basicInformation;
 
   const { paper, fieldsContainer } = useStyles();
@@ -159,6 +160,16 @@ const BasicInformation = ({ basicInformation, onChange, errors }) => {
               labelPlacement="start"
               name="payRemittances"
               checked={payRemittances}
+              onChange={onChange}
+            />
+          </Grid>
+          <Grid item xs={6} md={4}>
+            <FormControlLabel
+              control={<Switch color="primary" />}
+              label="Night Differential"
+              labelPlacement="start"
+              name="nightDifferential"
+              checked={nightDifferential}
               onChange={onChange}
             />
           </Grid>
