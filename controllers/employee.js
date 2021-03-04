@@ -229,8 +229,6 @@ const updateEmployee = asyncHandler(async (req, res, next) => {
     employee[field] = req.body[field];
   });
 
-  console.log(employee);
-
   employee.compensation = compensation;
 
   const updatedEmployee = await employee.save();

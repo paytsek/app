@@ -168,6 +168,8 @@ export const companyTenantReducers = (state = { authSlug: false }, action) => {
     case COMPANY_TENANT_REMOVE:
       localStorage.removeItem('tenant');
       return { authSlug: false };
+    case COMPANY_NAME_UPDATE_SUCCESS:
+      return { ...state, slug: payload.company.slug };
     default:
       return state;
   }
