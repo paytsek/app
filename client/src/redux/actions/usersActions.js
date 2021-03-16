@@ -209,13 +209,14 @@ export const updateCurrentUserPassword = (userData) => async (dispatch) => {
   try {
     const { data } = await axios.put('/users/current-user/password', userData, config);
 
-    dispatch({ type: CURRENT_USER_UPDATE_SUCCESS });
+    dispatch({ type: CURRENT_USER_UPDATE_SUCCESS, payload: data });
     dispatch({ type: CURRENT_USER_SUCCESS, payload: data });
 
     const message = 'Your password successfully updated';
     dispatch(notification('success', message, dispatch));
   } catch (error) {
     const { errors } = error.response.data;
+
     const message = errors && errors.message;
     if (message) {
       dispatch(notification('error', message, dispatch));
