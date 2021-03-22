@@ -17,8 +17,7 @@
     "lint:client:fix": "npm run lint:fix --prefix client",
     "lint:server": "eslint controllers middleware models routes test utils app.js index.js",
     "lint:server:fix": "eslint controllers middleware models routes test utils app.js index.js --fix",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "jest": {
     "testEnvironment": "node",
