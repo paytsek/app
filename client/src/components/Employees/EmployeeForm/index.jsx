@@ -200,7 +200,7 @@ const EmployeeForm = ({ history, match }) => {
       employeeFunction: {
         department: (employee.department && employee.department._id) || '',
         position: employee.position || '',
-        workingDays: employee.workingHours || 22,
+        workingDays: employee.workingDays || 22,
         workingHours: employee.workingHours || 8,
         primaryEmployer: employee.primaryEmployer,
       },
