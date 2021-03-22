@@ -74,12 +74,6 @@ staticUrls.forEach((url) => {
   });
 });
 
-// API DOCUMENTATION
-app.use(express.static(path.join(__dirname, 'doc')));
-app.get('/api/v1/documentation', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'doc', 'index.html'));
-});
-
 // API ROUTES
 app.use('/api/v1/companies', companyRoutes);
 app.use('/api/v1/auth', authRoutes);
@@ -89,13 +83,11 @@ app.use('/api/v1/employees', employeeRoutes);
 app.use('/api/v1/taxablePays', taxablePayRoutes);
 app.use('/api/v1/nonTaxablePays', nonTaxablePayRoutes);
 
-if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
-  app.use(express.static(path.join(__dirname, '/client/build')));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-  });
-}
+// API DOCUMENTATION
+app.use(express.static(path.join(__dirname, 'doc')));
+app.get('/api/v1/documentation', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'doc', 'index.html'));
+});
 
 app.use(notFound);
 app.use(errorHandler);
