@@ -16,6 +16,7 @@ const TaxablePay = require('./models/TaxablePay');
 const NonTaxablePay = require('./models/NonTaxablePay');
 const OtherTaxablePay = require('./models/OtherTaxablePay');
 const OtherNonTaxablePay = require('./models/OtherNonTaxablePay');
+const Payrun = require('./models/Payrun');
 
 const getDb = () => {
   if (process.env.NODE_ENV === 'development') {
@@ -68,6 +69,7 @@ const otherTaxablePays = JSON.parse(
 const otherNonTaxablePays = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/otherNonTaxablePays.json`, 'utf-8'),
 );
+const payruns = JSON.parse(fs.readFileSync(`${__dirname}/_data/payruns.json`, 'utf-8'));
 
 const importData = async () => {
   try {
@@ -82,6 +84,7 @@ const importData = async () => {
     await NonTaxablePay.create(nonTaxablePays);
     await OtherTaxablePay.create(otherTaxablePays);
     await OtherNonTaxablePay.create(otherNonTaxablePays);
+    await Payrun.create(payruns);
 
     console.log('Data imported...'.green.inverse);
     process.exit(1);
@@ -104,6 +107,7 @@ const deleteData = async () => {
     await NonTaxablePay.deleteMany({});
     await OtherTaxablePay.deleteMany({});
     await OtherNonTaxablePay.deleteMany({});
+    await Payrun.deleteMany({});
 
     console.log('Data deleted...'.red.inverse);
     process.exit(1);
