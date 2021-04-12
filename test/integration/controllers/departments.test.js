@@ -25,7 +25,10 @@ describe('GET /api/v1/departments - getDepartments', () => {
 
     it('should return error response if logged in user is not equal to company user', async () => {
       const token = await global.signIn();
-      const company = await Company.create({ name: 'Full suite', user: mongoose.Types.ObjectId() });
+      const company = await Company.create({
+        name: 'Full suite',
+        user: mongoose.Types.ObjectId(),
+      });
 
       const res = await request(app)
         .get(url)
@@ -118,7 +121,10 @@ describe('POST /api/v1/departments - createDepartment', () => {
 
     it('should return error response if logged in user is not equal to company user', async () => {
       const token = await global.signIn();
-      const company = await Company.create({ name: 'Full suite', user: mongoose.Types.ObjectId() });
+      const company = await Company.create({
+        name: 'Full suite',
+        user: mongoose.Types.ObjectId(),
+      });
 
       const res = await request(app)
         .get(url)
@@ -228,7 +234,10 @@ describe('PUT /api/v1/departments/:id - updateDepartment', () => {
   describe('Error response', () => {
     it('should return error response if logged in user is not equal to company user', async () => {
       const token = await global.signIn();
-      const company = await Company.create({ name: 'Fullsuite', user: mongoose.Types.ObjectId() });
+      const company = await Company.create({
+        name: 'Fullsuite',
+        user: mongoose.Types.ObjectId(),
+      });
 
       const res = await request(app)
         .put(`${url}/${mongoose.Types.ObjectId()}`)
@@ -332,7 +341,10 @@ describe('DELETE /api/v1/departments/:id - deleteDepartment', () => {
   describe('Error Response', () => {
     it('should return error response if logged in user is not equal to company user', async () => {
       const token = await global.signIn();
-      const company = await Company.create({ name: 'PayTsek', user: mongoose.Types.ObjectId() });
+      const company = await Company.create({
+        name: 'PayTsek',
+        user: mongoose.Types.ObjectId(),
+      });
 
       const res = await request(app)
         .delete(`${url}/${mongoose.Types.ObjectId()}`)
