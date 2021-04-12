@@ -40,6 +40,11 @@ const PayrunSchema = new mongoose.Schema({
     enum: PAYRUN_TAX_PAYMENT,
     default: 'full',
   },
+  company: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Company',
+    required: [true, 'Must have a company'],
+  },
 });
 
 module.exports = mongoose.model('Payrun', PayrunSchema);
