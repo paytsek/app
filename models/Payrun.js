@@ -21,6 +21,14 @@ const PayrunSchema = new mongoose.Schema({
     type: Date,
     required: [true, 'Payout Date is required'],
   },
+  totalNetPay: {
+    type: Number,
+    defualt: 0,
+  },
+  special: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model('Payrun', PayrunSchema);
