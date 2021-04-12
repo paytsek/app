@@ -29,6 +29,10 @@ const PayrunSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  displayBeforePayout: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = mongoose.model('Payrun', PayrunSchema);
