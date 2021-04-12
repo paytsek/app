@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const PAYRUN_STATUS = ['draft', 'approved', 'void', 'denied'];
 
+const PAYRUN_TAX_PAYMENT = ['full', 'half', 'none'];
+
 const PayrunSchema = new mongoose.Schema({
   startDate: {
     type: Date,
@@ -32,6 +34,11 @@ const PayrunSchema = new mongoose.Schema({
   displayBeforePayout: {
     type: Boolean,
     default: false,
+  },
+  taxPayment: {
+    type: String,
+    enum: PAYRUN_TAX_PAYMENT,
+    default: 'full',
   },
 });
 
