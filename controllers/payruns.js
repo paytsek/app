@@ -5,7 +5,7 @@ const Company = require('../models/Company');
 const User = require('../models/User');
 const Payrun = require('../models/Payrun');
 
-// @ROUTE GET /api/v1/:companySlug/payruns
+// @ROUTE GET /api/v1/payruns
 // @Desc Get a payruns for a specific company
 // access PRIVATE - Logged in user
 const getPayruns = asyncHandler(async (req, res, next) => {
@@ -25,6 +25,14 @@ const getPayruns = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ success: true, payruns });
 });
 
+// @ROUTE GET /api/v1/payruns/:id
+// @Desc Get a payrun by its id for a specific company
+// access PRIVATE - Logged in user
+const getPayrun = asyncHandler(async (req, res, next) => {
+  return res.status(200).send('Get payrun');
+});
+
 module.exports = {
   getPayruns,
+  getPayrun,
 };
