@@ -11,6 +11,7 @@ const {
   createPayrun,
   updatePayrun,
   deletePayrun,
+  updatePayrunStatus,
 } = require('../controllers/payruns');
 
 // api/v1/payruns
@@ -25,5 +26,8 @@ router
   .get(auth, tenant, administrator, getPayrun)
   .put(auth, tenant, administrator, updatePayrun)
   .delete(auth, tenant, administrator, deletePayrun);
+
+// api/v1/payruns/:id/status
+router.route('/:id/status').put(auth, tenant, administrator, updatePayrunStatus);
 
 module.exports = router;
