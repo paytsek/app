@@ -23,6 +23,7 @@ const PayrunSchema = new mongoose.Schema(
     payoutDate: {
       type: Date,
       required: [true, 'Payout Date is required'],
+      default: Date.now,
     },
     totalNetPay: {
       type: Number,
