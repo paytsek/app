@@ -58,7 +58,27 @@ const getPayrun = asyncHandler(async (req, res, next) => {
 // @Desc Create a payrun for a specific company
 // access PRIVATE - Logged in user
 const createPayrun = asyncHandler(async (req, res, next) => {
-  res.send('Create a payrun');
+  const company = await Company.findById(req.company._id);
+  const user = await User.findById(req.user._id);
+
+  const { startDate, endDate, special } = req.body;
+
+  if (
+    user.role !== 'admin' &&
+    (!company || !user || company.user.toString() !== user._id.toString())
+  ) {
+    res.status(401);
+    return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
+  }
+
+  const payrun = await Payrun.create({
+    startDate,
+    endDate,
+    special,
+    company: company._id,
+  });
+
+  return res.status(201).json({ success: true, payrun });
 });
 
 module.exports = {
