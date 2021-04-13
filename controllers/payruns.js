@@ -98,7 +98,7 @@ const updatePayrun = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
   }
 
-  const payrun = await Payrun.findByIdAndUpdate(
+  const payrun = await Payrun.findOneAndUpdate(
     req.params.id,
     {
       startDate,
@@ -155,7 +155,35 @@ const deletePayrun = asyncHandler(async (req, res, next) => {
 // @Desc Update a payrun's status for a specific company
 // access PRIVATE - Logged in user
 const updatePayrunStatus = asyncHandler(async (req, res, next) => {
-  res.send('Update Payrun status');
+  const company = await Company.findById(req.company._id);
+  const user = await User.findById(req.user._id);
+
+  const { status } = req.body;
+
+  if (
+    user.role !== 'admin' &&
+    (!company || !user || company.user.toString() !== user._id.toString())
+  ) {
+    res.status(401);
+    return next(new ErrorResponse({ message: 'Not authorized, access denied' }));
+  }
+
+  const payrun = await Payrun.findOneAndUpdate(
+    { _id: req.params.id, company: company._id },
+    { status },
+    { new: true, runValidators: true },
+  );
+
+  if (!payrun) {
+    res.status(404);
+    return next(
+      new ErrorResponse({
+        message: `Resource with an id of ${req.params.id} not found`,
+      }),
+    );
+  }
+
+  return res.status(200).json({ success: true, payrun });
 });
 
 module.exports = {
