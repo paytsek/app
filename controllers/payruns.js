@@ -81,8 +81,16 @@ const createPayrun = asyncHandler(async (req, res, next) => {
   return res.status(201).json({ success: true, payrun });
 });
 
+// @ROUTE PUT /api/v1/payruns/:id
+// @Desc Update a payrun by its id for a specific company
+// access PRIVATE - Logged in user
+const updatePayrun = asyncHandler(async (req, res, next) => {
+  res.send('Update Payrun');
+});
+
 module.exports = {
   getPayruns,
   getPayrun,
   createPayrun,
+  updatePayrun,
 };
