@@ -54,7 +54,15 @@ const getPayrun = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ success: true, payrun });
 });
 
+// @ROUTE POST /api/v1/payruns
+// @Desc Create a payrun for a specific company
+// access PRIVATE - Logged in user
+const createPayrun = asyncHandler(async (req, res, next) => {
+  res.send('Create a payrun');
+});
+
 module.exports = {
   getPayruns,
   getPayrun,
+  createPayrun,
 };
