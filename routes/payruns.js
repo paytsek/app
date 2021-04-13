@@ -10,6 +10,7 @@ const {
   getPayrun,
   createPayrun,
   updatePayrun,
+  deletePayrun,
 } = require('../controllers/payruns');
 
 // api/v1/payruns
@@ -22,6 +23,7 @@ router
 router
   .route('/:id')
   .get(auth, tenant, administrator, getPayrun)
-  .put(auth, tenant, administrator, updatePayrun);
+  .put(auth, tenant, administrator, updatePayrun)
+  .delete(auth, tenant, administrator, deletePayrun);
 
 module.exports = router;
