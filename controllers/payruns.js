@@ -113,9 +113,17 @@ const updatePayrun = asyncHandler(async (req, res, next) => {
   return res.status(200).json({ success: true, payrun });
 });
 
+// @ROUTE DELETE /api/v1/payruns/:id
+// @Desc Delete a payrun by its id for a specific company
+// access PRIVATE - Logged in user
+const deletePayrun = asyncHandler(async (req, res, next) => {
+  res.send('Delete payrun');
+});
+
 module.exports = {
   getPayruns,
   getPayrun,
   createPayrun,
   updatePayrun,
+  deletePayrun,
 };
