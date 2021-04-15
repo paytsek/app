@@ -85,14 +85,7 @@ const setTenant = asyncHandler(async (req, res, next) => {
 // @Desc Get all companies
 // access PRIVATE - Logged in user
 const getCompanies = asyncHandler(async (req, res) => {
-  let companies = await Company.find({ user: req.user._id })
-    .populate({
-      path: 'companySettings',
-    })
-    .populate({
-      path: 'employees',
-      model: Employee,
-    });
+  let companies;
 
   if (req.user.role === 'admin') {
     companies = await Company.find({})
@@ -103,8 +96,15 @@ const getCompanies = asyncHandler(async (req, res) => {
         path: 'employees',
         model: Employee,
       });
-
-    return res.status(200).json({ success: true, companies });
+  } else {
+    companies = await Company.find({ user: req.user._id })
+      .populate({
+        path: 'companySettings',
+      })
+      .populate({
+        path: 'employees',
+        model: Employee,
+      });
   }
 
   return res.status(200).json({ success: true, companies });
