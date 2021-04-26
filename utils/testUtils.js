@@ -4,7 +4,7 @@ const User = require('../models/User');
 const Employee = require('../models/Employee');
 const Compensation = require('../models/Compensation');
 
-class TestUtil {
+class TestUtils {
   static responseSetObject(slug = '') {
     return {
       'x-company-tenant': slug,
@@ -36,4 +36,4 @@ class TestUtil {
   }
 }
 
-module.exports = TestUtil;
+module.exports = TestUtils;

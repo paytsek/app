@@ -2,18 +2,17 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
-const app = require('../../../app');
-const Company = require('../../../models/Company');
-const User = require('../../../models/User');
-const Employee = require('../../../models/Employee');
-const Compensation = require('../../../models/Compensation');
+const app = require('../../../../app');
+const Company = require('../../../../models/Company');
+const User = require('../../../../models/User');
+const Employee = require('../../../../models/Employee');
+// const TestUtils = require('../../../../utils/testUtils');
 
-describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
+describe('POST /api/v1/employees/:employeeId/compensations', () => {
   let employee;
   let company;
   let token;
   let user;
-  let compensation;
 
   beforeEach(async () => {
     token = await global.signIn();
@@ -24,7 +23,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
       administrators: [user._id],
     });
     [employee] = await Employee.create(
-      {
+      [{
         email: 'employee1@examle.com',
         firstName: 'Kayven',
         lastName: 'Rodrigo',
@@ -103,23 +102,15 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
         hdmfLoanBalance: 0,
         primaryEmployer: true,
         company: company._id,
-      },
+      }],
     );
-    compensation = await Compensation.create({
-      basicPay: 35000,
-      effectivityDate: employee.hireDate,
-      employee: employee._id,
-      company: company._id,
-    });
   });
 
   const url = '/api/v1/employees';
 
   describe('Error response', () => {
     it('should return error response if not logged in', async () => {
-      const res = await request(app).delete(
-        `${url}/${employee._id}/compensations/${compensation._id}`,
-      );
+      const res = await request(app).post(`${url}/${employee._id}/compensations`);
 
       expect(res.status).toBe(401);
       expect(res.body).toEqual(
@@ -140,7 +131,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
       });
 
       const res = await request(app)
-        .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
+        .post(`${url}/${employee._id}/compensations`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -155,7 +146,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
     it('should return error response if no company set', async () => {
       const res = await request(app)
-        .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
+        .post(`${url}/${employee._id}/compensations`)
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -183,7 +174,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
       });
 
       const res = await request(app)
-        .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
+        .post(`${url}/${employee._id}/compensations`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -198,7 +189,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
       const employeeId = mongoose.Types.ObjectId().toHexString();
 
       const res = await request(app)
-        .delete(`${url}/${employeeId}/compensations/${compensation._id}`)
+        .post(`${url}/${employeeId}/compensations`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -212,67 +203,40 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
         }),
       );
     });
-
-    it('should return 404 if status id param is invalid or not exist', async () => {
-      const compensationId = mongoose.Types.ObjectId().toHexString();
-
-      const res = await request(app)
-        .delete(`${url}/${employee._id}/compensations/${compensationId}`)
-        .set({ 'x-company-tenant': company.slug })
-        .auth(token, { type: 'bearer' });
-
-      expect(res.status).toBe(404);
-      expect(res.body.success).toBeFalsy();
-      expect(res.body).toEqual(
-        expect.objectContaining({
-          errors: expect.objectContaining({
-            message: `Resource with an id of ${compensationId} not found`,
-          }),
-        }),
-      );
-    });
-
-    it('should return 400 response if only 1 compensation left to be deleted', async () => {
-      const res = await request(app)
-        .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
-        .auth(token, { type: 'bearer' });
-
-      expect(res.status).toBe(400);
-      expect(res.body.success).toBeFalsy();
-      expect(res.body).toEqual(
-        expect.objectContaining({
-          errors: {
-            message: "Employee's compensation must have at least 1",
-          },
-        }),
-      );
-    });
   });
 
   describe('Success Response', () => {
-    it('should return success response if ids are valid', async () => {
-      await Compensation.create({
-        basicPay: 50000,
-        effectivityDate: employee.hireDate,
-        employee: employee._id,
-        company: company._id,
-      });
+    it('should return success response if values are valid', async () => {
+      await mongoose.connection.createCollection('taxablepays');
+      await mongoose.connection.createCollection('nontaxablepays');
+      await mongoose.connection.createCollection('compensations');
+      await mongoose.connection.createCollection('othertaxablepays');
+      await mongoose.connection.createCollection('othernontaxablepays');
 
       const res = await request(app)
-        .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
+        .post(`${url}/${employee._id}/compensations`)
         .set({ 'x-company-tenant': company.slug })
-        .auth(token, { type: 'bearer' });
+        .auth(token, { type: 'bearer' })
+        .send({
+          basicPay: 35000,
+          effectivityDate: '2020-09-09',
+          otherTaxablePays: [{ taxablePay: mongoose.Types.ObjectId(), value: 1000 }],
+          otherNonTaxablePays: [
+            { nonTaxablePay: mongoose.Types.ObjectId(), value: 1000 },
+          ],
+        });
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(201);
       expect(res.body.success).toBeTruthy();
-      expect(res.body.compensation).toEqual({});
       expect(res.body).toEqual(
         expect.objectContaining({
-          compensation: {},
-          message: `Compensation - ID:${compensation._id} successfully deleted`,
+          compensation: expect.objectContaining({
+            basicPay: 35000,
+            effectivityDate: '2020-09-09T00:00:00.000Z',
+          }),
         }),
       );
+      expect(res.body.compensation).toHaveProperty('_id');
     });
   });
 });
