@@ -2,10 +2,10 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const User = require('../../../../models/User');
+const Services = require('../../../utils/services');
 
 const createUser = async () => {
-  await User.create({
+  await Services.createUser({
     username: 'darryl pogi',
     email: 'darrylpogi@gmail.com',
     password: '123456',

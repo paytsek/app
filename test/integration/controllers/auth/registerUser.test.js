@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const User = require('../../../../models/User');
+const Services = require('../../../utils/services');
 
 describe('POST /api/v1/auth/register - registerUser', () => {
   const url = '/api/v1/auth/register';
@@ -95,7 +95,7 @@ describe('POST /api/v1/auth/register - registerUser', () => {
       expect(res.body.success).toBeFalsy();
       expect(res.body.errors).toHaveProperty('email', 'Email is invalid');
 
-      await User.create({
+      await Services.createUser({
         username: 'darryl pogi',
         email: 'darrylpogi@gmail.com',
         password: '123456',
