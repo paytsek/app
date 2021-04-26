@@ -3,17 +3,19 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const Company = require('../../../../models/Company');
-const Department = require('../../../../models/Department');
-const CompanySetting = require('../../../../models/CompanySetting');
+const TestUtils = require('../../../../utils/testUtils');
 
 describe('PUT /api/v1/departments/:id - updateDepartment', () => {
   const url = '/api/v1/departments';
+  let token;
+
+  beforeEach(async () => {
+    token = await global.signIn();
+  });
 
   describe('Error response', () => {
     it('should return error response if logged in user is not equal to company user', async () => {
-      const token = await global.signIn();
-      const company = await Company.create({
+      const company = await TestUtils.createCompany({
         name: 'Fullsuite',
         user: mongoose.Types.ObjectId(),
       });
@@ -35,10 +37,12 @@ describe('PUT /api/v1/departments/:id - updateDepartment', () => {
     });
 
     it('should return error response if id is not found id invalid', async () => {
-      const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'Fullsuite', user: user._id });
-      await CompanySetting.create({
+      const company = await TestUtils.createCompany({
+        name: 'Fullsuite',
+        user: user._id,
+      });
+      await TestUtils.createCompanySetting({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,
@@ -73,10 +77,12 @@ describe('PUT /api/v1/departments/:id - updateDepartment', () => {
 
   describe('Success Response', () => {
     it('should return success response if values are valid', async () => {
-      const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'Fullsuite', user: user._id });
-      await CompanySetting.create({
+      const company = await TestUtils.createCompany({
+        name: 'Fullsuite',
+        user: user._id,
+      });
+      await TestUtils.createCompanySetting({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,
@@ -89,7 +95,7 @@ describe('PUT /api/v1/departments/:id - updateDepartment', () => {
           zipCode: '2600',
         },
       });
-      const department = await Department.create({
+      const department = await TestUtils.createDepartment({
         name: 'Staff',
         company: company._id,
       });
