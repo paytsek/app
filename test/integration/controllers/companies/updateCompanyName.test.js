@@ -3,8 +3,7 @@ const request = require('supertest');
 const jwt = require('jsonwebtoken');
 
 const app = require('../../../../app');
-const Company = require('../../../../models/Company');
-const User = require('../../../../models/User');
+const TestUtils = require('../../../../utils/testUtils');
 
 describe('PUT /api/v1/companies/name/:id - updateCompanyName', () => {
   const url = '/api/v1/companies/name';
@@ -40,14 +39,14 @@ describe('PUT /api/v1/companies/name/:id - updateCompanyName', () => {
     });
 
     it('should return error response if logged in user not own the company', async () => {
-      const user = await User.create({
+      const user = await TestUtils.createUser({
         username: 'rodrigo',
         email: 'rodrigo@gmail.com',
         password: '123456',
         firstName: 'Rodrigo',
         lastName: 'Carlos',
       });
-      const company = await Company.create({
+      const company = await TestUtils.createCompany({
         name: 'Sample Company',
         user: user._id,
       });
@@ -64,17 +63,17 @@ describe('PUT /api/v1/companies/name/:id - updateCompanyName', () => {
     });
 
     it('should return error response if name entered already exist', async () => {
-      const user = await User.create({
+      const user = await TestUtils.createUser({
         username: 'rodrigocarlos',
         email: 'rodrigo@gmail.com',
         password: '123456',
         firstName: 'Rodrigo',
         lastName: 'Carlos',
       });
-      await Company.create({ name: 'PayTsek', user: user._id });
+      await TestUtils.createCompany({ name: 'PayTsek', user: user._id });
 
       const loggedInUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({
+      const company = await TestUtils.createCompany({
         name: 'Sample Company',
         user: loggedInUser._id,
       });
@@ -94,7 +93,7 @@ describe('PUT /api/v1/companies/name/:id - updateCompanyName', () => {
   describe('Success Response', () => {
     it('should return success response if values entered are valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
+      const company = await TestUtils.createCompany({ name: 'PayTsek', user: user._id });
       const res = await request(app)
         .put(`${url}/${company._id}`)
         .auth(token, { type: 'bearer' })
