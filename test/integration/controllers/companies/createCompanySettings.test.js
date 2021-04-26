@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
@@ -214,8 +213,6 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   });
 
   it('should return 201 status code and success response if fields are valid', async () => {
-    mongoose.connection.db.createCollection('departments');
-
     let res = await request(app)
       .post('/api/v1/companies/name')
       .auth(token, { type: 'bearer' })
