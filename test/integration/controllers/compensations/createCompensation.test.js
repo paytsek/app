@@ -3,10 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const Company = require('../../../../models/Company');
-const User = require('../../../../models/User');
-const Employee = require('../../../../models/Employee');
-// const TestUtils = require('../../../../utils/testUtils');
+const TestUtils = require('../../../../utils/testUtils');
 
 describe('POST /api/v1/employees/:employeeId/compensations', () => {
   let employee;
@@ -17,13 +14,13 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
   beforeEach(async () => {
     token = await global.signIn();
     user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    company = await Company.create({
+    company = await TestUtils.createCompany({
       name: 'Full suite',
       user: user._id,
       administrators: [user._id],
     });
-    [employee] = await Employee.create(
-      [{
+    [employee] = await TestUtils.createEmployee([
+      {
         email: 'employee1@examle.com',
         firstName: 'Kayven',
         lastName: 'Rodrigo',
@@ -102,8 +99,8 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
         hdmfLoanBalance: 0,
         primaryEmployer: true,
         company: company._id,
-      }],
-    );
+      },
+    ]);
   });
 
   const url = '/api/v1/employees';
@@ -124,7 +121,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
     });
 
     it('should return error response if logged in user is not equal to company user', async () => {
-      company = await Company.create({
+      company = await TestUtils.createCompany({
         name: 'PayTsek',
         user: mongoose.Types.ObjectId(),
         administrators: [user._id],
@@ -159,7 +156,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
     });
 
     it('should return 403 if logged in user is not an administrator', async () => {
-      user = await User.create({
+      user = await TestUtils.createUser({
         username: 'jane doe',
         email: 'janedoe@gmail.com',
         password: '123456',
@@ -167,7 +164,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
         lastName: 'Doe',
       });
 
-      company = await Company.create({
+      company = await TestUtils.createCompany({
         name: 'test company',
         user: user._id,
         administrators: [user._id],
