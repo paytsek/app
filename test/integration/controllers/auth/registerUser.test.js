@@ -1,17 +1,8 @@
 const jwt = require('jsonwebtoken');
 const request = require('supertest');
-const app = require('../../../app');
-const User = require('../../../models/User');
 
-const createUser = async () => {
-  await User.create({
-    username: 'darryl pogi',
-    email: 'darrylpogi@gmail.com',
-    password: '123456',
-    firstName: 'Darryl',
-    lastName: 'Mangibin',
-  });
-};
+const app = require('../../../../app');
+const User = require('../../../../models/User');
 
 describe('POST /api/v1/auth/register - registerUser', () => {
   const url = '/api/v1/auth/register';
@@ -104,7 +95,13 @@ describe('POST /api/v1/auth/register - registerUser', () => {
       expect(res.body.success).toBeFalsy();
       expect(res.body.errors).toHaveProperty('email', 'Email is invalid');
 
-      await createUser();
+      await User.create({
+        username: 'darryl pogi',
+        email: 'darrylpogi@gmail.com',
+        password: '123456',
+        firstName: 'Darryl',
+        lastName: 'Mangibin',
+      });
 
       res = await request(app).post(url).send({
         username: 'darryl cute',
@@ -142,116 +139,6 @@ describe('POST /api/v1/auth/register - registerUser', () => {
       expect(user).toEqual(
         expect.objectContaining({ username: 'darryl cute' }),
         expect.objectContaining({ email: 'darrylcute@gmail.com' }),
-      );
-    });
-  });
-});
-
-describe('POST /api/v1/auth/login - loginUser', () => {
-  const url = '/api/v1/auth/login';
-
-  describe('Error Response', () => {
-    it('should have 400 status code if email and password is empty', async () => {
-      const res = await request(app).post(url).send({ email: '', password: '' });
-
-      expect(res.status).toBe(400);
-      expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toHaveProperty(
-        'message',
-        'Please provide an email and password',
-      );
-    });
-
-    it('should have 400 status code if email is not existing in database', async () => {
-      await createUser();
-
-      const res = await request(app)
-        .post(url)
-        .send({ email: 'darryl@gmail.com', password: '123456' });
-
-      expect(res.status).toBe(401);
-      expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toHaveProperty('message', 'Invalid credentials');
-    });
-
-    it('should have 400 status code if password is incorrect', async () => {
-      await createUser();
-
-      const res = await request(app)
-        .post(url)
-        .send({ email: 'test@example.com', password: '1234567' });
-
-      expect(res.status).toBe(401);
-      expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toHaveProperty('message', 'Invalid credentials');
-    });
-  });
-
-  describe('Success Response', () => {
-    it('should return a token if login is successful', async () => {
-      await createUser();
-
-      const res = await request(app)
-        .post(url)
-        .send({ email: 'darrylpogi@gmail.com', password: '123456' });
-
-      expect(res.status).toBe(200);
-      expect(res.body.success).toBeTruthy();
-      expect(Object.keys(res.body)).toEqual(expect.arrayContaining(['token']));
-
-      const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
-
-      expect(Object.keys(user)).toEqual(
-        expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp']),
-      );
-      expect(user).toMatchObject({
-        username: 'darryl pogi',
-        email: 'darrylpogi@gmail.com',
-      });
-    });
-  });
-});
-
-describe('GET /api/v1/auth - authUser', () => {
-  const url = '/api/v1/auth';
-
-  describe('Error Response', () => {
-    it('should return an error response if token is invalid', async () => {
-      let res = await request(app).get(url);
-
-      expect(res.status).toBe(401);
-      expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toMatchObject({
-        message: 'No token, access denied',
-      });
-
-      res = await request(app).get(url).auth('token123', { type: 'bearer' });
-
-      expect(res.status).toBe(401);
-      expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toMatchObject({
-        message: 'Not authorize to access this route',
-      });
-    });
-  });
-
-  describe('Success Response', () => {
-    it('should return a success response if token is valid', async () => {
-      const token = await global.signIn();
-
-      const res = await request(app).get(url).auth(token, { type: 'bearer' });
-
-      expect(res.status).toBe(200);
-      expect(res.body.success).toBeTruthy();
-      expect(Object.keys(res.body.user)).toEqual(
-        expect.arrayContaining([
-          'id',
-          'email',
-          'role',
-          'firstName',
-          'lastName',
-          'fullName',
-        ]),
       );
     });
   });
