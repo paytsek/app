@@ -32,13 +32,13 @@ describe('POST /api/v1/employees - createEmployee', () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const company = await TestUtils.createCompany({
         name: 'Full suite',
-        user: mongoose.Types.ObjectId(),
+        user: mongoose.Types.ObjectId().toHexString(),
         administrators: [user._id],
       });
 
       const res = await request(app)
         .post(url)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -79,7 +79,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
 
       const res = await request(app)
         .post(url)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -100,7 +100,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
 
       let res = await request(app)
         .post(url)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(400);
@@ -122,7 +122,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
 
       res = await request(app)
         .post(url)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' })
         .send({
           email: 'employee1@examle.com',
@@ -152,7 +152,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
             zipCode: '3151',
           },
           bankingInformation: '1234145',
-          department: mongoose.Types.ObjectId(),
+          department: mongoose.Types.ObjectId().toHexString(),
           position: 'Senior',
           workingDays: 22,
           workingHours: 8,
@@ -199,7 +199,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
           zipCode: '3151',
         },
         bankingInformation: '1234145',
-        department: mongoose.Types.ObjectId(),
+        department: mongoose.Types.ObjectId().toHexString(),
         position: 'Senior',
         workingDays: 22,
         workingHours: 8,
@@ -220,7 +220,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
 
       res = await request(app)
         .post(url)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' })
         .send({
           email: 'employee1@examle.com',
@@ -249,7 +249,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
             zipCode: '3151',
           },
           bankingInformation: '1234145',
-          department: mongoose.Types.ObjectId(),
+          department: mongoose.Types.ObjectId().toHexString(),
           position: 'Senior',
           workingDays: 22,
           workingHours: 8,
@@ -296,7 +296,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
 
       const res = await request(app)
         .post(url)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' })
         .send({
           email: 'employee1@examle.com',
@@ -326,7 +326,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
             zipCode: '3151',
           },
           bankingInformation: '1234145',
-          department: mongoose.Types.ObjectId(),
+          department: mongoose.Types.ObjectId().toHexString(),
           position: 'Senior',
           workingDays: 22,
           workingHours: 8,
@@ -345,9 +345,11 @@ describe('POST /api/v1/employees - createEmployee', () => {
             basicPay: 40000,
             deminimis: 2000,
             effectivityDate: '2020-09-09',
-            otherTaxablePays: [{ taxablePay: mongoose.Types.ObjectId(), value: 1200 }],
+            otherTaxablePays: [
+              { taxablePay: mongoose.Types.ObjectId().toHexString(), value: 1200 },
+            ],
             otherNonTaxablePays: [
-              { nonTaxablePay: mongoose.Types.ObjectId(), value: 1200 },
+              { nonTaxablePay: mongoose.Types.ObjectId().toHexString(), value: 1200 },
             ],
           },
         });

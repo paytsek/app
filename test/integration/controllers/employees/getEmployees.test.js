@@ -3,8 +3,6 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const User = require('../../../../models/User');
-const Employee = require('../../../../models/Employee');
 const TestUtils = require('../../../../utils/testUtils');
 
 describe('GET /api/v1/employees = getEmployees', () => {
@@ -34,7 +32,7 @@ describe('GET /api/v1/employees = getEmployees', () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const company = await TestUtils.createCompany({
         name: 'Full suite',
-        user: mongoose.Types.ObjectId(),
+        user: mongoose.Types.ObjectId().toHexString(),
         administrators: [user._id],
       });
 
@@ -65,7 +63,7 @@ describe('GET /api/v1/employees = getEmployees', () => {
     });
 
     it('should return 403 if logged in user is not an administrator', async () => {
-      const user = await User.create({
+      const user = await TestUtils.createUser({
         username: 'jane doe',
         email: 'janedoe@gmail.com',
         password: '123456',
@@ -100,7 +98,7 @@ describe('GET /api/v1/employees = getEmployees', () => {
         user: user._id,
         administrators: [user._id],
       });
-      await Employee.create([
+      await TestUtils.createEmployee([
         {
           email: 'employee1@examle.com',
           firstName: 'Kayven',
@@ -128,7 +126,7 @@ describe('GET /api/v1/employees = getEmployees', () => {
             zipCode: '3151',
           },
           bankingInformation: '1234145',
-          department: mongoose.Types.ObjectId(),
+          department: mongoose.Types.ObjectId().toHexString(),
           position: 'Senior',
           workingDays: 22,
           workingHours: 8,
@@ -168,7 +166,7 @@ describe('GET /api/v1/employees = getEmployees', () => {
             zipCode: '3151',
           },
           bankingInformation: '1234145',
-          department: mongoose.Types.ObjectId(),
+          department: mongoose.Types.ObjectId().toHexString(),
           position: 'Senior',
           workingDays: 22,
           workingHours: 8,
