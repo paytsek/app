@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
+const Department = require('../../../../models/Department');
 
 describe('GET /api/v1/departments - getDepartments', () => {
   const url = '/api/v1/departments';
@@ -27,14 +28,14 @@ describe('GET /api/v1/departments - getDepartments', () => {
     });
 
     it('should return error response if logged in user is not equal to company user', async () => {
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'Full suite',
         user: mongoose.Types.ObjectId(),
       });
 
       const res = await request(app)
         .get(url)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -62,8 +63,8 @@ describe('GET /api/v1/departments - getDepartments', () => {
   describe('Success response', () => {
     it('should return success response if company is set', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({ name: 'PayTsek', user: user._id });
-      await TestUtils.createCompanySetting({
+      const company = await Company.create({ name: 'PayTsek', user: user._id });
+      await Company.createSetting({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,
@@ -76,14 +77,14 @@ describe('GET /api/v1/departments - getDepartments', () => {
           zipCode: '2600',
         },
       });
-      await TestUtils.createDepartment([
+      await Department.create([
         { name: 'Staff', company: company._id },
         { name: 'Senior', company: company._id },
       ]);
 
       const res = await request(app)
         .get(url)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);

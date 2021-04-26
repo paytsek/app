@@ -3,7 +3,9 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const User = require('../../../../models/User');
+const CompanySetting = require('../../../../models/CompanySetting');
+const Company = require('../../../../models/Company');
 
 describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanySettings', () => {
   const url = '/api/v1/companies/settings';
@@ -27,7 +29,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
     });
 
     it('should return error if company not own by the logged in user', async () => {
-      const user = await TestUtils.createUser({
+      const user = await User.create({
         username: 'rodrigocarlos',
         email: 'rodrigo@gmail.com',
         password: '123456',
@@ -35,7 +37,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
         lastName: 'Carlos',
       });
       const owner = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'PayTsek',
         user: user._id,
         administrators: [owner._id],
@@ -43,7 +45,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 
       const res = await request(app)
         .put(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -68,7 +70,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
     it('should return error if company does not have settings created', async () => {
       const loggedInUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const companySettingsId = mongoose.Types.ObjectId().toHexString();
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'PayTsek',
         user: loggedInUser._id,
         administrators: [loggedInUser._id],
@@ -76,7 +78,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 
       const res = await request(app)
         .put(`${url}/${companySettingsId}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -88,12 +90,12 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 
     it('should return error response when invalid values are entered', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'PayTsek',
         user: user._id,
         administrators: [user._id],
       });
-      const companySettings = await TestUtils.createCompanySetting({
+      const companySettings = await CompanySetting.create({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,
@@ -110,7 +112,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 
       const res = await request(app)
         .put(`${url}/${companySettings._id}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
         .send({
           category: '',
@@ -135,12 +137,12 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 
     it('should return error response when condition fields is invalid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'PayTsek',
         user: user._id,
         administrators: [user._id],
       });
-      const companySettings = await TestUtils.createCompanySetting({
+      const companySettings = await CompanySetting.create({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,
@@ -158,7 +160,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
       const res = await request(app)
         .put(`${url}/${companySettings._id}`)
         .auth(token, { type: 'bearer' })
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .send({
           frequency: 'semiMonthly',
           nightDifferential: 'percentage',
@@ -193,7 +195,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
     });
 
     it('should return 403 if logged in user is not an administrator', async () => {
-      const user = await TestUtils.createUser({
+      const user = await User.create({
         username: 'jane doe',
         email: 'janedoe@gmail.com',
         password: '123456',
@@ -201,7 +203,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
         lastName: 'Doe',
       });
 
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'test company',
         user: user._id,
         administrators: [user._id],
@@ -209,7 +211,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 
       const res = await request(app)
         .post(`${url}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -223,12 +225,12 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
   describe('Success Response', () => {
     it('should return success reponse if entered values are valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'PayTsek',
         user: user._id,
         administrators: [user._id],
       });
-      const companySettings = await TestUtils.createCompanySetting({
+      const companySettings = await CompanySetting.create({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,
@@ -249,7 +251,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
       const res = await request(app)
         .put(`${url}/${companySettings._id}`)
         .auth(token, { type: 'bearer' })
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .send({
           accountingJournal: {
             deminimisBenefits: 'wagesPayable',

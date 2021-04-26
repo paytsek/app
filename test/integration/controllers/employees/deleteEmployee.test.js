@@ -3,7 +3,9 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const CompanySetting = require('../../../../models/CompanySetting');
+const User = require('../../../../models/User');
+const Employee = require('../../../../models/Employee');
 
 describe('DELETE /api/v1/employees/:id - deleteEmployee', () => {
   const url = '/api/v1/employees';
@@ -15,7 +17,9 @@ describe('DELETE /api/v1/employees/:id - deleteEmployee', () => {
 
   describe('Error response', () => {
     it('should return error response if not logged in', async () => {
-      const res = await request(app).delete(`${url}/${mongoose.Types.ObjectId()}`);
+      const res = await request(app).delete(
+        `${url}/${mongoose.Types.ObjectId().toHexString()}`,
+      );
 
       expect(res.status).toBe(401);
       expect(res.body).toEqual(
@@ -30,15 +34,15 @@ describe('DELETE /api/v1/employees/:id - deleteEmployee', () => {
 
     it('should return error response if logged in user is not equal to company user', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({
+      const company = await CompanySetting.create({
         name: 'Full suite',
-        user: mongoose.Types.ObjectId(),
+        user: mongoose.Types.ObjectId().toHexString(),
         administrators: [user._id],
       });
 
       const res = await request(app)
-        .delete(`${url}/${mongoose.Types.ObjectId()}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .delete(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -52,7 +56,7 @@ describe('DELETE /api/v1/employees/:id - deleteEmployee', () => {
 
     it('should return error response if no company set', async () => {
       const res = await request(app)
-        .delete(`${url}/${mongoose.Types.ObjectId()}`)
+        .delete(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -65,7 +69,7 @@ describe('DELETE /api/v1/employees/:id - deleteEmployee', () => {
     });
 
     it('should return 403 if logged in user is not an administrator', async () => {
-      const user = await TestUtils.createUser({
+      const user = await User.create({
         username: 'jane doe',
         email: 'janedoe@gmail.com',
         password: '123456',
@@ -73,15 +77,15 @@ describe('DELETE /api/v1/employees/:id - deleteEmployee', () => {
         lastName: 'Doe',
       });
 
-      const company = await TestUtils.createCompany({
+      const company = await CompanySetting.create({
         name: 'test company',
         user: user._id,
         administrators: [user._id],
       });
 
       const res = await request(app)
-        .delete(`${url}/${mongoose.Types.ObjectId()}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .delete(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -93,17 +97,17 @@ describe('DELETE /api/v1/employees/:id - deleteEmployee', () => {
 
     it('should return 400 if id is invalid or not found', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({
+      const company = await CompanySetting.create({
         name: 'Paytsek',
         user: user._id,
         administrators: [user._id],
       });
 
-      const invalidId = mongoose.Types.ObjectId();
+      const invalidId = mongoose.Types.ObjectId().toHexString();
 
       const res = await request(app)
         .delete(`${url}/${invalidId}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -119,12 +123,12 @@ describe('DELETE /api/v1/employees/:id - deleteEmployee', () => {
   describe('Success Response', () => {
     it('should return success response if id is valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({
+      const company = await CompanySetting.create({
         name: 'Full suite',
         user: user._id,
         administrators: [user._id],
       });
-      const employee = await TestUtils.createEmployee({
+      const employee = await Employee.create({
         email: 'employee1@examle.com',
         firstName: 'Kayven',
         lastName: 'Rodrigo',
@@ -151,7 +155,7 @@ describe('DELETE /api/v1/employees/:id - deleteEmployee', () => {
           zipCode: '3151',
         },
         bankingInformation: '1234145',
-        department: mongoose.Types.ObjectId(),
+        department: mongoose.Types.ObjectId().toHexString(),
         position: 'Senior',
         workingDays: 22,
         workingHours: 8,
@@ -167,7 +171,7 @@ describe('DELETE /api/v1/employees/:id - deleteEmployee', () => {
 
       const res = await request(app)
         .delete(`${url}/${employee._id}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);

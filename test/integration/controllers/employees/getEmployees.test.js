@@ -3,7 +3,9 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
+const User = require('../../../../models/User');
+const Employee = require('../../../../models/Employee');
 
 describe('GET /api/v1/employees = getEmployees', () => {
   const url = '/api/v1/employees';
@@ -30,7 +32,7 @@ describe('GET /api/v1/employees = getEmployees', () => {
 
     it('should return error response if logged in user is not equal to company user', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'Full suite',
         user: mongoose.Types.ObjectId().toHexString(),
         administrators: [user._id],
@@ -38,7 +40,7 @@ describe('GET /api/v1/employees = getEmployees', () => {
 
       const res = await request(app)
         .get(url)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -63,7 +65,7 @@ describe('GET /api/v1/employees = getEmployees', () => {
     });
 
     it('should return 403 if logged in user is not an administrator', async () => {
-      const user = await TestUtils.createUser({
+      const user = await User.create({
         username: 'jane doe',
         email: 'janedoe@gmail.com',
         password: '123456',
@@ -71,7 +73,7 @@ describe('GET /api/v1/employees = getEmployees', () => {
         lastName: 'Doe',
       });
 
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'test company',
         user: user._id,
         administrators: [user._id],
@@ -79,7 +81,7 @@ describe('GET /api/v1/employees = getEmployees', () => {
 
       const res = await request(app)
         .get(url)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -93,12 +95,12 @@ describe('GET /api/v1/employees = getEmployees', () => {
   describe('Success Response', () => {
     it('should return success response if values are valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'Full suite',
         user: user._id,
         administrators: [user._id],
       });
-      await TestUtils.createEmployee([
+      await Employee.create([
         {
           email: 'employee1@examle.com',
           firstName: 'Kayven',
@@ -183,7 +185,7 @@ describe('GET /api/v1/employees = getEmployees', () => {
 
       const res = await request(app)
         .get(url)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);

@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const CompanySetting = require('../../../../models/CompanySetting');
+const Company = require('../../../../models/Company');
 
 describe('POST /api/v1/departments - createDepartment', () => {
   const url = '/api/v1/departments';
@@ -29,14 +30,14 @@ describe('POST /api/v1/departments - createDepartment', () => {
     });
 
     it('should return error response if logged in user is not equal to company user', async () => {
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'Full suite',
         user: mongoose.Types.ObjectId(),
       });
 
       const res = await request(app)
         .get(url)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -62,8 +63,8 @@ describe('POST /api/v1/departments - createDepartment', () => {
 
     it('should return error response if name is empty', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({ name: 'PayTsek', user: user._id });
-      await TestUtils.createCompanySetting({
+      const company = await Company.create({ name: 'PayTsek', user: user._id });
+      await CompanySetting.create({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,
@@ -79,7 +80,7 @@ describe('POST /api/v1/departments - createDepartment', () => {
 
       const res = await request(app)
         .post(url)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
         .send({ name: '' });
 
@@ -98,8 +99,8 @@ describe('POST /api/v1/departments - createDepartment', () => {
   describe('Success Response', () => {
     it('should return success response if values are valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({ name: 'PayTsek', user: user._id });
-      await TestUtils.createCompanySetting({
+      const company = await Company.create({ name: 'PayTsek', user: user._id });
+      await CompanySetting.create({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,
@@ -115,7 +116,7 @@ describe('POST /api/v1/departments - createDepartment', () => {
 
       const res = await request(app)
         .post(url)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
         .send({ name: 'Staff' });
 

@@ -7,7 +7,7 @@ const Company = require('../../../../models/Company');
 const User = require('../../../../models/User');
 const Employee = require('../../../../models/Employee');
 
-describe('POST /api/v1/employees - createEmployee', () => {
+describe('PUT /api/v1/employees/:id - updateEmployee', () => {
   const url = '/api/v1/employees';
   let token;
 
@@ -15,9 +15,11 @@ describe('POST /api/v1/employees - createEmployee', () => {
     token = await global.signIn();
   });
 
-  describe('Error Response', () => {
+  describe('Error response', () => {
     it('should return error response if not logged in', async () => {
-      const res = await request(app).post(url);
+      const res = await request(app).put(
+        `${url}/${mongoose.Types.ObjectId().toHexString()}`,
+      );
 
       expect(res.status).toBe(401);
       expect(res.body).toEqual(
@@ -39,7 +41,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
       });
 
       const res = await request(app)
-        .post(url)
+        .put(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -53,7 +55,9 @@ describe('POST /api/v1/employees - createEmployee', () => {
     });
 
     it('should return error response if no company set', async () => {
-      const res = await request(app).post(url).auth(token, { type: 'bearer' });
+      const res = await request(app)
+        .put(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
+        .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
       expect(res.body).toEqual(
@@ -80,7 +84,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
       });
 
       const res = await request(app)
-        .post(url)
+        .put(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -91,8 +95,7 @@ describe('POST /api/v1/employees - createEmployee', () => {
       });
     });
 
-    it('should return validation error if values are invalid', async () => {
-      await mongoose.connection.createCollection('employees');
+    it('should return 404 if id is invalid or not found', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const company = await Company.create({
         name: 'Paytsek',
@@ -100,81 +103,76 @@ describe('POST /api/v1/employees - createEmployee', () => {
         administrators: [user._id],
       });
 
-      let res = await request(app)
-        .post(url)
+      const invalidId = mongoose.Types.ObjectId().toHexString();
+
+      const res = await request(app)
+        .put(`${url}/${invalidId}`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(404);
       expect(res.body.success).toBeFalsy();
       expect(res.body.errors).toEqual(
         expect.objectContaining({
-          'permanentAddress.zipCode': 'Zip code is required',
-          'permanentAddress.country': 'City is required',
-          'permanentAddress.city': 'City is required',
-          'permanentAddress.street': 'Street is required',
-          'registeredAddress.zipCode': 'Zip code is required',
-          'registeredAddress.country': 'City is required',
-          'registeredAddress.city': 'City is required',
-          'registeredAddress.street': 'Street is required',
-          lastName: 'Please provide last name',
-          firstName: 'Please provide first name',
+          message: `Resource with an id of ${invalidId} not found`,
         }),
       );
+    });
 
-      res = await request(app)
-        .post(url)
-        .set({ 'x-company-tenant': company.slug })
-        .auth(token, { type: 'bearer' })
-        .send({
-          email: 'employee1@examle.com',
-          firstName: 'Kayven',
-          lastName: 'Rodrigo',
-          birthDate: '1994-02-11',
-          hireDate: '2020-03-09',
-          resignationDate: '',
-          gender: 'male',
-          civilStatus: 'single',
-          numberOfQualifiedDependents: 0,
-          rdoCode: '',
-          validId: 'Passport',
-          nightDifferential: true,
-          validIdNumber: '12345678',
-          placeOfIssue: 'Baguio City',
-          registeredAddress: {
-            street: '22p Marcoville',
-            city: 'Baguio City',
-            country: 'Philippines',
-            zipCode: '2600',
-          },
-          permanentAddress: {
-            street: 'Salt Lake',
-            city: 'Utah',
-            country: 'USA',
-            zipCode: '3151',
-          },
-          bankingInformation: '1234145',
-          department: mongoose.Types.ObjectId().toHexString(),
-          position: 'Senior',
-          workingDays: 22,
-          workingHours: 8,
-          sssNumber: '1958483758',
-          phicNumber: '38480581',
-          hdmfNumber: '483050105',
-          sssLoanBalance: 2000,
-          allowances: 3000,
-          hdmfLoanBalance: 0,
-        });
-
-      expect(res.status).toBe(400);
-      expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toEqual(
-        expect.objectContaining({
-          compensation: 'Compensation is required',
-        }),
-      );
-
+    it('should return 400 if values entered are invalid', async () => {
+      const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const company = await Company.create({
+        name: 'Paytsek',
+        user: user._id,
+        administrators: [user._id],
+      });
       await Employee.create({
+        email: 'employee2@examle.com',
+        employeeNumber: 'sample-001',
+        firstName: 'Kayven',
+        lastName: 'Rodrigo',
+        birthDate: '1994-02-11',
+        hireDate: '2020-03-09',
+        resignationDate: '',
+        gender: 'male',
+        civilStatus: 'single',
+        numberOfQualifiedDependents: 0,
+        rdoCode: '',
+        validId: 'Passport',
+        validIdNumber: '12345678',
+        placeOfIssue: 'Baguio City',
+        registeredAddress: {
+          street: '22p Marcoville',
+          city: 'Baguio City',
+          country: 'Philippines',
+          zipCode: '2600',
+        },
+        permanentAddress: {
+          street: 'Salt Lake',
+          city: 'Utah',
+          country: 'USA',
+          zipCode: '3151',
+        },
+        bankingInformation: '1234145',
+        department: mongoose.Types.ObjectId().toHexString(),
+        position: 'Senior',
+        workingDays: 22,
+        workingHours: 8,
+        sssNumber: '1958483758',
+        phicNumber: '38480581',
+        hdmfNumber: '483050105',
+        sssLoanBalance: 2000,
+        allowances: 3000,
+        hdmfLoanBalance: 0,
+        status: {
+          active: true,
+        },
+        compensation: {
+          basicPay: 30000,
+        },
+        company: company._id,
+      });
+      const employee = await Employee.create({
         email: 'employee1@examle.com',
         firstName: 'Kayven',
         lastName: 'Rodrigo',
@@ -220,115 +218,105 @@ describe('POST /api/v1/employees - createEmployee', () => {
         company: company._id,
       });
 
-      res = await request(app)
-        .post(url)
+      const res = await request(app)
+        .put(`${url}/${employee._id}`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
-        .send({
-          email: 'employee1@examle.com',
-          firstName: 'Kayven',
-          lastName: 'Rodrigo',
-          birthDate: '1994-02-11',
-          hireDate: '2020-03-09',
-          resignationDate: '',
-          gender: 'male',
-          civilStatus: 'single',
-          numberOfQualifiedDependents: 0,
-          rdoCode: '',
-          validId: 'Passport',
-          validIdNumber: '12345678',
-          placeOfIssue: 'Baguio City',
-          registeredAddress: {
-            street: '22p Marcoville',
-            city: 'Baguio City',
-            country: 'Philippines',
-            zipCode: '2600',
-          },
-          permanentAddress: {
-            street: 'Salt Lake',
-            city: 'Utah',
-            country: 'USA',
-            zipCode: '3151',
-          },
-          bankingInformation: '1234145',
-          department: mongoose.Types.ObjectId().toHexString(),
-          position: 'Senior',
-          workingDays: 22,
-          workingHours: 8,
-          sssNumber: '1958483758',
-          phicNumber: '38480581',
-          hdmfNumber: '483050105',
-          sssLoanBalance: 2000,
-          allowances: 3000,
-          hdmfLoanBalance: 0,
-          status: {
-            active: true,
-          },
-          compensation: {
-            basicPay: 30000,
-          },
-          company: company._id,
-        });
+        .send({ email: 'employee2@examle.com', employeeNumber: 'sample-001' });
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toEqual(
+      expect(res.body).toEqual(
         expect.objectContaining({
-          email: 'Email already exist',
+          errors: expect.objectContaining({
+            email: 'Email already exist',
+            employeeNumber: 'Employee Number already exist',
+          }),
         }),
       );
     });
   });
 
-  describe('Success Response', () => {
-    it('should return success response if values entered are valid', async () => {
-      await mongoose.connection.createCollection('othertaxablepays');
-      await mongoose.connection.createCollection('othernontaxablepays');
-      await mongoose.connection.createCollection('status');
-      await mongoose.connection.createCollection('compensations');
-      await mongoose.connection.createCollection('taxablepays');
-      await mongoose.connection.createCollection('nontaxablepays');
-
+  describe('Success response', () => {
+    it('should return success response if values are valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const company = await Company.create({
         name: 'Paytsek',
         user: user._id,
         administrators: [user._id],
       });
+      const employee = await Employee.create({
+        email: 'employee1@examle.com',
+        firstName: 'Kayven',
+        lastName: 'Rodrigo',
+        birthDate: '1994-02-11',
+        hireDate: '2020-03-09',
+        resignationDate: '',
+        gender: 'male',
+        civilStatus: 'single',
+        numberOfQualifiedDependents: 0,
+        rdoCode: '',
+        validId: 'Passport',
+        validIdNumber: '12345678',
+        placeOfIssue: 'Baguio City',
+        registeredAddress: {
+          street: '22p Marcoville',
+          city: 'Baguio City',
+          country: 'Philippines',
+          zipCode: '2600',
+        },
+        permanentAddress: {
+          street: 'Salt Lake',
+          city: 'Utah',
+          country: 'USA',
+          zipCode: '3151',
+        },
+        bankingInformation: '1234145',
+        department: mongoose.Types.ObjectId().toHexString(),
+        position: 'Senior',
+        workingDays: 22,
+        workingHours: 8,
+        sssNumber: '1958483758',
+        phicNumber: '38480581',
+        hdmfNumber: '483050105',
+        sssLoanBalance: 2000,
+        allowances: 3000,
+        hdmfLoanBalance: 0,
+        company: company._id,
+      });
 
       const res = await request(app)
-        .post(url)
+        .put(`${url}/${employee._id}`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
         .send({
-          email: 'employee1@examle.com',
-          firstName: 'Kayven',
+          email: 'employee1@update.com',
+          employeeNumber: 'sample-0001',
+          firstName: 'Kayven Carlos',
           lastName: 'Rodrigo',
           birthDate: '1994-02-11',
-          hireDate: '2020-03-09',
+          hireDate: '2020-12-09',
           resignationDate: '',
-          gender: 'male',
-          civilStatus: 'single',
-          numberOfQualifiedDependents: 0,
+          gender: 'female',
+          civilStatus: 'married',
+          numberOfQualifiedDependents: 2,
           rdoCode: '',
           validId: 'Passport',
           validIdNumber: '12345678',
           placeOfIssue: 'Baguio City',
-          nightDifferential: true,
           registeredAddress: {
-            street: '22p Marcoville',
+            street: '22c Marcoville',
             city: 'Baguio City',
             country: 'Philippines',
             zipCode: '2600',
           },
           permanentAddress: {
-            street: 'Salt Lake',
+            street: ' 34 St, Salt Lake',
             city: 'Utah',
             country: 'USA',
             zipCode: '3151',
           },
           bankingInformation: '1234145',
-          department: mongoose.Types.ObjectId().toHexString(),
           position: 'Senior',
           workingDays: 22,
           workingHours: 8,
@@ -338,27 +326,45 @@ describe('POST /api/v1/employees - createEmployee', () => {
           sssLoanBalance: 2000,
           allowances: 3000,
           hdmfLoanBalance: 0,
-          primaryEmployer: true,
-          company: company._id,
-          status: {
-            active: true,
-          },
-          compensation: {
-            basicPay: 40000,
-            deminimis: 2000,
-            effectivityDate: '2020-09-09',
-            otherTaxablePays: [
-              { taxablePay: mongoose.Types.ObjectId().toHexString(), value: 1200 },
-            ],
-            otherNonTaxablePays: [
-              { nonTaxablePay: mongoose.Types.ObjectId().toHexString(), value: 1200 },
-            ],
-          },
         });
 
-      expect(res.status).toBe(201);
+      expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
-      expect(Object.keys(res.body.employee)).toEqual(expect.arrayContaining(['_id']));
+      expect(res.body.employee).toEqual(
+        expect.objectContaining({
+          email: 'employee1@update.com',
+          employeeNumber: 'sample-0001',
+          gender: 'female',
+          civilStatus: 'married',
+          numberOfQualifiedDependents: 2,
+          rdoCode: '',
+          validId: 'Passport',
+          validIdNumber: '12345678',
+          placeOfIssue: 'Baguio City',
+          registeredAddress: {
+            street: '22c Marcoville',
+            city: 'Baguio City',
+            country: 'Philippines',
+            zipCode: '2600',
+          },
+          permanentAddress: {
+            street: ' 34 St, Salt Lake',
+            city: 'Utah',
+            country: 'USA',
+            zipCode: '3151',
+          },
+          bankingInformation: '1234145',
+          position: 'Senior',
+          workingDays: 22,
+          workingHours: 8,
+          sssNumber: '1958483758',
+          phicNumber: '38480581',
+          hdmfNumber: '483050105',
+          sssLoanBalance: 2000,
+          allowances: 3000,
+          hdmfLoanBalance: 0,
+        }),
+      );
     });
   });
 });

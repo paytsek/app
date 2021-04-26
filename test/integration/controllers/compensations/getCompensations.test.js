@@ -3,7 +3,10 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
+const Employee = require('../../../../models/Employee');
+const User = require('../../../../models/User');
+const Compensation = require('../../../../models/Compensation');
 
 describe('GET /api/v1/employees/:employeeId/compensations - getCompensations', () => {
   let employee;
@@ -14,12 +17,12 @@ describe('GET /api/v1/employees/:employeeId/compensations - getCompensations', (
   beforeEach(async () => {
     token = await global.signIn();
     user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    company = await TestUtils.createCompany({
+    company = await Company.create({
       name: 'Full suite',
       user: user._id,
       administrators: [user._id],
     });
-    [employee] = await TestUtils.createEmployee([
+    [employee] = await Employee.create([
       {
         email: 'employee1@examle.com',
         firstName: 'Kayven',
@@ -121,7 +124,7 @@ describe('GET /api/v1/employees/:employeeId/compensations - getCompensations', (
     });
 
     it('should return error response if logged in user is not equal to company user', async () => {
-      company = await TestUtils.createCompany({
+      company = await Company.create({
         name: 'PayTsek',
         user: mongoose.Types.ObjectId(),
         administrators: [user._id],
@@ -129,7 +132,7 @@ describe('GET /api/v1/employees/:employeeId/compensations - getCompensations', (
 
       const res = await request(app)
         .get(`${url}/${employee._id}/compensations`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -156,7 +159,7 @@ describe('GET /api/v1/employees/:employeeId/compensations - getCompensations', (
     });
 
     it('should return 403 if logged in user is not an administrator', async () => {
-      user = await TestUtils.createUser({
+      user = await User.create({
         username: 'jane doe',
         email: 'janedoe@gmail.com',
         password: '123456',
@@ -164,7 +167,7 @@ describe('GET /api/v1/employees/:employeeId/compensations - getCompensations', (
         lastName: 'Doe',
       });
 
-      company = await TestUtils.createCompany({
+      company = await Company.create({
         name: 'test company',
         user: user._id,
         administrators: [user._id],
@@ -172,7 +175,7 @@ describe('GET /api/v1/employees/:employeeId/compensations - getCompensations', (
 
       const res = await request(app)
         .get(`${url}/${employee._id}/compensations`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -187,7 +190,7 @@ describe('GET /api/v1/employees/:employeeId/compensations - getCompensations', (
 
       const res = await request(app)
         .get(`${url}/${employeeId}/compensations`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -204,7 +207,7 @@ describe('GET /api/v1/employees/:employeeId/compensations - getCompensations', (
 
   describe('Success Response', () => {
     it('should return success response if values are valid', async () => {
-      const compensation = await TestUtils.createCompensation({
+      const compensation = await Compensation.create({
         basicPay: 35000,
         effectivityDate: employee.hireDate,
         employee: employee._id,
@@ -213,7 +216,7 @@ describe('GET /api/v1/employees/:employeeId/compensations - getCompensations', (
 
       const res = await request(app)
         .get(`${url}/${employee._id}/compensations`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);

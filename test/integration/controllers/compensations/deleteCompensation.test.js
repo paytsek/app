@@ -3,7 +3,10 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
+const Employee = require('../../../../models/Employee');
+const Compensation = require('../../../../models/Compensation');
+const User = require('../../../../models/User');
 
 describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
   let employee;
@@ -15,12 +18,12 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
   beforeEach(async () => {
     token = await global.signIn();
     user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    company = await TestUtils.createCompany({
+    company = await Company.create({
       name: 'Full suite',
       user: user._id,
       administrators: [user._id],
     });
-    [employee] = await TestUtils.createEmployee([
+    [employee] = await Employee.create([
       {
         email: 'employee1@examle.com',
         firstName: 'Kayven',
@@ -102,7 +105,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
         company: company._id,
       },
     ]);
-    compensation = await TestUtils.createCompensation({
+    compensation = await Compensation.create({
       basicPay: 35000,
       effectivityDate: employee.hireDate,
       employee: employee._id,
@@ -130,7 +133,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
     });
 
     it('should return error response if logged in user is not equal to company user', async () => {
-      company = await TestUtils.createCompany({
+      company = await Company.create({
         name: 'PayTsek',
         user: mongoose.Types.ObjectId(),
         administrators: [user._id],
@@ -138,7 +141,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -165,7 +168,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
     });
 
     it('should return 403 if logged in user is not an administrator', async () => {
-      user = await TestUtils.createUser({
+      user = await User.create({
         username: 'jane doe',
         email: 'janedoe@gmail.com',
         password: '123456',
@@ -173,7 +176,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
         lastName: 'Doe',
       });
 
-      company = await TestUtils.createCompany({
+      company = await Company.create({
         name: 'test company',
         user: user._id,
         administrators: [user._id],
@@ -181,7 +184,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -196,7 +199,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .delete(`${url}/${employeeId}/compensations/${compensation._id}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -215,7 +218,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .delete(`${url}/${employee._id}/compensations/${compensationId}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -232,7 +235,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
     it('should return 400 response if only 1 compensation left to be deleted', async () => {
       const res = await request(app)
         .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(400);
@@ -249,7 +252,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
   describe('Success Response', () => {
     it('should return success response if ids are valid', async () => {
-      await TestUtils.createCompensation({
+      await Compensation.create({
         basicPay: 50000,
         effectivityDate: employee.hireDate,
         employee: employee._id,
@@ -258,7 +261,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);

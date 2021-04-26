@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
 
 describe('POST /api/v1/companies/name - createCompany', () => {
   const url = '/api/v1/companies/name';
@@ -35,7 +35,7 @@ describe('POST /api/v1/companies/name - createCompany', () => {
     });
 
     it('should return 400 status code and error response if name already exist', async () => {
-      await TestUtils.createCompany({
+      await Company.create({
         name: 'PayTsek',
         user: mongoose.Types.ObjectId().toHexString(),
       });

@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
+const User = require('../../../../models/User');
 
 describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   const url = '/api/v1/companies/settings';
@@ -35,7 +36,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   it('should return 401 if logged in user is not equal to company owner', async () => {
     const owner = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-    const user = await TestUtils.createUser({
+    const user = await User.create({
       username: 'jane doe',
       email: 'janedoe@gmail.com',
       password: '123456',
@@ -43,7 +44,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
       lastName: 'Doe',
     });
 
-    const company = await TestUtils.createCompany({
+    const company = await Company.create({
       name: 'test company',
       user: user._id,
       administrators: [owner._id],
@@ -51,7 +52,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 
     const res = await request(app)
       .post(`${url}`)
-      .set(TestUtils.responseSetObject(company.slug))
+      .set({ 'x-company-tenant': company.slug })
       .auth(token, { type: 'bearer' });
 
     expect(res.status).toBe(401);
@@ -62,7 +63,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   });
 
   it('should return 403 if logged in user is not an administrator', async () => {
-    const user = await TestUtils.createUser({
+    const user = await User.create({
       username: 'jane doe',
       email: 'janedoe@gmail.com',
       password: '123456',
@@ -70,7 +71,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
       lastName: 'Doe',
     });
 
-    const company = await TestUtils.createCompany({
+    const company = await Company.create({
       name: 'test company',
       user: user._id,
       administrators: [user._id],
@@ -78,7 +79,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 
     const res = await request(app)
       .post(`${url}`)
-      .set(TestUtils.responseSetObject(company.slug))
+      .set({ 'x-company-tenant': company.slug })
       .auth(token, { type: 'bearer' });
 
     expect(res.status).toBe(403);
@@ -98,7 +99,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 
     res = await request(app)
       .post(`${url}`)
-      .set(TestUtils.responseSetObject(company.slug))
+      .set({ 'x-company-tenant': company.slug })
       .auth(token, { type: 'bearer' })
       .send({
         secondPayout: 30,
@@ -177,7 +178,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 
     res = await request(app)
       .post(`${url}`)
-      .set(TestUtils.responseSetObject(company.slug))
+      .set({ 'x-company-tenant': company.slug })
       .auth(token, { type: 'bearer' })
       .send({
         frequency: 'semiMonthly',
@@ -223,7 +224,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     res = await request(app)
       .post(`${url}`)
       .auth(token, { type: 'bearer' })
-      .set(TestUtils.responseSetObject(company.slug))
+      .set({ 'x-company-tenant': company.slug })
       .send({
         secondPayout: 30,
         firstPayout: 1,

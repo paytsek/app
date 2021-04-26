@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
+const User = require('../../../../models/User');
 
 describe('GET /api/v1/companies/:id - getCompany', () => {
   const url = '/api/v1/companies';
@@ -17,14 +18,14 @@ describe('GET /api/v1/companies/:id - getCompany', () => {
     });
 
     it('should return error response if not own the company', async () => {
-      const user = await TestUtils.createUser({
+      const user = await User.create({
         email: 'rodrigo@gmail.com',
         password: '123456',
         username: 'rodrigo123',
         firstName: 'Rodrigo',
         lastName: 'Carlos',
       });
-      const company = await TestUtils.createCompany({ user: user._id, name: 'PayTsek' });
+      const company = await Company.create({ user: user._id, name: 'PayTsek' });
       const token = await global.signIn();
 
       const res = await request(app)
@@ -41,7 +42,7 @@ describe('GET /api/v1/companies/:id - getCompany', () => {
 
   describe('Success Response', () => {
     it('should return success response if logged in and admin', async () => {
-      const admin = await TestUtils.createUser({
+      const admin = await User.create({
         username: 'rodrigo',
         email: 'rodrigo@gmail.com',
         password: '123456',
@@ -55,14 +56,14 @@ describe('GET /api/v1/companies/:id - getCompany', () => {
         firstName: admin.firstName,
         lastName: admin.lastName,
       };
-      const user = await TestUtils.createUser({
+      const user = await User.create({
         username: 'rodrigo1',
         email: 'rodrigo@gmail1.com',
         password: '123456',
         firstName: 'Rodrigo1',
         lastName: 'Carlos1',
       });
-      const company = await TestUtils.createCompany({ name: 'PayTsek', user: user._id });
+      const company = await Company.create({ name: 'PayTsek', user: user._id });
       let token = await global.signIn({ _id: user._id });
 
       let res = await request(app)

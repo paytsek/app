@@ -3,7 +3,9 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
+const Employee = require('../../../../models/Employee');
+const User = require('../../../../models/User');
 
 describe('POST /api/v1/employees/:employeeId/compensations', () => {
   let employee;
@@ -14,12 +16,12 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
   beforeEach(async () => {
     token = await global.signIn();
     user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    company = await TestUtils.createCompany({
+    company = await Company.create({
       name: 'Full suite',
       user: user._id,
       administrators: [user._id],
     });
-    [employee] = await TestUtils.createEmployee([
+    [employee] = await Employee.create([
       {
         email: 'employee1@examle.com',
         firstName: 'Kayven',
@@ -121,7 +123,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
     });
 
     it('should return error response if logged in user is not equal to company user', async () => {
-      company = await TestUtils.createCompany({
+      company = await Company.create({
         name: 'PayTsek',
         user: mongoose.Types.ObjectId(),
         administrators: [user._id],
@@ -129,7 +131,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
 
       const res = await request(app)
         .post(`${url}/${employee._id}/compensations`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -156,7 +158,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
     });
 
     it('should return 403 if logged in user is not an administrator', async () => {
-      user = await TestUtils.createUser({
+      user = await User.create({
         username: 'jane doe',
         email: 'janedoe@gmail.com',
         password: '123456',
@@ -164,7 +166,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
         lastName: 'Doe',
       });
 
-      company = await TestUtils.createCompany({
+      company = await Company.create({
         name: 'test company',
         user: user._id,
         administrators: [user._id],
@@ -172,7 +174,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
 
       const res = await request(app)
         .post(`${url}/${employee._id}/compensations`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -187,7 +189,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
 
       const res = await request(app)
         .post(`${url}/${employeeId}/compensations`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -212,7 +214,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
 
       const res = await request(app)
         .post(`${url}/${employee._id}/compensations`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
         .send({
           basicPay: 35000,
