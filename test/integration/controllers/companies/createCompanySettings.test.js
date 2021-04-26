@@ -3,8 +3,7 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const Company = require('../../../../models/Company');
-const User = require('../../../../models/User');
+const TestUtils = require('../../../../utils/testUtils');
 
 describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   const url = '/api/v1/companies/settings';
@@ -37,7 +36,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   it('should return 401 if logged in user is not equal to company owner', async () => {
     const owner = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-    const user = await User.create({
+    const user = await TestUtils.createUser({
       username: 'jane doe',
       email: 'janedoe@gmail.com',
       password: '123456',
@@ -45,7 +44,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
       lastName: 'Doe',
     });
 
-    const company = await Company.create({
+    const company = await TestUtils.createCompany({
       name: 'test company',
       user: user._id,
       administrators: [owner._id],
@@ -64,7 +63,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   });
 
   it('should return 403 if logged in user is not an administrator', async () => {
-    const user = await User.create({
+    const user = await TestUtils.createUser({
       username: 'jane doe',
       email: 'janedoe@gmail.com',
       password: '123456',
@@ -72,7 +71,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
       lastName: 'Doe',
     });
 
-    const company = await Company.create({
+    const company = await TestUtils.createCompany({
       name: 'test company',
       user: user._id,
       administrators: [user._id],

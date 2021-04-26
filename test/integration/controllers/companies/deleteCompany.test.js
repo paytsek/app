@@ -3,9 +3,7 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const Company = require('../../../../models/Company');
-const User = require('../../../../models/User');
-const CompanySetting = require('../../../../models/CompanySetting');
+const TestUtils = require('../../../../utils/testUtils');
 
 describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
   const url = '/api/v1/companies/name';
@@ -43,14 +41,14 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
     });
 
     it('should return error response if logged user not own the company', async () => {
-      const user = await User.create({
+      const user = await TestUtils.createUser({
         username: 'rodrigocarlos',
         email: 'rodrigo@gmail.com',
         password: '123456',
         firstName: 'Rodrigo',
         lastName: 'Carlos',
       });
-      const company = await Company.create({
+      const company = await TestUtils.createCompany({
         name: 'Sample company',
         user: user._id,
       });
@@ -70,8 +68,11 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
   describe('Success Response', () => {
     it('should return success response if values are valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
-      await CompanySetting.create({
+      const company = await TestUtils.createCompany({
+        name: 'PayTsek',
+        user: user._id,
+      });
+      await TestUtils.createCompanySetting({
         company: company._id,
         frequency: 'monthly',
         firstCutOff: 1,
@@ -85,7 +86,7 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
         departments: [mongoose.Types.ObjectId().toHexString()],
       });
 
-      expect(await CompanySetting.countDocuments()).toBe(1);
+      expect(await TestUtils.companySettingCountDocuments()).toBe(1);
 
       const res = await request(app)
         .delete(`${url}/${company._id}`)
@@ -99,20 +100,23 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
           message: `PayTsek - ID:${company._id} successfully deleted`,
         }),
       );
-      expect(await CompanySetting.countDocuments()).toEqual(0);
+      expect(await TestUtils.companySettingCountDocuments()).toEqual(0);
     });
 
     it('should return success response logged in is an admin', async () => {
       token = await global.signInAdmin();
-      const user = await User.create({
+      const user = await TestUtils.createUser({
         username: 'rodrigo',
         email: 'rodrigo@gmail.com',
         password: '123456',
         firstName: 'Rodrigo',
         lastName: 'Carlos',
       });
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
-      await CompanySetting.create({
+      const company = await TestUtils.createCompany({
+        name: 'PayTsek',
+        user: user._id,
+      });
+      await TestUtils.createCompanySetting({
         company: company._id,
         frequency: 'monthly',
         firstCutOff: 1,
@@ -126,7 +130,7 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
         departments: [mongoose.Types.ObjectId().toHexString()],
       });
 
-      expect(await CompanySetting.countDocuments()).toBe(1);
+      expect(await TestUtils.companySettingCountDocuments()).toBe(1);
 
       const res = await request(app)
         .delete(`${url}/${company._id}`)
@@ -140,7 +144,7 @@ describe('DELETE /api/v1/companies/name/:id - deleteCompany', () => {
           message: `PayTsek - ID:${company._id} successfully deleted`,
         }),
       );
-      expect(await CompanySetting.countDocuments()).toEqual(0);
+      expect(await TestUtils.companySettingCountDocuments()).toEqual(0);
     });
   });
 });
