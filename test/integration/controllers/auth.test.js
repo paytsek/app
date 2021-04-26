@@ -3,9 +3,20 @@ const request = require('supertest');
 const app = require('../../../app');
 const User = require('../../../models/User');
 
+const createUser = async () => {
+  await User.create({
+    username: 'darryl pogi',
+    email: 'darrylpogi@gmail.com',
+    password: '123456',
+    firstName: 'Darryl',
+    lastName: 'Mangibin',
+  });
+};
+
 describe('POST /api/v1/auth/register - registerUser', () => {
   const url = '/api/v1/auth/register';
-  describe('return 400 bad request and error response', () => {
+
+  describe('Error Response', () => {
     it('should return error response if fields are empty', async () => {
       const { status, body } = await request(app).post(url).send({
         username: '',
@@ -38,7 +49,10 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toHaveProperty('username', 'Username must atleast 3 characters');
+      expect(res.body.errors).toHaveProperty(
+        'username',
+        'Username must atleast 3 characters',
+      );
 
       const name = Array(122).join('a');
 
@@ -52,7 +66,10 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toHaveProperty('username', 'Username must not exceed to 120 characters');
+      expect(res.body.errors).toHaveProperty(
+        'username',
+        'Username must not exceed to 120 characters',
+      );
     });
 
     it('should return error response if password is invalid', async () => {
@@ -66,7 +83,10 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toHaveProperty('password', 'Password must atleast 6 characters');
+      expect(res.body.errors).toHaveProperty(
+        'password',
+        'Password must atleast 6 characters',
+      );
     });
 
     it('should return error response if email is invalid', async () => {
@@ -84,13 +104,7 @@ describe('POST /api/v1/auth/register - registerUser', () => {
       expect(res.body.success).toBeFalsy();
       expect(res.body.errors).toHaveProperty('email', 'Email is invalid');
 
-      await User.create({
-        username: 'darryl pogi',
-        email: 'darrylpogi@gmail.com',
-        password: '123456',
-        firstName: 'Darryl',
-        lastName: 'Mangibin',
-      });
+      await createUser();
 
       res = await request(app).post(url).send({
         username: 'darryl cute',
@@ -106,7 +120,7 @@ describe('POST /api/v1/auth/register - registerUser', () => {
     });
   });
 
-  describe('return success response', () => {
+  describe('Success Response', () => {
     it('should return 201 status code and success response', async () => {
       const res = await request(app).post(url).send({
         username: 'darryl cute',
@@ -122,7 +136,9 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 
       const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
 
-      expect(Object.keys(user)).toEqual(expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp']));
+      expect(Object.keys(user)).toEqual(
+        expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp']),
+      );
       expect(user).toEqual(
         expect.objectContaining({ username: 'darryl cute' }),
         expect.objectContaining({ email: 'darrylcute@gmail.com' }),
@@ -134,25 +150,24 @@ describe('POST /api/v1/auth/register - registerUser', () => {
 describe('POST /api/v1/auth/login - loginUser', () => {
   const url = '/api/v1/auth/login';
 
-  describe('return error response', () => {
+  describe('Error Response', () => {
     it('should have 400 status code if email and password is empty', async () => {
       const res = await request(app).post(url).send({ email: '', password: '' });
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBeFalsy();
-      expect(res.body.errors).toHaveProperty('message', 'Please provide an email and password');
+      expect(res.body.errors).toHaveProperty(
+        'message',
+        'Please provide an email and password',
+      );
     });
 
     it('should have 400 status code if email is not existing in database', async () => {
-      await User.create({
-        email: 'test@example.com',
-        password: '123456',
-        username: 'darryl mangibin',
-        firstName: 'Darryl',
-        lastName: 'Mangibin',
-      });
+      await createUser();
 
-      const res = await request(app).post(url).send({ email: 'darryl@gmail.com', password: '123456' });
+      const res = await request(app)
+        .post(url)
+        .send({ email: 'darryl@gmail.com', password: '123456' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
@@ -160,15 +175,11 @@ describe('POST /api/v1/auth/login - loginUser', () => {
     });
 
     it('should have 400 status code if password is incorrect', async () => {
-      await User.create({
-        username: 'darryl mangibin',
-        password: '123456',
-        email: 'test@example.com',
-        firstName: 'Darryl',
-        lastName: 'Mangibin',
-      });
+      await createUser();
 
-      const res = await request(app).post(url).send({ email: 'test@example.com', password: '1234567' });
+      const res = await request(app)
+        .post(url)
+        .send({ email: 'test@example.com', password: '1234567' });
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
@@ -176,33 +187,34 @@ describe('POST /api/v1/auth/login - loginUser', () => {
     });
   });
 
-  it('should return a token if login is successful', async () => {
-    await User.create({
-      username: 'darryl mangibin',
-      email: 'test@example.com',
-      password: '123456',
-      firstName: 'Darryl',
-      lastName: 'Mangibin',
-    });
+  describe('Success Response', () => {
+    it('should return a token if login is successful', async () => {
+      await createUser();
 
-    const res = await request(app).post(url).send({ email: 'test@example.com', password: '123456' });
+      const res = await request(app)
+        .post(url)
+        .send({ email: 'darrylpogi@gmail.com', password: '123456' });
 
-    expect(res.status).toBe(200);
-    expect(res.body.success).toBeTruthy();
-    expect(Object.keys(res.body)).toEqual(expect.arrayContaining(['token']));
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBeTruthy();
+      expect(Object.keys(res.body)).toEqual(expect.arrayContaining(['token']));
 
-    const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
+      const user = jwt.verify(res.body.token, process.env.JWT_SECRET_KEY);
 
-    expect(Object.keys(user)).toEqual(expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp']));
-    expect(user).toMatchObject({
-      username: 'darryl mangibin',
-      email: 'test@example.com',
+      expect(Object.keys(user)).toEqual(
+        expect.arrayContaining(['_id', 'email', 'username', 'iat', 'exp']),
+      );
+      expect(user).toMatchObject({
+        username: 'darryl pogi',
+        email: 'darrylpogi@gmail.com',
+      });
     });
   });
 });
 
 describe('GET /api/v1/auth - authUser', () => {
   const url = '/api/v1/auth';
+
   describe('Error Response', () => {
     it('should return an error response if token is invalid', async () => {
       let res = await request(app).get(url);
@@ -221,7 +233,9 @@ describe('GET /api/v1/auth - authUser', () => {
         message: 'Not authorize to access this route',
       });
     });
+  });
 
+  describe('Success Response', () => {
     it('should return a success response if token is valid', async () => {
       const token = await global.signIn();
 
@@ -230,7 +244,14 @@ describe('GET /api/v1/auth - authUser', () => {
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
       expect(Object.keys(res.body.user)).toEqual(
-        expect.arrayContaining(['id', 'email', 'role', 'firstName', 'lastName', 'fullName']),
+        expect.arrayContaining([
+          'id',
+          'email',
+          'role',
+          'firstName',
+          'lastName',
+          'fullName',
+        ]),
       );
     });
   });
