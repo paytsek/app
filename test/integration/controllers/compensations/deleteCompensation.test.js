@@ -2,11 +2,8 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
-const app = require('../../../app');
-const Company = require('../../../models/Company');
-const User = require('../../../models/User');
-const Employee = require('../../../models/Employee');
-const Compensation = require('../../../models/Compensation');
+const app = require('../../../../app');
+const TestUtils = require('../../../../utils/testUtils');
 
 describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
   let employee;
@@ -18,12 +15,12 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
   beforeEach(async () => {
     token = await global.signIn();
     user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    company = await Company.create({
+    company = await TestUtils.createCompany({
       name: 'Full suite',
       user: user._id,
       administrators: [user._id],
     });
-    [employee] = await Employee.create(
+    [employee] = await TestUtils.createEmployee([
       {
         email: 'employee1@examle.com',
         firstName: 'Kayven',
@@ -104,8 +101,8 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
         primaryEmployer: true,
         company: company._id,
       },
-    );
-    compensation = await Compensation.create({
+    ]);
+    compensation = await TestUtils.createCompensation({
       basicPay: 35000,
       effectivityDate: employee.hireDate,
       employee: employee._id,
@@ -133,7 +130,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
     });
 
     it('should return error response if logged in user is not equal to company user', async () => {
-      company = await Company.create({
+      company = await TestUtils.createCompany({
         name: 'PayTsek',
         user: mongoose.Types.ObjectId(),
         administrators: [user._id],
@@ -168,7 +165,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
     });
 
     it('should return 403 if logged in user is not an administrator', async () => {
-      user = await User.create({
+      user = await TestUtils.createUser({
         username: 'jane doe',
         email: 'janedoe@gmail.com',
         password: '123456',
@@ -176,7 +173,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
         lastName: 'Doe',
       });
 
-      company = await Company.create({
+      company = await TestUtils.createCompany({
         name: 'test company',
         user: user._id,
         administrators: [user._id],
@@ -252,7 +249,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
   describe('Success Response', () => {
     it('should return success response if ids are valid', async () => {
-      await Compensation.create({
+      await TestUtils.createCompensation({
         basicPay: 50000,
         effectivityDate: employee.hireDate,
         employee: employee._id,
