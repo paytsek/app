@@ -3,12 +3,17 @@ const Company = require('../models/Company');
 const User = require('../models/User');
 const Employee = require('../models/Employee');
 const Compensation = require('../models/Compensation');
+const Department = require('../models/Department');
 
 class TestUtils {
   static responseSetObject(slug = '') {
     return {
       'x-company-tenant': slug,
     };
+  }
+
+  static createDepartment(department) {
+    return Department.create(department);
   }
 
   static createCompensation(compensation) {
