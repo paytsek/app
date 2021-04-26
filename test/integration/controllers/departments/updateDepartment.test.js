@@ -22,7 +22,7 @@ describe('PUT /api/v1/departments/:id - updateDepartment', () => {
 
       const res = await request(app)
         .put(`${url}/${mongoose.Types.ObjectId()}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -60,7 +60,7 @@ describe('PUT /api/v1/departments/:id - updateDepartment', () => {
 
       const res = await request(app)
         .put(`${url}/${invalidId}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -102,7 +102,7 @@ describe('PUT /api/v1/departments/:id - updateDepartment', () => {
 
       const res = await request(app)
         .put(`${url}/${department._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' })
         .send({ name: 'Paytsek' });
 

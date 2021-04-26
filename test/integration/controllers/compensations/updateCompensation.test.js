@@ -138,7 +138,7 @@ describe('PUT /api/v1/employees/:employeeId/compensations/:id - updateCompensati
 
       const res = await request(app)
         .put(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -181,7 +181,7 @@ describe('PUT /api/v1/employees/:employeeId/compensations/:id - updateCompensati
 
       const res = await request(app)
         .put(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -196,7 +196,7 @@ describe('PUT /api/v1/employees/:employeeId/compensations/:id - updateCompensati
 
       const res = await request(app)
         .put(`${url}/${employeeId}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -215,7 +215,7 @@ describe('PUT /api/v1/employees/:employeeId/compensations/:id - updateCompensati
 
       const res = await request(app)
         .put(`${url}/${employee._id}/compensations/${compensationId}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -232,7 +232,7 @@ describe('PUT /api/v1/employees/:employeeId/compensations/:id - updateCompensati
     it('should return 400 if values are not valid', async () => {
       const res = await request(app)
         .put(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(400);
@@ -248,7 +248,7 @@ describe('PUT /api/v1/employees/:employeeId/compensations/:id - updateCompensati
     it('should return success response if ids are valid', async () => {
       const res = await request(app)
         .put(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' })
         .send({ basicPay: 50000, effectivityDate: '2020-01-01' });
 

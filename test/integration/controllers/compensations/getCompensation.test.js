@@ -138,7 +138,7 @@ describe('GET /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .get(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -181,7 +181,7 @@ describe('GET /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .get(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -196,7 +196,7 @@ describe('GET /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .get(`${url}/${employeeId}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -215,7 +215,7 @@ describe('GET /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .get(`${url}/${employee._id}/compensations/${compensationId}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -234,7 +234,7 @@ describe('GET /api/v1/employees/:employeeId/compensations/:id', () => {
     it('should return success response if ids are valid', async () => {
       const res = await request(app)
         .get(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);

@@ -129,7 +129,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
 
       const res = await request(app)
         .post(`${url}/${employee._id}/compensations`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -172,7 +172,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
 
       const res = await request(app)
         .post(`${url}/${employee._id}/compensations`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -187,7 +187,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
 
       const res = await request(app)
         .post(`${url}/${employeeId}/compensations`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -212,7 +212,7 @@ describe('POST /api/v1/employees/:employeeId/compensations', () => {
 
       const res = await request(app)
         .post(`${url}/${employee._id}/compensations`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' })
         .send({
           basicPay: 35000,

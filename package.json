@@ -8,7 +8,7 @@
     "node": "14.15.1"
   },
   "scripts": {
-    "test:api": "jest --runInBand",
+    "test:api": "jest --runInBand --detectOpenHandles --forceExit",
     "test:client": "npm test --prefix client",
     "start": "node index.js",
     "server": "nodemon index.js",

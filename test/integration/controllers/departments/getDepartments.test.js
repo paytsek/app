@@ -34,7 +34,7 @@ describe('GET /api/v1/departments - getDepartments', () => {
 
       const res = await request(app)
         .get(url)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -83,7 +83,7 @@ describe('GET /api/v1/departments - getDepartments', () => {
 
       const res = await request(app)
         .get(url)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);

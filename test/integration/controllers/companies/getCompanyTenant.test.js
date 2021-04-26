@@ -40,7 +40,7 @@ describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
 
       let res = await await request(app)
         .get(`${url}/invalid`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -51,7 +51,7 @@ describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
 
       res = await request(app)
         .get(`${url}/${company.slug}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -69,7 +69,7 @@ describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
 
       const res = await request(app)
         .get(`${url}/${company.slug}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);
@@ -89,7 +89,7 @@ describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
 
       const res = await request(app)
         .get(`${url}/paytsek`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);

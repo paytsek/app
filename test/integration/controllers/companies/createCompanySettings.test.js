@@ -52,7 +52,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 
     const res = await request(app)
       .post(`${url}`)
-      .set({ 'x-company-tenant': company.slug })
+      .set(TestUtils.responseSetObject(company.slug))
       .auth(token, { type: 'bearer' });
 
     expect(res.status).toBe(401);
@@ -79,7 +79,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 
     const res = await request(app)
       .post(`${url}`)
-      .set({ 'x-company-tenant': company.slug })
+      .set(TestUtils.responseSetObject(company.slug))
       .auth(token, { type: 'bearer' });
 
     expect(res.status).toBe(403);
@@ -99,7 +99,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 
     res = await request(app)
       .post(`${url}`)
-      .set({ 'x-company-tenant': company.slug })
+      .set(TestUtils.responseSetObject(company.slug))
       .auth(token, { type: 'bearer' })
       .send({
         secondPayout: 30,
@@ -178,7 +178,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
 
     res = await request(app)
       .post(`${url}`)
-      .set({ 'x-company-tenant': company.slug })
+      .set(TestUtils.responseSetObject(company.slug))
       .auth(token, { type: 'bearer' })
       .send({
         frequency: 'semiMonthly',
@@ -226,7 +226,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
     res = await request(app)
       .post(`${url}`)
       .auth(token, { type: 'bearer' })
-      .set({ 'x-company-tenant': company.slug })
+      .set(TestUtils.responseSetObject(company.slug))
       .send({
         secondPayout: 30,
         firstPayout: 1,

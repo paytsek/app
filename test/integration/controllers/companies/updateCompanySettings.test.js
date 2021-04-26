@@ -3,9 +3,6 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const Company = require('../../../../models/Company');
-const User = require('../../../../models/User');
-const CompanySetting = require('../../../../models/CompanySetting');
 const TestUtils = require('../../../../utils/testUtils');
 
 describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanySettings', () => {
@@ -30,7 +27,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
     });
 
     it('should return error if company not own by the logged in user', async () => {
-      const user = await User.create({
+      const user = await TestUtils.createUser({
         username: 'rodrigocarlos',
         email: 'rodrigo@gmail.com',
         password: '123456',
@@ -38,7 +35,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
         lastName: 'Carlos',
       });
       const owner = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({
+      const company = await TestUtils.createCompany({
         name: 'PayTsek',
         user: user._id,
         administrators: [owner._id],
@@ -71,7 +68,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
     it('should return error if company does not have settings created', async () => {
       const loggedInUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const companySettingsId = mongoose.Types.ObjectId().toHexString();
-      const company = await Company.create({
+      const company = await TestUtils.createCompany({
         name: 'PayTsek',
         user: loggedInUser._id,
         administrators: [loggedInUser._id],
@@ -91,12 +88,12 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 
     it('should return error response when invalid values are entered', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({
+      const company = await TestUtils.createCompany({
         name: 'PayTsek',
         user: user._id,
         administrators: [user._id],
       });
-      const companySettings = await CompanySetting.create({
+      const companySettings = await TestUtils.createCompanySetting({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,
@@ -138,12 +135,12 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 
     it('should return error response when condition fields is invalid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({
+      const company = await TestUtils.createCompany({
         name: 'PayTsek',
         user: user._id,
         administrators: [user._id],
       });
-      const companySettings = await CompanySetting.create({
+      const companySettings = await TestUtils.createCompanySetting({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,
@@ -196,7 +193,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
     });
 
     it('should return 403 if logged in user is not an administrator', async () => {
-      const user = await User.create({
+      const user = await TestUtils.createUser({
         username: 'jane doe',
         email: 'janedoe@gmail.com',
         password: '123456',
@@ -204,7 +201,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
         lastName: 'Doe',
       });
 
-      const company = await Company.create({
+      const company = await TestUtils.createCompany({
         name: 'test company',
         user: user._id,
         administrators: [user._id],
@@ -226,12 +223,12 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
   describe('Success Response', () => {
     it('should return success reponse if entered values are valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({
+      const company = await TestUtils.createCompany({
         name: 'PayTsek',
         user: user._id,
         administrators: [user._id],
       });
-      const companySettings = await CompanySetting.create({
+      const companySettings = await TestUtils.createCompanySetting({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,

@@ -22,7 +22,7 @@ describe('DELETE /api/v1/departments/:id - deleteDepartment', () => {
 
       const res = await request(app)
         .delete(`${url}/${mongoose.Types.ObjectId()}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -58,7 +58,7 @@ describe('DELETE /api/v1/departments/:id - deleteDepartment', () => {
 
       const res = await request(app)
         .delete(`${url}/${invalidId}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -100,7 +100,7 @@ describe('DELETE /api/v1/departments/:id - deleteDepartment', () => {
 
       const res = await request(app)
         .delete(`${url}/${department._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);

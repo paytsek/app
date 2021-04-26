@@ -138,7 +138,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -181,7 +181,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -196,7 +196,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .delete(`${url}/${employeeId}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -215,7 +215,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .delete(`${url}/${employee._id}/compensations/${compensationId}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -232,7 +232,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
     it('should return 400 response if only 1 compensation left to be deleted', async () => {
       const res = await request(app)
         .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(400);
@@ -258,7 +258,7 @@ describe('DELETE /api/v1/employees/:employeeId/compensations/:id', () => {
 
       const res = await request(app)
         .delete(`${url}/${employee._id}/compensations/${compensation._id}`)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);

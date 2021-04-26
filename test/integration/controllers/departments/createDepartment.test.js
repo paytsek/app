@@ -36,7 +36,7 @@ describe('POST /api/v1/departments - createDepartment', () => {
 
       const res = await request(app)
         .get(url)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -79,7 +79,7 @@ describe('POST /api/v1/departments - createDepartment', () => {
 
       const res = await request(app)
         .post(url)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' })
         .send({ name: '' });
 
@@ -115,7 +115,7 @@ describe('POST /api/v1/departments - createDepartment', () => {
 
       const res = await request(app)
         .post(url)
-        .set({ 'x-company-tenant': company.slug })
+        .set(TestUtils.responseSetObject(company.slug))
         .auth(token, { type: 'bearer' })
         .send({ name: 'Staff' });
 
