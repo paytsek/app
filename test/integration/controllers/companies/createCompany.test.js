@@ -35,7 +35,7 @@ describe('POST /api/v1/companies/name - createCompany', () => {
     });
 
     it('should return 400 status code and error response if name already exist', async () => {
-      await Company.create({ name: 'PayTsek', user: mongoose.Types.ObjectId() });
+      await Company.create({ name: 'PayTsek', user: mongoose.Types.ObjectId().toHexString() });
       const { status, body } = await request(app)
         .post(url)
         .auth(token, { type: 'bearer' })
