@@ -1,9 +1,8 @@
 const request = require('supertest');
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
 
-const app = require('../../../app');
-const User = require('../../../models/User');
+const app = require('../../../../app');
+const User = require('../../../../models/User');
 
 describe('DELETE /api/users/:id deleteUser', () => {
   const url = '/api/v1/users';
