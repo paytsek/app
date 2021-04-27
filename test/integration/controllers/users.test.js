@@ -5,105 +5,6 @@ const jwt = require('jsonwebtoken');
 const app = require('../../../app');
 const User = require('../../../models/User');
 
-describe('GET /api/v1/users/current-user - getCurrentUser', () => {
-  const url = '/api/v1/users/current-user';
-
-  it('should return 401 if not logged in', async () => {
-    const res = await request(app).get(url);
-
-    expect(res.status).toBe(401);
-    expect(res.body.success).toBeFalsy();
-    expect(res.body.errors).toMatchObject({
-      message: 'No token, access denied',
-    });
-  });
-
-  it('should get the current user if logged in', async () => {
-    const token = await global.signIn();
-
-    const res = await request(app).get(url).auth(token, { type: 'bearer' });
-    const currentUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
-    expect(res.status).toBe(200);
-    expect(res.body.success).toBeTruthy();
-    expect(res.body.user._id).toEqual(currentUser._id);
-  });
-});
-
-describe('PUT /api/v1/users/current-user - updateCurrentUser', () => {
-  const url = '/api/v1/users/current-user';
-
-  it('should validate fields and return error response', async () => {
-    const token = await global.signIn();
-
-    await User.create({
-      username: 'rodrigo carlos',
-      email: 'rodrigo@gmail.com',
-      password: '123456',
-      firstName: 'Rodrigo',
-      lastName: 'Carlost',
-    });
-
-    let res = await request(app).put(url).auth(token, { type: 'bearer' }).send({});
-
-    expect(res.status).toBe(400);
-    expect(res.body.success).toBeFalsy();
-    expect(res.body.errors).toEqual(
-      expect.objectContaining({
-        username: 'Username is required',
-        email: 'Email is required',
-        firstName: 'First name is required',
-        lastName: 'Last name is required',
-      }),
-    );
-
-    res = await request(app).put(url).auth(token, { type: 'bearer' }).send({
-      username: 'rodrigo carlos',
-      email: 'rodrigo@gmail.com',
-      firstName: 'Rods',
-      lastName: 'Carls',
-    });
-
-    expect(res.status).toBe(400);
-    expect(res.body.success).toBeFalsy();
-    expect(res.body.errors).toMatchObject({
-      username: 'Username already exist',
-      email: 'Email already exist',
-    });
-  });
-
-  it('should successfully update current user', async () => {
-    const token = await global.signIn();
-
-    const loggedInUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
-    const res = await request(app).put(url).auth(token, { type: 'bearer' }).send({
-      username: 'rodrigo pogi',
-      email: 'rodrigo@cute.com',
-      firstName: 'Rodrigo',
-      lastName: 'Carlos',
-    });
-
-    expect(res.status).toBe(200);
-    expect(res.body.success).toBeTruthy();
-    expect(res.body.user._id).toEqual(loggedInUser._id);
-    expect(res.body.user).not.toEqual(
-      expect.objectContaining({
-        username: loggedInUser.username,
-        email: loggedInUser.email,
-        firstName: loggedInUser.firstName,
-        lastName: loggedInUser.lastName,
-      }),
-    );
-    expect(res.body.user).toMatchObject({
-      username: 'rodrigo pogi',
-      email: 'rodrigo@cute.com',
-      firstName: 'Rodrigo',
-      lastName: 'Carlos',
-    });
-  });
-});
-
 describe('PUT /api/v1/users/current-user/password - updateCurrentUserPassword', () => {
   const url = '/api/v1/users/current-user/password';
   let loggedInUser;
@@ -289,7 +190,9 @@ describe('DELETE /api/users/current-user - deleteCurrentUser', () => {
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
       expect(Object.keys(res.body.user).length).toEqual(0);
-      expect(res.body).toEqual(expect.objectContaining({ message: 'User successfully deleted' }));
+      expect(res.body).toEqual(
+        expect.objectContaining({ message: 'User successfully deleted' }),
+      );
     });
   });
 });
@@ -331,7 +234,9 @@ describe('DELETE /api/users/:id deleteUser', () => {
       const invalidId = mongoose.Types.ObjectId();
       const token = await global.signIn(payload);
 
-      const res = await request(app).delete(`${url}/${invalidId}`).auth(token, { type: 'bearer' });
+      const res = await request(app)
+        .delete(`${url}/${invalidId}`)
+        .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(400);
       expect(res.body.success).toBeFalsy();
@@ -384,7 +289,9 @@ describe('DELETE /api/users/:id deleteUser', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBeTruthy();
-      expect(res.body).toEqual(expect.objectContaining({ message: 'Successfully deleted' }));
+      expect(res.body).toEqual(
+        expect.objectContaining({ message: 'Successfully deleted' }),
+      );
 
       const users = await User.find({});
 
