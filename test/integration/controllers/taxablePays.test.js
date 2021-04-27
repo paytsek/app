@@ -386,7 +386,7 @@ describe('POST /api/v1/taxablePays - createTaxablePay', () => {
   });
 });
 
-describe('PUT /api/v1/taxablePays/:id', () => {
+describe('PUT /api/v1/taxablePays/:id - updateTaxablePay', () => {
   const url = '/api/v1/taxablePays';
 
   describe('Error response', () => {
@@ -548,7 +548,7 @@ describe('PUT /api/v1/taxablePays/:id', () => {
   });
 });
 
-describe('DELETE /api/v1/taxablePays/:id', () => {
+describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
   const url = '/api/v1/taxablePays';
 
   describe('Error response', () => {
