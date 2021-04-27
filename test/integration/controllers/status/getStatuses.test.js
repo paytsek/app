@@ -8,7 +8,7 @@ const User = require('../../../../models/User');
 const Employee = require('../../../../models/Employee');
 const Status = require('../../../../models/Status');
 
-describe('GET /api/v1/employees/:employeeId/status', () => {
+describe('GET /api/v1/employees/:employeeId/status - getStatuses', () => {
   let employee;
   let company;
   let token;

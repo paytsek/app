@@ -6,14 +6,12 @@ const app = require('../../../../app');
 const Company = require('../../../../models/Company');
 const User = require('../../../../models/User');
 const Employee = require('../../../../models/Employee');
-const Status = require('../../../../models/Status');
 
-describe('GET /api/v1/employees/:employeeId/status/:id - getStatus', () => {
+describe('POST /api/v1/employees/:employeeId/status - createStatus', () => {
   let employee;
   let company;
   let token;
   let user;
-  let status;
 
   beforeEach(async () => {
     token = await global.signIn();
@@ -23,7 +21,7 @@ describe('GET /api/v1/employees/:employeeId/status/:id - getStatus', () => {
       user: user._id,
       administrators: [user._id],
     });
-    [employee] = await Employee.create(
+    [employee] = await Employee.create([
       {
         email: 'employee1@examle.com',
         firstName: 'Kayven',
@@ -104,20 +102,14 @@ describe('GET /api/v1/employees/:employeeId/status/:id - getStatus', () => {
         primaryEmployer: true,
         company: company._id,
       },
-    );
-    status = await Status.create({
-      active: true,
-      effectivityDate: employee.hireDate,
-      employee: employee._id,
-      company: company._id,
-    });
+    ]);
   });
 
   const url = '/api/v1/employees';
 
   describe('Error response', () => {
     it('should return error response if not logged in', async () => {
-      const res = await request(app).get(`${url}/${employee._id}/status/${status._id}`);
+      const res = await request(app).post(`${url}/${employee._id}/status`);
 
       expect(res.status).toBe(401);
       expect(res.body).toEqual(
@@ -138,7 +130,7 @@ describe('GET /api/v1/employees/:employeeId/status/:id - getStatus', () => {
       });
 
       const res = await request(app)
-        .get(`${url}/${employee._id}/status/${status._id}`)
+        .post(`${url}/${employee._id}/status`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -153,7 +145,7 @@ describe('GET /api/v1/employees/:employeeId/status/:id - getStatus', () => {
 
     it('should return error response if no company set', async () => {
       const res = await request(app)
-        .get(`${url}/${employee._id}/status/${status._id}`)
+        .post(`${url}/${employee._id}/status`)
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -181,7 +173,7 @@ describe('GET /api/v1/employees/:employeeId/status/:id - getStatus', () => {
       });
 
       const res = await request(app)
-        .get(`${url}/${employee._id}/status/${status._id}`)
+        .post(`${url}/${employee._id}/status`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -196,7 +188,7 @@ describe('GET /api/v1/employees/:employeeId/status/:id - getStatus', () => {
       const employeeId = mongoose.Types.ObjectId().toHexString();
 
       const res = await request(app)
-        .get(`${url}/${employeeId}/status/${status._id}`)
+        .post(`${url}/${employeeId}/status`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -210,42 +202,27 @@ describe('GET /api/v1/employees/:employeeId/status/:id - getStatus', () => {
         }),
       );
     });
-
-    it('should return 404 if status id param is invalid or not exist', async () => {
-      const statusId = mongoose.Types.ObjectId().toHexString();
-
-      const res = await request(app)
-        .get(`${url}/${employee._id}/status/${statusId}`)
-        .set({ 'x-company-tenant': company.slug })
-        .auth(token, { type: 'bearer' });
-
-      expect(res.status).toBe(404);
-      expect(res.body.success).toBeFalsy();
-      expect(res.body).toEqual(
-        expect.objectContaining({
-          errors: expect.objectContaining({
-            message: `Resource with an id of ${statusId} not found`,
-          }),
-        }),
-      );
-    });
   });
 
   describe('Success Response', () => {
-    it('should return success response if ids are valid', async () => {
+    it('should return success response if values are valid', async () => {
       const res = await request(app)
-        .get(`${url}/${employee._id}/status/${status._id}`)
+        .post(`${url}/${employee._id}/status`)
         .set({ 'x-company-tenant': company.slug })
-        .auth(token, { type: 'bearer' });
+        .auth(token, { type: 'bearer' })
+        .send({ employmentStatus: 'medicalLeave', effectivityDate: '2021-09-09' });
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(201);
       expect(res.body.success).toBeTruthy();
-      expect(res.body.status).toEqual(
+      expect(res.body).toEqual(
         expect.objectContaining({
-          employmentStatus: 'active',
-          _id: status._id.toString(),
+          status: expect.objectContaining({
+            employmentStatus: 'medicalLeave',
+            effectivityDate: '2021-09-09T00:00:00.000Z',
+          }),
         }),
       );
+      expect(res.body.status).toHaveProperty('_id');
     });
   });
 });
