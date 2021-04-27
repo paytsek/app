@@ -2,16 +2,21 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
-const app = require('../../../app');
-const Company = require('../../../models/Company');
-const TaxablePay = require('../../../models/TaxablePay');
+const app = require('../../../../app');
+const Company = require('../../../../models/Company');
+const TaxablePay = require('../../../../models/TaxablePay');
 
-describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
+describe('PUT /api/v1/taxablePays/:id - updateTaxablePay', () => {
   const url = '/api/v1/taxablePays';
+  let token;
+
+  beforeEach(async () => {
+    token = await global.signIn();
+  });
 
   describe('Error response', () => {
     it('should return error response if not logged in', async () => {
-      const res = await request(app).delete(
+      const res = await request(app).put(
         `${url}/${mongoose.Types.ObjectId().toHexString()}`,
       );
 
@@ -25,7 +30,6 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
     });
 
     it('should return error response if not an administrator', async () => {
-      const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const userId = mongoose.Types.ObjectId().toHexString();
       const company = await Company.create({
@@ -35,7 +39,7 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
       });
 
       const res = await request(app)
-        .delete(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
+        .put(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -51,7 +55,6 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
     });
 
     it('should return error response if logged in user is not equal to company user', async () => {
-      const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const userId = mongoose.Types.ObjectId().toHexString();
       const company = await Company.create({
@@ -61,7 +64,7 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
       });
 
       const res = await request(app)
-        .delete(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
+        .put(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -75,10 +78,8 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
     });
 
     it('should return error response if no company set', async () => {
-      const token = await global.signIn();
-
       const res = await request(app)
-        .delete(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
+        .put(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -91,7 +92,6 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
     });
 
     it('should return error response if params id is invalid or not found', async () => {
-      const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const company = await Company.create({
         name: 'Full suite',
@@ -101,7 +101,7 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
       const invalidId = mongoose.Types.ObjectId().toHexString();
 
       const res = await request(app)
-        .delete(`${url}/${invalidId}`)
+        .put(`${url}/${invalidId}`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -115,11 +115,8 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
         }),
       );
     });
-  });
 
-  describe('Success response', () => {
-    it('should return success response if id is valid', async () => {
-      const token = await global.signIn();
+    it('should return error response if values are not valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const company = await Company.create({
         name: 'Full suite',
@@ -132,7 +129,36 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
       });
 
       const res = await request(app)
-        .delete(`${url}/${taxablePay._id}`)
+        .put(`${url}/${taxablePay._id}`)
+        .set({ 'x-company-tenant': company.slug })
+        .auth(token, { type: 'bearer' })
+        .send({ name: '' });
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBeFalsy();
+      expect(res.body).toEqual(
+        expect.objectContaining({
+          errors: expect.objectContaining({ name: 'Please add a taxable' }),
+        }),
+      );
+    });
+  });
+
+  describe('Success response', () => {
+    it('should return success response if values are valid', async () => {
+      const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const company = await Company.create({
+        name: 'Full suite',
+        user: user._id,
+        administrators: [user._id],
+      });
+      const taxablePay = await TaxablePay.create({
+        name: 'Transportation',
+        company: company._id,
+      });
+
+      const res = await request(app)
+        .put(`${url}/${taxablePay._id}`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
         .send({ name: 'Allowance' });
@@ -141,8 +167,7 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
       expect(res.body.success).toBeTruthy();
       expect(res.body).toEqual(
         expect.objectContaining({
-          taxablePay: {},
-          message: `Taxable pay - ID:${taxablePay._id.toString()} successfully deleted`,
+          taxablePay: expect.objectContaining({ name: 'Allowance' }),
         }),
       );
     });
