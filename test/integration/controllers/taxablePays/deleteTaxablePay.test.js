@@ -2,12 +2,17 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
-const app = require('../../../app');
-const Company = require('../../../models/Company');
-const TaxablePay = require('../../../models/TaxablePay');
+const app = require('../../../../app');
+const Company = require('../../../../models/Company');
+const TaxablePay = require('../../../../models/TaxablePay');
 
 describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
   const url = '/api/v1/taxablePays';
+  let token;
+
+  beforeEach(async () => {
+    token = await global.signIn();
+  });
 
   describe('Error response', () => {
     it('should return error response if not logged in', async () => {
@@ -25,7 +30,6 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
     });
 
     it('should return error response if not an administrator', async () => {
-      const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const userId = mongoose.Types.ObjectId().toHexString();
       const company = await Company.create({
@@ -51,7 +55,6 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
     });
 
     it('should return error response if logged in user is not equal to company user', async () => {
-      const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const userId = mongoose.Types.ObjectId().toHexString();
       const company = await Company.create({
@@ -75,8 +78,6 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
     });
 
     it('should return error response if no company set', async () => {
-      const token = await global.signIn();
-
       const res = await request(app)
         .delete(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
         .auth(token, { type: 'bearer' });
@@ -91,7 +92,6 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
     });
 
     it('should return error response if params id is invalid or not found', async () => {
-      const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const company = await Company.create({
         name: 'Full suite',
@@ -119,7 +119,6 @@ describe('DELETE /api/v1/taxablePays/:id - deleteTaxablePay', () => {
 
   describe('Success response', () => {
     it('should return success response if id is valid', async () => {
-      const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const company = await Company.create({
         name: 'Full suite',
