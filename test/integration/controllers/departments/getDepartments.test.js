@@ -5,6 +5,7 @@ const request = require('supertest');
 const app = require('../../../../app');
 const Company = require('../../../../models/Company');
 const Department = require('../../../../models/Department');
+const CompanySetting = require('../../../../models/CompanySetting');
 
 describe('GET /api/v1/departments - getDepartments', () => {
   const url = '/api/v1/departments';
@@ -64,7 +65,7 @@ describe('GET /api/v1/departments - getDepartments', () => {
     it('should return success response if company is set', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const company = await Company.create({ name: 'PayTsek', user: user._id });
-      await Company.createSetting({
+      await CompanySetting.create({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,

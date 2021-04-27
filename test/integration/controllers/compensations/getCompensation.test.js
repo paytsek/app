@@ -195,7 +195,7 @@ describe('GET /api/v1/employees/:employeeId/compensations/:id', () => {
     });
 
     it('should return 404 if employeeId is invalid or not exist', async () => {
-      const employeeId = mongoose.Types.ObjectId().toHexString().toHexString();
+      const employeeId = mongoose.Types.ObjectId().toHexString();
 
       const res = await request(app)
         .get(`${url}/${employeeId}/compensations/${compensation._id}`)
@@ -214,7 +214,7 @@ describe('GET /api/v1/employees/:employeeId/compensations/:id', () => {
     });
 
     it('should return 404 if status id param is invalid or not exist', async () => {
-      const compensationId = mongoose.Types.ObjectId().toHexString().toHexString();
+      const compensationId = mongoose.Types.ObjectId().toHexString();
 
       const res = await request(app)
         .get(`${url}/${employee._id}/compensations/${compensationId}`)
