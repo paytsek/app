@@ -3,7 +3,10 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
+const Employee = require('../../../../models/Employee');
+const Compensation = require('../../../../models/Compensation');
+const User = require('../../../../models/User');
 
 describe('PUT /api/v1/employees/:employeeId/compensations/:id - updateCompensation', () => {
   let employee;
@@ -15,12 +18,12 @@ describe('PUT /api/v1/employees/:employeeId/compensations/:id - updateCompensati
   beforeEach(async () => {
     token = await global.signIn();
     user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    company = await TestUtils.createCompany({
+    company = await Company.create({
       name: 'Full suite',
       user: user._id,
       administrators: [user._id],
     });
-    [employee] = await TestUtils.createEmployee([
+    [employee] = await Employee.create([
       {
         email: 'employee1@examle.com',
         firstName: 'Kayven',
@@ -102,7 +105,7 @@ describe('PUT /api/v1/employees/:employeeId/compensations/:id - updateCompensati
         company: company._id,
       },
     ]);
-    compensation = await TestUtils.createCompensation({
+    compensation = await Compensation.create({
       basicPay: 12000,
       effectivityDate: employee.hireDate,
       employee: employee._id,
@@ -130,7 +133,7 @@ describe('PUT /api/v1/employees/:employeeId/compensations/:id - updateCompensati
     });
 
     it('should return error response if logged in user is not equal to company user', async () => {
-      company = await TestUtils.createCompany({
+      company = await Company.create({
         name: 'PayTsek',
         user: mongoose.Types.ObjectId(),
         administrators: [user._id],
@@ -165,7 +168,7 @@ describe('PUT /api/v1/employees/:employeeId/compensations/:id - updateCompensati
     });
 
     it('should return 403 if logged in user is not an administrator', async () => {
-      user = await TestUtils.createUser({
+      user = await User.create({
         username: 'jane doe',
         email: 'janedoe@gmail.com',
         password: '123456',
@@ -173,7 +176,7 @@ describe('PUT /api/v1/employees/:employeeId/compensations/:id - updateCompensati
         lastName: 'Doe',
       });
 
-      company = await TestUtils.createCompany({
+      company = await Company.create({
         name: 'test company',
         user: user._id,
         administrators: [user._id],

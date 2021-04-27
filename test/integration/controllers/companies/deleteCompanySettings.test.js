@@ -3,7 +3,9 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const User = require('../../../../models/User');
+const CompanySetting = require('../../../../models/CompanySetting');
+const Company = require('../../../../models/Company');
 
 describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompanySettings', () => {
   const url = '/api/v1/companies/settings';
@@ -15,7 +17,9 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
 
   describe('Error Response', () => {
     it('should return error response if not logged in', async () => {
-      const res = await request(app).put(`${url}/${mongoose.Types.ObjectId().toHexString()}`);
+      const res = await request(app).put(
+        `${url}/${mongoose.Types.ObjectId().toHexString()}`,
+      );
 
       expect(res.status).toBe(401);
       expect(res.body.success).toBeFalsy();
@@ -27,14 +31,14 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
     it('should return error if company not own by the logged in user', async () => {
       const loggedInUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-      const user = await TestUtils.createUser({
+      const user = await User.create({
         username: 'rodrigocarlos',
         email: 'rodrigo@gmail.com',
         password: '123456',
         firstName: 'Rodrigo',
         lastName: 'Carlos',
       });
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'PayTsek',
         user: user._id,
         administrators: [loggedInUser._id],
@@ -42,7 +46,7 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
 
       const res = await request(app)
         .put(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -55,7 +59,7 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
     it('should return error if company slug is invalid or not found', async () => {
       const res = await request(app)
         .put(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
-        .set(TestUtils.responseSetObject('invalid-tenant'))
+        .set({ 'x-company-tenant': 'invali-tenant' })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -68,7 +72,7 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
     it('should return error if company does not have settings created', async () => {
       const loggedInUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const companySettingsId = mongoose.Types.ObjectId().toHexString();
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'PayTsek',
         user: loggedInUser._id,
         administrators: [loggedInUser._id],
@@ -76,7 +80,7 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
 
       const res = await request(app)
         .put(`${url}/${companySettingsId}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -87,7 +91,7 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
     });
 
     it('should return 403 if logged in user is not an administrator', async () => {
-      const user = await TestUtils.createUser({
+      const user = await User.create({
         username: 'jane doe',
         email: 'janedoe@gmail.com',
         password: '123456',
@@ -95,7 +99,7 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
         lastName: 'Doe',
       });
 
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'test company',
         user: user._id,
         administrators: [user._id],
@@ -103,7 +107,7 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
 
       const res = await request(app)
         .post(`${url}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -117,12 +121,12 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
   describe('Success Response', () => {
     it('should return success response if logged in user, comany and settings are valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'PayTsek',
         user: user._id,
         administrators: [user._id],
       });
-      const companySettings = await TestUtils.createCompanySetting({
+      const companySettings = await CompanySetting.create({
         frequency: 'monthly',
         firstPayout: 5,
         firstCutOff: 1,
@@ -138,7 +142,7 @@ describe('DELETE /api/v1/companies/:id/settings/:companySettingsId - deleteCompa
 
       const res = await request(app)
         .delete(`${url}/${companySettings._id}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);

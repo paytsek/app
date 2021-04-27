@@ -3,10 +3,9 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const Company = require('../../../../models/Company');
 const User = require('../../../../models/User');
 const CompanySetting = require('../../../../models/CompanySetting');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
 
 describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanySettings', () => {
   const url = '/api/v1/companies/settings';
@@ -46,7 +45,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 
       const res = await request(app)
         .put(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
@@ -79,7 +78,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 
       const res = await request(app)
         .put(`${url}/${companySettingsId}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(404);
@@ -113,7 +112,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 
       const res = await request(app)
         .put(`${url}/${companySettings._id}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
         .send({
           category: '',
@@ -161,7 +160,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
       const res = await request(app)
         .put(`${url}/${companySettings._id}`)
         .auth(token, { type: 'bearer' })
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .send({
           frequency: 'semiMonthly',
           nightDifferential: 'percentage',
@@ -212,7 +211,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
 
       const res = await request(app)
         .post(`${url}`)
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(403);
@@ -252,7 +251,7 @@ describe('PUT /api/v1/companies/:id/settings/:companySettingsId - updateCompanyS
       const res = await request(app)
         .put(`${url}/${companySettings._id}`)
         .auth(token, { type: 'bearer' })
-        .set(TestUtils.responseSetObject(company.slug))
+        .set({ 'x-company-tenant': company.slug })
         .send({
           accountingJournal: {
             deminimisBenefits: 'wagesPayable',

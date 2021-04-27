@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
 
 describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
   const url = '/api/v1/companies/tenant';
@@ -33,7 +33,7 @@ describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
     });
 
     it('should return error response if invalid slug params', async () => {
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'PayTsek',
         user: mongoose.Types.ObjectId(),
       });
@@ -65,7 +65,7 @@ describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
   describe('Success Response', () => {
     it('should return success response if valid slug', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({ name: 'payTsek', user: user._id });
+      const company = await Company.create({ name: 'payTsek', user: user._id });
 
       const res = await request(app)
         .get(`${url}/${company.slug}`)
@@ -82,7 +82,7 @@ describe('GET /api/v1/companies/tenant/:slug - getCompanyTenant', () => {
 
     it('should return success response if user is an admin', async () => {
       token = await global.signInAdmin();
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'payTsek',
         user: mongoose.Types.ObjectId(),
       });

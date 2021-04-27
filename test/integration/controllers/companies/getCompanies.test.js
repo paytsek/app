@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
 
 describe('GET api/v1/companies - getCompanies', () => {
   const url = '/api/v1/companies';
@@ -34,7 +34,7 @@ describe('GET api/v1/companies - getCompanies', () => {
       const token = await global.signIn();
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-      await TestUtils.createCompany([
+      await Company.create([
         { name: 'PayTsek', user: user._id },
         { name: 'Fullsuite', user: user._id },
       ]);

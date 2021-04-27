@@ -4,11 +4,10 @@ const jwt = require('jsonwebtoken');
 const request = require('supertest');
 const app = require('../../../../app');
 const Company = require('../../../../models/Company');
-const Department = require('../../../../models/Department');
-const CompanySetting = require('../../../../models/CompanySetting');
+const NonTaxablePay = require('../../../../models/NonTaxablePay');
 
-describe('GET /api/v1/departments - getDepartments', () => {
-  const url = '/api/v1/departments';
+describe('GET /api/v1/nonTaxablePays - getNonTaxablePays', () => {
+  const url = '/api/v1/nonTaxablePays';
   let token;
 
   beforeEach(async () => {
@@ -28,10 +27,38 @@ describe('GET /api/v1/departments - getDepartments', () => {
       );
     });
 
-    it('should return error response if logged in user is not equal to company user', async () => {
+    it('should return error response if not an administrator', async () => {
+      const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const userId = mongoose.Types.ObjectId().toHexString();
       const company = await Company.create({
         name: 'Full suite',
-        user: mongoose.Types.ObjectId(),
+        user: user._id,
+        administrators: [userId],
+      });
+
+      const res = await request(app)
+        .get(url)
+        .set({ 'x-company-tenant': company.slug })
+        .auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(403);
+      expect(res.body).toEqual(
+        expect.objectContaining({
+          success: false,
+          errors: expect.objectContaining({
+            message: "You don't have permission to access on this route",
+          }),
+        }),
+      );
+    });
+
+    it('should return error response if logged in user is not equal to company user', async () => {
+      const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const userId = mongoose.Types.ObjectId().toHexString();
+      const company = await Company.create({
+        name: 'Full suite',
+        user: userId,
+        administrators: [userId, user._id],
       });
 
       const res = await request(app)
@@ -61,27 +88,15 @@ describe('GET /api/v1/departments - getDepartments', () => {
     });
   });
 
-  describe('Success response', () => {
-    it('should return success response if company is set', async () => {
+  describe('Success Response', () => {
+    it('should return a success response if values are valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
-      await CompanySetting.create({
-        company: company._id,
-        firstCutOff: 1,
-        firstPayout: 5,
-        secondCutOff: 15,
-        secondPayout: 20,
-        registeredAddress: {
-          street: '24c Marcoville',
-          city: 'Baguio city',
-          country: 'Philippines',
-          zipCode: '2600',
-        },
+      const company = await Company.create({
+        name: 'PayTsek',
+        user: user._id,
+        administrators: [user._id],
       });
-      await Department.create([
-        { name: 'Staff', company: company._id },
-        { name: 'Senior', company: company._id },
-      ]);
+      await NonTaxablePay.create({ name: 'Transportation', company: company._id });
 
       const res = await request(app)
         .get(url)
@@ -89,12 +104,11 @@ describe('GET /api/v1/departments - getDepartments', () => {
         .auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(200);
+      expect(res.body.success).toBeTruthy();
       expect(res.body).toEqual(
         expect.objectContaining({
-          success: true,
-          departments: expect.arrayContaining([
-            expect.objectContaining({ name: 'Staff' }),
-            expect.objectContaining({ name: 'Senior' }),
+          nonTaxablePays: expect.arrayContaining([
+            expect.objectContaining({ name: 'Transportation' }),
           ]),
         }),
       );

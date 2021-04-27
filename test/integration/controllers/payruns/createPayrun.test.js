@@ -1,13 +1,12 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-
 const request = require('supertest');
+
 const app = require('../../../../app');
-const CompanySetting = require('../../../../models/CompanySetting');
 const Company = require('../../../../models/Company');
 
-describe('POST /api/v1/departments - createDepartment', () => {
-  const url = '/api/v1/departments';
+describe('POST /api/v1/payruns - createPayrun', () => {
+  const url = '/api/v1/payruns';
   let token;
 
   beforeEach(async () => {
@@ -22,21 +21,43 @@ describe('POST /api/v1/departments - createDepartment', () => {
       expect(res.body).toEqual(
         expect.objectContaining({
           success: false,
+          errors: expect.objectContaining({ message: 'No token, access denied' }),
+        }),
+      );
+    });
+
+    it('should return error response if no administrator', async () => {
+      const company = await Company.create({
+        name: 'Full suite',
+        user: mongoose.Types.ObjectId().toHexString(),
+      });
+
+      const res = await request(app)
+        .post(url)
+        .set({ 'x-company-tenant': company.slug })
+        .auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(403);
+      expect(res.body).toEqual(
+        expect.objectContaining({
+          success: false,
           errors: expect.objectContaining({
-            message: 'No token, access denied',
+            message: "You don't have permission to access on this route",
           }),
         }),
       );
     });
 
     it('should return error response if logged in user is not equal to company user', async () => {
+      const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
       const company = await Company.create({
         name: 'Full suite',
-        user: mongoose.Types.ObjectId(),
+        user: mongoose.Types.ObjectId().toHexString(),
+        administrators: [user._id],
       });
 
       const res = await request(app)
-        .get(url)
+        .post(url)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -50,7 +71,7 @@ describe('POST /api/v1/departments - createDepartment', () => {
     });
 
     it('should return error response if no company set', async () => {
-      const res = await request(app).get(url).auth(token, { type: 'bearer' });
+      const res = await request(app).post(url).auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
       expect(res.body).toEqual(
@@ -61,35 +82,27 @@ describe('POST /api/v1/departments - createDepartment', () => {
       );
     });
 
-    it('should return error response if name is empty', async () => {
+    it('should return error response if values are invalid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
-      await CompanySetting.create({
-        company: company._id,
-        firstCutOff: 1,
-        firstPayout: 5,
-        secondCutOff: 15,
-        secondPayout: 20,
-        registeredAddress: {
-          street: '24c Marcoville',
-          city: 'Baguio city',
-          country: 'Philippines',
-          zipCode: '2600',
-        },
+      const company = await Company.create({
+        name: 'Full suite',
+        user: user._id,
+        administrators: [user._id],
       });
 
       const res = await request(app)
         .post(url)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
-        .send({ name: '' });
+        .send({ startDate: '', endDate: '' });
 
       expect(res.status).toBe(400);
+      expect(res.body.success).toBeFalsy();
       expect(res.body).toEqual(
         expect.objectContaining({
-          success: false,
           errors: expect.objectContaining({
-            name: 'Please enter a department',
+            startDate: 'Start Date is required',
+            endDate: 'End Date is required',
           }),
         }),
       );
@@ -97,38 +110,31 @@ describe('POST /api/v1/departments - createDepartment', () => {
   });
 
   describe('Success Response', () => {
-    it('should return success response if values are valid', async () => {
+    it('should return a success response if values are valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
-      await CompanySetting.create({
-        company: company._id,
-        firstCutOff: 1,
-        firstPayout: 5,
-        secondCutOff: 15,
-        secondPayout: 20,
-        registeredAddress: {
-          street: '24c Marcoville',
-          city: 'Baguio city',
-          country: 'Philippines',
-          zipCode: '2600',
-        },
+      const company = await Company.create({
+        name: 'Full suite',
+        user: user._id,
+        administrators: [user._id],
       });
 
       const res = await request(app)
         .post(url)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
-        .send({ name: 'Staff' });
+        .send({ startDate: '2021-01-01', endDate: '2021-01-15' });
 
       expect(res.status).toBe(201);
+      expect(res.body.success).toBeTruthy();
       expect(res.body).toEqual(
         expect.objectContaining({
-          success: true,
-          department: expect.objectContaining({
-            name: 'Staff',
+          payrun: expect.objectContaining({
+            startDate: '2021-01-01T00:00:00.000Z',
+            endDate: '2021-01-15T00:00:00.000Z',
           }),
         }),
       );
+      expect(Object.keys(res.body.payrun)).toEqual(expect.arrayContaining(['_id']));
     });
   });
 });

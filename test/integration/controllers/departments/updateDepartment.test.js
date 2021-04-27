@@ -3,7 +3,9 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
+const Department = require('../../../../models/Department');
+const CompanySetting = require('../../../../models/CompanySetting');
 
 describe('PUT /api/v1/departments/:id - updateDepartment', () => {
   const url = '/api/v1/departments';
@@ -15,13 +17,13 @@ describe('PUT /api/v1/departments/:id - updateDepartment', () => {
 
   describe('Error response', () => {
     it('should return error response if logged in user is not equal to company user', async () => {
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'Fullsuite',
-        user: mongoose.Types.ObjectId(),
+        user: mongoose.Types.ObjectId().toHexString(),
       });
 
       const res = await request(app)
-        .put(`${url}/${mongoose.Types.ObjectId()}`)
+        .put(`${url}/${mongoose.Types.ObjectId().toHexString()}`)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -38,11 +40,11 @@ describe('PUT /api/v1/departments/:id - updateDepartment', () => {
 
     it('should return error response if id is not found id invalid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'Fullsuite',
         user: user._id,
       });
-      await TestUtils.createCompanySetting({
+      await CompanySetting.create({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,
@@ -56,7 +58,7 @@ describe('PUT /api/v1/departments/:id - updateDepartment', () => {
         },
       });
 
-      const invalidId = mongoose.Types.ObjectId();
+      const invalidId = mongoose.Types.ObjectId().toHexString();
 
       const res = await request(app)
         .put(`${url}/${invalidId}`)
@@ -78,11 +80,11 @@ describe('PUT /api/v1/departments/:id - updateDepartment', () => {
   describe('Success Response', () => {
     it('should return success response if values are valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await TestUtils.createCompany({
+      const company = await Company.create({
         name: 'Fullsuite',
         user: user._id,
       });
-      await TestUtils.createCompanySetting({
+      await CompanySetting.create({
         company: company._id,
         firstCutOff: 1,
         firstPayout: 5,
@@ -95,7 +97,7 @@ describe('PUT /api/v1/departments/:id - updateDepartment', () => {
           zipCode: '2600',
         },
       });
-      const department = await TestUtils.createDepartment({
+      const department = await Department.create({
         name: 'Staff',
         company: company._id,
       });

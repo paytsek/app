@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const request = require('supertest');
 
 const app = require('../../../../app');
-const TestUtils = require('../../../../utils/testUtils');
+const Company = require('../../../../models/Company');
+const User = require('../../../../models/User');
 
 describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   const url = '/api/v1/companies/settings';
@@ -36,7 +36,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   it('should return 401 if logged in user is not equal to company owner', async () => {
     const owner = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-    const user = await TestUtils.createUser({
+    const user = await User.create({
       username: 'jane doe',
       email: 'janedoe@gmail.com',
       password: '123456',
@@ -44,7 +44,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
       lastName: 'Doe',
     });
 
-    const company = await TestUtils.createCompany({
+    const company = await Company.create({
       name: 'test company',
       user: user._id,
       administrators: [owner._id],
@@ -63,7 +63,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   });
 
   it('should return 403 if logged in user is not an administrator', async () => {
-    const user = await TestUtils.createUser({
+    const user = await User.create({
       username: 'jane doe',
       email: 'janedoe@gmail.com',
       password: '123456',
@@ -71,7 +71,7 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
       lastName: 'Doe',
     });
 
-    const company = await TestUtils.createCompany({
+    const company = await Company.create({
       name: 'test company',
       user: user._id,
       administrators: [user._id],
@@ -214,8 +214,6 @@ describe('POST /api/v1/companies/:id/settings - createCompanySettings', () => {
   });
 
   it('should return 201 status code and success response if fields are valid', async () => {
-    mongoose.connection.db.createCollection('departments');
-
     let res = await request(app)
       .post('/api/v1/companies/name')
       .auth(token, { type: 'bearer' })

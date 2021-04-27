@@ -3,18 +3,17 @@ const jwt = require('jsonwebtoken');
 
 const request = require('supertest');
 const app = require('../../../../app');
-const CompanySetting = require('../../../../models/CompanySetting');
 const Company = require('../../../../models/Company');
 
-describe('POST /api/v1/departments - createDepartment', () => {
-  const url = '/api/v1/departments';
+describe('POST /api/v1/nonTaxablePays - createNonTaxablePay', () => {
+  const url = '/api/v1/nonTaxablePays';
   let token;
 
   beforeEach(async () => {
     token = await global.signIn();
   });
 
-  describe('Error Response', () => {
+  describe('Error response', () => {
     it('should return error response if not logged in', async () => {
       const res = await request(app).post(url);
 
@@ -22,21 +21,47 @@ describe('POST /api/v1/departments - createDepartment', () => {
       expect(res.body).toEqual(
         expect.objectContaining({
           success: false,
+          errors: expect.objectContaining({ message: 'No token, access denied' }),
+        }),
+      );
+    });
+
+    it('should return error response if not an administrator', async () => {
+      const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const userId = mongoose.Types.ObjectId().toHexString();
+      const company = await Company.create({
+        name: 'Full suite',
+        user: user._id,
+        administrators: [userId],
+      });
+
+      const res = await request(app)
+        .post(url)
+        .set({ 'x-company-tenant': company.slug })
+        .auth(token, { type: 'bearer' });
+
+      expect(res.status).toBe(403);
+      expect(res.body).toEqual(
+        expect.objectContaining({
+          success: false,
           errors: expect.objectContaining({
-            message: 'No token, access denied',
+            message: "You don't have permission to access on this route",
           }),
         }),
       );
     });
 
     it('should return error response if logged in user is not equal to company user', async () => {
+      const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const userId = mongoose.Types.ObjectId().toHexString();
       const company = await Company.create({
         name: 'Full suite',
-        user: mongoose.Types.ObjectId(),
+        user: userId,
+        administrators: [userId, user._id],
       });
 
       const res = await request(app)
-        .get(url)
+        .post(url)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' });
 
@@ -50,7 +75,7 @@ describe('POST /api/v1/departments - createDepartment', () => {
     });
 
     it('should return error response if no company set', async () => {
-      const res = await request(app).get(url).auth(token, { type: 'bearer' });
+      const res = await request(app).post(url).auth(token, { type: 'bearer' });
 
       expect(res.status).toBe(401);
       expect(res.body).toEqual(
@@ -61,21 +86,12 @@ describe('POST /api/v1/departments - createDepartment', () => {
       );
     });
 
-    it('should return error response if name is empty', async () => {
+    it('should return error response if values are not valid', async () => {
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
-      await CompanySetting.create({
-        company: company._id,
-        firstCutOff: 1,
-        firstPayout: 5,
-        secondCutOff: 15,
-        secondPayout: 20,
-        registeredAddress: {
-          street: '24c Marcoville',
-          city: 'Baguio city',
-          country: 'Philippines',
-          zipCode: '2600',
-        },
+      const company = await Company.create({
+        name: 'Full suite',
+        user: user._id,
+        administrators: [user._id],
       });
 
       const res = await request(app)
@@ -85,48 +101,36 @@ describe('POST /api/v1/departments - createDepartment', () => {
         .send({ name: '' });
 
       expect(res.status).toBe(400);
+      expect(res.body.success).toBeFalsy();
       expect(res.body).toEqual(
         expect.objectContaining({
-          success: false,
-          errors: expect.objectContaining({
-            name: 'Please enter a department',
-          }),
+          errors: expect.objectContaining({ name: 'Please add a non taxable' }),
         }),
       );
     });
   });
 
-  describe('Success Response', () => {
-    it('should return success response if values are valid', async () => {
+  describe('Success response', () => {
+    it('should return succes response if values are valid', async () => {
+      await mongoose.connection.createCollection('nontaxablepays');
       const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
-      const company = await Company.create({ name: 'PayTsek', user: user._id });
-      await CompanySetting.create({
-        company: company._id,
-        firstCutOff: 1,
-        firstPayout: 5,
-        secondCutOff: 15,
-        secondPayout: 20,
-        registeredAddress: {
-          street: '24c Marcoville',
-          city: 'Baguio city',
-          country: 'Philippines',
-          zipCode: '2600',
-        },
+      const company = await Company.create({
+        name: 'Full suite',
+        user: user._id,
+        administrators: [user._id],
       });
 
       const res = await request(app)
         .post(url)
         .set({ 'x-company-tenant': company.slug })
         .auth(token, { type: 'bearer' })
-        .send({ name: 'Staff' });
+        .send({ name: 'Transportation' });
 
       expect(res.status).toBe(201);
+      expect(res.body.success).toBeTruthy();
       expect(res.body).toEqual(
         expect.objectContaining({
-          success: true,
-          department: expect.objectContaining({
-            name: 'Staff',
-          }),
+          nonTaxablePay: expect.objectContaining({ name: 'Transportation' }),
         }),
       );
     });
