@@ -128,3 +128,5 @@ if (process.argv[2] === '-i' && process.env.NODE_ENV !== 'production') {
   );
   process.exit(1);
 }
+
+console.log('')
