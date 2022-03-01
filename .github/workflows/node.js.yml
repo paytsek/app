@@ -34,6 +34,7 @@ jobs:
 
     - name: Install react dependecies
       run: npm install --prefix client
+      
 
     - name: Test API
       run: npm run test:api
